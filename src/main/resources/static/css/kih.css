@@ -1,0 +1,239 @@
+.box{
+width: 150px;
+height: 50px;
+border-radius: 4px;
+border: 2px solid #477500;
+background: #477500;
+/* background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 7px) center no-repeat; */
+background-size: 20px;
+color: white ;
+}
+
+.box2{
+width: 65px;
+height: 55px;
+border-radius: 4px;
+border: 2px solid #477500;
+background: white;
+/* background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 7px) center no-repeat; */
+background-size: 20px;
+color: 477500 ;
+text-align: center;
+padding: 1px;
+}
+
+.commentbox {
+    border-radius: 10px;
+    border: 1px solid #89dd18;
+}
+
+.commentbox_inst{
+    border-radius: 10px;
+    background: #ebffd0;
+    width:90%
+}
+
+.comment-list .children2 {
+    padding: 0 0 0 40px;
+    margin: 0;
+    float: left;
+    width: 100%; }
+
+.selectBoxList {
+    display: flex;
+    grid-gap: 30px;
+}
+.selectBox2 * { box-sizing: border-box; }
+.selectBox2 {
+    position: relative;
+    z-index: 1;
+    width: 150px;
+    height: 35px;
+    border-radius: 4px;
+    border: 2px solid #477500;
+    /* background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 7px) center no-repeat; */
+    background-size: 20px;
+    cursor: pointer;
+}
+
+.selectBox2:before {
+    content: '🏡';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); 
+    right: 5px; 
+    z-index: -1;
+}
+
+.selectBox2:after {
+    content: '';
+    display: block; 
+    width: 2px;
+    height: 100%; 
+    position: absolute; 
+    top: 0; 
+    right: 35px;
+    background: #477500;
+}
+
+.selectBox2 .label {
+    display: flex;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    border: 0 none;
+    outline: 0 none;
+    padding-left: 15px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.selectBox2 .optionList {
+    position: absolute; 
+    top: 28px;
+    left: 0;
+    width: 100%;
+    background: #477500;
+    color: #fff;
+    list-style-type: none;
+    padding: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    max-height: 0;
+    transition: .3s ease-in;
+}
+
+.selectBox2 .optionList::-webkit-scrollbar {width: 6px;}
+.selectBox2 .optionList::-webkit-scrollbar-track {background: transparent; }
+.selectBox2 .optionList::-webkit-scrollbar-thumb {background: #303030; border-radius: 45px;}
+.selectBox2 .optionList::-webkit-scrollbar-thumb:hover {background: #303030;}
+
+.selectBox2.active {
+    z-index: 10;
+}
+
+.selectBox2.active .optionList {
+    max-height: 500px;
+}
+
+.selectBox2 .optionItem {
+    border-bottom: 1px dashed #477500;
+    padding: 5px 15px 5px;
+    transition: .1s;
+}
+
+.selectBox2 .optionItem:hover {
+    background:#477500;
+}
+
+.selectBox2 .optionItem:last-child {
+    border-bottom: 0 none;
+}
+
+.carousel_main {
+    width: 300px;
+    position: relative;
+    overflow: hidden;
+    /*margin: 0 auto;*/
+    user-select: none;
+}
+
+.carousel_wrapper {
+    display: flex;
+    transition: transform 1s;
+}
+
+.carousel_slide {
+    flex: 0 0 300px;
+    position: relative;
+}
+
+.carousel_slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel_button_container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.carousel_button {
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.carousel_prev {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.carousel_next {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.carousel_pagination {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.carousel_circle {
+    width: 10px;
+    height: 10px;
+    background-color: #aaa;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.carousel_circle.active {
+    background-color: #333;
+}
+
+figure
+{
+    img{
+    width:100%;
+    height:100%;
+    }
+}
+
+.smallpage{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+
+.smallpage ul li a, .smallpage ul li span {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    }
