@@ -4,6 +4,8 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -69,11 +71,12 @@ public class OfflineClass
 	
 	@Column
 	@Comment("오프라인 강의 승인")
+	@Enumerated(EnumType.STRING)
 	private Status offlineClassApprove;
 	
-	@Column
-	@Comment("반려사유")
-	private String rejection;
+//	@Column
+//	@Comment("반려사유")
+//	private String rejection;
 	
 	@Column(columnDefinition = "NUMBER(3)")
 	@Comment("오프라인 강의 참여 가능 인원수")

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Meditative - Free Bootstrap 4 Template by Colorlib</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet"> -->
+
+	<link rel="stylesheet" href="https://i.icomoon.io/public/temp/837e264aba/UntitledProject/style.css">
+    <link rel="stylesheet" href="/css/open-iconic-bootstrap.min.css"> <!--지울것-->
+    <link rel="stylesheet" href="/css/animate.css">
+    
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/css/aos.css">
+
+    <link rel="stylesheet" href="/css/ionicons.min.css"> <!--지울것-->
+
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+
+    
+    <link rel="stylesheet" href="/css/flaticon.css"> <!--지울것-->
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/style2.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/kih.css">
+  </head>
+  <body>
+	<!--사용자 네비게이션-->
+    <div class="py-2 bg-light" style="position:sticky;top: 0;left:0;right: 0;">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-9 d-none d-lg-block">
+			<a href="#" class="medium mr-3"><span class="icon-user-tie"></span> 관리자 페이지</a>
+          </div>
+          <div class="col-lg-3 text-right">
+			<!-- 로그아웃 상태
+				<a href="#" class="medium mr-3"><span class="icon-unlocked"></span> 로그인</a>
+				<a href="#" class="medium mr-3"><span class="icon-users"></span> 회원가입</a>
+			-->
+			<a href="#" class="medium mr-3"> 사용자 님</a>
+			<a href="#" class="medium mr-3"><span class="icon-user"></span> 마이페이지</a>
+			<a href="#" class="medium mr-3"><span class="icon-enter"></span> 로그아웃</a>
+			</div>
+        </div>
+      </div>
+    </div>
+	<!--메뉴 네비게이션-->
+  	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  		<div class="container">
+  			<div class="row m-auto">
+  				<div class="col-12 w-100 text-center">
+  					<a class="navbar-brand" href="index.html"><img src="/images/logo.png" width="370px"></a>
+			      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+			        <span class="oi oi-"></span> Menu
+			      </button>
+  				</div>
+  				<div class="col-12 w-100 text-center">
+  					<div class="collapse navbar-collapse" id="ftco-nav">
+			        <ul class="navbar-nav m-auto menu">
+			          <li class="nav-item active" ><a href="index.html" class="nav-link">홈</a></li>
+			          <li class="nav-item">
+						<a href="blog.html" class="nav-link">내방 클래스</a>
+						<ul class="submenu text-center mb-3">
+							<li><a href="#">모든 카테고리</a></li>
+              <li><a href="#">건강 심성</a></li>
+							<li><a href="#">레저생활 스포츠</a></li>
+							<li><a href="#">생활문화예술</a></li>
+							<li><a href="#">문화예술향상</a></li>
+							<li><a href="#">기능적 소양</a></li>
+              <li><a href="#">인문학적 교양</a></li>
+						</ul>
+					  </li>
+			          <li class="nav-item"><a href="classes.html" class="nav-link">공방 클래스</a></li>
+			          <li class="nav-item"><a href="about.html" class="nav-link">내방공방 소개</a></li>
+			          <li class="nav-item"><a href="about.html" class="nav-link">고객센터</a></li>
+			          <!-- <li class="nav-item"><a href="trainer.html" class="nav-link">Trainer</a></li> -->
+			          <!-- <li class="nav-item"><a href="schedule.html" class="nav-link">Schedule</a></li> -->
+			          <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li> -->
+			        </ul>
+			      </div>
+  				</div>
+  			</div>
+  		</div>
+	  </nav>
+    <!-- END nav -->
+
+    <section class="ftco-section pt-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 w-100 ftco-animate">
+
+            
+          <!-- 메인 이미지 -->
+            <img src="/images/image_1.jpg" alt="" class="img-fluid mt-2">
+            
+          <div class="d-flex justify-content-between">
+          <h1 class="mb-3 d-flex justify-content-start" style="color:#477500" th:text="${onlineClass.onlineClassTitle}"></h1>
+          <div class="d-flex justify-content-end align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye mr-1" viewBox="0 0 16 16">
+              <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+              <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+            </svg> [[${#numbers.formatInteger(onlineClass.onlineClassViews, 1, 'COMMA')}]]
+          </div>
+        </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-start">
+                <button class="box">지금 바로 시작하기</button>
+                <!--강의 들으러 가기-->
+                <h6 class="ml-3 d-flex align-items-center" style="height: 50px;" >[[${onlineClass.onlineClassPeriod}]]일 [[${#numbers.formatInteger(onlineClass.onlineClassPrice, 1, 'COMMA')}]]원</h6>
+              </div>
+              <div class="d-flex justify-content-end align-items-center" style="height: 50px;">
+                <button class="box2"> 별점<br/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                  </svg> 5 </button> &nbsp; &nbsp;
+                  <button class="box2"> 찜 <br/>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                  </svg> [[${likeCnt}]] </button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+	            <div class="d-flex justify-content-start">
+		            <img src="/images/person_1.jpg" class="mr-2" style="border-radius: 50% !important;width: 40px;height: 40px;float:left;">
+		            <h6 class="mt-2 mb-4" th:text="${onlineClass.instructorNickname}">
+		            </h6>
+	            </div>
+	            <div class="d-flex justify-content-end">
+		            <ul class="ftco-footer-social float-lft mt-1">
+		            	<li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-link2"></span></a></li>
+		           		<li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-comment"></span></a></li>
+		                <li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-twitter"></span></a></li>
+		                <li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-facebook"></span></a></li>
+		              </ul>
+	              </div>
+            </div>
+            <p class="border-top">
+              <p th:utext="${onlineClass.onlineClassContent}"></p>
+                      
+              <div class="tag-widget post-tag-container mb-5 mt-5">
+              <div class="tagcloud">
+                <a href="#" class="tag-cloud-link">온라인</a>
+                <a href="#" class="tag-cloud-link">내방</a>
+                <a href="#" class="tag-cloud-link">[[${onlineClass.category}]]</a>
+              </div>
+            </div>
+            
+        
+
+            <!--후기-->
+            <div class="pt-3 pl-3 pr-3 mt-5 commentbox">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                        5
+              <div class="d-flex justify-content-start">
+              <h3 class="mb-4">6개의 후기가 있어요</h3>
+              <a href="#"><h6 class="d-flex align-items-center ml-3 mt-3 border-bottom" style="color: #676c7e;">더보기</h6></a>
+              </div>
+              <ul class="comment-list">
+                <li class="comment">
+                  <div class="vcard bio">
+                    <img src="/images/person_2.jpg" alt="/image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <div class="d-flex justify-content-start">
+                    <h3>회원1</h3>
+                    <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
+                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                      </svg> 5</div>
+                    <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                    </div>
+                    <p>헉 넘 재밌다~!~!~!~!~!~!</p>
+                    <div class="carousel_main">
+                      <div class="carousel_wrapper">
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/static/img/doyeon0430_logo.jpg" alt="doyeon0430 이미지" />
+                          </div>
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/media/physics/Physics_AGgemm2.webp" alt="doyeon0430 이미지" />
+                          </div>
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/static/img/doyeon0430_logo.jpg" alt="doyeon0430 이미지" />
+                          </div>
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/media/physics/Physics_AGgemm2.webp" alt="doyeon0430 이미지" />
+                          </div>
+                      </div>
+                      <div class="carousel_button_container">
+                          <button type="button" class="carousel_prev">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                              </svg>
+                          </button>
+                          <button type="button" class="carousel_next">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                          </button>
+                      </div>
+                      <div class="carousel_pagination">
+                          <div class="carousel_circle"></div>
+                          <div class="carousel_circle"></div>
+                          <div class="carousel_circle"></div>
+                          <div class="carousel_circle"></div>
+                      </div>
+                  </div>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+                </li>
+
+                <li class="comment">
+                  <div class="vcard bio">
+                    <img src="/images/person_1.jpg" alt="/image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <div class="d-flex justify-content-start">
+                      <h3>회원2</h3>
+                      <div>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg> 1</div>
+                      <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                      </div>
+                    <p>재미없음 ㅠ</p>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+
+                  <ul class="children2">
+                    <li class="comment commentbox_inst" >
+                      <div class="vcard bio pl-2 pt-2">
+                        <img src="/images/person_1.jpg" alt="/image placeholder">
+                      </div>
+                      <div class="comment-body">
+                        <div class="d-flex justify-content-start">
+                          <h3>강사</h3>
+                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                          </div>
+                        <p>ㅠㅠ왜 재미가 없을까</p>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                
+              </ul>
+              <!-- END comment-list -->
+              
+              
+              <!--페이징-->
+              <div>
+              <div class="row mt-5">
+                <div class="col">
+                  <div class="block-27 smallpage" style="display:inline; text-align: center;">
+                    <ul class="mb-2">
+                      <li><a href="#" class="smallpage">&lt;</a></li>
+                      <li class="active"><span class="smallpage">1</span></li>
+                      <li><a href="#" class="smallpage">2</a></li>
+                      <li><a href="#" class="smallpage">3</a></li>
+                      <li><a href="#" class="smallpage">4</a></li>
+                      <li><a href="#" class="smallpage">5</a></li>
+                      <li><a href="#" class="smallpage">&gt;</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="comment-form-wrap">                
+              </div>
+            </div>
+            <h3 class="mt-5">이런 강의는 어때요?</h3><br/>
+            <div class="row">
+              
+                <div class="col-md-4">
+                  <div class="classes w-100 ftco-animate" >
+                    <a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;height: 200px;"></a>
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:30px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                    </svg></a>
+                    <div class="text w-100 text-center">
+                      <h3><a href="#" style="color: #477500;">강의제목</a></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="classes w-100 ftco-animate" >
+                    <a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;height: 200px;"></a>
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:30px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                    </svg></a>
+                    <div class="text w-100 text-center">
+                      <h3><a href="#" style="color: #477500;">강의제목</a></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="classes w-100 ftco-animate" >
+                    <a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;height: 200px;"></a>
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:30px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                    </svg></a>
+                    <div class="text w-100 text-center">
+                      <h3><a href="#" style="color: #477500;">강의제목</a></h3>
+                    </div>
+                  </div>
+                </div>
+                
+
+            </div>
+          </div> <!-- .col-md-8 -->
+          
+
+        </div>
+      </div>
+    </section> <!-- .section -->
+<!--채팅/맨 위로 버튼-->
+<button id="btn-chat" title="채팅"><img src="/images/icon-chat.png" alt="chat"></button>	
+<button onclick="backToTop()" id="btn-back-to-top" title="맨 위로"><img src="/images/icon-arrow-top.png" alt="top"></button>	
+  
+   <footer class="ftco-footer ftco-section bg-light">
+      <div class="container">
+        <div class="row d-flex">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Meditative</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <ul class="ftco-footer-social list-unstyled float-lft mt-3">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Popular Links</h2>
+              <ul class="list-unstyled">
+                <li><a href="#">Yoga for Beginners</a></li>
+                <li><a href="#">Yoga for Pregnant</a></li>
+                <li><a href="#">Yoga Barre</a></li>
+                <li><a href="#">Yoga Advance</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Quick Links</h2>
+              <ul class="list-unstyled">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Classes</a></li>
+                <li><a href="#">Schedule</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Have a Questions?</h2>
+              <div class="block-23 mb-3">
+                <ul>
+                  <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+                  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p class="mb-0">
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;<script>
+                document.write(new Date().getFullYear());
+
+              </script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.1.3.js"></script>
+  <script src="/js/jquery.waypoints.min.js"></script>
+  <script src="/js/jquery.stellar.min.js"></script>
+  <script src="/js/owl.carousel.min.js"></script>
+  <script src="/js/jquery.magnific-popup.min.js"></script>
+  <script src="/js/aos.js"></script>
+  <script src="/js/jquery.animateNumber.min.js"></script>
+  <script src="/js/bootstrap-datepicker.js"></script>
+  <script src="/js/jquery.timepicker.min.js"></script>
+  <script src="/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="/js/google-map.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/carousel.js"></script>
+  </body>
+</html>

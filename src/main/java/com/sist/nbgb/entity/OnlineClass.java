@@ -75,9 +75,9 @@ public class OnlineClass
 	@Enumerated(EnumType.STRING)
 	private Status onlineClassApprove;
 	
-	@Column
-	@Comment("반려사유")
-	private String rejection;
+//	@Column
+//	@Comment("반려사유")
+//	private String rejection;
 	
 	@Column
 	@Comment("온라인 강의 조회수")

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<style type="text/css">
+	.p{line-height: normal;}
+	</style>
+</head>
+<body>
+	<!--사용자 네비게이션-->
+		<!--메뉴 네비게이션-->
+	<div th:insert="import/topImport.html :: top-import"></div>
+    	<!--메뉴 네비게이션-->
+    <!--사용자 네비게이션-->
+
+
+<section class="ftco-section" style="padding: 1em 0;">
+
+      <div class="container">
+        <div class="row d-flex justify-content-between">
+          <div>
+            <div class="dropdown-cate">
+              <button class="dropbtn">카테고리<span class="icon-keyboard_arrow_down"></span></button>
+              <div class="dropdown-content">
+                <a th:href="@{/offlineClass(searchType = 1, searchValue = 공예)}">공예</a>
+                <a th:href="@{/offlineClass(searchType = 1, searchValue = 미술)}">미술</a>
+                <a th:href="@{/offlineClass(searchType = 1, searchValue = 베이킹)}">베이킹</a>
+                <a th:href="@{/offlineClass(searchType = 1, searchValue = 스포츠)}">스포츠</a>
+                <a th:href="@{/offlineClass(searchType = 1, searchValue = 요리)}">요리</a>
+                <a th:href="@{/offlineClass(searchType = 1, searchValue = 음악)}">음악</a>
+              </div>
+            </div>&nbsp;&nbsp;
+            <div class="dropdown-addr">
+              <button class="dropbtn">지역<span class="icon-keyboard_arrow_down"></span></button>
+              <div class="dropdown-content">
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = 서울)}">서울</a>
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = In)}">인천, 경기</a>
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = Bu)}">부산, 경상</a>
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = De)}">대전, 충청</a>
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = 강원)}">강원</a>
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = Ga}">광주, 전라</a>
+                <a th:href="@{/offlineClass(searchType = 2, searchValue = 제주)}">제주</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex justify-content-end">
+            <div id="search-btn" style="display: block;">
+              <a onclick="btnClick()"><span class="icon-search" style="font-size:20px;"></span></a>
+            </div>
+            <div id="search-offline" class="pt-1" style="display: none;">
+              <div class="d-flex">
+                &nbsp;&nbsp;
+                <input type="text" class="search-online p-1" placeholder="공방을 검색해보세요.">&nbsp;
+                <button class="btn btn-primary p-2" style="height: 34px; display: flex; align-items:center;">검색</button>
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div><br />
+      <script>
+        function btnClick() {
+          const mydiv = document.getElementById('search-offline');
+
+          if(mydiv.style.display === 'none') 
+          {
+            mydiv.style.display = 'block';
+          }else
+          {
+            mydiv.style.display = 'none';
+          }
+        }
+      </script>
+      
+      <div class="container" th:if="${searchValue != null}">
+        	<h4 style="display:inline; color:black">검색결과 > </h4><h4 style="display:inline; color:black" th:text="${searchValue}"></h4><br /><br />
+        </div>
+      
+    	<div class="container">
+        <div class="row">
+        	<div class="col-md-4" th:each="item : ${list}">
+        		<div class="classes w-100 ftco-animate">
+        			<img style="border-radius: 20px;" class="img w-100 mb-3" th:src="@{'/images/offlineThumbnail/' + ${item.offlineClassId} + '.jpg'}">
+        			<div class="text w-100">
+        				<h5><a href="#" th:text="${item.offlineClassTitle}"></a></h5>
+        				<div style="line-height: 5px;">
+	        				<p style="color: lightgray;" th:text="${item.instructorNickname}"></p>
+	        				<p style="color: black;"><b th:text="${item.offlineClassPrice}"></b>원</p>
+	        				<p style="font-size: 11px;" th:text="${item.offlineClassPlace}"></p>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+
+        <div class="row mt-5 text-center">
+          <div class="col">
+            <div class="block-27">
+              <ul>
+                <li><a href="#">&lt;</a></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&gt;</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    	</div>
+    </section>
+	
+	
+	<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>
