@@ -3,12 +3,15 @@ package com.sist.nbgb.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
-public class TestController 
+@RequiredArgsConstructor
+public class UserController 
 {
-	@GetMapping("/index")
-	public String index()
+	@GetMapping("/login")
+	public String login()
 	{
-		return "index";
+		return "login";
 	}
 }

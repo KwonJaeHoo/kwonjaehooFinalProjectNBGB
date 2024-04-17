@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,7 +64,7 @@ public class OnlinePaymentApprove
 	
 	@CreatedDate
 	@Comment("결제날짜")
-	private LocalTime approvedAt;
+	private LocalDateTime approvedAt;
 	
 	@Column(columnDefinition = "CHAR(1)")
 	@Comment("상태(시청전:N,시청후:Y)")

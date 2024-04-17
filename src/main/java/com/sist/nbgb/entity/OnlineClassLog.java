@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -55,17 +55,6 @@ public class OnlineClassLog
 	})
 	
 	private OnlineClassFile OnlineClassFile;
-
-//	@MapsId("onlineFileId")
-//	@Comment("첨부 파일 번호")
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name="onlineFileId")
-//	private OnlineClassFile onlineFileId;
-//
-//	@Comment("동영상 길이")
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "onlineFileLength")
-//	private OnlineClassFile onlineFileLength;
 	 
 	@Column
 	@Comment("영상 시청(마지막 시청 위치)")
@@ -73,7 +62,7 @@ public class OnlineClassLog
 	
 	@CreatedDate
 	@Comment("로그 날짜")
-	private LocalTime onlineLogDate;
+	private LocalDateTime onlineLogDate;
 
 	@Column
 	@Comment("상태")

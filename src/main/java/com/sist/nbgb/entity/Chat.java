@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +33,7 @@ public class Chat
 	
 	@CreatedDate
 	@Comment("채팅방 생성일")
-	private LocalTime chatRegdate;
+	private LocalDateTime chatRegdate;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userId")

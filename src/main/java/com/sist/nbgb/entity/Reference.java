@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +51,6 @@ public class Reference
 	
 	@CreatedDate
 	@Comment("문의 등록일")
-	private LocalTime refRegdate;
+	private LocalDateTime refRegdate;
 }
 

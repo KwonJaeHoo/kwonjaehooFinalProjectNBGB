@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class OfflineClass
 	
 	@CreatedDate
 	@Comment("오프라인 강의 게시일")
-	private LocalTime offlineClassRegdate;
+	private LocalDateTime offlineClassRegdate;
 	
 	@Column(length = 150)
 	@Comment("오프라인 강의 장소")
@@ -74,9 +74,13 @@ public class OfflineClass
 	@Enumerated(EnumType.STRING)
 	private Status offlineClassApprove;
 	
-//	@Column
-//	@Comment("반려사유")
-//	private String rejection;
+	@Column
+	@Comment("반려사유")
+	private String rejection;
+	
+	@CreatedDate
+	@Comment("반려날짜")
+	private LocalDateTime rejectionRedgate;
 	
 	@Column(columnDefinition = "NUMBER(3)")
 	@Comment("오프라인 강의 참여 가능 인원수")
