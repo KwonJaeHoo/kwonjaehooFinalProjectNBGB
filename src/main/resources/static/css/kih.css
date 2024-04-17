@@ -1,0 +1,266 @@
+.box{
+width: 150px;
+height: 50px;
+border-radius: 4px;
+border: 2px solid #477500;
+background: #477500;
+/* background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 7px) center no-repeat; */
+background-size: 20px;
+color: white ;
+}
+
+.box2{
+width: 65px;
+height: 55px;
+border-radius: 4px;
+border: 2px solid #477500;
+background: white;
+/* background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 7px) center no-repeat; */
+background-size: 20px;
+color: 477500 ;
+text-align: center;
+padding: 1px;
+}
+
+.commentbox {
+    border-radius: 10px;
+    border: 1px solid #89dd18;
+}
+
+.commentbox_inst{
+    border-radius: 10px;
+    background: #ebffd0;
+    width:90%
+}
+
+.comment-list .children2 {
+    padding: 0 0 0 40px;
+    margin: 0;
+    float: left;
+    width: 100%; }
+
+.selectBoxList {
+    display: flex;
+    grid-gap: 30px;
+}
+.selectBox2 * { box-sizing: border-box; }
+.selectBox2 {
+    position: relative;
+    z-index: 1;
+    width: 150px;
+    height: 35px;
+    border-radius: 4px;
+    border: 2px solid #477500;
+    /* background: url('https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png') calc(100% - 7px) center no-repeat; */
+    background-size: 20px;
+    cursor: pointer;
+}
+
+.selectBox2:before {
+    content: '🏡';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); 
+    right: 5px; 
+    z-index: -1;
+}
+
+.selectBox2:after {
+    content: '';
+    display: block; 
+    width: 2px;
+    height: 100%; 
+    position: absolute; 
+    top: 0; 
+    right: 35px;
+    background: #477500;
+}
+
+.selectBox2 .label {
+    display: flex;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    border: 0 none;
+    outline: 0 none;
+    padding-left: 15px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.selectBox2 .optionList {
+    position: absolute; 
+    top: 28px;
+    left: 0;
+    width: 100%;
+    background: #477500;
+    color: #fff;
+    list-style-type: none;
+    padding: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    max-height: 0;
+    transition: .3s ease-in;
+}
+
+.selectBox2 .optionList::-webkit-scrollbar {width: 6px;}
+.selectBox2 .optionList::-webkit-scrollbar-track {background: transparent; }
+.selectBox2 .optionList::-webkit-scrollbar-thumb {background: #303030; border-radius: 45px;}
+.selectBox2 .optionList::-webkit-scrollbar-thumb:hover {background: #303030;}
+
+.selectBox2.active {
+    z-index: 10;
+}
+
+.selectBox2.active .optionList {
+    max-height: 500px;
+}
+
+.selectBox2 .optionItem {
+    border-bottom: 1px dashed #477500;
+    padding: 5px 15px 5px;
+    transition: .1s;
+}
+
+.selectBox2 .optionItem:hover {
+    background:#477500;
+}
+
+.selectBox2 .optionItem:last-child {
+    border-bottom: 0 none;
+}
+
+.slider{
+    width: 100%;
+    height: 480px;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden; /* 현재 슬라이드 오른쪽에 위치한 나머지 슬라이드 들이 보이지 않도록 가림 */
+}
+.slider input[type=radio]{
+    display: none;
+}
+
+ul.imgs{
+    padding: 0;
+    margin: 0;
+    list-style: none;    
+}
+ul.imgs li{
+    position: absolute;
+    left: 640px;
+    transition-delay: 1s; /* 새 슬라이드가 이동해 오는 동안 이전 슬라이드 이미지가 배경이 보이도록 지연 */
+
+    padding: 0;
+    margin: 0;
+}
+
+.bullets{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    z-index: 2;
+}
+.bullets label{
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.55);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+/* 현재 선택된 불릿 배경 흰색으로 구분 표시 */
+.slider input[type=radio]:nth-child(1):checked~.bullets>label:nth-child(1){
+    background-color: #fff;
+}
+.slider input[type=radio]:nth-child(2):checked~.bullets>label:nth-child(2){
+    background-color: #fff;
+}
+.slider input[type=radio]:nth-child(3):checked~.bullets>label:nth-child(3){
+    background-color: #fff;
+}
+.slider input[type=radio]:nth-child(4):checked~.bullets>label:nth-child(4){
+    background-color: #fff;
+}
+
+.slider input[type=radio]:nth-child(1):checked~ul.imgs>li:nth-child(1){
+    left: 0;
+    transition: 0.5s;
+    z-index:1;
+}
+.slider input[type=radio]:nth-child(2):checked~ul.imgs>li:nth-child(2){
+    left: 0;
+    transition: 0.5s;
+    z-index:1;
+}
+.slider input[type=radio]:nth-child(3):checked~ul.imgs>li:nth-child(3){
+    left: 0;
+    transition: 0.5s;
+    z-index:1;
+}
+.slider input[type=radio]:nth-child(4):checked~ul.imgs>li:nth-child(4){
+    left: 0;
+    transition: 0.5s;
+    z-index:1;
+}
+
+/*여기까지 슬라이더*/
+
+.Slidesbackground {
+    margin: 0;
+    padding: 0;
+    /* .Slidesbackground 클래스에 대한 스타일을 정의합니다. 여백(margin)과 내부 여백(padding)을 0으로 설정합니다. */
+    }
+    
+    .slideshow-image {
+    border-radius: 3%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* .slideshow-image 클래스에 대한 스타일을 정의합니다. 이미지의 모서리를 둥글게 하고, 크기를 조정하며, overflow를 숨깁니다. */
+    }
+    
+    .mySlides {
+    border-radius: 3%;
+    width: 600px;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.5);
+    /* .mySlides 클래스에 대한 스타일을 정의합니다. 크기, 플렉스 박스 설정, 그림자 효과 등을 적용합니다. */
+    }
+    
+    .slideshow-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: auto;
+    /* .slideshow-container 클래스에 대한 스타일을 정의합니다. 플렉스 박스 설정과 위치, 여백을 조정합니다. */
+    }
+    
+    .fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+    /* .fade 클래스에 대한 스타일을 정의합니다. 이름이 'fade'인 애니메이션과 그 지속 시간을 설정합니다. */
+    }
+    
+    @keyframes fade {
+    from {
+    opacity: .4
+    }
+    
+    to {
+    opacity: 1
+    }
+    /*'fade' 애니메이션에 대한 키 프레임을 정의합니다. 투명도(opacity)가 0.4에서 1로 변화합니다. */
+    }
+
+    figure
+    {
+        img{
+        width:100%;
+        height:100%;
+        }
+    }
