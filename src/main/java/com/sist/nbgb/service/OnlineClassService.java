@@ -1,6 +1,6 @@
 package com.sist.nbgb.service;
 
-import java.time.LocalTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -36,5 +36,8 @@ public class OnlineClassService {
 //		return onlinePaymentApproveRepository.findByApprovedAt(itemCode, partnerUserId);
 //	}
 	
-	
+	//리스트
+	public List<OnlineClass> findAll(){
+		return onlineClassRepository.findAll();
+	}
 }

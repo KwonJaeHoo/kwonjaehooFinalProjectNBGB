@@ -10,31 +10,33 @@
     	<!--메뉴 네비게이션-->
     <!--사용자 네비게이션-->
 
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_3.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center">
-            <h1 class="mb-3 bread">내 방 클래스</h1>
-            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">전체</a></span>
-                                   <span class="mr-2"><a href="index.html">건강 심성</a></span>
-                                   <span class="mr-2"><a href="index.html">레저생활 스포츠</a></span>
-                                   <span class="mr-2"><a href="index.html">생활문화예술</a></span></p>
-                                   <p class="breadcrumbs">
-                                   <span class="mr-2"><a href="index.html">문화예술향상</a></span>
-                                   <span class="mr-2"><a href="index.html">기능적 소양</a></span>
-                                   <span class="mr-2"><a href="index.html">인문학적 교양</a></span></p>
-          </div>
-        </div>
+    <div class="col-md-12 ftco-animate text-center">
+      <h1 class="mb-3 sub-title">내 방 클래스</h1>
+      <p class="sub-title">내 방에서 듣는 온라인 클래스!</p>
+    </div>
+    <div class="col-md-12 ftco-animate">
+      <div class="search-area">
+        <select class="search-select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+        </select>
+        <input type="text" class="serach-input" placeholder="검색어를 입력하세요.">
+        <button type="button" class="search-button">검색</button>
       </div>
-    </section>
-
-    <section class="ftco-section">
-    	<div class="container">
-                  
-        <div class="selectBox2" style="position: absolute; z-index: 2;">
-          
-          <button class="label">인기강의순</button>
+    </div>
+    <div class="col-md-9 ftco-animate categories-area">
+      <button class="category-btn category-active">전체</button>
+      <button class="category-btn">건강·심성</button>
+      <button class="category-btn">레저생활·스포츠</button>
+      <button class="category-btn">생활문화예술</button>
+      <button class="category-btn">문화예술향상</button>
+      <button class="category-btn">기능적 소양</button>
+      <button class="category-btn">인문학적 교양</button>
+    </div>
+    <div class="selector-section">
+      <div class="selectBox2 ftco-animate selector-area">
+          <button class="label pb-1">인기강의순</button>
           <ul class="optionList">
             <li class="optionItem">인기강의순</li>
             <li class="optionItem">별점높은순</li>
@@ -42,113 +44,46 @@
             <li class="optionItem">가격높은순</li>
             <li class="optionItem">최신순</li>
           </ul>
-        </div> <br/><br/>
-        <div class="d-flex justify-content-center mb-2">검색기능 추가하고픔</div>
-        <div class="row">
-        	<div class="col-md-4">
+      </div>
+    </div>  
+
+    <section class="online-section">
+    	<div class="container">
+         <div class="row">
+        	<div class="col-md-4" th:each="class : ${classes}">
         		<div class="classes w-100 ftco-animate" >
         			<a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(images/classes-1.jpg);border-radius: 20%;"></a>
               <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:50px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
                 <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
               </svg></a>
               <div class="text w-100 text-center">
-        				<h3><a href="#">강의제목 강의제목 강의제목</a></h3>
-        				<p>강의카테고리| 강사이름 | 
+        				<h3><a href="#" th:text=${class.onlineClassTitle}></a></h3>
+        				<p th:text="${class.category} + ' | ' + ${class.instructorNickname}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                 </svg> 5
-                <br/> <h5>50,000원</h5>
+                <br/> <h5 th:text=${class.onlineClassPrice}></h5>
                 </p>
         			</div>
         		</div>
         	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-2.jpg);border-radius: 20%;"></a>
-              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:25px;right:50px" width="25" height="25" fill="white" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-              </svg></a>
-              <div class="text w-100 text-center">
-        				<h3><a href="#">강의제목 강의제목 강의제목</a></h3>
-        				<p>레저생활 스포츠 | 기미나강사강사이름이길다면 | 
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                </svg> 5
-                <br/> <h5>50,000원</h5>
-                </p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-3.jpg);border-radius: 20%;"></a>
-              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:25px;right:50px" width="25" height="25" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-              </svg></a>
-              <div class="text w-100 text-center">
-        				<h3><a href="#">강의제목 강의제목 강의제목</a></h3>
-        				<p>강의카테고리| 강사이름 | 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg> 5
-                  <br/> <h5>50,000원</h5>
-                  </p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-4.jpg);border-radius: 20%;"></a>
-              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:25px;right:50px" width="25" height="25" fill="red" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-              </svg></a>
-              <div class="text w-100 text-center">
-        				<h3><a href="#">강의제목 강의제목 강의제목</a></h3>
-        				<p>강의카테고리| 강사이름 | 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg> 5
-                  <br/> <h5>50,000원</h5>
-                  </p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-5.jpg);border-radius: 20%;"></a>
-              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:25px;right:50px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-              </svg></a>
-              <div class="text w-100 text-center">
-        				<h3><a href="#">강의제목 강의제목 강의제목</a></h3>
-        				<p>강의카테고리| 강사이름 | 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg> 5
-                  <br/> <h5>50,000원</h5>
-                  </p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-6.jpg);border-radius: 20%;"></a>
-              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; top:25px;right:50px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-              </svg></a>
-              <div class="text w-100 text-center">
-        				<h3><a href="#">강의제목 강의제목 강의제목</a></h3>
-        				<p>강의카테고리| 강사이름 | 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg> 5
-                  <br/> <h5>50,000원</h5>
-                  </p>
-        			</div>
-        		</div>
-        	</div>
-        </div>
+        	
+         </div>
     	</div>
-	</section>
+      <div class="col-12 mt-5 paging-area">
+          <div class="block-27 justify-content-center">
+            <ul>
+              <li><a href="#">&lt;</a></li>
+              <li class="active"><span>1</span></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#">&gt;</a></li>
+            </ul>
+          </div>
+        </div>
+    </section>
 	
 	
 	<!--채팅/맨 위로 버튼-->

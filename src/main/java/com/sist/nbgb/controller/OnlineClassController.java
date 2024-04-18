@@ -1,12 +1,15 @@
 package com.sist.nbgb.controller;
 
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.sist.nbgb.dto.OnlineClassList;
 import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.service.OnlineClassService;
@@ -48,6 +51,18 @@ public class OnlineClassController {
 		
 		return "onlineClass/onlineClassView";
 	}
+	
+	//온라인 리스트 조회
+	@GetMapping("/online")
+	public String getAllClasses(Model model){
+		List<OnlineClassList> classes = onlineClassService.findAll()
+				.stream()
+				.map(OnlineClassList::new)
+				.collect(Collectors.toList());
+		model.addAttribute("classes", classes);
+		return "onlineClass/onlineClassList";
+	}
+
 	
 	
 }
