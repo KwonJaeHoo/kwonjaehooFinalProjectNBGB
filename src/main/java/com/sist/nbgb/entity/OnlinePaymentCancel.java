@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,5 +64,5 @@ public class OnlinePaymentCancel
 	
 	@CreatedDate
 	@Comment("취소날짜")
-	private LocalTime canceleddAt;
+	private LocalDateTime canceleddAt;
 }

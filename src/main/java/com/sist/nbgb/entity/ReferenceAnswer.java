@@ -1,7 +1,7 @@
 package com.sist.nbgb.entity;
 
 import java.io.Serializable;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,5 +49,5 @@ public class ReferenceAnswer implements Serializable
 	
 	@CreatedDate
 	@Comment("문의 답변 등록일")
-	private LocalTime refAnswerRegdate;
+	private LocalDateTime refAnswerRegdate;
 }

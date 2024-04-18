@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,5 +55,5 @@ public class Admin
 	
 	@CreatedDate
 	@Comment("관리자 등록일")
-	private LocalDate adminRegdate;
+	private LocalDateTime adminRegdate;
 }

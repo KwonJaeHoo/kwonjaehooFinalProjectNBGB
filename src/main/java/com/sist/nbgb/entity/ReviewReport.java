@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -52,7 +52,7 @@ public class ReviewReport
 	
 	@CreatedDate
 	@Comment("신고 일자")
-	private LocalTime reportDate;
+	private LocalDateTime reportDate;
 	
 	@Column(length = 30)
 	@Comment("신고 사유")

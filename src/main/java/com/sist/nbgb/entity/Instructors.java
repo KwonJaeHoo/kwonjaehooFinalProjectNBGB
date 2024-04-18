@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -75,7 +75,7 @@ public class Instructors
 	
 	@CreatedDate
 	@Comment("강사 가입일")
-	private LocalDate instructorRegdate;
+	private LocalDateTime instructorRegdate;
 	
 	@Column(length = 30)
 	@Comment("강사 주 카테고리")

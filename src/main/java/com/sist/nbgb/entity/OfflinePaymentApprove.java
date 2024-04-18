@@ -1,7 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
-
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -72,6 +71,6 @@ public class OfflinePaymentApprove
 	
 	@CreatedDate
 	@Comment("결제날짜")
-	private LocalTime approvedAt;
+	private LocalDateTime approvedAt;
 	
 }

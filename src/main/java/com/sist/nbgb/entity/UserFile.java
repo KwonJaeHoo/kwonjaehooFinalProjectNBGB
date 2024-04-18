@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -58,6 +58,6 @@ public class UserFile
 	
 	@CreatedDate
 	@Comment("파일 등록일")
-	private LocalTime userFileRegdate;
+	private LocalDateTime userFileRegdate;
 	
 }

@@ -1,11 +1,13 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
+
+import com.sist.nbgb.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,12 +48,13 @@ public class ChatMessage
 	@Comment("메시지 내용")
 	private String messageContent;
 	
-	@Comment("읽음 여부(0,1)")
-	private char messageRead;
+	@Comment("읽음 여부(Y, N)")
+	@Enumerated(EnumType.STRING)
+	private Status messageRead;
 	
 	@CreatedDate
 	@Comment("메시지 보낸 시간")
-	private LocalTime messageRegdate;
+	private LocalDateTime messageRegdate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userId")
