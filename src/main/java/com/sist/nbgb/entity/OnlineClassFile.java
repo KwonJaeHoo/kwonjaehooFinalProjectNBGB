@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -58,7 +58,7 @@ public class OnlineClassFile
 	
 	@CreatedDate
 	@Comment("파일 등록 일자")
-	private LocalTime onlineFileRegdate;
+	private LocalDateTime onlineFileRegdate;
 	
 	@Column(length = 100)
 	@Comment("동영상 설명")

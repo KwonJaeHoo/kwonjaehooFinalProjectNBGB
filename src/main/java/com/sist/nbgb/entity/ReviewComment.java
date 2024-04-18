@@ -4,7 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.sist.nbgb.enums.Status;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -58,7 +58,7 @@ public class ReviewComment
 	
 	@CreatedDate
 	@Comment("후기 댓글 작성일")
-	private LocalTime reviewCommentRegdate;
+	private LocalDateTime reviewCommentRegdate;
 	
 	@Column
 	@Comment("후기 댓글 상태")

@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -80,9 +80,10 @@ public class User
 	
 	@Column
 	@Comment("회원 상태")
+	@Enumerated(EnumType.STRING)
 	private Status userStatus;
 	
 	@CreatedDate
 	@Comment("회원 가입일")
-	private LocalDate userRegdate;
+	private LocalDateTime userRegdate;
 }

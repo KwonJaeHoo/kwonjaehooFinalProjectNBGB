@@ -1,6 +1,6 @@
 package com.sist.nbgb.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class OnlineClass
 	
 	@CreatedDate
 	@Comment("온라인 강의 게시일")
-	private LocalTime onlineClassRegdate;
+	private LocalDateTime onlineClassRegdate;
 	
 	@Comment("온라인 강의 카테고리 번호")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -75,9 +75,13 @@ public class OnlineClass
 	@Enumerated(EnumType.STRING)
 	private Status onlineClassApprove;
 	
-//	@Column
-//	@Comment("반려사유")
-//	private String rejection;
+	@Column
+	@Comment("반려사유")
+	private String rejection;
+	
+	@CreatedDate
+	@Comment("반려날짜")
+	private LocalDateTime rejectionRedgate;
 	
 	@Column
 	@Comment("온라인 강의 조회수")

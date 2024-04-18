@@ -1,6 +1,6 @@
 package com.sist.nbgb.response;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
@@ -17,7 +17,7 @@ public class OfflineResponse
 	
 	private String offlineClassContent;
 	
-	private LocalTime offlineClassRegdate;
+	private LocalDateTime offlineClassRegdate;
 	
 	private String offlineClassPlace;
 	
