@@ -2,10 +2,10 @@ package com.sist.nbgb.service;
 
 import java.time.LocalDateTime;
 
-import javax.validation.Valid;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
@@ -22,9 +22,9 @@ public class UserService
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	
-	public UserDto SignUp(@Valid UserDto userDto)
+	@Transactional
+	public UserDto SignUp(UserDto userDto)
 	{
-	
 		User user = User.builder()
 				.userId(userDto.getUserId())
 				.userPassword(passwordEncoder.encode(userDto.getUserPassword()))
@@ -40,6 +40,7 @@ public class UserService
 				.userStatus(Status.Y)
 				.userRegdate(LocalDateTime.now())
 				.build();
+		
 		return UserDto.from(userRepository.save(user));
 	}
 }
