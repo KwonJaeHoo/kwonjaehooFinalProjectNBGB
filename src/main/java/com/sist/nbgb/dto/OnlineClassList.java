@@ -5,8 +5,12 @@ import java.text.DecimalFormat;
 
 import com.sist.nbgb.entity.OnlineClass;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
+@Builder
+@AllArgsConstructor
 @Getter
 public class OnlineClassList {
 	private final String onlineClassTitle;
@@ -22,4 +26,6 @@ public class OnlineClassList {
 		this.onlineClassPrice = df.format(onlineClass.getOnlineClassPrice());
 		this.category = onlineClass.getOnlineCategoryId().getOnlineCategoryContent();
 	}
+	
+	
 }

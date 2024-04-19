@@ -1,68 +1,70 @@
 package com.sist.nbgb.controller;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sist.nbgb.dto.CategoriesDTO;
 import com.sist.nbgb.dto.OnlineClassList;
-import com.sist.nbgb.dto.OnlineClassView;
-import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.OnlineClassService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class OnlineClassController {
 	private final OnlineClassService onlineClassService;
+	
 
-	//글 하나 조회
-//	@GetMapping("/api/online/{onlineClassId}") //URL 경로에서 값 추출
-//	public ResponseEntity<OnlineClassView> findArticle(@PathVariable long onlineClassId) {
-//		OnlineClass onlineClass = onlineClassService.findById(onlineClassId);
-//		
-//		return ResponseEntity.ok()
-//				.body(new OnlineClassView(onlineClass));
-//	}
-	
-	@GetMapping("/online/{onlineClassId}")
-	public String getArticle(@PathVariable Long onlineClassId, Model model) {
-		OnlineClass onlineClass = onlineClassService.findById(onlineClassId);
-		
-		//좋아요 수
-		long likeCnt = onlineClassService.findLikeCnt(onlineClassId);
-		
-		//결제 시간
-		String str = String.valueOf(onlineClassId);
-		//LocalTime approvedAt = onlineClassService.findByApprovedAt(str, "sist1");
-		//쿠키로 현재 로그인 한 id 가져와야함
-		
-		
-		
-		model.addAttribute("onlineClass", new OnlineClassView(onlineClass));
-		model.addAttribute("likeCnt", likeCnt);
-		
-		return "onlineClass/onlineClassView";
-	}
-	
 	//온라인 리스트 조회
-	@GetMapping("/online")
-	public String getAllClasses(Model model){
-		List<OnlineClassList> classes = onlineClassService.findAll()
+	@GetMapping("/onlineClass")
+	public String getAllClasses(Model model, 
+			@RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+			@RequestParam(value = "category", required = false) Long category,
+			@RequestParam(value = "nowCategory", required = false) Long nowCategory){
+		List<CategoriesDTO> categories = onlineClassService.categoryFind()
 				.stream()
-				.map(OnlineClassList::new)
+				.map(CategoriesDTO::new)
 				.collect(Collectors.toList());
+
+		
+		List<OnlineClassList> classes = null;
+		if(category == null && nowCategory == null) {
+			if(searchKeyword == null) {
+				classes = onlineClassService.findAll(Status.Y)
+						.stream()
+						.map(OnlineClassList::new)
+						.collect(Collectors.toList());
+				
+			}else {
+				classes = onlineClassService.findSearchList(searchKeyword, Status.Y)
+						.stream()
+						.map(OnlineClassList::new)
+						.collect(Collectors.toList());
+			}
+		}else {
+			model.addAttribute("nowCategory", category);
+			if(searchKeyword == null) {
+				classes = onlineClassService.findCategoryList(category, Status.Y)
+						.stream()
+						.map(OnlineClassList::new)
+						.collect(Collectors.toList());
+			}else {
+				classes = onlineClassService.findCategorySearchList(searchKeyword, nowCategory, Status.Y)
+						.stream()
+						.map(OnlineClassList::new)
+						.collect(Collectors.toList());
+			}
+		}
+		
 		model.addAttribute("classes", classes);
+		model.addAttribute("categories", categories);
+		
 		return "onlineClass/onlineClassList";
 	}
-
-	
-	
 }
