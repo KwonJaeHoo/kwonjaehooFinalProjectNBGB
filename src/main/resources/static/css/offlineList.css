@@ -72,3 +72,76 @@ display: block;
 .dropdown-addr:hover .dropdown-content {display: block;}
 
 .dropdown-addr:hover .dropbtn {background-color: #ffffff;}
+
+
+.main_image {
+    position: relative;
+  }
+  .main_image_text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate( -50%, -50% );
+    color: white;
+  }
+  
+.offline_thumnail{
+	height:auto;
+	width:100%;
+}
+
+.btn-off {
+    width: 65px;
+    height: 35px;
+    border-radius: 4px;
+    border: 2px solid #477500;
+    background: white;
+    /* background: url(https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png) calc(100% - 7px) center no-repeat; */
+    background-size: 20px;
+    color: 477500;
+    text-align: center;
+    padding: 1px;
+}
+
+.dropdown-share-content {
+display: none;
+position: absolute;
+background-color: #ffffff;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+.dropdown-share-content a {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+
+.star-ratings {
+  color: #aaa9a9; 
+  position: relative;
+  unicode-bidi: bidi-override;
+  width: max-content;
+  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1.3px;
+  -webkit-text-stroke-color: #2b2a29;
+}
+ 
+.star-ratings-fill {
+  color: #fff58c;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  -webkit-text-fill-color: gold;
+}
+ 
+.star-ratings-base {
+  z-index: 0;
+  padding: 0;
+}

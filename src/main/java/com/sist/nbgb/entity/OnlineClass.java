@@ -85,5 +85,6 @@ public class OnlineClass
 	
 	@Column
 	@Comment("온라인 강의 조회수")
-	private Long onlineClassViews;	
+	private Long onlineClassViews;
+	
 }

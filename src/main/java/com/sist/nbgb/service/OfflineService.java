@@ -26,18 +26,33 @@ public class OfflineService
 		return offlineRepository.findByUpload(approve);
 	}
 	
-	public List<OfflineClass> findByofflineClassCategoryContaining(String search)
+	public List<OfflineClass> findByCategory(String search, Status approve)
 	{
-		return offlineRepository.findByOfflineClassCategoryContaining(search);
+		return offlineRepository.findByCategory(search, approve);
 	}
 	
-	public List<OfflineClass> findByOfflineClassPlaceContaining(String search)
+	public List<OfflineClass> findByPalce(String search, Status approve)
 	{
-		return offlineRepository.findByOfflineClassPlaceContaining(search);
+		return offlineRepository.findByPalce(search, approve);
 	}
 	
-	public List<OfflineClass> findByOfflineClassPlaceOrOfflineClassPlaceContaining(String search1, String search2)
+	public List<OfflineClass> findByTwoPlace(String search1, String search2, Status approve)
 	{
-		return offlineRepository.findByOfflineClassPlaceContainingOrOfflineClassPlaceContaining(search1, search2);
+		return offlineRepository.findByTwoPlace(search1, search2, approve);
+	}
+	
+	public List<OfflineClass> findBySearch(String search, Status offlineClassApprove)
+	{
+		return offlineRepository.findBySearch(search, search, offlineClassApprove);
+	}
+	
+	public OfflineClass findByView(Long offlineClassId)
+	{
+		return offlineRepository.findByView(offlineClassId);
+	}
+	
+	public int updateViews(Long offlineClassId)
+	{
+		return offlineRepository.updateViews(offlineClassId);
 	}
 }
