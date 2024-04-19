@@ -25,7 +25,7 @@ public class OnlineCategory
 	@Id
 	@Column(columnDefinition = "NUMBER(2)")
 	@Comment("온라인 강의 카테고리 번호")
-	private Long onlineCategotyId;
+	private Long onlineCategoryId;
 	
 	@Column(length = 30)
 	@Comment("온라인 강의 카테고리 내용")
