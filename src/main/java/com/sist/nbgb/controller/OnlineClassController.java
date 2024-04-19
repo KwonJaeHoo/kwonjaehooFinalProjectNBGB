@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,20 +26,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class OnlineClassController {
+	private static final Logger logger = LoggerFactory.getLogger(OnlineClassController.class);
+	
 	private final OnlineClassService onlineClassService;
 	
-
 	//온라인 리스트 조회
 	@GetMapping("/onlineClass")
 	public String getAllClasses(Model model, 
 			@RequestParam(value = "searchKeyword", required = false) String searchKeyword,
 			@RequestParam(value = "category", required = false) Long category,
 			@RequestParam(value = "nowCategory", required = false) Long nowCategory){
+		
 		List<CategoriesDTO> categories = onlineClassService.categoryFind()
 				.stream()
 				.map(CategoriesDTO::new)
-				.collect(Collectors.toList());
-
+				.collect(Collectors.toList()); 
 		
 		List<OnlineClassList> classes = null;
 		if(category == null && nowCategory == null) {
@@ -70,7 +73,9 @@ public class OnlineClassController {
 		
 		model.addAttribute("classes", classes);
 		model.addAttribute("categories", categories);
-		
+	
+		logger.info("searchKeyword : " + searchKeyword + ", category : " + category + ", nowCategory : " + nowCategory);
+		logger.info("classes" + classes);
 		return "onlineClass/onlineClassList";
 	}
 	

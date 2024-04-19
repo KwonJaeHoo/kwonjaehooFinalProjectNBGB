@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 import com.sist.nbgb.entity.OnlineCategory;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
-import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.repository.ClassLikeRepository;
 import com.sist.nbgb.repository.OnlineCategoryRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
-import com.sist.nbgb.repository.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +26,7 @@ public class OnlineClassService {
 	private final OnlineCategoryRepository onlineCategoryRepository;
 	private final ClassLikeRepository classLikeRepository;
 	private final OnlinePaymentApproveRepository onlinePaymentApproveRepository;
-	private final ReviewRepository reviewRepository;
+
 
 	public List<OnlineCategory> categoryFind() {	//카테고리명 조회
 		return onlineCategoryRepository.findAll();
@@ -78,11 +76,7 @@ public class OnlineClassService {
 	public LocalDateTime findApproveAt(String itemCode, String partnerUserId) {
 		return onlinePaymentApproveRepository.findApproveAt(itemCode, partnerUserId);
 	}
-	
-	//후기 목록 조회
-	public List<Review> findAll() {
-		return reviewRepository.findAll();
-	}
+
 
 }
 	

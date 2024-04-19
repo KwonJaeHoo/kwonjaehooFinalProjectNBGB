@@ -14,7 +14,7 @@
     color: black;
   }
   .submenu > li {
-    line-height: 50px;
+    line-height: 40px;
     list-style-type: none;
     margin:0;
     padding:0;
@@ -28,7 +28,7 @@
     transition-duration: 0.5s;
   }
   .menu > li:hover .submenu {
-    height: 250px; /*서브메뉴 li한개의 높이 50*5*/
+    height: 300px; /*서브메뉴 li한개의 높이 50*5*/
     transition-duration: 1s;
   }
 

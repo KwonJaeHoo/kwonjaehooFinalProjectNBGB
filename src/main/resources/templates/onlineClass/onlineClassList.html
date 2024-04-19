@@ -33,55 +33,60 @@
 	      th:onclick="|location.href='@{/onlineClass(category=${category.onlineCategoryId})}'|"
 	      		th:text="${category.onlineCategoryContent}"></button>
 	    </div>
-    
-    <div class="selector-search-section">
-	    <div class="selectBox2 ftco-animate selector-area">
-		    <button class="label pb-1">최신순</button>
-		    <ul class="optionList">
-		      <li class="optionItem">최신순</li>
-		      <li class="optionItem">인기강의순</li>
-		      <li class="optionItem">별점높은순</li>
-		      <li class="optionItem">가격낮은순</li>
-		      <li class="optionItem">가격높은순</li>
-		    </ul>
-		</div>
-	    <div class="search-area">
-		    <div id="search-btn" style="display: block;">
-		      <a onclick="btnClick()"><span class="icon-search" style="font-size:20px;"></span></a>
-		    </div>
-		    <form th:action="@{/onlineClass}" method="get">
-			    <div id="search-offline" class="pt-1" style="display: none;">
-			        <div class="d-flex">
-				          &nbsp;&nbsp;
-				        <input type="hidden" name="nowCategory" th:value="${param.category}">
-				        <input type="text" name="searchKeyword" class="search-online p-1" placeholder="공방을 검색해보세요.">&nbsp;
-				        <button class="btn btn-primary p-2" style="height: 34px; display: flex; align-items:center;">검색</button>
-			        </div>
+    <div class="container mt-3">
+        <div class="row d-flex justify-content-between selector-search-section">
+		    <div class="selectBox2 ftco-animate selector-area">
+			    <button class="label pb-1">최신순</button>
+			    <ul class="optionList">
+			      <li class="optionItem">최신순</li>
+			      <li class="optionItem">인기강의순</li>
+			      <li class="optionItem">별점높은순</li>
+			      <li class="optionItem">가격낮은순</li>
+			      <li class="optionItem">가격높은순</li>
+			    </ul>
+			</div>
+		    <div class="search-area ftco-animate">
+			    <div id="search-btn" style="display: block;">
+			      <a onclick="btnClick()"><span class="icon-search" style="font-size:20px;"></span></a>
 			    </div>
-		    </form>
-	    </div>
+			    <form th:action="@{/onlineClass}" method="get">
+				    <div id="search-offline" class="pt-1" style="display: none;">
+				        <div class="d-flex">
+					          &nbsp;&nbsp;
+					        <input type="hidden" name="nowCategory" th:value="${param.category}">
+					        <input type="text" name="searchKeyword" class="search-online p-1" placeholder="공방을 검색해보세요.">&nbsp;
+					        <button class="btn btn-primary p-2" style="height: 34px; display: flex; align-items:center;">검색</button>
+				        </div>
+				    </div>
+			    </form>
+		    </div>
+		</div>
 	</div>
-
     <section class="online-section">
     	<div class="container mb-5">
          <div class="row">
-        	<div class="col-md-4" th:each="class : ${classes}">
+        	<div th:if="${classes} != null" class="col-md-4" th:each="class : ${classes}">
         		<div class="classes w-100 ftco-animate" >
         			<a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;"></a>
-              <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:50px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-              </svg></a>
-              <div class="text w-100 text-center">
-				<h4><a href="#" th:text="${class.onlineClassTitle}"></a></h4>
-				<p th:text="${class.category} + ' | ' + ${class.instructorNickname}">
-				<p class="star-report">
-	    			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-					  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-					</svg>KKKK
-				</p>
-                <h5 th:text="${class.onlineClassPrice}"></h5>
-                </p>
-			  </div>
+             		<a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:50px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+               		<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+              		</svg></a>
+            	<div class="text w-100 text-center">
+					<h4><a href="#" th:text="${class.onlineClassTitle}" th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}"></a></h4>
+					<p th:text="${class.category} + ' | ' + ${class.instructorNickname}">
+					<p class="star-report">
+		    			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+						  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+						</svg>KKKK
+					</p>
+	                <h5 th:text="${class.onlineClassPrice}"></h5>
+	                </p>
+			  	</div>
+			</div>
+			<div th:if="${classes} == null" class="col-md-4">
+				ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+				<p>게시물을 조회할 수 없습니다.</p>
+				<p>검색조건을 다시 설정해주세요.</p>
 			</div>
 	     </div>
         	
