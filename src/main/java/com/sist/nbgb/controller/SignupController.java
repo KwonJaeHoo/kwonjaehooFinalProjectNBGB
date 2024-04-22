@@ -87,6 +87,6 @@ public class SignupController
 	public ResponseEntity<InstructorsDto> instructorSignupProcess(@RequestBody @Valid InstructorsDto instructorsDto)
 	{
 		
-		return ResponseEntity.ok(instructorsService.signup(instructorsDto));	
+		return ResponseEntity.ok(instructorsService.instructorSignup(instructorsDto));	
 	}
 }

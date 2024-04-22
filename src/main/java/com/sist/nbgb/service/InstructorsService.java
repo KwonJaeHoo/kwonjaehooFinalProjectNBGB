@@ -29,8 +29,13 @@ public class InstructorsService
 	}
 	
 	@Transactional
-	public InstructorsDto signup(InstructorsDto instructorsDto)
+	public InstructorsDto instructorSignup(InstructorsDto instructorsDto)
 	{
+        if(instructorsRepository.findById(instructorsDto.getInstructorId()).orElse(null) != null) 
+        {
+            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+        }
+		
 		Instructors instructors = Instructors.builder()
 				.instructorId(instructorsDto.getInstructorId())
 				.instructorPassword(passwordEncoder.encode(instructorsDto.getInstructorPassword()))
