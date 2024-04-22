@@ -26,18 +26,51 @@ public class OfflineService
 		return offlineRepository.findByUpload(approve);
 	}
 	
-	public List<OfflineClass> findByofflineClassCategoryContaining(String search)
+	public List<OfflineClass> findByCategory(String search, Status approve)
 	{
-		return offlineRepository.findByOfflineClassCategoryContaining(search);
+		return offlineRepository.findByCategory(search, approve);
 	}
 	
-	public List<OfflineClass> findByOfflineClassPlaceContaining(String search)
+	public List<OfflineClass> findByPalce(String search, Status approve)
 	{
-		return offlineRepository.findByOfflineClassPlaceContaining(search);
+		return offlineRepository.findByPalce(search, approve);
 	}
 	
-	public List<OfflineClass> findByOfflineClassPlaceOrOfflineClassPlaceContaining(String search1, String search2)
+	public List<OfflineClass> findByTwoPlace(String search1, String search2, Status approve)
 	{
-		return offlineRepository.findByOfflineClassPlaceContainingOrOfflineClassPlaceContaining(search1, search2);
+		return offlineRepository.findByTwoPlace(search1, search2, approve);
+	}
+	
+	public List<OfflineClass> findBySearch(String search, Status offlineClassApprove)
+	{
+		return offlineRepository.findBySearch(search, offlineClassApprove);
+	}
+	
+	//중복검색
+	public List<OfflineClass> findCateKeyword(String search1, String search2, Status offlineClassApprove)
+	{
+		return offlineRepository.findCateKeyword(search1, search2, offlineClassApprove);
+	}
+	
+	public List<OfflineClass> findPlaceKeyword(String search1, String search2, Status offlineClassApprove)
+	{
+		return offlineRepository.findPlaceKeyword(search1, search2, offlineClassApprove);
+	}
+	
+	public List<OfflineClass> findTwoPlaceKeyword(String search1, String search2, String search3, Status offlineClassApprove)
+	{
+		return offlineRepository.findTwoPlaceKeyword(search1, search2, search3, offlineClassApprove);
+	}
+	
+	
+	//뷰 페이지
+	public OfflineClass findByView(Long offlineClassId)
+	{
+		return offlineRepository.findByView(offlineClassId);
+	}
+	
+	public int updateViews(Long offlineClassId)
+	{
+		return offlineRepository.updateViews(offlineClassId);
 	}
 }

@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sist.nbgb.entity.Instructors;
 
-@Repository
 public interface InstructorsRepository extends JpaRepository<Instructors, String>
 {
-	
+	Boolean existsByInstructorId(String instructorId);
 }

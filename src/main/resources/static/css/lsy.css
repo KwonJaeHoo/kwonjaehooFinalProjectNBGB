@@ -1,0 +1,76 @@
+/*온라인 클래스 리스트 페이지*/
+.online-section {
+    padding: 2em 0;
+    position: relative; }
+    @media (max-width: 767.98px) {
+      .online-section {
+        padding: 6em 0; } }
+
+
+.sub-title{
+margin-top:20px;
+color:#89dd18;
+text-shadow: 5px 5px gba(232, 232, 232, 0.429);
+}
+
+.categories-area{
+display: flex;
+justify-content: center;
+margin: 50px auto 30px auto;
+}
+.category-btn{
+    margin:0 7px;
+    padding:4px 8px;
+    background-color: white;
+    color:rgb(50, 50, 50);
+    border:#89dd18 solid 3px;
+    border-radius: 1ch;
+}
+.categories-area button:hover,
+.categories-area button:active
+{
+    background-color: #89dd18;
+    color:white;
+    border:#89dd18 solid 3px;
+}
+.categories-area button:focus-visible,
+.categories-area button:focus{
+    background-color: white;
+    color:rgb(50, 50, 50);
+    outline:white solid 1px;
+}
+.category-active{
+    margin:0 7px;
+    padding:4px 8px;
+    background-color: #89dd18;
+    color:white;
+    border:#89dd18 solid 3px;
+}
+
+.selector-search-section{
+    display:flex;
+    width:80%;
+    margin: 50px auto 30px auto;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    justify-content:space-between;
+}
+.search-area{
+	display:flex;
+    justify-content: right;
+}
+.selector-area{
+    display:float;
+    padding-bottom:1px;
+    justify-content: right;
+}
+
+.paging-area{
+    display: flex;
+    justify-content: center;
+    margin:1rem auto 3rem auto;
+}
+
+.star-report{
+	margin-bottom:16px !important ;
+}

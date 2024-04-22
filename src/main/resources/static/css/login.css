@@ -21,7 +21,6 @@
 body {
   align-items: center;
   background-color: #FFFFFF;
-
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -42,6 +41,13 @@ body {
   font-size: 0.9rem;
   margin: 0.5rem 0;
   text-decoration: none;
+}
+
+.containerLogo
+{
+  position: fixed;
+  width: 300px;
+  height: 875px;
 }
 
 .container {
@@ -103,7 +109,7 @@ body {
 
 .overlay {
   background-color: var(--lightblue);
-  background: url("https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg");
+  background: var(--lightblue);  
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;

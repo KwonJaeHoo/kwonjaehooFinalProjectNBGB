@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <div th:replace="import/cssImport.html :: css-import"></div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="/css/kih.css">
+   <script>
+   $(document).ready(function(){
+	   $("#star").css("width", "[[${avgRating}]]%"); 
+   });
+   </script>
+  </head>
+  <body>
+	<!--사용자 네비게이션-->
+		<!--메뉴 네비게이션-->
+	<div th:insert="import/topImport.html :: top-import"></div>
+    	<!--메뉴 네비게이션-->
+    <!--사용자 네비게이션-->
+
+    <section class="ftco-section pt-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 w-100 ftco-animate">
+          
+            
+	          <!-- 메인 이미지 -->
+	            <img th:src="@{'/images/offlineThumbnail/' + ${offlineClassId} + '.jpg'}" alt="" class="offline_thumnail">
+	            
+	          <div style="height: auto;">
+	          	<h1 style="color:#477500; margin-bottom: 0px;" th:text="${offlineClass.offlineClassTitle}"></h1>
+	          </div>
+	          <div class="d-flex justify-content-between ">
+	          	  <div class="mb-3 d-flex justify-content-start align-items-center" >
+	          	    <span style="width:16; height:16; color:black;">[[${offlineClass.offlineClassPlace}]]</span>
+		          </div>
+		          <div class="d-flex justify-content-end">
+		            <span style="width:16; height:16; color:red;" class="icon-favorite"></span>100 &nbsp;
+		            <span style="width:16; height:16; color:gold;" class="icon-star"></span>[[${rating}]]([[${count}]]) &nbsp;
+		            <span style="width:16; height:16; color:black"  class="icon-eye"></span> &nbsp; [[${#numbers.formatInteger(offlineClass.offlineClassViews, 1, 'COMMA')}]]
+		          </div>
+	          </div>
+	          
+	        <div>
+	        <div class="d-flex justify-content-between" style="margin-bottom: 8px;">
+	            <div class="d-flex justify-content-start">
+	              <img src="/images/person_1.jpg" class="mr-2" style="border-radius: 50% !important;width: 30px;height: 30px;float:left;">
+		          <h6 style="padding-top: 5px;" th:text="${offlineClass.instructorNickname}"></h6>
+	            </div>
+	            <div class="d-flex justify-content-end">
+		           <h6 style="padding-top: 5px;">[[${#numbers.formatInteger(offlineClass.offlineClassPrice, 1, 'COMMA')}]]원</h6>
+	            </div>
+            </div>
+            
+	        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 8px;">
+              <div class="d-flex justify-content-start">
+              	<button id="btnLike" class="btn-off"><span style="width:16; height:16; color:red;" class="icon-favorite"></span> 찜</button>&nbsp; &nbsp;
+              	<div class="dropdown-share">
+              	  <button onclick="btnClick()" id="btnLike" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
+              	  <div id="dropdown-share-content" class="dropdown-share-content align-items-center">
+                	<ul class="ftco-footer-social mt-1" style="padding-left: 0px; margin-bottom: 0px;">
+		            	<li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-link2"></span></a></li>
+		           		<li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-comment"></span></a></li>
+		                <li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-twitter"></span></a></li>
+		                <li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-facebook"></span></a></li>
+		              </ul>
+                 </div>
+            </div>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button class="box">예약하기</button>
+		      </div>
+            </div>
+            </div>
+            <script>
+            function btnClick() {
+                const mydiv = document.getElementById('dropdown-share-content');
+
+                if(mydiv.style.display === 'none') 
+                {
+                  mydiv.style.display = 'block';
+                }else
+                {
+                  mydiv.style.display = 'none';
+                }
+            }
+            </script>
+            
+            <div class="border-top">
+              <div style="color:black;">
+               <p th:utext="${offlineClass.offlineClassContent}"></p>
+              </div>
+	              <div class="tag-widget post-tag-container mb-5 mt-5">
+	              <div class="tagcloud">
+	                <a href="#" class="tag-cloud-link">오프라인</a>
+	                <a href="#" class="tag-cloud-link">공방</a>
+	                <a href="#" class="tag-cloud-link">[[${offlineClass.offlineClassCategory}]]</a>
+	              </div>
+	            </div>
+            </div>
+            
+            
+            <!--후기-->
+            <div class="pt-3 pl-3 pr-3 mt-5 commentbox">
+            <div style="display:inline-block;">
+              <div class="star-ratings" style="display:inline-block;">
+					<div class="star-ratings-fill space-x-2 text-lg" id="star" style="width: 0%">
+						<span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span>
+					</div>
+					<div class="star-ratings-base space-x-2 text-lg">
+						<span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span>
+					</div>
+				</div>
+				<div style="display:inline-block;">
+				 [[${rating}]]
+				 </div>
+			</div>
+              <div class="d-flex justify-content-start">
+              <h3 class="mb-4">[[${count}]]개의 후기가 있어요</h3>
+              <a href="#"><h6 class="d-flex align-items-center ml-3 mt-3 border-bottom" style="color: #676c7e;">더보기</h6></a>
+              </div>
+              
+              <ul class="comment-list">
+               <div th:each="review : ${review}">
+               
+                <li class="comment">
+                
+                  <div class="vcard bio">
+                    <img src="/images/person_2.jpg" alt="/image placeholder">
+                  </div>
+                  [[${review.userId.userNickname}]]
+                  <div class="comment-body">
+                    <div class="d-flex justify-content-start">
+                    <h3></h3>
+                      <span style="width:16; height:16; color:gold;" class="icon-star"></span> [[${review.reviewRating}]]
+                    <div class="meta ml-2">[[${review.reviewRegdate}]]</div>
+                    </div>
+                    <p>[[${review.reviewContent}]]</p>
+                    <div class="carousel_main">
+                      <div class="carousel_wrapper">
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/static/img/doyeon0430_logo.jpg" alt="doyeon0430 이미지" />
+                          </div>
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/media/physics/Physics_AGgemm2.webp" alt="doyeon0430 이미지" />
+                          </div>
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/static/img/doyeon0430_logo.jpg" alt="doyeon0430 이미지" />
+                          </div>
+                          <div class="carousel_slide">
+                              <img src="https://www.doyeon0430.com/media/physics/Physics_AGgemm2.webp" alt="doyeon0430 이미지" />
+                          </div>
+                      </div>
+                      <div class="carousel_button_container">
+                          <button type="button" class="carousel_prev">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                              </svg>
+                          </button>
+                          <button type="button" class="carousel_next">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                          </button>
+                      </div>
+                      <div class="carousel_pagination">
+                          <div class="carousel_circle"></div>
+                          <div class="carousel_circle"></div>
+                          <div class="carousel_circle"></div>
+                          <div class="carousel_circle"></div>
+                      </div>
+                  </div>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+                </li>
+                </div>
+                
+               <div  th:each="comment : ${commentlist}">
+            		<ul class="children2">
+                    <li class="comment commentbox_inst" >
+                      <div class="vcard bio pl-2 pt-2">
+                        <img src="/images/person_1.jpg" alt="/image placeholder">
+                      </div>
+                      <div class="comment-body">
+                        <div class="d-flex justify-content-start">
+                          <h3>강사</h3>
+                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                          </div>
+                        <p th:text="${comment.reviewCommentContent}"></p>
+                      </div>
+                    </li>
+                  </ul>
+                  </div>
+                
+                <!-- <li class="comment">
+                  <div class="vcard bio">
+                    <img src="/images/person_1.jpg" alt="/image placeholder">
+                  </div>
+                  <div class="comment-body">
+                    <div class="d-flex justify-content-start">
+                      <h3>회원2</h3>
+                      <div>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
+                        <span style="width:16; height:16; color:gold;" class="icon-star"></span> 1</div>
+                      <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                      </div>
+                    <p>재미없음 ㅠ</p>
+                    <p><a href="#" class="reply">Reply</a></p>
+                  </div>
+
+                  <ul class="children2">
+                    <li class="comment commentbox_inst" >
+                      <div class="vcard bio pl-2 pt-2">
+                        <img src="/images/person_1.jpg" alt="/image placeholder">
+                      </div>
+                      <div class="comment-body">
+                        <div class="d-flex justify-content-start">
+                          <h3>강사</h3>
+                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                          </div>
+                        <p>ㅠㅠ왜 재미가 없을까</p>
+                      </div>
+                    </li>
+                  </ul>
+                </li> -->
+                
+              </ul>
+              <!-- END comment-list -->
+              
+              
+              <!--페이징-->
+              <div>
+              <div class="row mt-5">
+                <div class="col">
+                  <div class="block-27 smallpage" style="display:inline; text-align: center;">
+                    <ul class="mb-2">
+                      <li><a href="#" class="smallpage">&lt;</a></li>
+                      <li class="active"><span class="smallpage">1</span></li>
+                      <li><a href="#" class="smallpage">2</a></li>
+                      <li><a href="#" class="smallpage">3</a></li>
+                      <li><a href="#" class="smallpage">4</a></li>
+                      <li><a href="#" class="smallpage">5</a></li>
+                      <li><a href="#" class="smallpage">&gt;</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="comment-form-wrap">                
+              </div>
+            </div>
+            <h3 class="mt-5">이런 강의는 어때요?</h3><br/>
+            <div class="row">
+              
+                <div class="col-md-4">
+                  <div class="classes w-100 ftco-animate" >
+                    <a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;height: 200px;"></a>
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:30px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                    </svg></a>
+                    <div class="text w-100 text-center">
+                      <h3><a href="#" style="color: #477500;">강의제목</a></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="classes w-100 ftco-animate" >
+                    <a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;height: 200px;"></a>
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:30px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                    </svg></a>
+                    <div class="text w-100 text-center">
+                      <h3><a href="#" style="color: #477500;">강의제목</a></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="classes w-100 ftco-animate" >
+                    <a href="onlineClassView.html" class="img w-100 mb-3" style="background-image: url(/images/classes-1.jpg);border-radius: 20%;height: 200px;"></a>
+                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 1; top:25px;right:30px" width="25" height="25" fill="white" class="bi bi-heart" viewBox="0 0 16 16">
+                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                    </svg></a>
+                    <div class="text w-100 text-center">
+                      <h3><a href="#" style="color: #477500;">강의제목</a></h3>
+                    </div>
+                  </div>
+                </div>
+                
+
+            </div>
+            
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </section> <!-- .section -->
+	<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+  <script src="/js/carousel.js"></script>
+  
+  <div th:replace="import/jsImport.html :: js-import"></div>
+  </body>
+</html>
