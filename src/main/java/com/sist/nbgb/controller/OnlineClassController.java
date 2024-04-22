@@ -98,6 +98,7 @@ public class OnlineClassController {
 		model.addAttribute("classes", classes);
 		model.addAttribute("categories", categories);
 		model.addAttribute("orderByContent", orderByContent);
+		model.addAttribute("classesSize", classes.size());
 	
 		logger.info("category : " + category + ", nowCategory : " + nowCategory);
 		logger.info("orderBy : " + orderBy + ", searchKeyword : " + searchKeyword);
