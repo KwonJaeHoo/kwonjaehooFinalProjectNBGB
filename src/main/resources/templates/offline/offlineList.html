@@ -18,6 +18,11 @@
 	<div th:insert="import/topImport.html :: top-import"></div>
     	<!--메뉴 네비게이션-->
     <!--사용자 네비게이션-->
+    
+    <div class="col-md-12 ftco-animate text-center">
+      <h1 class="mb-3 sub-title">공방 클래스</h1>
+      <p class="sub-title"></p>
+    </div>
 
 
 <section class="ftco-section" style="padding: 1em 0;">
@@ -58,6 +63,8 @@
 	                <div class="d-flex">
 		                &nbsp;&nbsp;
 	                	<input type="hidden" name="searchType" value="3" />
+	                	<input type="hidden" name="searchPlus" th:value="${searchValue}" />
+	                	<input type="hidden" name="PlusType" th:value="${searchType}"/>
 		                <input type="text" name="searchValue" class="search-online p-1" placeholder="공방을 검색해보세요.">&nbsp;
 		                <button type="submit" class="btn btn-primary p-2" style="height: 34px; display: flex; align-items:center;" >검색</button>
 	                </div>
@@ -80,8 +87,24 @@
         }
       </script>
       
-      <div class="container" th:if="${searchValue != null}">
-        	<h4 style="display:inline; color:black">검색결과 > </h4><h4 style="display:inline; color:black" th:text="${searchValue}"></h4><br /><br />
+        <div class="container" th:if="${searchValue != null and rename == ''}">
+        	<div th:if="${keyword == ''}">
+        	  <h4 style="display:inline; color:black">검색결과 > </h4><h4 style="display:inline; color:black" th:text="${searchValue}"></h4><br /><br />
+        	</div>
+        	<div th:if="${keyword != ''}">
+        	  <h4 style="display:inline; color:black">검색결과 > </h4><h4 style="display:inline; color:black" th:text="${searchValue}"></h4>
+        	  <h4 style="display:inline; color:black">> </h4><h4 style="display:inline; color:black" th:text="${keyword}"><br /><br />
+        	</div>
+        </div>
+        
+        <div class="container" th:if="${searchValue != null and rename != ''}">
+        	<div th:if="${keyword == ''}">
+        	  <h4 style="display:inline; color:black">검색결과 > </h4><h4 style="display:inline; color:black" th:text="${rename}"></h4><br /><br />
+        	</div>
+        	<div th:if="${keyword != ''}">
+        	  <h4 style="display:inline; color:black">검색결과 > </h4><h4 style="display:inline; color:black" th:text="${rename}"></h4>
+        	  <h4 style="display:inline; color:black">> </h4><h4 style="display:inline; color:black" th:text="${keyword}"><br /><br />
+        	</div>
         </div>
       
     	<div class="container">

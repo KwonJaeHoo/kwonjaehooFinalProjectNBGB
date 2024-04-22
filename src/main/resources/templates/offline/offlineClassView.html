@@ -26,8 +26,8 @@
 	          <!-- 메인 이미지 -->
 	            <img th:src="@{'/images/offlineThumbnail/' + ${offlineClassId} + '.jpg'}" alt="" class="offline_thumnail">
 	            
-	          <div style="height: 50px;">
-	          	<h1 class="mb-3" style="color:#477500;" th:text="${offlineClass.offlineClassTitle}"></h1>
+	          <div style="height: auto;">
+	          	<h1 style="color:#477500; margin-bottom: 0px;" th:text="${offlineClass.offlineClassTitle}"></h1>
 	          </div>
 	          <div class="d-flex justify-content-between ">
 	          	  <div class="mb-3 d-flex justify-content-start align-items-center" >
@@ -86,7 +86,7 @@
             </script>
             
             <div class="border-top">
-              <div>
+              <div style="color:black;">
                <p th:utext="${offlineClass.offlineClassContent}"></p>
               </div>
 	              <div class="tag-widget post-tag-container mb-5 mt-5">
@@ -173,9 +173,25 @@
                   </div>
                     <p><a href="#" class="reply">Reply</a></p>
                   </div>
-            
                 </li>
                 </div>
+                
+               <div  th:each="comment : ${commentlist}">
+            		<ul class="children2">
+                    <li class="comment commentbox_inst" >
+                      <div class="vcard bio pl-2 pt-2">
+                        <img src="/images/person_1.jpg" alt="/image placeholder">
+                      </div>
+                      <div class="comment-body">
+                        <div class="d-flex justify-content-start">
+                          <h3>강사</h3>
+                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                          </div>
+                        <p th:text="${comment.reviewCommentContent}"></p>
+                      </div>
+                    </li>
+                  </ul>
+                  </div>
                 
                 <!-- <li class="comment">
                   <div class="vcard bio">

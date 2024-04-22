@@ -43,9 +43,27 @@ public class OfflineService
 	
 	public List<OfflineClass> findBySearch(String search, Status offlineClassApprove)
 	{
-		return offlineRepository.findBySearch(search, search, offlineClassApprove);
+		return offlineRepository.findBySearch(search, offlineClassApprove);
 	}
 	
+	//중복검색
+	public List<OfflineClass> findCateKeyword(String search1, String search2, Status offlineClassApprove)
+	{
+		return offlineRepository.findCateKeyword(search1, search2, offlineClassApprove);
+	}
+	
+	public List<OfflineClass> findPlaceKeyword(String search1, String search2, Status offlineClassApprove)
+	{
+		return offlineRepository.findPlaceKeyword(search1, search2, offlineClassApprove);
+	}
+	
+	public List<OfflineClass> findTwoPlaceKeyword(String search1, String search2, String search3, Status offlineClassApprove)
+	{
+		return offlineRepository.findTwoPlaceKeyword(search1, search2, search3, offlineClassApprove);
+	}
+	
+	
+	//뷰 페이지
 	public OfflineClass findByView(Long offlineClassId)
 	{
 		return offlineRepository.findByView(offlineClassId);
