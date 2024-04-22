@@ -7,11 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
 
 
-public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long> {
+public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
+	
 	//전체 리스트 조회(최신순)
 	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassIdDesc(Status onlineClassApprove);
 	
@@ -24,8 +26,18 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long> 
 	//카테고리 내 검색
 	List<OnlineClass> findByOnlineClassTitleContainingAndOnlineCategoryId_onlineCategoryIdAndOnlineClassApprove(String searchKeyword, long onlineCategoryId, Status onlineClassApprove);
 
+	//정렬기준 - 조회 순
+ 	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassViews(Status onlineClassApprove);
+	
+	//정렬기준 - 가격 낮은 순
+	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassPriceAsc(Status onlineClassApprove);
+	
+	//정렬기준 - 가격 높은 순
+	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassPriceDesc(Status onlineClassApprove);
+	
 	//조회수 증가
 	@Modifying
 	@Query("update OnlineClass o set o.onlineClassViews = o.onlineClassViews + 1 where o.onlineClassId = :onlineClassId")
 	int updateViews(@Param("onlineClassId") Long onlineClassId);
+	
 }

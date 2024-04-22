@@ -26,29 +26,54 @@ public class OnlineClassService {
 	private final OnlineCategoryRepository onlineCategoryRepository;
 	private final ClassLikeRepository classLikeRepository;
 	private final OnlinePaymentApproveRepository onlinePaymentApproveRepository;
-
-
-	public List<OnlineCategory> categoryFind() {	//카테고리명 조회
+	
+	/*온라인클래스 리스트*/
+	//카테고리명 조회
+	public List<OnlineCategory> categoryFind() {	
 		return onlineCategoryRepository.findAll();
 	}
-
-	public List<OnlineClass> findAll(Status onlineClassApprove){		//온라인 클래스 리스트
+	
+	//온라인 클래스 리스트
+	public List<OnlineClass> findAll(Status onlineClassApprove){		
 		return onlineClassRepository.findByOnlineClassApproveOrderByOnlineClassIdDesc(onlineClassApprove);
 	}
 	
-	public List<OnlineClass> findCategoryList(long onlineCategoryId, Status onlineClassApprove){		//카테고리별 조회
+	//카테고리별 조회
+	public List<OnlineClass> findCategoryList(long onlineCategoryId, Status onlineClassApprove){		
 		return onlineClassRepository.findByOnlineCategoryId_onlineCategoryIdAndOnlineClassApprove(onlineCategoryId, onlineClassApprove);
 	}
 	
-	public List<OnlineClass> findSearchList(String searchKeyword, Status onlineClassApprove){	//검색기능
+	//검색기능
+	public List<OnlineClass> findSearchList(String searchKeyword, Status onlineClassApprove){	
 		return onlineClassRepository.findByOnlineClassTitleContainingAndOnlineClassApprove(searchKeyword, onlineClassApprove);
 	}
 	
-	public List<OnlineClass> findCategorySearchList( String searchKeyword, long onlineCategoryId, Status onlineClassApprove){	//카테고리 내 검색 
+	//카테고리 내 검색 
+	public List<OnlineClass> findCategorySearchList( String searchKeyword, long onlineCategoryId, Status onlineClassApprove){	
 		return onlineClassRepository
 				.findByOnlineClassTitleContainingAndOnlineCategoryId_onlineCategoryIdAndOnlineClassApprove(searchKeyword, onlineCategoryId, onlineClassApprove);
 	}
 	
+	//정렬기준 - 인기순(조회순)
+	public List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassViews(Status onlineClassApprove){
+		return onlineClassRepository.findByOnlineClassApproveOrderByOnlineClassViews(onlineClassApprove);
+	}
+
+	//정렬기준 - 가격 낮은 순
+	public List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassPriceAsc(Status onlineClassApprove){
+		return onlineClassRepository.findByOnlineClassApproveOrderByOnlineClassPriceAsc(onlineClassApprove);
+	}
+	
+	//정렬기준 - 가격 높은 순
+	public List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassPriceDesc(Status onlineClassApprove){
+		return onlineClassRepository
+				.findByOnlineClassApproveOrderByOnlineClassPriceDesc(onlineClassApprove);
+	}
+	
+	//찜한 클래스 표시
+	
+	
+	/*온라인클래스 상세페이지*/
 	//view
 	public OnlineClass findById(long onlineClassId) {
 		return onlineClassRepository.findById(onlineClassId)
@@ -59,7 +84,6 @@ public class OnlineClassService {
 	@Transactional
 	public int updateViews(long onlineClassId) {
 		return onlineClassRepository.updateViews(onlineClassId);
-		
 	}
 		
 	//좋아요 수 조회

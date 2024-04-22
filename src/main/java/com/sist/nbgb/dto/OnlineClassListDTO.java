@@ -12,7 +12,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 @Getter
-public class OnlineClassList {
+public class OnlineClassListDTO {
 	private final Long onlineClassId;
 	private final String onlineClassTitle;
 	private final String instructorNickname;
@@ -21,13 +21,12 @@ public class OnlineClassList {
 	
 	DecimalFormat df = new DecimalFormat("###,###");
 	
-	public OnlineClassList(OnlineClass onlineClass) {
+	public OnlineClassListDTO(OnlineClass onlineClass) {
 		this.onlineClassId = onlineClass.getOnlineClassId();
 		this.onlineClassTitle = onlineClass.getOnlineClassTitle();
 		this.instructorNickname = onlineClass.getInstructorId().getInstructorNickname();
 		this.onlineClassPrice = df.format(onlineClass.getOnlineClassPrice());
 		this.category = onlineClass.getOnlineCategoryId().getOnlineCategoryContent();
 	}
-	
 	
 }

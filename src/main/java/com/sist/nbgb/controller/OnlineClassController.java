@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sist.nbgb.dto.CategoriesDTO;
-import com.sist.nbgb.dto.OnlineClassList;
+import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.OnlineClassService;
+import com.sist.nbgb.service.OnlineReviewService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,47 +37,72 @@ public class OnlineClassController {
 	public String getAllClasses(Model model, 
 			@RequestParam(value = "searchKeyword", required = false) String searchKeyword,
 			@RequestParam(value = "category", required = false) Long category,
-			@RequestParam(value = "nowCategory", required = false) Long nowCategory){
+			@RequestParam(value = "nowCategory", required = false) Long nowCategory,
+			@RequestParam(value = "orderBy", required = false, defaultValue="0") int orderBy){
 		
+		//로그인 아이디 정보 받아서 좋아요 리스트
+		
+		//정렬기준
+		String orderByContent = "정렬기준";
+		
+		//카테고리명 조회
 		List<CategoriesDTO> categories = onlineClassService.categoryFind()
 				.stream()
 				.map(CategoriesDTO::new)
 				.collect(Collectors.toList()); 
 		
-		List<OnlineClassList> classes = null;
-		if(category == null && nowCategory == null) {
-			if(searchKeyword == null) {
-				classes = onlineClassService.findAll(Status.Y)
-						.stream()
-						.map(OnlineClassList::new)
-						.collect(Collectors.toList());
-				
+		List<OnlineClassListDTO> classes = null;
+		
+		if(orderBy == 0 || orderBy == 1) {
+			if(category == null && nowCategory == null) {
+				if(searchKeyword == null && orderBy == 1) {
+					classes = onlineClassService.findAll(Status.Y)
+							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
+					orderByContent = "최신순";
+				}else{
+					classes = onlineClassService.findSearchList(searchKeyword, Status.Y)
+							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
+				}
 			}else {
-				classes = onlineClassService.findSearchList(searchKeyword, Status.Y)
-						.stream()
-						.map(OnlineClassList::new)
-						.collect(Collectors.toList());
+				model.addAttribute("nowCategory", category);
+				if(searchKeyword == null) {
+					classes = onlineClassService.findCategoryList(category, Status.Y)
+							.stream()
+							.map(OnlineClassListDTO::new)
+							.collect(Collectors.toList());
+				}else{
+					classes = onlineClassService.findCategorySearchList(searchKeyword, nowCategory, Status.Y)
+							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
+				}
 			}
 		}else {
-			model.addAttribute("nowCategory", category);
-			if(searchKeyword == null) {
-				classes = onlineClassService.findCategoryList(category, Status.Y)
-						.stream()
-						.map(OnlineClassList::new)
-						.collect(Collectors.toList());
-			}else {
-				classes = onlineClassService.findCategorySearchList(searchKeyword, nowCategory, Status.Y)
-						.stream()
-						.map(OnlineClassList::new)
-						.collect(Collectors.toList());
+			switch(orderBy) {
+				case 2:
+					classes = onlineClassService.findByOnlineClassApproveOrderByOnlineClassViews(Status.Y)
+							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
+					orderByContent = "조회순";
+					break;
+				case 3:
+					classes = onlineClassService.findByOnlineClassApproveOrderByOnlineClassPriceAsc(Status.Y)
+							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
+					orderByContent = "가격낮은순";
+					break;
+				case 4:
+					classes = onlineClassService.findByOnlineClassApproveOrderByOnlineClassPriceDesc(Status.Y)
+							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
+					orderByContent = "가격높은순";
+					break;
 			}
 		}
 		
 		model.addAttribute("classes", classes);
 		model.addAttribute("categories", categories);
+		model.addAttribute("orderByContent", orderByContent);
 	
-		logger.info("searchKeyword : " + searchKeyword + ", category : " + category + ", nowCategory : " + nowCategory);
-		logger.info("classes" + classes);
+		logger.info("category : " + category + ", nowCategory : " + nowCategory);
+		logger.info("orderBy : " + orderBy + ", searchKeyword : " + searchKeyword);
+		logger.info("classesSize" + classes.size());
+		
 		return "onlineClass/onlineClassList";
 	}
 	
