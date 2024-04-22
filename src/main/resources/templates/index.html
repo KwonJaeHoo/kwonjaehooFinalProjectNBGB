@@ -2,17 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/buttonstyle.css" >
 </head>
 <body>
 	<!--사용자 네비게이션-->
-		<!--메뉴 네비게이션-->
+	<!--메뉴 네비게이션-->
 	<div th:insert="import/topImport.html :: top-import"></div>
-    	<!--메뉴 네비게이션-->
+    <!--메뉴 네비게이션-->
     <!--사용자 네비게이션-->
-
+    
 
 	<section class="home-slider owl-carousel">
-		<div class="slider-item" style="background-image: url(images/Online_Class.jpg);">
+		<div class="slider-item" style="background-image: url('images/Online_Class.jpg');">
 		<!-- 출처 <a href="https://kr.freepik.com/free-photo/close-up-hand-holding-pen_15598755.htm#query=%EC%9B%90%EA%B2%A9%20%EA%B5%90%EC%9C%A1&position=1&from_view=keyword&track=ais&uuid=84153ad6-d9a3-4d91-b4de-085e124a5d8a">Freepik</a> -->
 			<div class="overlay"></div>
 			<div class="container">
@@ -22,13 +23,13 @@
 						<h3 class="subheading" style="color:#01DFD7; font-weight:700">
 						집에서 바로 배우는 온라인 클래스가 궁금하시다면?<br/>
 						온라인 원데이 클래스 내 방 클래스를 확인해보세요.</h3>
-						<p>	<a href="#"	class="btn btn-black btn-outline-blue px-4 py-3 mt-3" style="color:#2E2E2E">내방 클래스 바로가기</a> </p>
+						<p>	<a href="#"	class="btn btn-black btn-outline-white px-4 py-3 mt-3" style="color:#2E2E2E">내방 클래스 바로가기</a> </p>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="slider-item" style="background-image: url(images/Offline_Class.jpg);">
+		<div class="slider-item" style="background-image: url('images/Offline_Class.jpg');">
 		<!-- <a href="https://kr.freepik.com/free-photo/teens-covering-faces-with-folders_1249868.htm#fromView=search&page=2&position=3&uuid=0310d729-2d0a-4153-8bc0-2f9437cd4c5e">출처 freepik</a> -->
 			<div class="overlay"></div>
 			<div class="container">
@@ -37,136 +38,83 @@
 						<h1 class="mb-4" style="color:#89DD18; font-weight:700">공방 클래스가 궁금하시다면?</h1>
 						<h3 class="subheading" style="color:#01DFD7; font-weight:700">사람들과 함께하는 오프라인 공방 클래스가 궁금하시다면?<br/>
 																						오프라인 원데이 클래스 공방 클래스를 확인해보세요.</h3>
-						<p> <a href="#" class="btn btn-black btn-outline-blue px-4 py-3 mt-3" style="color:#2E2E2E;">공방 클래스 바로가기</a> </p>
+						<p> <a href="#" class="btn btn-black btn-outline-white px-4 py-3 mt-3" style="color:#2E2E2E;">공방 클래스 바로가기</a> </p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="ftco-section bg-light">
-		<div class="container">
-			<div class="row justify-content-center mb-5 pb-3">
-				<div class="col-md-7 heading-section ftco-animate text-center">
-					<h3 class="subheading">인기 클래스</h3>
-					<h2 class="mb-1">👍내방공방에서 추천!</h2>
-				</div>
-			</div>
-			
-			<div class="row d-flex">
-	          <div class="col-md-4 d-flex ftco-animate">
-	          	<div class="blog-entry justify-content-end">
-	              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_1.jpg');">
-	              </a>
+	<section class="ftco-section testimony-section">
+      <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+          <div class="col-md-10 heading-section ftco-animate text-center">
+          	<h3 class="subheading">인기 온라인 클래스</h3>
+            <h2 class="mb-1">👍내방공방에서 추천!</h2>
+          </div>
+        </div>
+        
+        <div class="row ftco-animate">
+          <div class="col-md-12">
+            <div class="carousel-testimony owl-carousel">
+              <div class="item" th:each="data, dataStat : ${onlineClassView}" th:if="${dataStat.count} <= 6">
+                <div class="testimony-wrap p-4 pb-5">
+                  <div class="blog-entry justify-content-end">
+                  
+	              <!-- <a href="blog-single.html" class="block-20" th:style="'background-image: url(\'images/' + (${data.image} != null ? ${data.image} : 'default.png') + '\');'" alt="클래스 이미지"></a> -->
 	              <div class="text w-100 mt-3">
 	              	<div class="meta">
-	                  <div><a href="#">July. 14, 2019</a></div>
-	                  <div><a href="#">Admin</a></div>
-	                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+	              	  <h3><span th:text="${dataStat.count}">온라인 강의 번호</span></h3>
+	                  <div><a href="#"><time th:text="${data.onlineClassRegdate}">온라인 강의 게시일</time></a></div>
+	                  <div><a href="#"><span th:text="${data.instructorNickname}">온라인 강의 강사 닉네임</span></a></div>
+	                  <div><a href="#" class="meta-chat"><span class="icon-eye"></span><span th:text="${data.onlineClassViews}">0</span></a></div></div>
 	                </div>
-	                <h3 class="heading mt-2"><a href="#">Is wellness the new luxury</a></h3>
-	                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+	                <h3 class="heading mt-2"><a href="#" th:text="${data.onlineClassTitle}">온라인 강의 제목</a></h3>
+	                
+	                <!-- <a href="#" class="btn btn-primary" th:classappend="${data.onlineClassApprove == 'Y' ? 'btn-ghost btn-fill' : 'disabled'}" th:text="${data.onlineClassApprove == 'Y' ? '수강 가능' : '수강 불가'}">온라인 강의 수강 상태</a> -->
 	              </div>
 	            </div>
-	          </div>
-	          <div class="col-md-4 d-flex ftco-animate">
-	          	<div class="blog-entry justify-content-end">
-	              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_2.jpg');">
-	              </a>
-	              <div class="text w-100 mt-3">
-	              	<div class="meta">
-	                  <div><a href="#">July. 14, 2019</a></div>
-	                  <div><a href="#">Admin</a></div>
-	                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-	                </div>
-	                <h3 class="heading mt-2"><a href="#">Is wellness the new luxury</a></h3>
-	                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-	              </div>
-	            </div>
-	          </div>
-	          <div class="col-md-4 d-flex ftco-animate">
-	          	<div class="blog-entry">
-	              <a href="blog-single.html" class="block-20" style="background-image: url('images/image_3.jpg');">
-	              </a>
-	              <div class="text w-100 mt-3">
-	              	<div class="meta">
-	                  <div><a href="#">July. 14, 2019</a></div>
-	                  <div><a href="#">Admin</a></div>
-	                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-	                </div>
-	                <h3 class="heading mt-2"><a href="#">Is wellness the new luxury</a></h3>
-	                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-	              </div>
-	            </div>
-	          </div>
-	        </div>
-		</div>
-	</section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 	<section class="ftco-section">
     	<div class="container">
     		<div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-12 heading-section ftco-animate text-center">
-            <h3 class="subheading">Comming Soon!!</h3>
-            <h2 class="mb-1">공방 클래스</h2>
+            <h3 class="subheading">인기 오프라인 클래스</h3>
+            <h2 class="mb-1">공방 클래스도 추천합니다!</h2>
           </div>
         </div>
-        <div class="row">
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-1.jpg);"></a>
-        			<div class="text w-100 text-center">
-        				<h3><a href="#">Private &amp; Group Lessons</a></h3>
-        				<p>Sept. 30, 2019 - 01:00pm - 03:00pm</p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-2.jpg);"></a>
-        			<div class="text w-100 text-center">
-        				<h3><a href="#">Yoga for Pregnant</a></h3>
-        				<p>Sept. 30, 2019 - 01:00pm - 03:00pm</p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-3.jpg);"></a>
-        			<div class="text w-100 text-center">
-        				<h3><a href="#">Yoga for Beginners</a></h3>
-        				<p>Sept. 30, 2019 - 01:00pm - 03:00pm</p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-4.jpg);"></a>
-        			<div class="text w-100 text-center">
-        				<h3><a href="#">Yoga Barre</a></h3>
-        				<p>Sept. 30, 2019 - 01:00pm - 03:00pm</p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-5.jpg);"></a>
-        			<div class="text w-100 text-center">
-        				<h3><a href="#">Yoga Core</a></h3>
-        				<p>Sept. 30, 2019 - 01:00pm - 03:00pm</p>
-        			</div>
-        		</div>
-        	</div>
-        	<div class="col-md-4">
-        		<div class="classes w-100 ftco-animate">
-        			<a href="#" class="img w-100 mb-3" style="background-image: url(images/classes-6.jpg);"></a>
-        			<div class="text w-100 text-center">
-        				<h3><a href="#">Yoga Restore</a></h3>
-        				<p>Sept. 30, 2019 - 01:00pm - 03:00pm</p>
-        			</div>
-        		</div>
-        	</div>
-        </div>
+        
+        <div class="row ftco-animate">
+          <div class="col-md-12">
+            <div class="carousel-testimony owl-carousel">
+              <div class="item" th:each="offlineClassView, offlineClassViewStat : ${offlineClassView}">
+                <div class="testimony-wrap p-4 pb-5">
+                  <div class="blog-entry justify-content-end">
+                  
+	              <!-- <a href="blog-single.html" class="block-20" th:style="'background-image: url(\'images/' + (${data.image} != null ? ${data.image} : 'default.png') + '\');'" alt="클래스 이미지"></a> -->
+	              <div class="text w-100 mt-3">
+	              	<div class="meta">
+	              	  <h3><span th:text="${offlineClassViewStat.count}">오프라인 강의 번호</span></h3>
+	                  <div><a href="#"><time th:text="${offlineClassView.offlineClassRegdate}">오프라인 강의 게시일</time></a></div>
+	                  <div><a href="#"><span th:text="${offlineClassView.instructorNickname}">오프라인 강의 강사 닉네임</span></a></div>
+	                  <div><a href="#" class="meta-chat"><span class="icon-eye"></span><span th:text="${offlineClassView.offlineClassViews}">0</span></a></div></div>
+	                </div>
+	                <h3 class="heading mt-2"><a href="#" th:text="${offlineClassView.offlineClassTitle}">오프라인 강의 제목</a></h3>
+	                
+	                <!-- <a href="#" class="btn btn-primary" th:classappend="${data.onlineClassApprove == 'Y' ? 'btn-ghost btn-fill' : 'disabled'}" th:text="${data.onlineClassApprove == 'Y' ? '수강 가능' : '수강 불가'}">온라인 강의 수강 상태</a> -->
+	              </div>
+	            </div>
+                </div>
+              </div>
+            </div>
+          </div>
     	</div>
     </section>
 
@@ -222,11 +170,11 @@
         <div class="row ftco-animate">
           <div class="col-md-12">
             <div class="carousel-testimony owl-carousel">
-              <div class="item">
+              <div class="item" th:each="reviewDTO, reviewStat : ${reviewDTO}" th:if="${reviewStat.count} <= 6">
                 <div class="testimony-wrap p-4 pb-5">
                   <div class="text">
                   	<div class="line">
-	                    <p class="mb-4 pb-1">좋은 경험이었습니다!!</p>
+	                    <p class="mb-4 pb-1" th:text="${reviewDTO.reviewContent}">후기 내용</p>
 	                    <span class="quote d-flex align-items-center justify-content-center">
 	                      <i class="icon-quote-left"></i>
 	                    </span>
@@ -235,71 +183,7 @@
                     	<div class="user-img" style="background-image: url(images/person_1.jpg)">
 		                  </div>
 		                  <div class="ml-4">
-		                  	<p class="name">Floyd Weather</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap p-4 pb-5">
-                  <div class="text">
-                    <div class="line">
-	                    <p class="mb-4 pb-1">친구와 함께 참여했습니다! 후기후기후기</p>
-	                    <span class="quote d-flex align-items-center justify-content-center">
-	                      <i class="icon-quote-left"></i>
-	                    </span>
-	                  </div>
-
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_2.jpg)">
-		                  </div>
-		                  <div class="ml-4">
-		                  	<p class="name">Floyd Weather</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap p-4 pb-5">
-                  <div class="text">
-                    <div class="line">
-	                    <p class="mb-4 pb-1">000 선생님 수업 잘 들었습니다~~ 어쩌고 저쩌고 베스트 리뷰 몇 개 뽑아서 넣으면 될 듯</p>
-	                    <span class="quote d-flex align-items-center justify-content-center">
-	                      <i class="icon-quote-left"></i>
-	                    </span>
-	                  </div>
-
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_3.jpg)">
-		                  </div>
-		                  <div class="ml-4">
-		                  	<p class="name">James Dee</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap p-4 pb-5">
-                  <div class="text">
-                    <div class="line">
-	                    <p class="mb-4 pb-1">내방공방 내방공방 내방공방 내방공방 내방공방 내방공방 내방공방 내방공방 내방공방 내방공방 </p>
-	                    <span class="quote d-flex align-items-center justify-content-center">
-	                      <i class="icon-quote-left"></i>
-	                    </span>
-	                  </div>
-
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_4.jpg)">
-		                  </div>
-		                  <div class="ml-4">
-		                  	<p class="name">Lance Roger</p>
-		                    <span class="position">Customer</span>
+		                  	<p class="name" th:text="${reviewDTO.userId}">후기 작성자(유저 아이디)</p>
 		                  </div>
                     </div>
                   </div>

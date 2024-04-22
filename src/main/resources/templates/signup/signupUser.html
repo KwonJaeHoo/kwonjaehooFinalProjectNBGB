@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="css/signup.css">
+</head>
+<body>
+<div class="container2">
+	<a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+</div>
+	<div class="container3">
+		<form class="form2" id="form1">
+		<h3>개인 회원가입</h3>
+			<input type="text" id="userId" name="userId" placeholder="아이디" class="input"/> 
+			<input type="password" id="userPasswordCheck1" name="userPasswordCheck1" placeholder="비밀번호" class="input"/> 
+			<input type="password" id="userPasswordCheck2" name="userPasswordCheck2" placeholder="비밀번호 확인" class="input"/> 
+			<input type="hidden" id="userPassword" name="userPassword" placeholder="비밀번호" class="input" /> 
+			
+			<input type="text" id="userName" name="userName" placeholder="이름" class="input" />
+			<input type="text" id="userNickname" name="userNickname" placeholder="닉네임" class="input" />
+			
+			<input type="text" id="userEmail" name="userEmail" placeholder="이메일" class="input" />
+			<input type="button" class="btn" id="userEmailBtn" name="userEmailBtn" value="인증메일 발송"/>
+			
+			<input type="hidden" id="userEmailCheck" name="userEmailCheck" placeholder="인증번호" class="input" />
+			<input type="hidden" id="userEmailCheck1" name="userEmailCheck1" placeholder="인증번호" class="input" />
+			<input type="hidden" class="btn" id="userEmailCheckBtn" name="userEmailCheckBtn" value="인증번호 확인"/>
+			
+			<input type="text" id="userPhone" name="userPhone" placeholder="연락처" class="input" />
+			<input type="date" id="userBirth" name="userBirth" placeholder="생년월일" class="input" />
+			<input type="text" id="userGender" name="userGender" placeholder="성별" class="input" />
+			
+			<button type="button" class="btn" id="userSignupBtn" name="userSignupBtn">가입하기</button>
+		</form>
+	</div>
+</body>
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function()
+{	
+	//모든 공백 체크 정규식
+	var emptyCheck = /\s/g;
+	
+	//영문 대,소문자, 숫자로만 이루어진 n자리 정규식
+	var idCheck = /^[a-zA-Z0-9]{4,20}$/;
+	
+	//특수문자, 영문 대,소문자,숫자 포함 형태의 n자리 이내의 암호 정규식
+	var pwdCheck = /^.*(?=^.{8,32}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+	
+	//이름 정규식
+	var nameCheck = /^[가-힣]{2,15}$/;
+	
+	//닉네임정규식(한글 초성 및 모음은 허가하지 않음)
+	var nicknameCheck =	/^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+	
+	//Email 정규식
+	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	
+	//핸드폰번호 정규식
+	var phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/;
+	
+	//date
+	var dateCheck = /^(19[7-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+	
+	
+	var userIdCheck = false;
+	var userPasswordCheck = false;
+	var userNameCheck = false;
+	var userNicknameCheck = false;
+	var userEmailCheck = false;
+	var userEmailCodeCheck = false;
+	var userPhoneCheck = false;
+	var userBirthCheck = false;
+	//var userGenderCheck = false;
+	
+	$('#userId').blur(function()
+	{        
+		if($.trim($("#userId").val()).length <= 0)
+		{
+			alert("아이디를 입력하세요.");
+			userIdCheck = false;
+			return;
+		}
+		if(emptyCheck.test($("#userId").val()))
+		{
+			alert("아이디는 공백을 포함 할 수 없습니다.");
+			userIdCheck = false;
+			return;
+		}
+		if(!idCheck.test($("#userId").val()))
+		{
+			alert("아이디는 4-20자의 영문 대 소문자 및 숫자로만 입력하세요.");
+			userIdCheck = false;
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"signup_user_idcheck",
+			data : JSON.stringify
+			({	           
+				userId:$('#userId').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					alert("사용가능한 아이디입니다.");	  
+					userIdCheck = true;   
+					return;
+					           	
+				}
+				else if(data == true)
+				{
+					alert("중복된 아이디입니다.");	 
+					userIdCheck = false; 
+					return;                 	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+			}
+		});
+	});
+	
+	$('#userPasswordCheck1').blur(function()
+	{ 
+		if($.trim($("#userPasswordCheck1").val()).length <= 0)
+		{
+			alert("비밀번호를 입력해주세요.");
+			userPasswordCheck = false;
+			return;
+		}
+		if(!pwdCheck.test($("#userPasswordCheck1").val()))
+		{
+			alert("비밀번호는 영문 대소문자 숫자로 8-32자리로 입력하세요.");
+			userPasswordCheck = false;
+			return;
+		}
+	});
+	
+	$('#userPasswordCheck2').blur(function()
+	{ 
+		if($.trim($("#userPasswordCheck2").val()).length <= 0)
+		{
+			alert("비밀번호 확인란을 입력해주세요.");
+			userPasswordCheck = false;
+			return;
+		}
+		
+		if($("#userPasswordCheck1").val() != $("#userPasswordCheck2").val())
+		{
+			alert("비밀번호와 비밀번호 확인값이 일치하지 않습니다.");
+			userPasswordCheck = false
+			return;	
+		}		
+		else
+		{
+			$("#userPassword").val($("#userPasswordCheck1").val());
+			userPasswordCheck = true;	
+			return;
+		}
+	});
+	
+	$('#userName').blur(function()
+	{ 
+		if($.trim($("#userName").val()).length <= 0)
+		{
+			alert("이름을 입력해 주세요.");
+			userNameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#userName").val()))
+		{
+			alert("이름에 공벡을 넣을 수 없습니다.");
+			userNameCheck = false;
+			return;
+		}
+
+		if(!nameCheck.test($("#userName").val()))
+		{
+			alert("이름 형식이 올바르지 않습니다.");
+			userNameCheck = false;
+			return;
+		}
+		
+		userNameCheck = true;
+	});
+		
+	$('#userNickname').blur(function()
+	{ 
+		if($.trim($("#userNickname").val()).length <= 0)
+		{
+			alert("닉네임을 입력해 주세요.");
+			userNicknameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#userNickname").val()))
+		{
+			alert("닉네임에 공벡을 넣을 수 없습니다.");
+			userNicknameCheck = false;
+			return;
+		}
+
+		if(!nicknameCheck.test($("#userNickname").val()))
+		{
+			alert("닉네임 형식이 올바르지 않습니다.");
+			userNicknameCheck = false;
+			return;
+		}
+		
+		userNicknameCheck = true;
+	});	
+	
+	$('#userEmail').blur(function()
+	{ 
+		if($.trim($("#userEmail").val()).length <= 0)
+		{
+			alert("이메일을 입력해 주세요.");
+			userEmailCheck = false;
+			return;
+		}
+		
+		if(emptyCheck.test($("#userEmail").val()))
+		{
+			alert("이메일에 공백을 넣을 수 없습니다.");
+			userEmailCheck = false;
+			return;
+		}
+		
+		if(!emailCheck.test($("#userEmail").val()))
+		{
+			alert("이메일 형식이 올바르지 않습니다.");
+			userEmailCheck = false;
+			return;
+		}
+		
+		userEmailCheck = true;
+	});	
+	
+	
+	$("#userEmailBtn").on("click", function()
+	{
+		if(userEmailCheck == false)
+		{
+			alert("올바른 이메일을 입력해주세요.");
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"signup_emailCheck",
+			data : JSON.stringify
+			({	           
+				email:$('#userEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				alert("인증메일이 전송되었습니다.");
+				$("#userEmail").attr("readonly",true);
+				$('#userEmailBtn').attr("type", "hidden");
+				$('#userEmailCheck').attr("type", "text");
+				$('#userEmailCheckBtn').attr("type", "button");
+				$('#userEmailCheck1').val(data);
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				return;
+			}
+		});
+	});
+	
+	$("#userEmailCheckBtn").on("click", function()
+	{
+		if($("#userEmailCheck").val() != $("#userEmailCheck1").val())
+		{
+			alert("인증코드가 일치하지 않습니다.");
+			return;	
+		}
+		
+		alert("인증되었습니다.");
+		$("#userEmailCheck").attr("readonly",true);
+		$('#userEmailCheckBtn').attr("type", "hidden");
+		userEmailCodeCheck = true;
+	});
+
+	$('#userPhone').blur(function()
+	{ 	
+		if($.trim($("#userPhone").val()).length <= 0)
+		{
+			alert("전화번호를 입력해 주세요.");
+			userPhoneCheck = false;
+			return;
+		}		
+		if(!phoneCheck.test($("#userPhone").val()))
+		{
+			alert("전화번호 형식이 올바르지 않습니다.");
+			userPhoneCheck = false;
+			return;
+		}
+		
+		userPhoneCheck = true;
+	});
+	
+	$('#userBirth').blur(function()
+	{ 	
+	    if(!dateCheck.test($('#userBirth').val()))
+	    {
+	        alert("날짜는 yyyy-mm-dd 형식으로 입력해주세요.");
+	        userBirthCheck = false;
+	        return;
+	    }
+	    
+	    userBirthCheck = true;
+	});
+	
+//	$('#userGenter').blur(function()
+//	{ 	
+//	});
+
+	$("#userSignupBtn").on("click", function()
+	{
+		if(confirm("입력하신 정보로 회원가입 하시겠어요?"))
+		{
+			if(userIdCheck == false)
+			{
+				alert("아이디 중복체크 해 주세요.");
+				return;
+			}
+			else if(userPasswordCheck == false)
+			{
+				alert("비밀번호를 입력 해 주세요.");
+				return;
+			}
+			else if(userNameCheck == false)
+			{
+				alert("이름을 입력 해 주세요.");
+				return;
+			}
+			else if(userNicknameCheck == false)
+			{
+				alert("닉네임을 입력 해 주세요.");
+				return;
+			}
+			else if(userEmailCodeCheck == false)
+			{
+				alert("이메일 인증코드를 입력 해 주세요.");
+				return;
+			}
+			else if(userPhoneCheck == false)
+			{
+				alert("전화번호를 입력 해 주세요.");
+				return;
+			}
+			else if(userBirthCheck == false)
+			{
+				alert("생년월일을 입력 해 주세요.");
+				return;
+			}
+			//else if(userGenderCheck == false)
+			//{
+			//	alert("아이디 중복체크를 확인 해 주세요.");
+			//	return;
+			//}
+			else
+			{
+				signUp();
+			}
+		}
+	});
+});
+
+function signUp()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/signup_user",
+		data : JSON.stringify
+		({
+			userId:$("#userId").val(),
+			userPassword:$("#userPassword").val(),
+			userName:$("#userName").val(),
+			userNickname:$("#userNickname").val(),
+			userEmail:$("#userEmail").val(),
+			userPhone:$("#userPhone").val(),
+			userBirth:$("#userBirth").val(),
+			userGender:$("#userGender").val()
+			
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("회원가입이 완료 되었습니다.");
+			location.href = "/login";
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+</script>
+</html>

@@ -10,10 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@EqualsAndHashCode
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@Builder
 public class UserDto 
 {
 	private String userId;
@@ -35,10 +35,6 @@ public class UserDto
 	
 	public static UserDto from (User user)
 	{
-		if(user == null)
-		{
-			return null;
-		}
 		return UserDto
 				.builder()
 				.userId(user.getUserId())
@@ -50,4 +46,5 @@ public class UserDto
 				.userGender(user.getUserGender())
 				.build();
 	}
+	
 }
