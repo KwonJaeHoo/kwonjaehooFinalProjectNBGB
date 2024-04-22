@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="css/signup.css">
+</head>
+<body>
+<div class="container2">
+	<a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+</div>
+	<div class="container3">
+		<form class="form2" id="form1">
+		<h3>강사 회원가입</h3>
+			<input type="text" id="instructorId" name="instructorId" placeholder="아이디" class="input" size="20"/> 			
+			<input type="password" id="instructorPasswordCheck1" name="instructorPasswordCheck1" placeholder="비밀번호" class="input"/> 
+			<input type="password" id="instructorPasswordCheck2" name="instructorPasswordCheck2" placeholder="비밀번호 확인" class="input"/> 
+			<input type="hidden" id="instructorPassword" name="instructorPassword" placeholder="비밀번호" class="input" /> 
+			
+			<input type="text" id="instructorName" name="instructorName" placeholder="이름" class="input" />
+			<input type="text" id="instructorNickname" name="instructorNickname" placeholder="예명" class="input" />
+			
+			<input type="text" id="instructorEmail" name="instructorEmail" placeholder="이메일" class="input" />
+			<input type="button" class="btn" id="instructorEmailBtn" name="instructorEmailBtn" value="인증메일 발송"/>
+			
+			<input type="hidden" id="instructorEmailCheck" name="instructorEmailCheck" placeholder="인증번호" class="input" />
+			<input type="hidden" class="btn" id="instructorEmailCheckBtn" name="instructorEmailCheckBtn" value="인증번호 확인"/>
+			
+			<input type="text" id="instructorPhone" name="instructorPhone" placeholder="연락처" class="input" />
+			
+			<input type="text" id="instructorBank" name="instructorBank" placeholder="은행 명" class="input-small" />
+			<input type="text" id="instructorAccount" name="instructorAccount" placeholder="계좌번호" class="input" />
+			<input type="text" id="instructorCategory" name="instructorCategory" placeholder="주 카테고리" class="input" />
+			
+			
+			<h5>
+				이미지파일 
+			</h5>
+			<input type="file" id="instructorImageFile" name="instructorImageFile">
+			
+			<button type="button" class="btn" id="instructorSignupBtn" name="instructorSignupBtn">가입하기</button>
+		</form>
+	</div>
+</body>
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function()
+{	
+	//모든 공백 체크 정규식
+	var emptyCheck = /\s/g;
+	
+	//영문 대,소문자, 숫자로만 이루어진 n자리 정규식
+	var idCheck = /^[a-zA-Z0-9]{4,20}$/;
+	
+	//특수문자, 영문 대,소문자,숫자 포함 형태의 n자리 이내의 암호 정규식
+	var pwdCheck = /^.*(?=^.{8,32}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+	
+	//이름 정규식
+	var nameCheck = /^[가-힣]{2,15}$/;
+	
+	//닉네임정규식(한글 초성 및 모음은 허가하지 않음)
+	var nicknameCheck =	/^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+	
+	//Email 정규식
+	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	
+	//핸드폰번호 정규식
+	var telCheck = /^\d{3}-\d{3,4}-\d{4}$/;
+	
+	var instructorIdCheck = false;
+	var instructorPasswordCheck = false;
+	var instructorNameCheck = false;
+	var instructorNicknameCheck = false;
+	var instructorEmailCheck = false;
+	var instructorEmailCodeCheck = false;
+	var instructorPhoneCheck = false;
+	var instructorBankCheck = false;
+	var instructorAccountCheck = false;
+	
+	
+	$('#instructorId').blur(function()
+	{        
+		if($.trim($("#instructorId").val()).length <= 0)
+		{
+			alert("아이디를 입력하세요.");
+			instructorIdCheck = false;
+			return;
+		}
+		if(emptyCheck.test($("#instructorId").val()))
+		{
+			alert("아이디는 공백을 포함 할 수 없습니다.");
+			instructorIdCheck = false;
+			return;
+		}
+		if(!idCheck.test($("#instructorId").val()))
+		{
+			alert("아이디는 4-20자의 영문 대 소문자 및 숫자로만 입력하세요.");
+			instructorIdCheck = false;
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"signup_instructor_idcheck",
+			data : JSON.stringify
+			({	           
+				instructorId:$('#instructorId').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					if($('#instructorId').val() != '')
+					{
+						alert("사용가능한 아이디입니다.");	  
+						instructorIdCheck = true;   
+						return;
+					}	           	
+				}
+				else if(data == true)
+				{
+					if($('#instructorId').val()!='')
+					{
+						alert("중복된 아이디입니다.");	 
+						instructorIdCheck = false; 
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+			}
+		});
+	});
+	
+	$('#instructorPasswordCheck1').blur(function()
+	{ 
+		if($.trim($("#instructorPasswordCheck1").val()).length <= 0)
+		{
+			alert("비밀번호를 입력해주세요.");
+			return;
+		}
+		if(!pwdCheck.test($("#instructorPasswordCheck1").val()))
+		{
+			alert("비밀번호는 영문 대소문자 숫자로 8-32자리로 입력하세요.");
+			return;
+		}
+
+		
+	});
+	
+	$('#instructorPasswordCheck2').blur(function()
+	{ 
+		if($.trim($("#instructorPasswordCheck2").val()).length <= 0)
+		{
+			alert("비밀번호 확인란을 입력해주세요.");
+			return;
+		}
+		
+		if($("#instructorPasswordCheck1").val() != $("#instructorPasswordCheck2").val())
+		{
+			alert("비밀번호와 비밀번호 확인값이 일치하지 않습니다.");
+			instructorPasswordCheck = false
+			return;	
+		}		
+		else
+		{
+			$("#instructorPassword").val($("#instructorPasswordCheck1").val());
+			instructorPasswordCheck = true;	
+			return;
+		}
+	});
+	
+	$('#instructorName').blur(function()
+	{ 
+		if($.trim($("#instructorName").val()).length <= 0)
+		{
+			alert("이름을 입력해 주세요.");
+			instructorNameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#instructorName").val()))
+		{
+			alert("이름에 공벡을 넣을 수 없습니다.");
+			instructorNameCheck = false;
+			return;
+		}
+
+		if(!nameCheck.test($("#instructorName").val()))
+		{
+			alert("이름 형식이 올바르지 않습니다.");
+			instructorNameCheck = false;
+			return;
+		}
+		
+		instructorNameCheck = true;
+	});
+		
+	$('#instructorNickname').blur(function()
+	{ 
+		if($.trim($("#instructorNickname").val()).length <= 0)
+		{
+			alert("닉네임을 입력해 주세요.");
+			instructorNicknameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#instructorNickname").val()))
+		{
+			alert("닉네임에 공벡을 넣을 수 없습니다.");
+			instructorNicknameCheck = false;
+			return;
+		}
+
+		if(!nicknameCheck.test($("#instructorNickname").val()))
+		{
+			alert("닉네임 형식이 올바르지 않습니다.");
+			instructorNicknameCheck = false;
+			return;
+		}
+		
+		instructorNicknameCheck = true;
+	});	
+	
+	$('#instructorEmail').blur(function()
+	{ 
+		if($.trim($("#instructorEmail").val()).length <= 0)
+		{
+			alert("이메일을 입력해 주세요.");
+			instructorEmailCheck = false;
+			return;
+		}
+		
+		if(emptyCheck.test($("#instructorEmail").val()))
+		{
+			alert("이메일에 공백을 넣을 수 없습니다.");
+			return;
+		}
+		
+		if(!emailCheck.test($("#instructorEmail").val()))
+		{
+			alert("이메일 형식이 올바르지 않습니다.");
+			return;
+		}
+		instructorEmailCheck = true;
+	});	
+	
+	$('#instructorPhone').blur(function()
+	{ 	
+		if($.trim($("#instructorPhone").val()).length <= 0)
+		{
+			alert("전화번호를 입력해 주세요.");
+			instructorPhoneCheck = false;
+			return;
+		}		
+		if(!phoneCheck.test($("#instructorPhone").val()))
+		{
+			alert("전화번호 형식이 올바르지 않습니다.");
+			instructorPhoneCheck = false;
+			return;
+		}
+		instructorPhoneCheck = true;
+	});
+	
+
+	
+	$("#instructorEmailBtn").on("click", function()
+	{
+		if(instructorEmailCheck == false)
+		{
+			alert("올바른 이메일을 입력해주세요.");
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"signup_emailCheck",
+			data : JSON.stringify
+			({	           
+				email:$('#instructorEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+			}
+		});
+	});
+	
+	
+	$("#instructorSignupBtn").on("click", function()
+	{
+		if(confirm("입력하신 정보로 회원가입 하시겠어요?"))
+		{
+			if(instructorIdCheck == false)
+			{
+				alert("아이디 중복체크를 확인 해 주세요.");
+				return;
+			}
+			else if(instructorPasswordCheck == false)
+			{
+				alert("비밀번호를 입력 해 주세요.");
+				return;
+			}
+			else if(instructorNameCheck == false)
+			{
+				alert("이름을 입력 해 주세요.");
+				return;
+			}
+			else if(instructorNicknameCheck == false)
+			{
+				alert("닉네임을 입력 해 주세요.");
+				return;
+			}
+			else if(instructorEmailCodeCheck == false)
+			{
+				alert("이메일 인증코드를 입력 해 주세요.");
+				return;
+			}
+			else if(instructorPhoneCheck == false)
+			{
+				alert("전화번호를 입력 해 주세요.");
+				return;
+			}
+			else if(instructorBankCheck == false)
+			{
+				alert("은행명을 입력 해 주세요.");
+				return;
+			}
+			else if(instructorAccountCheck == false)
+			{
+				alert("계좌를 입력 해 주세요.");
+				return;
+			}
+			else
+			{
+				signUp();
+			}
+		}
+	});
+});
+
+
+
+
+</script>
+</html>

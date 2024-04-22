@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<input type="hidden" value="user" id="loginProvider">
+
+<div class="containerLogo">
+	<a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+</div>
+
+	<!-- user -->
+	<div class="container">
+		<div class="container__form container--signin">
+			<form class="form" id="userForm">
+				<h2 class="form__title">회원 로그인</h2>
+				<input type="text" class="input" id="userId" name="userId" placeholder="아이디"/> 
+				<input type="password" class="input" id="userPassword" name="userPassword" placeholder="비밀번호"/> 
+				<button class="btn" id="userLoginBtn" name="userLoginBtn" >로그인</button>
+				
+				<div class="form-group">
+					<a class="navbar-brand" href="/"><img src="/oauth2/naver.png" width="50px"></a>
+					<a class="navbar-brand" href="/"><img src="/oauth2/kakao.png" width="50px"></a>
+					<a class="navbar-brand" href="/"><img src="/oauth2/google.png" width="50px"></a>
+				</div>
+	
+				<a href="signup" class="link">회원가입</a>
+				<a href="#" class="link">아이디 / 비밀번호 찾기</a>
+			</form>
+		</div>
+		
+		
+		<!-- instructor -->
+		<div class="container__form container--signup">
+			<form class="form" id="instructorForm">
+				<h2 class="form__title">강사 로그인</h2>
+				<input type="text" class="input" id="instructorId" name="instructorId" placeholder="아이디"/> 
+				<input type="password" class="input" id="instructorPassword" name="instructorPassword" placeholder="비밀번호"/> 
+				<button class="btn" id="instructorBtn" name="instructorLoginBtn" >로그인</button>
+				
+				<a href="signup" class="link">회원가입</a>
+				<a href="#" class="link">아이디 / 비밀번호 찾기</a>
+			</form>
+			
+		</div>
+
+		<!-- Overlay -->
+		<div class="container__overlay">
+			<div class="overlay">
+				<div class="overlay__panel overlay--left">
+					<button class="btn" id="userChangeBtn">회원 로그인</button>
+				</div>
+				<div class="overlay__panel overlay--right">
+					<button class="btn" id="instructorChangeBtn">강사 로그인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+
+const userChangeBtn = document.getElementById("userChangeBtn");
+const instructorChangeBtn = document.getElementById("instructorChangeBtn");
+const userForm = document.getElementById("userForm");
+const instructorForm = document.getElementById("instructorForm");
+const container = document.querySelector(".container");
+
+const loginProvider = document.getElementById('loginProvider');
+
+userChangeBtn.addEventListener("click", () => 
+{
+	container.classList.remove("right-panel-active");
+	loginProvider.value = "user"
+	
+});
+
+instructorChangeBtn.addEventListener("click", () => 
+{
+	container.classList.add("right-panel-active");
+	loginProvider.value = "instructor"
+});
+
+userForm.addEventListener("submit", (e) => e.preventDefault());
+instructorForm.addEventListener("submit", (e) => e.preventDefault());
+</script>
+
+</body>
+</html>
