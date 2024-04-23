@@ -3,7 +3,7 @@
   <head>
     <div th:replace="import/cssImport.html :: css-import"></div>
     <link rel="stylesheet" href="/css/kih.css">
-   
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   </head>
   <body>
    <!--사용자 네비게이션-->
@@ -22,7 +22,8 @@
             <img src="/images/image_1.jpg" alt="" class="img-fluid mt-2">
             
           <div class="d-flex justify-content-between">
-          <h1 class="mb-3 d-flex justify-content-start" style="color:#477500" id="title" th:text="${onlineClass.onlineClassTitle}">[[${onlineClass.onlineClassTitle}]]</h1>
+          <h1 class="mb-3 d-flex justify-content-start" style="color:#477500" th:text="${onlineClass.onlineClassTitle}"></h1>
+          <input type="hidden" id="titleVal" th:value="${onlineClass.onlineClassTitle}"></input>
           <div class="d-flex justify-content-end align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye mr-1" viewBox="0 0 16 16">
               <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
@@ -42,17 +43,22 @@
                 <button class="box2"> 별점<br/>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
                   <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg> 5 </button> &nbsp; &nbsp;
-                  <!-- 별점 수정해야함,,계산.......나중에 -->
-                  <button class="box2" th:if="${likeStatus} == 'N'" id="btnLikeBefore" th:onclick="fnLike([[${onlineClass.onlineClassId}]],'sist1')"> 찜 <br/>
+                  </svg> [[${starAvg}]]([[${reviewCnt}]]) </button> &nbsp; &nbsp;
+                   <form action="/api/onlineLike" method="post" role="form" th:object="${likeDto}">
+                  <button class="box2" th:if="${likeStatus} == 'N'" type="submit"> 찜 <br/>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart" viewBox="0 0 16 16">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
                   </svg> [[${likeCnt}]] </button>
-                   <div th:id="idValue" th:value="${onlineClassId}"></div>
-                  <button class="box2" th:if="${likeStatus} == 'Y'" onclick="fnUnlike('sist1')"> 찜 <br/>
+                   <div th:id="idValue" th:value="${onlineClass.onlineClassId}"></div>
+                   
+                  <input type="hidden" class="form-control" th:field="*{classId}" value="[[${onlineClass.onlineClassId}]]"/>
+                  <input type="hidden" class="form-control" th:field="*{classIden}" value="on"></input>
+                  <input type="hidden" class="form-control" th:field="*{userId}" value="sist1"/> 
+                   
+                  <button class="box2" th:if="${likeStatus} == 'Y'" type="submit"> 찜 <br/> 
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-              </svg> [[${likeCnt}]] </button>
+              </svg> [[${likeCnt}]] </button></form>
                 </div>
             </div>
             <div class="d-flex justify-content-between">
@@ -63,17 +69,16 @@
                </div>
                <div class="d-flex justify-content-end">
                   <ul class="ftco-footer-social float-lft mt-1">
-                     <li class="ftco-animate" style="margin:1px;"><a href="#" onclick="clip(); return false;" title="현재 URL 복사"><span class="icon-link2"></span></a></li>
-                       <li class="ftco-animate" style="margin:1px;"><a href="#" id="btnKakao" onclick="fn_sendFB('kakaotalk');return false;" ><span class="icon-comment"></span></a></li>
+                      <li class="ftco-animate" style="margin:1px;"><a href="#" onclick="clip(); return false;" title="현재 URL 복사"><span class="icon-link2"></span></a></li>
+                      <li class="ftco-animate" style="margin:1px;"><a href="#" id="btnKakao" onclick="fn_sendFB('kakaotalk');return false;" ><span class="icon-comment"></span></a></li>
                       <li class="ftco-animate" style="margin:1px;"><a href="#" onclick="fn_sendFB('twitter');return false;"><span class="icon-twitter"></span></a></li>
-                      <li class="ftco-animate" style="margin:1px;"><a href="#" onclick="fn_sendFB('facebook');return false;"><span class="icon-facebook"></span></a></li>
                     </ul>
                  </div>
             </div>
             <p class="border-top">
               <p th:utext="${onlineClass.onlineClassContent}"></p>
                       
-              <div class="tag-widget post-tag-container mb-5 mt-5">
+              <div class="tag-widget post-tag-container mb-5 mt-5" id="space">
               <div class="tagcloud">
                 <a href="#" class="tag-cloud-link">온라인</a>
                 <a href="#" class="tag-cloud-link">내방</a>
@@ -83,43 +88,52 @@
             
         
 
-            <!--후기-->
+            <!--후기--> 
             <div class="pt-3 pl-3 pr-3 mt-5 commentbox">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                      </svg>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
-                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                        </svg>
-                        5
+             <span th:each="num:${#numbers.sequence(1,5)}">
+             	<span th:if="${starAvg >= num}">
+	             	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+	                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+	                </svg>
+                </span>
+             	<span th:unless="${starAvg >= num}">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star" viewBox="0 0 16 16">
+				  	<path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+					</svg>
+				</span>
+             </span>
+               &nbsp; [[${starAvg}]]
               <div class="d-flex justify-content-start">
-              <h3 class="mb-4">6개의 후기가 있어요</h3>
-              <a href="#"><h6 class="d-flex align-items-center ml-3 mt-3 border-bottom" style="color: #676c7e;">더보기</h6></a>
+              <h3 class="mb-4" th:if="${reviewCnt != 0}">[[${reviewCnt}]]개의 후기가 있어요</h3>
+              <h3 class="mb-4" th:unless="${reviewCnt != 0}">아직 작성된 후기가 없어요. 제일 먼저 남겨보세요!</h3>
+              <!-- 
+              <a href="#" th:if="${reviewCnt > 5}"><h6 class="d-flex align-items-center ml-3 mt-3 border-bottom" style="color: #676c7e;">더보기</h6></a>  -->
               </div>
               <ul class="comment-list">
-                <li class="comment">
+                <li class="comment" th:each="rvList:${rev}">
                   <div class="vcard bio">
                     <img src="/images/person_2.jpg" alt="/image placeholder">
                   </div>
                   <div class="comment-body">
-                    <div class="d-flex justify-content-start">
-                    <h3>회원1</h3>
-                    <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
-                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                      </svg> 5</div>
-                    <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
+                   <div class="d-flex justify-content-between">
+	                    <div class="d-flex justify-content-start">
+	                    <h3 th:text="${rvList.userNickname}"></h3>
+	                    <div>
+	                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
+	                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+	                      </svg> 
+	                      [[${rvList.reviewRating}]]
+	                    </div>
+	                    <div class="meta ml-2" th:text="${#temporals.format(rvList.reviewRegdate, 'yyyy-MM-dd HH:mm:ss')}">
+	                    </div>
+	                    </div>
+                    
+	                    <div class="tagcloud ml-1 d-flex justify-content-end">
+	                        <a href="#" class="tag-cloud-link">추천 : [[${rvList.reviewLikeCnt}]]</a>
+	                    </div>
                     </div>
-                    <p>헉 넘 재밌다~!~!~!~!~!~!</p>
+                    <p>[[${rvList.reviewContent}]]</p>
+                    <!-- 이미지 보류
                     <div class="carousel_main">
                       <div class="carousel_wrapper">
                           <div class="carousel_slide">
@@ -156,9 +170,34 @@
                           <div class="carousel_circle"></div>
                       </div>
                   </div>
-                    <p><a href="#" class="reply">Reply</a></p>
+                  -->
+                  <p class="mt-1">
                   </div>
+                  
+                   <!-- 강사댓글 시작 -->
+                  <div th:each="commList : ${commentList}">
+				  	<div th:if="${commList.id == rvList.reviewId}">
+	                  <ul class="children2">
+	                    <li class="comment commentbox_inst mb-1 pt-1" >
+	                      <div class="vcard bio pl-2 pt-2">
+	                        <img src="/images/person_1.jpg" alt="/image placeholder">
+	                      </div>
+	                      <div class="comment-body">
+	                        <div class="d-flex justify-content-start">
+	                          <h3>[[${commList.instructorNickname}]]</h3>
+	                          <div class="meta ml-2" th:text="${#temporals.format(commList.reviewCommentRegdate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+	                          </div>
+	                        <p th:text="${commList.reviewCommentContent}"></p>
+	                      </div>
+	                    </li>
+	                  </ul>
+	                 </div>
+                  </div> <!-- 강사댓글 끝 -->
+                  
+                  
                 </li>
+                
+               <!-- 아래는 임시
 
                 <li class="comment">
                   <div class="vcard bio">
@@ -176,48 +215,41 @@
                     <p>재미없음 ㅠ</p>
                     <p><a href="#" class="reply">Reply</a></p>
                   </div>
-
-                  <ul class="children2">
-                    <li class="comment commentbox_inst" >
-                      <div class="vcard bio pl-2 pt-2">
-                        <img src="/images/person_1.jpg" alt="/image placeholder">
-                      </div>
-                      <div class="comment-body">
-                        <div class="d-flex justify-content-start">
-                          <h3>강사</h3>
-                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
-                          </div>
-                        <p>ㅠㅠ왜 재미가 없을까</p>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
+				
+				 
+                  
+                </li> -->
                 
               </ul>
               <!-- END comment-list -->
               
-              
+                         
               <!--페이징-->
-              <div>
+              <div th:if="${!paging.isEmpty()}">
               <div class="row mt-5">
                 <div class="col">
                   <div class="block-27 smallpage" style="display:inline; text-align: center;">
                     <ul class="mb-2">
-                      <li><a href="#" class="smallpage">&lt;</a></li>
-                      <li class="active"><span class="smallpage">1</span></li>
-                      <li><a href="#" class="smallpage">2</a></li>
-                      <li><a href="#" class="smallpage">3</a></li>
-                      <li><a href="#" class="smallpage">4</a></li>
-                      <li><a href="#" class="smallpage">5</a></li>
-                      <li><a href="#" class="smallpage">&gt;</a></li>
+                      <li th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                      	<a class="smallpage" th:href="@{|?page=${paging.number-1}#space|}">&lt;</a></li>
+                      
+                      <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                          th:if="${page >= paging.number-2 and page <= paging.number+2}"
+                          th:classappend="${page == paging.number} ? 'active'" class="a">
+                        <a class="smallpage" th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a></li>
+                      
+                      <li class="a" th:classappend="${!paging.hasNext} ? 'disabled'">
+                        <a class="smallpage" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a></li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
+            
               <div class="comment-form-wrap">                
               </div>
             </div>
+             <!--
             <h3 class="mt-5">이런 강의는 어때요?</h3><br/>
             <div class="row">
               
@@ -254,7 +286,7 @@
                     </div>
                   </div>
                 </div>
-                
+                -->
 
             </div>
           </div> <!-- .col-md-8 -->
@@ -277,27 +309,14 @@
   <script src="/js/onlineView.js"></script>
   <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
   <script th:inline="javascript">
-  /*<![CDATA[*/
+
   function fn_sendFB(sns) {
       var thisUrl = document.URL;
-      var titleStr = [[${onlineClass.onlineClassTitle}]];
+      var titleStr = titleVal.value;
       var snsTitle = "[내방공방]"+titleStr;
-      if( sns == 'facebook' ) {
-          var url = "http://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(thisUrl);
-          window.open(url, "", "width=486, height=286");
-      }
-      else if( sns == 'twitter' ) {
+      if( sns == 'twitter' ) {
           var url = "http://twitter.com/share?url="+encodeURIComponent(thisUrl)+"&text="+encodeURIComponent(snsTitle);
           window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
-      }
-      else if( sns == 'naver' ) {
-         var url = "http://blog.naver.com/openapi/share?url=" +encodeURIComponent(thisUrl) + "&title=" + encodeURIComponent(snsTitle);
-          window.open(url, "shareNaver", "width=400, height=500, resizable=yes");
-          
-      }
-      else if( sns == 'band' ) {
-          var url = "http://www.band.us/plugin/share?body="+encodeURIComponent(snsTitle)+"&route="+encodeURIComponent(thisUrl);
-          window.open(url, "shareBand", "width=400, height=500, resizable=yes");
       } else if( sns == 'kakaotalk' ) {
           // 사용할 앱의 JavaScript 키 설정 **이거 각자 키값으로 설정 필요
           Kakao.init('871614747711bfdc8d97e519ddcee3cf');
@@ -318,7 +337,7 @@
           });
       }    
   }
-  /*]]>*/
+
   </script>
   </body>
 </html>

@@ -230,6 +230,10 @@ figure
     line-height: 30px;
 }
 
+.smallpage ul .disabled{
+    pointer-events: none;
+}
+
 
 .smallpage ul li a, .smallpage ul li span {
     width: 30px;

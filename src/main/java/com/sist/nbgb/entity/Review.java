@@ -40,7 +40,7 @@ public class Review
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Comment("후기 글번호")
-	private Long reviewId;
+	private ReviewId reviewId;
 	
 	@Comment("강의 번호")
 	private Long classId;
