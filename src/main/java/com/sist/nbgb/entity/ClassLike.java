@@ -11,13 +11,17 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Comment;
 
+import com.sist.nbgb.dto.ClassLikeDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "NBGB_CLASS_LIKE")
 @AllArgsConstructor
@@ -36,4 +40,11 @@ public class ClassLike
 	@JoinColumn(name = "userId", columnDefinition = "VARCHAR2(20)")
 	private User userId;
 	
+	public static ClassLike createClassLike(ClassLikeDTO likeDto) {
+		ClassLike like = new ClassLike();
+		like.classId.setClassId(likeDto.getClassId());
+		like.classId.setClassIden(likeDto.getClassIden());
+		like.userId.setUserId(likeDto.getUserId());
+		return like;
+	}
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class OnlineClassView {
+	private final Long onlineClassId;
 	private final String onlineClassTitle;
 	private final String onlineClassContent;
 	private final LocalDateTime onlineClassRegdate;
@@ -19,6 +20,7 @@ public class OnlineClassView {
 	private final String category;
 	
 	public OnlineClassView(OnlineClass onlineClass) {
+		this.onlineClassId = onlineClass.getOnlineClassId();
 		this.onlineClassTitle = onlineClass.getOnlineClassTitle();
 		this.onlineClassContent = onlineClass.getOnlineClassContent();
 		this.onlineClassRegdate = onlineClass.getOnlineClassRegdate();
