@@ -31,4 +31,14 @@ public class LoginController
 	{
 		return "signup/signup2";
 	}
+	@GetMapping("/signupInstructor2")
+	public String signupInstructor2()
+	{
+		return "signup/signupInstructor2";
+	}
+	@GetMapping("/signupUser2")
+	public String signupUser2()
+	{
+		return "signup/signupUser2";
+	}
 }
