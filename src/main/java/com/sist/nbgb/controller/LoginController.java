@@ -20,4 +20,15 @@ public class LoginController
 	{
 		return "login/login";
 	}
+	//css 수정
+	@GetMapping("/login2")
+	public String login2()
+	{
+		return "login/login2";
+	}
+	@GetMapping("/signup2")
+	public String signup2()
+	{
+		return "signup/signup2";
+	}
 }
