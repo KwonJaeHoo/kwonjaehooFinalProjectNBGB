@@ -6,5 +6,5 @@ import com.sist.nbgb.entity.User;
 
 public interface UserRepository extends JpaRepository<User, String>
 {
-
+	Boolean existsByUserId(String userId);
 }

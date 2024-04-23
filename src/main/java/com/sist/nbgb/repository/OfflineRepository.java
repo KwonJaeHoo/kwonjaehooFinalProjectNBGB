@@ -23,10 +23,10 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 		       "FROM OfflineClass a, Instructors b " +
 		       "WHERE a.instructorId = b.instructorId " +
 		       "AND (a.offlineClassTitle LIKE %:search1% " +
-		       "OR b.instructorNickname LIKE %:search2%) " +
+		       "OR b.instructorNickname LIKE %:search1%) " +
 		       "AND a.offlineClassApprove = :offlineClassApprove " +
 		       "ORDER BY a.offlineClassId DESC")
-	List<OfflineClass> findBySearch(@Param("search1") String search1, @Param("search2") String search2, @Param("offlineClassApprove") Status offlineClassApprove);
+	List<OfflineClass> findBySearch(@Param("search1") String search1, @Param("offlineClassApprove") Status offlineClassApprove);
 	
 	@Query("SELECT m FROM OfflineClass m WHERE m.offlineClassCategory LIKE %:search% AND m.offlineClassApprove = :offlineClassApprove ORDER BY m.offlineClassId DESC")
 	List<OfflineClass> findByCategory(@Param("search") String search, @Param("offlineClassApprove") Status offlineClassApprove);
@@ -36,6 +36,37 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	
 	@Query("SELECT m FROM OfflineClass m WHERE (m.offlineClassPlace LIKE %:search1% OR m.offlineClassPlace LIKE %:search2%) AND m.offlineClassApprove = :offlineClassApprove ORDER BY m.offlineClassId DESC")
 	List<OfflineClass> findByTwoPlace(@Param("search1") String search1, @Param("search2") String search21, @Param("offlineClassApprove") Status offlineClassApprove);
+	
+	//중복검색
+	@Query("SELECT a, b.instructorNickname " +
+		       "FROM OfflineClass a, Instructors b " +
+		       "WHERE a.instructorId = b.instructorId " +
+		       "AND (a.offlineClassTitle LIKE %:search1% " +
+		       "OR b.instructorNickname LIKE %:search1%) " +
+		       "AND a.offlineClassCategory LIKE %:search2% " +
+		       "AND a.offlineClassApprove = :offlineClassApprove " +
+		       "ORDER BY a.offlineClassId DESC")
+	List<OfflineClass> findCateKeyword(@Param("search1") String search1, @Param("search2") String search2, @Param("offlineClassApprove") Status offlineClassApprove);
+	
+	@Query("SELECT a, b.instructorNickname " +
+		       "FROM OfflineClass a, Instructors b " +
+		       "WHERE a.instructorId = b.instructorId " +
+		       "AND (a.offlineClassTitle LIKE %:search1% " +
+		       "OR b.instructorNickname LIKE %:search1%) " +
+		       "AND a.offlineClassPlace LIKE %:search2% " +
+		       "AND a.offlineClassApprove = :offlineClassApprove " +
+		       "ORDER BY a.offlineClassId DESC")
+	List<OfflineClass> findPlaceKeyword(@Param("search1") String search1, @Param("search2") String search2, @Param("offlineClassApprove") Status offlineClassApprove);
+	
+	@Query("SELECT a, b.instructorNickname " +
+		       "FROM OfflineClass a, Instructors b " +
+		       "WHERE a.instructorId = b.instructorId " +
+		       "AND (a.offlineClassTitle LIKE %:search1% " +
+		       "OR b.instructorNickname LIKE %:search1%) " +
+		       "AND (a.offlineClassPlace LIKE %:search2% OR a.offlineClassPlace LIKE %:search3%) " +
+		       "AND a.offlineClassApprove = :offlineClassApprove " +
+		       "ORDER BY a.offlineClassId DESC")
+	List<OfflineClass> findTwoPlaceKeyword(@Param("search1") String search1, @Param("search2") String search2, @Param("search3") String search3, @Param("offlineClassApprove") Status offlineClassApprove);
 	
 	@Query("SELECT a, b.instructorNickname " +
 		       "FROM OfflineClass a, Instructors b " +

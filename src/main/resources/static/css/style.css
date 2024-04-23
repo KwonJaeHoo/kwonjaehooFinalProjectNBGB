@@ -8741,20 +8741,20 @@ h1, h2, h3, h4, h5,
       .btn.btn-white:hover span {
         color: #fff; }
     .btn.btn-white.btn-outline-white {
-      border-color: rgba(255, 255, 255, 0.8);
-      background: none;
+      border-color: none;
+      background: #F2F2F2;
       border-width: 1px;
       color: #fff; }
       .btn.btn-white.btn-outline-white:hover, .btn.btn-white.btn-outline-white:focus, .btn.btn-white.btn-outline-white:active {
         background: #89dd18;
         border-color: #89dd18;
         color: #fff; }
-  .btn.btn-outline-black {
+  .btn.btn-outline-white {
     border-color: black;
     background: none;
     border-width: 1px;
     color: #000; }
-    .btn.btn-outline-black:hover, .btn.btn-outline-black:focus, .btn.btn-outline-black:active {
+    .btn.btn-outline-white:hover, .btn.btn-outline-white:focus, .btn.btn-outline-white:active {
       background: #000;
       border-color: #000;
       color: #fff; }
@@ -9231,7 +9231,7 @@ textarea.form-control {
 .heading-section {
   z-index: 0; }
   .heading-section .subheading {
-    font-size: 12px;
+    font-size: 25px;
     display: block;
     margin-bottom: 5px;
     color: #477500;
