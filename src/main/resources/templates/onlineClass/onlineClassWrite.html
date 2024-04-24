@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/kih.css">
+<meta charset="UTF-8">
+<script src="/ckeditor/build/ckeditor.js"></script>
+<script src="/ckeditor/src/UploadAdapter.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  .ck-editor__editable { height: 400px; }
+   .ck-content { font-size: 12px; }
+</style>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	let first_input = $("div").find(".first-input");
+	let hidden_input = $("div").find(".input__block").find("#repeat__password");
+	$("#tab-1").css("opacity","0");
+	$("#tab-2").css("opacity","0");
+	
+	
+   $('input[type=radio][name=chk]').on("click", function(){
+	   
+	  var chkValue = $('input[type=radio][name=chk]:checked').val();
+      
+      if(chkValue == '1'){
+		 first_input.addClass("first-input__block").removeClass("signup-input__block");
+		 $('#tab-1').parent().parent().css("background","1");
+		 $('#tab-2').parent().parent().css("opacity","0.6");
+         $('#page1').css('display', 'block');
+         $('#page2').css('display', 'none');
+      }
+      else if(chkValue == '2'){
+    	 first_input.removeClass("first-input__block").addClass("signup-input__block");
+    	 $('#tab-2').parent().parent().css("opacity","1");
+ 		 $('#tab-1').parent().parent().css("opacity","0.6");
+         $('#page2').css('display', 'block');
+         $('#page1').css('display', 'none');
+      }
+   });
+});
+</script>
+</head>
+<body>
+<div th:insert="import/topImport.html :: top-import"></div>
+
+<section class="ftco-section pt-3">
+      <div class="container">
+        <div class="row justify-content-center">
+        
+        	<div class="col-lg-8 w-100 ftco-animate">
+    
+	<h2 class="mb-3" style="text-align:center;">온라인 클래스 등록 신청</h2>
+	<form method="POST" onsubmit="return false;" enctype="multipart/form-data">
+		<div id="page1" class="mb-2">
+
+			<table class="tb mb-2" border="1">
+			<tr>
+				<td class="tt" style="border-radius: 10px 0 0 0;">제목</td>
+				<td><input type="text" name="title" id="title" placeholder=" 제목을 입력하세요" /></td>
+			</tr>
+			<tr>
+				<td class="tt">카테고리</td>
+				<td><select name="category" id="category" style="border:none;outline:none;">
+				    <option value="1">건강 심성</option>
+				    <option value="2">레저생활 스포츠</option>
+				    <option value="3">생활문화예술</option>
+				    <option value="4">문화예술향상</option>
+				    <option value="5">기능적 소양</option>
+				    <option value="6">인문학적 교양</option>
+				    <option value="7">기타</option>
+				    </select>
+				</td>
+			</tr>
+			<tr>
+				<td class="tt">강사명</td>
+				<td><input type="text" placeholder=" 강사명" value=" 회원가입때한거예명" readonly></td>
+			</tr>
+			<tr>
+				<td class="tt">수강 기간</td>
+				<td><input type="text" placeholder=" 수강 기간을 입력하세요"></td>
+			</tr>
+			<tr>
+				<td class="tt" style="border-radius:0 0 0 10px;">가격</td>
+				<td><input type="text" placeholder=" 가격을 입력하세요"></td>
+			</tr>
+			</table>
+			
+			<textarea rows="5" cols="50" id="editor" placeholder="내 클래스를 잘 나타낼 수 있는 내용을 입력하세요. 예) 클래스 소개, 수강 효과, 추천 대상, 커리큘럼, 강사 소개 등"></textarea>
+			이건 editor 추가하면 잘 맞습니다..지금 없어서 이렇게 나옴...
+	</div>
+	
+	<div id="page2" style="display:none;">
+		<table class="tb mb-2" border="1">
+		<!-- 대표 사진 첨부-->
+		<tr>
+			<td class="tt" style="border-radius: 10px 10px 0 0;">대표 이미지</td></tr>
+		<tr>
+			<td class="insert pt-2" style="border-radius: 0 0 10px 10px;">
+		        <input type="file" class="filebox" />	
+		    </td>
+		</tr>
+		</table>
+	
+	<div class="d-flex justify-content-start mt-4">
+		<h4>커리큘럼</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">파일명은 강의 제목으로 등록해주세요.</p>
+	</div>
+	
+	<table class="tb" border="1">
+		<tr>
+			<td rowspan="2" style="width:50px;text-align:center;">1강</td>
+			<td><input type="file" class="filebox" /></td>
+		</tr>
+		<tr id="new">
+			<td><textarea rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
+		</tr>
+		<!-- 이 위치에 추가/삭제되도록 -->
+	</table>
+		<div class="d-flex justify-content-end m-3">
+			<button id="fileAdd" class="btnFile">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+				  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+				  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+				</svg>
+			</button>
+			
+			<button id="fileDel" style="display:none" class="btnFile">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-square" viewBox="0 0 16 16">
+				  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+				  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+				</svg>
+			</button>
+		</div>
+	</div>
+	
+	<!-- 페이지 출력 -->
+	<div class="block-27 smallpage" style="display:inline;text-align:center;border-color:#cecccc;">
+    <ul class="mb-2">
+		<li>
+	  		<a href="javascript:void(0);" class="smallpage"><input id="tab-1" type="radio" name="chk" value="1" style="display:none;"><label for="tab-1">&lt;</label></a>
+	  	</li>
+	  	<li>
+	 	 	<a href="javascript:void(0);" class="smallpage"><input id="tab-2" type="radio" name="chk" value="2" style="display:none;"><label for="tab-2">&gt;</label></a>
+	 	</li>
+	</ul>
+	</div>
+	<!-- 페이지 출력 끝 -->
+	
+	<p class="d-flex justify-content-end"><input type="submit" class="btnSubmit" onclick="post()" value="등록하기"></p>
+	</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>
+<div th:replace="import/jsImport.html :: js-import"></div>
+<script>
+$(document).ready(function() {
+	var i=2;
+	
+	$("#fileAdd").click(function() {
+		var addBox =
+			`<tr class="nemo${i}">
+			<td rowspan="2" style="width:50px;text-align:center;">${i}강</td>
+			<td><input type="file" class="filebox" /></td>
+			</tr>
+			<tr id="new${i}" class="nemo${i}">
+			<td><textarea rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
+			</tr>`
+    		
+			$('#fileDel').css('display', 'block');
+			
+			if(i==2){
+				$('#new').after(addBox);
+			} else {
+				$('#new'+(i-1)).after(addBox);
+			}
+	   		
+			i++;
+	  });
+
+	$("#fileDel").click(function(){
+		if(i==2){
+			$('#new').remove();
+		} else if(i==3){
+			$('.nemo'+(i-1)).remove();
+			$('#fileDel').css('display', 'none');
+		} else {
+			$('.nemo'+(i-1)).remove();
+		}
+	
+		i--;
+	});
+});
+
+//에디터
+/*
+function MyCustomUploadAdapterPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+        return new UploadAdapter(loader)
+    }
+}
+
+ClassicEditor.create(document.querySelector('#editor'), {
+	language:'ko',
+	extraPlugins: [MyCustomUploadAdapterPlugin]
+}).then(editor => {
+    window.editor = editor;
+}).catch(error => {
+    console.error(error);
+});
+
+
+
+function post(){
+	let editor_data = editor.getData();
+
+   alert('f12를 눌러 콘솔을 확인하세요');
+	
+	console.log(editor_data);
+}*/
+</script>
+</body>
+</html>

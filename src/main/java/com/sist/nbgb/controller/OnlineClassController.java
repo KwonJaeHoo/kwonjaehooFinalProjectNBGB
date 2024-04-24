@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sist.nbgb.dto.CategoriesDTO;
@@ -198,7 +202,8 @@ public class OnlineClassController {
 		
 		return "onlineClass/onlineClassView";
 	}
-
+	
+	//강의 좋아요(수정중)
 	@PostMapping("/api/onlineLike")
 	public String onlineLike(@ModelAttribute("likeDto") ClassLikeDTO classLikeDto, Model model) {
 		log.info(classLikeDto.getClassId()+"classID");
@@ -215,4 +220,11 @@ public class OnlineClassController {
 		
 		return "redirect:/";
 	}
+	
+	//온라인 클래스 등록 신청(글 작성)
+	@GetMapping("/online/write")
+	public String onlineClassWrite() {
+		return "onlineClass/onlineClassWrite";
+	}
+	
 }

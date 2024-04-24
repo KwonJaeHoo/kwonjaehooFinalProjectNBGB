@@ -42,7 +42,7 @@ public class ReviewFile
 	
 	@Column(length = 100)
 	@Comment("원본 파일명")
-	private String reeiwFileOrgName;
+	private String reviewFileOrgName;
 
 	@Column(length = 50)
 	@Comment("파일 명")

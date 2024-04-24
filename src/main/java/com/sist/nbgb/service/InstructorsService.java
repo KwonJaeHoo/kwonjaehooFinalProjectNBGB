@@ -20,37 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InstructorsService 
 {
-	private final InstructorsRepository instructorsRepository;
-	private final PasswordEncoder passwordEncoder;
+
 	
-	public Boolean instructorSignupDuplicateId(InstructorIdCheckDto instructorIdCheckDto)
-	{
-		return instructorsRepository.existsByInstructorId(instructorIdCheckDto.getInstructorId());
-	}
 	
-	@Transactional
-	public InstructorsDto instructorSignup(InstructorsDto instructorsDto)
-	{
-        if(instructorsRepository.findById(instructorsDto.getInstructorId()).orElse(null) != null) 
-        {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
-        }
-		
-		Instructors instructors = Instructors.builder()
-				.instructorId(instructorsDto.getInstructorId())
-				.instructorPassword(passwordEncoder.encode(instructorsDto.getInstructorPassword()))
-				.instructorName(instructorsDto.getInstructorName())
-				.instructorNickname(instructorsDto.getInstructorNickname())
-				.instructorEmail(instructorsDto.getInstructorEmail())
-				.instructorPhone(instructorsDto.getInstructorPhone())
-				.instructorBank(instructorsDto.getInstructorBank())
-				.instructorAccount(instructorsDto.getInstructorAccount())
-				.Authority(Role.ROLE_INSTRUCTOR)
-				.instructorStatus(Status.Y)
-				.instructorRegdate(LocalDateTime.now())
-				.instructorCategory(instructorsDto.getInstructorCategory())
-				.build();
-		
-		return InstructorsDto.from(instructorsRepository.save(instructors));
-	}
 }

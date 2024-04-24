@@ -234,9 +234,93 @@ figure
     pointer-events: none;
 }
 
-
 .smallpage ul li a, .smallpage ul li span {
     width: 30px;
     height: 30px;
     line-height: 30px;
     }
+
+.insert {
+    padding: 15px 15px;
+    display: block;
+    border: 1px solid #dbdbdb;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.insert .file-list {
+    height: 200px;
+    overflow: auto;
+    border: 1px solid #989898;
+    padding: 10px;
+}
+.insert .file-list .filebox p {
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.insert .file-list .filebox .delete i{
+	display: inline-block;
+    color: #ff5353;
+    margin-left: 5px;
+    width:40px;
+    height:40px;
+}
+
+.tb {
+	border-color:#e6e6e6;
+	border-radius: 10px;
+	border-style: hidden;
+	box-shadow: 0 0 0 1px #89dd18;
+	width:100%;
+}
+
+.tt {
+	text-align:center;
+	background-color:#f4f4f4;
+
+}
+
+td input {
+	border:none;
+	width:95%;
+}
+
+td input:focus {
+	outline:none;
+}
+
+.btnFile {
+	background-color:#FFFFFF;
+	border:none;
+	outline:none;
+	color:#89dd18;
+}
+
+.btnFile:hover {
+	border:none;
+	outline:none;
+	color:#477500;
+}
+
+.btnFile:focus {
+	border:none !important;
+	outline:none !important;
+	box-shadow: none !important; 
+}
+
+.btnSubmit {
+	background-color:#89dd18;
+	border-color:#89dd18;
+	outline:none;
+	color:#FFFFFF;
+	border-radius: 10px;
+}
+
+.btnSubmit:hover {
+	background-color:#FFFFFF;
+	border-color:#89dd18;
+	outline:none;
+	color:#89dd18;
+	border-radius: 10px;
+}
