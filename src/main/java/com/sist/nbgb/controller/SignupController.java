@@ -1,5 +1,8 @@
 package com.sist.nbgb.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 
 import javax.mail.MessagingException;
@@ -11,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
@@ -81,9 +86,25 @@ public class SignupController
 	
 	@PostMapping("/signup_instructor")
 	@ResponseBody
-	public ResponseEntity<InstructorsDto> instructorSignupProcess(@RequestBody @Valid InstructorsDto instructorsDto)
+	public ResponseEntity<InstructorsDto> instructorSignupProcess(@RequestPart(value="instructorDto") @Valid InstructorsDto instructorsDto, @RequestPart(value="instructorImageFile") MultipartFile instructorImageFile) throws Exception
 	{
+	    String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\instructor";
+	    String filename = instructorsDto.getInstructorId() + ".png"; // 기본 파일명
+	    String filepath = path + "/" + filename;
 		
-		return ResponseEntity.ok(signupService.instructorSignup(instructorsDto));	
+        File file = new File(filepath);
+        try 
+        {
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bufferedOutputStream.write(instructorImageFile.getBytes());
+            bufferedOutputStream.close();
+        
+        }
+        catch (Exception e) 
+        {
+            throw new RuntimeException("오류가 발생했습니다.");
+        } 
+	    
+	    return ResponseEntity.ok(signupService.instructorSignup(instructorsDto));	
 	}
 }

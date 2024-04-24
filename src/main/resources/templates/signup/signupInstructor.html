@@ -69,7 +69,7 @@
           </div>
           <p class="input-msg" id="instructorMsg6"></p>	
 
-          <div style="display: none;"> <!--none/block-->
+          <div id="instructorDiv" style="display: none;"> <!--none/block-->
             <div class="input-area justify-content-center col-md-12">
               <div class="col-3 input-name"><p class="input-name-detail">이메일 인증</p></div>
               <input type="text" id="instructorEmailCheck" name="instructorEmailCheck" placeholder="인증번호를 입력해주세요." class="input col-9" size="20"/>
@@ -433,9 +433,8 @@ $(document).ready(function()
 			{
 				alert("인증메일이 전송되었습니다.");
 				$("#instructorEmail").attr("readonly",true);
-				$('#instructorEmailBtn').attr("type", "hidden");
-				$('#instructorEmailCheck').attr("type", "text");
-				$('#instructorEmailCheckBtn').attr("type", "button");
+				$("button").remove("#instructorEmailBtn");
+				$('#instructorDiv').css("display", "block");
 				$('#instructorEmailCheck1').val(data);
 			},
 			error:function(xhr, status, error)
@@ -458,11 +457,9 @@ $(document).ready(function()
 		document.getElementById("instructorMsg7").innerHTML = "";
 		$('#instructorEmailCheck').css({'border':'1px solid #89dd18'});
 		$("#instructorEmailCheck").attr("readonly",true);
-		$('#instructorEmailCheckBtn').attr("type", "hidden");
+		$("button").remove("#instructorEmailCheckBtn");
 		instructorEmailCodeCheck = true;
 	});
-	
-	
 	
 	//phone
 	$('#instructorPhone').blur(function()
@@ -683,6 +680,6 @@ function signUp()
 			alert("오류가 발생했습니다. 다시 시도해주세요.");
 		}
    	});
-}
+}	
 </script>
 </html>

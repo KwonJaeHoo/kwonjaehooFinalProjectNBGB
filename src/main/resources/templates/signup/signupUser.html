@@ -28,7 +28,7 @@
         <form class="form2 mt-3 w-75" id="form1" enctype="multipart/form-data">
           <div class="input-area justify-content-center col-md-12">
             <div class="col-3 input-name"><p class="input-name-detail">아이디</p></div>
-            <input type="text" id="userId" name="userId" placeholder="아이디" class="input col-9" size="20"/>
+            <input type="text" id="userId" name="userId" placeholder="아이디를 입력해주세요." class="input col-9" size="20"/>
             <div class="col-3 log-btn-area"></div>
           </div>
           <p class="input-msg" id="userMsg1"></p>	
@@ -68,7 +68,7 @@
           </div>
           <p class="input-msg" id="userMsg6"></p>	
 
-          <div style="display: none;"> <!--none/block-->
+          <div id="userDiv" style="display: none;"> <!--none/block-->
             <div class="input-area justify-content-center col-md-12">
               <div class="col-3 input-name"><p class="input-name-detail">이메일 인증</p></div>
               <input type="text" id="userEmailCheck" name="userEmailCheck" placeholder="인증번호를 입력해주세요." class="input col-9" size="20"/>
@@ -407,9 +407,8 @@ $(document).ready(function()
 			{
 				alert("인증메일이 전송되었습니다.");
 				$("#userEmail").attr("readonly",true);
-				$('#userEmailBtn').attr("type", "hidden");
-				$('#userEmailCheck').attr("type", "text");
-				$('#userEmailCheckBtn').attr("type", "button");
+				$("button").remove("#userEmailBtn");
+				$('#userDiv').css("display", "block");
 				$('#userEmailCheck1').val(data);
 			},
 			error:function(xhr, status, error)
@@ -432,7 +431,7 @@ $(document).ready(function()
 		document.getElementById("userMsg7").innerHTML = "";
 		$('#userEmailCheck').css({'border':'1px solid #89dd18'});
 		$("#userEmailCheck").attr("readonly",true);
-		$('#userEmailCheckBtn').attr("type", "hidden");
+		$("button").remove("#userEmailCheckBtn");
 		userEmailCodeCheck = true;
 	});
 
