@@ -19,8 +19,7 @@ import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.service.EmailService;
-import com.sist.nbgb.service.InstructorsService;
-import com.sist.nbgb.service.UserService;
+import com.sist.nbgb.service.SignupService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,10 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SignupController 
 {
-	private final UserService userService;
-	
-	private final InstructorsService instructorsService;
-	
+	private final SignupService signupService;	
 	private final EmailService emailService;
 	
 	@GetMapping("/signup")
@@ -52,34 +48,35 @@ public class SignupController
 		return "/signup/signupInstructor";
 	}
 	
+	
+	
+	
 	@PostMapping("/signup_emailCheck")	
     @ResponseBody
     public ResponseEntity<String> EmailCheck(@RequestBody EmailCheckDto emailCheckDto) throws MessagingException, UnsupportedEncodingException 
 	{
         return ResponseEntity.ok(emailService.sendEmail(emailCheckDto.getEmail()));
     }
-	
 	@PostMapping("/signup_user_idcheck")
 	@ResponseBody
 	public ResponseEntity<Boolean> userSignupDuplicateId(@RequestBody UserIdCheckDto userIdCheckDto)
 	{	
 		//중복되는 경우 true, 중복되지 않은경우 false return
-		return ResponseEntity.ok(userService.userSignupDuplicateId(userIdCheckDto));
+		return ResponseEntity.ok(signupService.userSignupDuplicateId(userIdCheckDto));
+	}
+	@PostMapping("/signup_instructor_idcheck")
+	@ResponseBody
+	public ResponseEntity<Boolean> instructorSignupDuplicateId(@RequestBody InstructorIdCheckDto instructorIdCheckDto)
+	{	
+		//중복되는 경우 true, 중복되지 않은경우 false return
+		return ResponseEntity.ok(signupService.instructorSignupDuplicateId(instructorIdCheckDto));
 	}
 	
 	@PostMapping("/signup_user")
 	@ResponseBody
 	public ResponseEntity<UserDto> userSignupProcess(@RequestBody @Valid UserDto userDto) throws RuntimeException
 	{
-		return ResponseEntity.ok(userService.userSignup(userDto));	
-	}
-	
-	@PostMapping("/signup_instructor_idcheck")
-	@ResponseBody
-	public ResponseEntity<Boolean> instructorSignupDuplicateId(@RequestBody InstructorIdCheckDto instructorIdCheckDto)
-	{	
-		//중복되는 경우 true, 중복되지 않은경우 false return
-		return ResponseEntity.ok(instructorsService.instructorSignupDuplicateId(instructorIdCheckDto));
+		return ResponseEntity.ok(signupService.userSignup(userDto));	
 	}
 	
 	@PostMapping("/signup_instructor")
@@ -87,6 +84,6 @@ public class SignupController
 	public ResponseEntity<InstructorsDto> instructorSignupProcess(@RequestBody @Valid InstructorsDto instructorsDto)
 	{
 		
-		return ResponseEntity.ok(instructorsService.instructorSignup(instructorsDto));	
+		return ResponseEntity.ok(signupService.instructorSignup(instructorsDto));	
 	}
 }

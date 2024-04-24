@@ -5,105 +5,135 @@
 	<link rel="stylesheet" href="css/signup.css">
 </head>
 <body>
+
+<input type="hidden" id="instructorPassword" name="instructorPassword" placeholder="비밀번호" class="input" /> 
+<input type="hidden" id="instructorEmailCheck1" name="instructorEmailCheck1" placeholder="인증번호" class="input" />			
+				
 <div class="container2">
 	<a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
 </div>
 	<div class="container3">
-		<form class="form2" id="form1">
-		<h3>개인 회원가입</h3>
-			<input type="text" id="userId" name="userId" placeholder="아이디" class="input"/> 
-			<input type="password" id="userPasswordCheck1" name="userPasswordCheck1" placeholder="비밀번호" class="input"/> 
-			<input type="password" id="userPasswordCheck2" name="userPasswordCheck2" placeholder="비밀번호 확인" class="input"/> 
-			<input type="hidden" id="userPassword" name="userPassword" placeholder="비밀번호" class="input" /> 
+		<form class="form2" id="form1" enctype="multipart/form-data">
+		<h3>강사 회원가입</h3>
+		
+			<input type="text" id="instructorId" name="instructorId" placeholder="아이디" class="input" size="20"/>
+   			<p class="Msg1" id="instructorMsg1"></p>	
+   						
+			<input type="password" id="instructorPasswordCheck1" name="instructorPasswordCheck1" placeholder="비밀번호" class="input"/> 
+			<p class="Msg1" id="instructorMsg2"></p>	
 			
-			<input type="text" id="userName" name="userName" placeholder="이름" class="input" />
-			<input type="text" id="userNickname" name="userNickname" placeholder="닉네임" class="input" />
+			<input type="password" id="instructorPasswordCheck2" name="instructorPasswordCheck2" placeholder="비밀번호 확인" class="input"/> 
+			<p class="Msg1" id="instructorMsg3"></p>	
+
+			<input type="text" id="instructorName" name="instructorName" placeholder="이름" class="input" />
+			<p class="Msg1" id="instructorMsg4"></p>	
+
+			<input type="text" id="instructorNickname" name="instructorNickname" placeholder="예명" class="input" />
+			<p class="Msg1" id="instructorMsg5"></p>	
 			
-			<input type="text" id="userEmail" name="userEmail" placeholder="이메일" class="input" />
-			<input type="button" class="btn" id="userEmailBtn" name="userEmailBtn" value="인증메일 발송"/>
+			<input type="text" id="instructorEmail" name="instructorEmail" placeholder="이메일" class="input" />
+			<p class="Msg1" id="instructorMsg6"></p>	
+			<input type="button" class="btn" id="instructorEmailBtn" name="instructorEmailBtn" value="인증메일 발송"/>
 			
-			<input type="hidden" id="userEmailCheck" name="userEmailCheck" placeholder="인증번호" class="input" />
-			<input type="hidden" id="userEmailCheck1" name="userEmailCheck1" placeholder="인증번호" class="input" />
-			<input type="hidden" class="btn" id="userEmailCheckBtn" name="userEmailCheckBtn" value="인증번호 확인"/>
+			<input type="hidden" id="instructorEmailCheck" name="instructorEmailCheck" placeholder="인증번호" class="input" />
+			<p class="Msg1" id="instructorMsg7"></p>	
+			<input type="hidden" class="btn" id="instructorEmailCheckBtn" name="instructorEmailCheckBtn" value="인증번호 확인"/>
 			
-			<input type="text" id="userPhone" name="userPhone" placeholder="연락처" class="input" />
-			<input type="date" id="userBirth" name="userBirth" placeholder="생년월일" class="input" />
-			<input type="text" id="userGender" name="userGender" placeholder="성별" class="input" />
+			<input type="text" id="instructorPhone" name="instructorPhone" placeholder="연락처" class="input" />
+			<p class="Msg1" id="instructorMsg8"></p>	
 			
-			<button type="button" class="btn" id="userSignupBtn" name="userSignupBtn">가입하기</button>
+			<div>
+				<input type="text" id="instructorBank" name="instructorBank" placeholder="은행 명" class="input-small" />
+				<p class="Msg1" id="instructorMsg9"></p>	
+				<input type="text" id="instructorAccount" name="instructorAccount" placeholder="계좌번호" class="input" />
+				<p class="Msg1" id="instructorMsg10"></p>	
+			</div>
+			<select id="instructorCategory" name="instructorCategory" >
+				<option value="" selected="selected">선택하세요.</option>
+			  	<optgroup label="온라인 강의">
+	  				<option value="건강 심성">건강 심성</option>
+	 				<option value="레저생활 스포츠">레저생활 스포츠</option>
+	  				<option value="생활문화예술" >생활문화예술</option>
+					<option value="문화예술향상">문화예술향상</option>	
+	  				<option value="기능적 소양">기능적 소양</option>
+	  			</optgroup>	
+ 				<optgroup label="오프라인 강의">
+ 					<option value="공방">공방</option>
+				</optgroup>
+			</select>
+			<p class="Msg1" id="instructorMsg11"></p>
+
+			
+			<div style="padding-bottom: 15px">
+				<span style="font-size: 1.25rem; font-weight: 800; color: #89dd18; padding-right: 15px;">이미지파일</span>
+				<input type="file" id="instructorImageFile" name="instructorImageFile" multiple="multiple">
+				<p class="Msg1" id="instructorMsg12"></p>
+			</div>
+			
+			<button type="button" class="btn" id="instructorSignupBtn" name="instructorSignupBtn">가입하기</button>
 		</form>
 	</div>
 </body>
 
 
-
-
 <script type="text/javascript">
 $(document).ready(function()
 {	
-	//모든 공백 체크 정규식
+	//정규표현식
 	var emptyCheck = /\s/g;
-	
-	//영문 대,소문자, 숫자로만 이루어진 n자리 정규식
 	var idCheck = /^[a-zA-Z0-9]{4,20}$/;
-	
-	//특수문자, 영문 대,소문자,숫자 포함 형태의 n자리 이내의 암호 정규식
 	var pwdCheck = /^.*(?=^.{8,32}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
-	
-	//이름 정규식
 	var nameCheck = /^[가-힣]{2,15}$/;
-	
-	//닉네임정규식(한글 초성 및 모음은 허가하지 않음)
 	var nicknameCheck =	/^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
-	
-	//Email 정규식
 	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	
-	//핸드폰번호 정규식
 	var phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/;
 	
-	//date
-	var dateCheck = /^(19[7-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+	//모든 변수가 true여야 회원가입 진행..
+	var instructorIdCheck = false;
+	var instructorPasswordCheck = false;
+	var instructorNameCheck = false;
+	var instructorNicknameCheck = false;
+	var instructorEmailCheck = false;
+	var instructorEmailCodeCheck = false;
+	var instructorPhoneCheck = false;
+	var instructorBankCheck = false;
+	var instructorAccountCheck = false;
+	var instructorCategoryCheck = false;
+	const instructorImageFileCheck = $("#instructorImageFile")[0];
 	
-	
-	var userIdCheck = false;
-	var userPasswordCheck = false;
-	var userNameCheck = false;
-	var userNicknameCheck = false;
-	var userEmailCheck = false;
-	var userEmailCodeCheck = false;
-	var userPhoneCheck = false;
-	var userBirthCheck = false;
-	//var userGenderCheck = false;
-	
-	$('#userId').blur(function()
+
+	//id
+	$('#instructorId').blur(function()
 	{        
-		if($.trim($("#userId").val()).length <= 0)
+		if($.trim($("#instructorId").val()).length <= 0)
 		{
-			alert("아이디를 입력하세요.");
-			userIdCheck = false;
+			$('#instructorId').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg1").innerHTML = "아이디를 입력해주세요.";
+			instructorIdCheck = false;
 			return;
 		}
-		if(emptyCheck.test($("#userId").val()))
+		if(emptyCheck.test($("#instructorId").val()))
 		{
-			alert("아이디는 공백을 포함 할 수 없습니다.");
-			userIdCheck = false;
+			$('#instructorId').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg1").innerHTML = "아이디에 공백을 넣을 수 없어요.";
+			instructorIdCheck = false;
 			return;
 		}
-		if(!idCheck.test($("#userId").val()))
+		if(!idCheck.test($("#instructorId").val()))
 		{
-			alert("아이디는 4-20자의 영문 대 소문자 및 숫자로만 입력하세요.");
-			userIdCheck = false;
+			$('#instructorId').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg1").innerHTML = "이이디는 4자이상, 20자 이하로 입력해주세요.";
+			instructorIdCheck = false;
 			return;
 		}
 		
 		$.ajax
 		({
 			type:"POST",
-			url:"signup_user_idcheck",
+			url:"signup_instructor_idcheck",
 			data : JSON.stringify
 			({	           
-				userId:$('#userId').val()
+				instructorId:$('#instructorId').val()
 			}),
 			datatype:"JSON",
 			contentType:"application/json",
@@ -115,16 +145,23 @@ $(document).ready(function()
 			{
 				if(data == false)
 				{	               
-					alert("사용가능한 아이디입니다.");	  
-					userIdCheck = true;   
-					return;
-					           	
+					if($('#instructorId').val() != '')
+					{
+						$('#instructorId').css({'border':'1px solid #89dd18'});
+						document.getElementById("instructorMsg1").innerHTML = "";
+						instructorIdCheck = true;   
+						return;
+					}	           	
 				}
 				else if(data == true)
 				{
-					alert("중복된 아이디입니다.");	 
-					userIdCheck = false; 
-					return;                 	
+					if($('#instructorId').val()!='')
+					{
+						$('#instructorId').css({'border':'1px solid red'});
+						document.getElementById("instructorMsg1").innerHTML = "아이디가 중복돼요.";
+						instructorIdCheck = false; 
+						return;                 
+					}	
 	       	    }
 			},
 			error:function(xhr, status, error)
@@ -134,127 +171,186 @@ $(document).ready(function()
 		});
 	});
 	
-	$('#userPasswordCheck1').blur(function()
+	  
+	//password1
+	$('#instructorPasswordCheck1').blur(function()
 	{ 
-		if($.trim($("#userPasswordCheck1").val()).length <= 0)
+		if($.trim($("#instructorPasswordCheck1").val()).length <= 0)
 		{
-			alert("비밀번호를 입력해주세요.");
-			userPasswordCheck = false;
+			$('#instructorPasswordCheck1').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "비밀번호를 입력해주세요.";
+			instructorPasswordCheck = false;
 			return;
 		}
-		if(!pwdCheck.test($("#userPasswordCheck1").val()))
+		if(!pwdCheck.test($("#instructorPasswordCheck1").val()))
 		{
-			alert("비밀번호는 영문 대소문자 숫자로 8-32자리로 입력하세요.");
-			userPasswordCheck = false;
-			return;
-		}
-	});
-	
-	$('#userPasswordCheck2').blur(function()
-	{ 
-		if($.trim($("#userPasswordCheck2").val()).length <= 0)
-		{
-			alert("비밀번호 확인란을 입력해주세요.");
-			userPasswordCheck = false;
+			$('#instructorPasswordCheck1').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "비밀번호는 숫자,영문,특수문자 포함해서 최소 8자 최대 32자까지 입력해주세요.";
+			instructorPasswordCheck = false;
 			return;
 		}
 		
-		if($("#userPasswordCheck1").val() != $("#userPasswordCheck2").val())
+		if($("#instructorPasswordCheck2").val().length > 0 && $("#instructorPasswordCheck1").val() != $("#instructorPasswordCheck2").val())
 		{
-			alert("비밀번호와 비밀번호 확인값이 일치하지 않습니다.");
-			userPasswordCheck = false
+			$('#instructorPasswordCheck2').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "";
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호가 일치하지 않아요.";
+
+			instructorPasswordCheck = false;
 			return;	
 		}		
-		else
+		
+		$('#instructorPasswordCheck1').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg2").innerHTML = "";
+		
+	});
+	
+	//password2
+	$('#instructorPasswordCheck2').blur(function()
+	{ 
+		if($.trim($("#instructorPasswordCheck2").val()).length <= 0)
 		{
-			$("#userPassword").val($("#userPasswordCheck1").val());
-			userPasswordCheck = true;	
+			$('#instructorPasswordCheck2').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호를 입력해주세요.";
+			instructorPasswordCheck = false;
+			return;
+		}
+		
+		if(!pwdCheck.test($("#instructorPasswordCheck2").val()))
+		{
+			$('#instructorPasswordCheck2').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호는 숫자,영문,특수문자 포함해서 최소 8자 최대 32자까지 입력해주세요.";
+			instructorPasswordCheck = false;
+			return;
+		}
+		
+		if($("#instructorPasswordCheck1").val() != $("#instructorPasswordCheck2").val())
+		{
+			$('#instructorPasswordCheck2').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호가 일치하지 않아요.";
+
+			instructorPasswordCheck = false;
+			return;	
+		}		
+
+		if($("#instructorPasswordCheck1").val() == $("#instructorPasswordCheck2").val())
+		{
+			$('#instructorPasswordCheck1').css({'border':'1px solid #89dd18'});
+			$('#instructorPasswordCheck2').css({'border':'1px solid #89dd18'});
+			document.getElementById("instructorMsg2").innerHTML = "";
+			document.getElementById("instructorMsg3").innerHTML = "";
+			
+			$("#instructorPassword").val($("#instructorPasswordCheck1").val());
+			instructorPasswordCheck = true;	
 			return;
 		}
 	});
 	
-	$('#userName').blur(function()
+	
+	//name
+	$('#instructorName').blur(function()
 	{ 
-		if($.trim($("#userName").val()).length <= 0)
+		if($.trim($("#instructorName").val()).length <= 0)
 		{
-			alert("이름을 입력해 주세요.");
-			userNameCheck = false;
+			$('#instructorName').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg4").innerHTML = "이름을 입력해 주세요.";
+			instructorNameCheck = false;
 			return;
 		}
 
-		if(emptyCheck.test($("#userName").val()))
+		if(emptyCheck.test($("#instructorName").val()))
 		{
-			alert("이름에 공벡을 넣을 수 없습니다.");
-			userNameCheck = false;
+			$('#instructorName').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg4").innerHTML = "이름에 공백을 넣을 수 없어요.";
+			instructorNameCheck = false;
 			return;
 		}
 
-		if(!nameCheck.test($("#userName").val()))
+		if(!nameCheck.test($("#instructorName").val()))
 		{
-			alert("이름 형식이 올바르지 않습니다.");
-			userNameCheck = false;
+			$('#instructorName').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg4").innerHTML = "이름 형식이 올바르지 않아요.";
+			instructorNameCheck = false;
 			return;
 		}
 		
-		userNameCheck = true;
+		$('#instructorName').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg4").innerHTML = "";
+		instructorNameCheck = true;
 	});
 		
-	$('#userNickname').blur(function()
+	
+	
+	//nickname
+	$('#instructorNickname').blur(function()
 	{ 
-		if($.trim($("#userNickname").val()).length <= 0)
+		if($.trim($("#instructorNickname").val()).length <= 0)
 		{
-			alert("닉네임을 입력해 주세요.");
-			userNicknameCheck = false;
+			$('#instructorNickname').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "예명을 입력해 주세요.";
+			instructorNicknameCheck = false;
 			return;
 		}
 
-		if(emptyCheck.test($("#userNickname").val()))
+		if(emptyCheck.test($("#instructorNickname").val()))
 		{
-			alert("닉네임에 공벡을 넣을 수 없습니다.");
-			userNicknameCheck = false;
+			$('#instructorNickname').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "예명에 공백을 넣을 수 없어요.";
+			instructorNicknameCheck = false;
 			return;
 		}
 
-		if(!nicknameCheck.test($("#userNickname").val()))
+		if(!nicknameCheck.test($("#instructorNickname").val()))
 		{
-			alert("닉네임 형식이 올바르지 않습니다.");
-			userNicknameCheck = false;
+			$('#instructorNickname').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "예명 형식이 올바르지 않아요.";
+			instructorNicknameCheck = false;
 			return;
 		}
 		
-		userNicknameCheck = true;
+		$('#instructorNickname').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg5").innerHTML = "";
+		instructorNicknameCheck = true;
 	});	
 	
-	$('#userEmail').blur(function()
+	
+	
+	
+	//email
+	$('#instructorEmail').blur(function()
 	{ 
-		if($.trim($("#userEmail").val()).length <= 0)
+		if($.trim($("#instructorEmail").val()).length <= 0)
 		{
-			alert("이메일을 입력해 주세요.");
-			userEmailCheck = false;
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg6").innerHTML = "이메일을 입력해 주세요.";
+			instructorEmailCheck = false;
 			return;
 		}
 		
-		if(emptyCheck.test($("#userEmail").val()))
+		if(emptyCheck.test($("#instructorEmail").val()))
 		{
-			alert("이메일에 공백을 넣을 수 없습니다.");
-			userEmailCheck = false;
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg6").innerHTML = "이메일에 공백을 넣을 수 없어요.";
+			instructorEmailCheck = false;
 			return;
 		}
 		
-		if(!emailCheck.test($("#userEmail").val()))
+		if(!emailCheck.test($("#instructorEmail").val()))
 		{
-			alert("이메일 형식이 올바르지 않습니다.");
-			userEmailCheck = false;
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg6").innerHTML = "이메일 형식이 올바르지 않아요.";
+			instructorEmailCheck = false;
 			return;
 		}
 		
-		userEmailCheck = true;
+		$('#instructorEmail').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg6").innerHTML = "";
+		instructorEmailCheck = true;
 	});	
 	
-	
-	$("#userEmailBtn").on("click", function()
+	$("#instructorEmailBtn").on("click", function()
 	{
-		if(userEmailCheck == false)
+		if(instructorEmailCheck == false)
 		{
 			alert("올바른 이메일을 입력해주세요.");
 			return;
@@ -266,7 +362,7 @@ $(document).ready(function()
 			url:"signup_emailCheck",
 			data : JSON.stringify
 			({	           
-				email:$('#userEmail').val()
+				email:$('#instructorEmail').val()
 			}),
 			datatype:"JSON",
 			contentType:"application/json",
@@ -277,11 +373,11 @@ $(document).ready(function()
 			success:function(data)
 			{
 				alert("인증메일이 전송되었습니다.");
-				$("#userEmail").attr("readonly",true);
-				$('#userEmailBtn').attr("type", "hidden");
-				$('#userEmailCheck').attr("type", "text");
-				$('#userEmailCheckBtn').attr("type", "button");
-				$('#userEmailCheck1').val(data);
+				$("#instructorEmail").attr("readonly",true);
+				$('#instructorEmailBtn').attr("type", "hidden");
+				$('#instructorEmailCheck').attr("type", "text");
+				$('#instructorEmailCheckBtn').attr("type", "button");
+				$('#instructorEmailCheck1').val(data);
 			},
 			error:function(xhr, status, error)
 			{
@@ -291,126 +387,229 @@ $(document).ready(function()
 		});
 	});
 	
-	$("#userEmailCheckBtn").on("click", function()
+	$("#instructorEmailCheckBtn").on("click", function()
 	{
-		if($("#userEmailCheck").val() != $("#userEmailCheck1").val())
+		if($("#instructorEmailCheck").val() != $("#instructorEmailCheck1").val())
 		{
-			alert("인증코드가 일치하지 않습니다.");
+			$('#instructorEmailCheck').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg7").innerHTML = "인증코드가 일치하지 않아요.";
 			return;	
 		}
 		
-		alert("인증되었습니다.");
-		$("#userEmailCheck").attr("readonly",true);
-		$('#userEmailCheckBtn').attr("type", "hidden");
-		userEmailCodeCheck = true;
+		document.getElementById("instructorMsg7").innerHTML = "";
+		$('#instructorEmailCheck').css({'border':'1px solid #89dd18'});
+		$("#instructorEmailCheck").attr("readonly",true);
+		$('#instructorEmailCheckBtn').attr("type", "hidden");
+		instructorEmailCodeCheck = true;
 	});
-
-	$('#userPhone').blur(function()
+	
+	
+	
+	//phone
+	$('#instructorPhone').blur(function()
 	{ 	
-		if($.trim($("#userPhone").val()).length <= 0)
+		if($.trim($("#instructorPhone").val()).length <= 0)
 		{
-			alert("전화번호를 입력해 주세요.");
-			userPhoneCheck = false;
+			$('#instructorPhone').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg8").innerHTML = "전화번호를 입력해 주세요";
+			instructorPhoneCheck = false;
 			return;
 		}		
-		if(!phoneCheck.test($("#userPhone").val()))
+		if(!phoneCheck.test($("#instructorPhone").val()))
 		{
-			alert("전화번호 형식이 올바르지 않습니다.");
-			userPhoneCheck = false;
+			$('#instructorPhone').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg8").innerHTML = "전화번호 형식이 올바르지 않아요.";
+			instructorPhoneCheck = false;
 			return;
 		}
-		
-		userPhoneCheck = true;
-	});
-	
-	$('#userBirth').blur(function()
-	{ 	
-	    if(!dateCheck.test($('#userBirth').val()))
-	    {
-	        alert("날짜는 yyyy-mm-dd 형식으로 입력해주세요.");
-	        userBirthCheck = false;
-	        return;
-	    }
-	    
-	    userBirthCheck = true;
-	});
-	
-//	$('#userGenter').blur(function()
-//	{ 	
-//	});
 
-	$("#userSignupBtn").on("click", function()
+		$('#instructorPhone').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg8").innerHTML = "";
+		instructorPhoneCheck = true;
+	});
+
+	
+	//bank
+	$('#instructorBank').blur(function()
+	{ 	
+		if($.trim($("#instructorBank").val()).length <= 0)
+		{
+			$('#instructorBank').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg9").innerHTML = "은행명을 입력해 주세요.";
+			instructorBankCheck = false;
+			return;
+		}		
+
+		$('#instructorBank').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg9").innerHTML = "";
+		instructorBankCheck = true;
+	});
+	
+	
+	//account
+	$('#instructorAccount').blur(function()
+	{ 	
+		if($.trim($("#instructorAccount").val()).length <= 0)
+		{
+			$('#instructorAccount').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg10").innerHTML = "계좌번호를 입력해 주세요.";
+			instructorAccountCheck = false;
+			return;
+		}		
+		
+		$('#instructorAccount').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg10").innerHTML = "";
+		instructorAccountCheck = true;
+	});
+	
+	
+	//category
+	$('#instructorCategory').blur(function()
+	{ 	
+		if($.trim($("#instructorCategory").val()).length <= 0)
+		{
+			$('#instructorCategory').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg11").innerHTML = "카테고리를 선택 해 주세요.";
+			instructorCategoryCheck = false;
+			return;
+		}		
+		
+		$('#instructorCategory').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg11").innerHTML = "";
+		instructorCategoryCheck = true;
+	});
+	
+	
+	$("#instructorSignupBtn").on("click", function()
 	{
 		if(confirm("입력하신 정보로 회원가입 하시겠어요?"))
 		{
-			if(userIdCheck == false)
+			if(instructorIdCheck == false)
 			{
-				alert("아이디 중복체크 해 주세요.");
+				$('#instructorId').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg1").innerHTML = "아이디 중복체크를 확인 해 주세요.";
 				return;
 			}
-			else if(userPasswordCheck == false)
+			
+			if(instructorPasswordCheck == false)
 			{
-				alert("비밀번호를 입력 해 주세요.");
+				$('#instructorPasswordCheck1').css({'border':'1px solid red'});
+				$('#instructorPasswordCheck2').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg2").innerHTML = "비밀번호를 확인 해 주세요.";
+				document.getElementById("instructorMsg3").innerHTML = "비밀번호를 확인 해 주세요.";
 				return;
 			}
-			else if(userNameCheck == false)
+			
+			if(instructorNameCheck == false)
 			{
-				alert("이름을 입력 해 주세요.");
+				$('#instructorName').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg4").innerHTML = "이름을 입력 해 주세요.";
 				return;
 			}
-			else if(userNicknameCheck == false)
+			
+			if(instructorNicknameCheck == false)
 			{
-				alert("닉네임을 입력 해 주세요.");
+				$('#instructorNickname').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg5").innerHTML = "예명을 입력 해 주세요.";
 				return;
 			}
-			else if(userEmailCodeCheck == false)
+			
+			if(instructorEmailCheck == false)
 			{
-				alert("이메일 인증코드를 입력 해 주세요.");
+				$('#instructorEmail').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg6").innerHTML = "이메일 인증을 해 주세요";
 				return;
 			}
-			else if(userPhoneCheck == false)
+			
+			if(instructorEmailCodeCheck == false)
 			{
-				alert("전화번호를 입력 해 주세요.");
+				$('#instructorEmailCheck1').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg7").innerHTML = "이메일 인증코드를 입력 해 주세요.";
 				return;
 			}
-			else if(userBirthCheck == false)
+			
+			if(instructorPhoneCheck == false)
 			{
-				alert("생년월일을 입력 해 주세요.");
+				$('#instructorPhone').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg8").innerHTML = "전화번호를 입력 해 주세요";
 				return;
 			}
-			//else if(userGenderCheck == false)
-			//{
-			//	alert("아이디 중복체크를 확인 해 주세요.");
-			//	return;
-			//}
-			else
+			
+			if(instructorBankCheck == false)
 			{
-				signUp();
+				$('#instructorBank').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg9").innerHTML = "은행명을 입력 해 주세요.";
+				return;
 			}
+			else if(instructorAccountCheck == false)
+			{
+				$('#instructorAccount').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg10").innerHTML = "계좌를 입력 해 주세요.";
+				return;
+			}
+			else if(instructorCategoryCheck == false)
+			{
+				$('#instructorCategory').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg11").innerHTML = "카테고리를 선택 해 주세요.";
+				return;
+			}
+			
+			if(instructorImageFile.files.length === 0)
+			{
+				document.getElementById("instructorMsg12").innerHTML = "이미지를 업로드 해 주세요";
+			    return;
+			}
+			
+			var fileVal = $("#instructorImageFile").val();
+			
+		    if(fileVal != "")
+		    {
+		        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+		        //아래 확장자가 있는지 체크
+		        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+		        {
+		        	document.getElementById("instructorMsg12").innerHTML = "jpg, jpeg, png 파일만 업로드 할 수 있어요.";
+		          	return;
+		        }
+		    }
+			
+		    signUp();
 		}
 	});
 });
 
 function signUp()
 {
+	var instructorImageFile = $("#instructorImageFile")[0].files[0];
+	var formData = new FormData();
+    formData.append('instructorImageFile', instructorImageFile);
+    
+	var instructorDto = 
+	{
+			instructorId:$("#instructorId").val(),
+			instructorPassword:$("#instructorPassword").val(),
+			instructorName:$("#instructorName").val(),
+			instructorNickname:$("#instructorNickname").val(),
+			instructorEmail:$("#instructorEmail").val(),
+			instructorPhone:$("#instructorPhone").val(),
+			instructorBank:$("#instructorBank").val(),
+			instructorAccount:$("#instructorAccount").val(),
+			instructorCategory:$("#instructorCategory").val()
+	}
+	
+	formData.append("instructorDto", new Blob([JSON.stringify(instructorDto)], {type: "application/json"}));
+
+	
 	$.ajax
 	({
 		type:"POST",
-		url:"/signup_user",
-		data : JSON.stringify
-		({
-			userId:$("#userId").val(),
-			userPassword:$("#userPassword").val(),
-			userName:$("#userName").val(),
-			userNickname:$("#userNickname").val(),
-			userEmail:$("#userEmail").val(),
-			userPhone:$("#userPhone").val(),
-			userBirth:$("#userBirth").val(),
-			userGender:$("#userGender").val()
-			
-		}),
+		url:"/signup_instructor",
+		data: formData,
+		enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        cache: false,
 		datatype:"JSON",
-		contentType:"application/json",
 		beforeSend:function(xhr)
 		{
 			xhr.setRequestHeader("AJAX", true);
