@@ -15,6 +15,8 @@ import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.response.OfflineResponse;
+import com.sist.nbgb.response.OfflineReviewCommentResponse;
+import com.sist.nbgb.response.OfflineReviewResponse;
 import com.sist.nbgb.service.OfflineReviewService;
 import com.sist.nbgb.service.OfflineService;
 
@@ -228,7 +230,8 @@ public class OfflineController
 	public String offlineView(Model model, @PathVariable Long offlineClassId)
 	{
 		OfflineClass offlineClass = null;
-		List<ReviewComment> commentlist = null; 
+		List<OfflineReviewResponse> review = null;
+		List<OfflineReviewCommentResponse> commentlist = null;
 		
 		if(offlineClassId > 0)
 		{
@@ -240,7 +243,9 @@ public class OfflineController
 				int count = 0;
 				float avgRating = 0;
 				
-				List<Review> review = offlineReviewService.findReview(offlineClassId);
+				review = offlineReviewService.findReview(offlineClassId).stream()
+						.map(OfflineReviewResponse::new)
+						.collect(Collectors.toList());
 				
 				offlineService.updateViews(offlineClassId);
 				
@@ -249,7 +254,9 @@ public class OfflineController
 					rating = offlineReviewService.offCountRating(offlineClassId);
 					count = offlineReviewService.offCount(offlineClassId);
 					
-					commentlist = offlineReviewService.findReviewComment(offlineClassId);
+					commentlist = offlineReviewService.findReviewComment(offlineClassId).stream()
+							.map(OfflineReviewCommentResponse::new)
+							.collect(Collectors.toList());
 					
 //					System.out.println(commentlist);
 					

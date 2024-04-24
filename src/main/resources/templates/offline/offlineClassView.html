@@ -4,10 +4,68 @@
     <div th:replace="import/cssImport.html :: css-import"></div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="/css/kih.css">
-   <script>
-   $(document).ready(function(){
-	   $("#star").css("width", "[[${avgRating}]]%"); 
-   });
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script th:inline="javascript">
+    $(document).ready(function(){
+ 	    $("#star").css("width", "[[${avgRating}]]%"); 
+    });
+   
+    function fn_sendFB(sns) {
+	      var thisUrl = document.URL;
+	      var titleStr = titleVal.value;
+	      var snsTitle = "[내방공방]"+titleStr;
+	      if( sns == 'twitter' ) 
+	      {
+	          var url = "http://twitter.com/share?url="+encodeURIComponent(thisUrl)+"&text="+encodeURIComponent(snsTitle);
+	          window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
+	      } 
+	      else if( sns == 'clip')
+	      {
+	    	  var url = '';
+	    		var textarea = document.createElement("textarea");
+	    		document.body.appendChild(textarea);
+	    		url = window.document.location.href;
+	    		textarea.value = url;
+	    		textarea.select();
+	    		document.execCommand("copy");
+	    		document.body.removeChild(textarea);
+	    		alert("URL이 복사되었습니다.")
+	      }
+	      else if( sns == 'kakaotalk' ) 
+	      {
+	    	// 사용할 앱의 JavaScript 키 설정
+   	        Kakao.init('a4224d0513a6eb4b3592da6296dd41fe');
+   	        
+		   	 Kakao.Link.createDefaultButton({
+		         container: '#btnKakao',
+		         objectType: 'feed',
+		         content: {
+		             title: '[내방공방] 공방 클래스',
+		             imageUrl: 'https://postfiles.pstatic.net/MjAyNDA0MjJfMTQx/MDAxNzEzNzc1NjU3NDI0.NPeA0SHSox9hDZVGYGJ-h1Eoni75rlvah_nHHinVzvIg.gIdgBKcdvGbpzCCG62fuisFwXx56tZxwDNr6lm_fxsUg.PNG/logo.png?type=w966',
+		             link: {
+		                 mobileWebUrl: thisUrl,
+		            	 webUrl: thisUrl
+		             }
+		         },
+		         installTalk : true
+		     });
+   	    
+   	        // 카카오링크 버튼 생성
+   	        Kakao.Link.createDefaultButton({
+   	            container: '#btnKakao', // HTML에서 작성한 ID값
+   	            objectType: 'feed',
+   	            content: {
+   	            title: "[내방공방] 공방 클래스", // 보여질 제목
+   	            description: titleStr, // 보여질 설명
+   	            imageUrl: "https://postfiles.pstatic.net/MjAyNDA0MjJfMTQx/MDAxNzEzNzc1NjU3NDI0.NPeA0SHSox9hDZVGYGJ-h1Eoni75rlvah_nHHinVzvIg.gIdgBKcdvGbpzCCG62fuisFwXx56tZxwDNr6lm_fxsUg.PNG/logo.png?type=w966", // 콘텐츠 URL
+   	            link: {
+   	                mobileWebUrl: thisUrl,
+   	                webUrl: thisUrl
+   	            }
+   	            }
+   	        });
+	      }
+    }
    </script>
   </head>
   <body>
@@ -27,7 +85,7 @@
 	            <img th:src="@{'/images/offlineThumbnail/' + ${offlineClassId} + '.jpg'}" alt="" class="offline_thumnail">
 	            
 	          <div style="height: auto;">
-	          	<h1 style="color:#477500; margin-bottom: 0px;" th:text="${offlineClass.offlineClassTitle}"></h1>
+	          	<h1 id="titleVal" style="color:#477500; margin-bottom: 0px;" th:value="${offlineClass.offlineClassTitle}"></h1>
 	          </div>
 	          <div class="d-flex justify-content-between ">
 	          	  <div class="mb-3 d-flex justify-content-start align-items-center" >
@@ -58,10 +116,9 @@
               	  <button onclick="btnClick()" id="btnLike" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
               	  <div id="dropdown-share-content" class="dropdown-share-content align-items-center">
                 	<ul class="ftco-footer-social mt-1" style="padding-left: 0px; margin-bottom: 0px;">
-		            	<li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-link2"></span></a></li>
-		           		<li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-comment"></span></a></li>
-		                <li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-twitter"></span></a></li>
-		                <li class="ftco-animate" style="margin:1px;"><a href="#"><span class="icon-facebook"></span></a></li>
+		            	<li class="ftco-animate" style="margin:1px;"><a onclick="fn_sendFB('clip');return false;"><span class="icon-link2"></span></a></li>
+		           		<li class="ftco-animate" style="margin:1px;"><a id="btnKakao" onclick="fn_sendFB('kakaotalk');return false;"><span class="icon-comment"></span></a></li>
+		                <li class="ftco-animate" style="margin:1px;"><a onclick="fn_sendFB('twitter');return false;"><span class="icon-twitter"></span></a></li>
 		              </ul>
                  </div>
             </div>
@@ -174,56 +231,29 @@
                     <p><a href="#" class="reply">Reply</a></p>
                   </div>
                 </li>
+                
+                <div th:each="commentlist : ${commentlist}">
+                <div th:if="${commentlist.id == review.reviewId}">
+                     <ul class="children2">
+                       <li class="comment commentbox_inst" >
+                         <div class="vcard bio pl-2 pt-2">
+                           <img src="/images/person_1.jpg" alt="/image placeholder">
+                         </div>
+                         <div class="comment-body">
+                           <div class="d-flex justify-content-start">
+                             <h3>[[${commentlist.instructorNickname}]]</h3>
+                             <div class="meta ml-2">[[${commentlist.reviewCommentRegdate}]]</div>
+                             </div>
+                           <p th:text="${commentlist.reviewCommentContent}"></p>
+                         </div>
+                       </li>
+                     </ul>
+                     </div>
+                  </div>
+                  
                 </div>
                 
-               <div  th:each="comment : ${commentlist}">
-            		<ul class="children2">
-                    <li class="comment commentbox_inst" >
-                      <div class="vcard bio pl-2 pt-2">
-                        <img src="/images/person_1.jpg" alt="/image placeholder">
-                      </div>
-                      <div class="comment-body">
-                        <div class="d-flex justify-content-start">
-                          <h3>강사</h3>
-                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
-                          </div>
-                        <p th:text="${comment.reviewCommentContent}"></p>
-                      </div>
-                    </li>
-                  </ul>
-                  </div>
-                
-                <!-- <li class="comment">
-                  <div class="vcard bio">
-                    <img src="/images/person_1.jpg" alt="/image placeholder">
-                  </div>
-                  <div class="comment-body">
-                    <div class="d-flex justify-content-start">
-                      <h3>회원2</h3>
-                      <div>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
-                        <span style="width:16; height:16; color:gold;" class="icon-star"></span> 1</div>
-                      <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
-                      </div>
-                    <p>재미없음 ㅠ</p>
-                    <p><a href="#" class="reply">Reply</a></p>
-                  </div>
-
-                  <ul class="children2">
-                    <li class="comment commentbox_inst" >
-                      <div class="vcard bio pl-2 pt-2">
-                        <img src="/images/person_1.jpg" alt="/image placeholder">
-                      </div>
-                      <div class="comment-body">
-                        <div class="d-flex justify-content-start">
-                          <h3>강사</h3>
-                          <div class="meta ml-2">Sept 25, 2019 at 2:21pm</div>
-                          </div>
-                        <p>ㅠㅠ왜 재미가 없을까</p>
-                      </div>
-                    </li>
-                  </ul>
-                </li> -->
+               
                 
               </ul>
               <!-- END comment-list -->
