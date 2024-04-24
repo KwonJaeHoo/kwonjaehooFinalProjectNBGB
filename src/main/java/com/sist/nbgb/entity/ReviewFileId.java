@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @EqualsAndHashCode
 @Builder
-public class ReiewFileId implements Serializable
+public class ReviewFileId implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

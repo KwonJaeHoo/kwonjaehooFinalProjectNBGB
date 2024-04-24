@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 public class ReviewFile 
 {
 	@EmbeddedId
-	private ReiewFileId reiewFileId;
+	private ReviewFileId reviewFileId;
 	
 	@MapsId("reviewId")
 	@Comment("후기 게시물 번호")
