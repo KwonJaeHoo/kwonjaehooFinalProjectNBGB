@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/kih.css">
+<meta charset="UTF-8">
+<script src="/ckeditor/build/ckeditor.js"></script>
+<script src="/ckeditor/src/OfflineUploadAdapter.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  .ck-editor__editable { height: 400px; }
+   .ck-content { font-size: 12px; }
+</style>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#btnSubmit").on("click", function(){
+		if($.trim($("#offlineClassTitle").val()).length <= 0)
+		{
+			$("#offlineClassTitle").val("");
+			$("#offlineClassTitle").focus();
+			alert("제목을 입력하세요.");
+			return;
+		}
+		
+		if($.trim($("#offlineClassLimitPeople").val()).length <= 0)
+		{
+			$("#offlineClassLimitPeople").val("");
+			$("#offlineClassLimitPeople").focus();
+			alert("인원수를 입력하세요.");
+			return;
+		}
+		
+		if(!fn_number($("#offlineClassLimitPeople").val()))
+		{
+			alert("슷자만 입력하세요.");
+			$("#offlineClassLimitPeople").val("");
+			$("#offlineClassLimitPeople").focus();
+			return;
+		}
+		
+		if($.trim($("#offlineClassPrice").val()).length <= 0)
+		{
+			$("#offlineClassPrice").val("");
+			$("#offlineClassPrice").focus();
+			alert("가격을 입력하세요.");
+			return;
+		}
+		
+		if(!fn_number($("#offlineClassPrice").val()))
+		{
+			alert("슷자만 입력하세요.");
+			$("#offlineClassPrice").val("");
+			$("#offlineClassPrice").focus();
+			return;
+		}
+		
+		if($.trim($("#sample6_postcode").val()).length <= 0)
+		{
+			$("#sample6_postcode").val("");
+			$("#sample6_postcode").focus();
+			alert("우편번호를 입력하세요.");
+			return;
+		}
+		
+		if(!fn_number($("#sample6_postcode").val()))
+		{
+			alert("슷자만 입력하세요.");
+			$("#sample6_postcode").val("");
+			$("#sample6_postcode").focus();
+			return;
+		}
+		
+		if($.trim($("#sample6_address").val()).length <= 0)
+		{
+			$("#sample6_address").val("");
+			$("#sample6_address").focus();
+			alert("주소를 입력하세요.");
+			return;
+		}
+		
+		if($.trim($("#sample6_detailAddress").val()).length <= 0)
+		{
+			$("#offlineClassPlace").val($("#sample6_address").val());
+		}
+		else
+		{
+			$("#offlineClassPlace").val($("#sample6_address").val() + " " + $("#sample6_detailAddress").val())
+		}
+		
+		let offlineClassContent = editor.getData();
+		
+		if($.trim(offlineClassContent).length <= 0)
+		{
+			$("#editor").val("");
+			$("#editor").focus();
+			alert("내용을 입력하세요.");
+			return;
+		}
+		
+		if($('#offlineFile').val() == "")
+		{
+			alert("대표사진을 등록해주세요.");
+		    return;
+		}
+		
+		var fileVal = $("#offlineFile").val();
+		
+	    if(fileVal != "")
+	    {
+	        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+	        //아래 확장자가 있는지 체크
+	        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+	        {
+	        	alert("jpg, jpeg, png 파일만 업로드 할 수 있어요.");
+	          	return;
+	        }
+	    }
+	    
+	    var offlineFile =  $("#offlineFile")[0].files[0];
+	    var formData = new FormData();
+	    
+	    formData.append('offlineFile', offlineFile);
+	    
+	    var offlinePostDto = {
+	    		offlineClassTitle:$("#offlineClassTitle").val(),
+	    		instructorId:'jisu',
+	    		offlineClassLimitPeople:$("#offlineClassLimitPeople").val(),
+	    		offlineClassCategory:$("#offlineClassCategory").val(),
+	    		offlineClassPrice:$("#offlineClassPrice").val(),
+	    		offlineClassPlace:$("#offlineClassPlace").val(),
+	    		offlineClassContent:offlineClassContent
+	    }
+	    
+	    formData.append('offlinePostDto', new Blob([JSON.stringify(offlinePostDto)], {type: "application/json"}));
+	    
+	    $.ajax({
+	    	type:"POST",
+	    	url:"/offlineClassWrite/post",
+	    	enctype:"multipart/form-data",
+	    	data:formData,
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+	    	beforeSend:function(xhr){
+	    		xhr.setRequestHeader("AJAX", "true");
+	    	},
+	    	success:function(response){
+	    		alert("등록되었습니다!\n 관리자 확인 후 게시글이 업로드됩니다!");
+	    		location.href = "/offlineClass";
+	    	},
+	    	error:function(xhr, status, error){
+	    		alert("오류가 발생했습니다.");
+	    	}
+	    });
+		
+	});
+});
+
+function fn_number(value)
+{
+	var num = /^[0-9]+$/;
+	
+	return num.test(value)
+}
+</script>
+</head>
+<body>
+<div th:insert="import/topImport.html :: top-import"></div>
+
+<section class="ftco-section pt-3">
+      <div class="container">
+        <div class="row justify-content-center">
+        
+        	<div class="col-lg-8 w-100 ftco-animate">
+    
+	<h2 class="mb-3" style="text-align:center;">오프라인 클래스 등록 신청</h2>
+	<form id="offlineForm" name="offlineForm" method="POST" onsubmit="return false;" enctype="multipart/form-data">
+		<div id="page1" class="mb-2">
+
+			<table class="tb mb-2" border="1">
+			<tr>
+				<td class="tt" style="border-radius: 10px 0 0 0;">제목</td>
+				<td><input id="offlineClassTitle" name="offlineClassTitle" type="text" placeholder=" 제목을 입력하세요" /></td>
+			</tr>
+			<tr>
+				<td class="tt">카테고리</td>
+				<td><select id="offlineClassCategory" name="offlineClassCategory" style="border:none;outline:none;">
+				    <option value="공예">공예</option>
+				    <option value="미술">미술</option>
+				    <option value="베이킹">베이킹</option>
+				    <option value="스포츠">스포츠</option>
+				    <option value="요리">요리</option>
+				    <option value="음악">음악</option>
+				    </select>
+				</td>
+			</tr>
+			<tr>
+				<td class="tt">강사명</td>
+				<td><input id="instructorNickname" name="instructorNickname" type="text" placeholder=" 강사명" value=" 회원가입때한거예명" readonly></td>
+			</tr>
+			<tr>
+				<td class="tt">인원수</td>
+				<td><input id="offlineClassLimitPeople" name="offlineClassLimitPeople" type="text" placeholder=" 참여 가능한 인원수을 입력하세요"></td>
+			</tr>
+			<tr>
+				<td class="tt">가격</td>
+				<td><input id="offlineClassPrice" name="offlineClassPrice" type="text" placeholder=" 가격을 입력하세요.(원)"></td>
+			</tr>
+			<tr>
+				<td class="tt" style="border-radius:0 0 0 10px;">주소</td>
+				<td class="input-addr-table">
+					<div>
+					<input class="input-addr" type="text" id="sample6_postcode" placeholder="우편번호" style="border-width: 0 0 1px; width:35%; display:inline;"/>
+					<input class="input-addr button-addr" type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"  style="width:15%; display:inline;" />
+					</div>
+					<input class="input-addr" type="text" id="sample6_address" placeholder="주소" />
+				    <input class="input-addr" type="text" id="sample6_detailAddress" placeholder="상세주소" />
+				    <input class="input-addr-hidden" type="text" id="sample6_extraAddress" placeholder="참고항목">
+				    <input type="hidden" name="offlineClassPlace" id="offlineClassPlace" value="" />
+				</td>
+			</tr>
+			</table>
+			
+			
+			<textarea id="editor" name="editor" rows="5" cols="50" placeholder="내 클래스를 잘 나타낼 수 있는 내용을 입력하세요. 예) 클래스 소개, 수강 효과, 추천 대상, 커리큘럼, 강사 소개 등"></textarea>
+			
+			<br />
+			
+			<table class="tb mb-2" border="1">
+			<!-- 대표 사진 첨부-->
+			<tr>
+				<td class="tt" style="border-radius: 10px 10px 0 0;">대표 이미지</td></tr>
+			<tr>
+				<td class="insert pt-2" style="border-radius: 0 0 10px 10px;">
+			        <input type="file" class="filebox" id="offlineFile" name="offlineFile" />	
+			    </td>
+			</tr>
+			</table>
+			
+	</div>
+	
+	<p class="d-flex justify-content-end"><input type="submit" id="btnSubmit" class="btnSubmit" value="등록하기"></p>
+	</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>
+<div th:replace="import/jsImport.html :: js-import"></div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+function sample6_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                document.getElementById("sample6_extraAddress").value = extraAddr;
+            
+            } else {
+                document.getElementById("sample6_extraAddress").value = '';
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('sample6_postcode').value = data.zonecode;
+            document.getElementById("sample6_address").value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("sample6_detailAddress").focus();
+        }
+    }).open();
+}
+//에디터
+function MyCustomUploadAdapterPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+        return new UploadAdapter(loader)
+    }
+}
+
+ClassicEditor.create(document.querySelector('#editor'), {
+	language:'ko',
+	extraPlugins: [MyCustomUploadAdapterPlugin]
+}).then(editor => {
+    window.editor = editor;
+}).catch(error => {
+    console.error(error);
+});
+
+
+
+function post(){
+	let editor_data = editor.getData();
+
+   alert('f12를 눌러 콘솔을 확인하세요');
+	
+	console.log(editor_data);
+}
+</script>
+</body>
+</html>
