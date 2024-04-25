@@ -1,15 +1,31 @@
 package com.sist.nbgb.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.sist.nbgb.dto.OfflinePostDto;
+import com.sist.nbgb.dto.OfflineUpload;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
@@ -28,6 +44,9 @@ public class OfflineController
 {
 	private final OfflineService offlineService;
 	private final OfflineReviewService offlineReviewService;
+	
+	@Autowired
+	private OfflineUpload photoUtil;
 	
 	@GetMapping("/offlineClass")
 	public String offline(Model model,
@@ -227,7 +246,7 @@ public class OfflineController
 	}
 	
 	@GetMapping("/offlineClass/{offlineClassId}")
-	public String offlineView(Model model, @PathVariable Long offlineClassId)
+	public String offlineView(Model model, @PathVariable Long offlineClassId, @RequestParam(value="page", defaultValue="0") int page)
 	{
 		OfflineClass offlineClass = null;
 		List<OfflineReviewResponse> review = null;
@@ -251,6 +270,10 @@ public class OfflineController
 				
 				if(review != null)
 				{
+					Page<Review> paging = this.offlineReviewService.reviewListPage(page, offlineClassId, "OFF", Status.Y);
+					Page<OfflineReviewResponse> toMap = paging.map(m -> new OfflineReviewResponse(m));
+					List<OfflineReviewResponse> listPaging = toMap.getContent();
+					
 					rating = offlineReviewService.offCountRating(offlineClassId);
 					count = offlineReviewService.offCount(offlineClassId);
 					
@@ -262,8 +285,8 @@ public class OfflineController
 					
 					avgRating = (rating / 5 ) * 100;
 					
-					System.out.println("평균 : " + rating);
-					System.out.println("평균 % : " + avgRating);
+					model.addAttribute("paging", paging);
+					model.addAttribute("listPaging", listPaging);
 				}
 				
 				model.addAttribute("review", review);
@@ -284,5 +307,71 @@ public class OfflineController
 		{
 			return "/offline/error";
 		}
+	}
+	
+	//오프라인 게시물 등록
+	//페이지 불러오기
+	@GetMapping("/offlineClassWrite")
+	public String offlineClassWrite()
+	{
+		return "/offline/offlineClassWrite";
+	}
+	
+	//에디터 파일 저장
+	@ResponseBody
+	@PostMapping("/images/offlineUpload")
+	public ModelAndView offlineUpload(MultipartHttpServletRequest request)
+	{
+		ModelAndView mav = new ModelAndView("jsonView");
+		
+		String uploadPath = photoUtil.ckUpload(request);
+		
+		mav.addObject("uploaded", true);
+		mav.addObject("url", "/images/offlineUpload" + uploadPath);
+		
+		return mav;
+	}
+	
+	//게시물 등록
+	@PostMapping("/offlineClassWrite/post")
+	@ResponseBody
+	public ResponseEntity<OfflinePostDto> offlinePost(@RequestPart(value="offlinePostDto") @Valid OfflinePostDto offlinePostDto, @RequestPart(value="offlineFile") MultipartFile offlineFile)
+	{
+		OfflinePostDto offDto = offlineService.offlinePost(offlinePostDto);
+		
+		System.out.println("1111111111111111111111111");
+		
+		String path = "C:/project/sts4/SFPN/src/main/resources/static/images/offlineThumbnail";
+		
+		String fileName = offDto.getOfflineClassId() + ".jpg";
+		
+		String filepath = path + "/" + fileName;
+		
+		File file = new File(filepath);
+		
+		try 
+	    {
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bufferedOutputStream.write(offlineFile.getBytes());
+            bufferedOutputStream.close();
+	        
+	    }
+	    catch (Exception e) 
+        {
+            throw new RuntimeException("오류가 발생했습니다.");
+        } 
+		
+		System.out.println("222222222222222222222222222222222");
+	       
+       return ResponseEntity.ok(offDto);   
+
+	}
+	
+	
+	//예약하기
+	@GetMapping("/offlineClassReserve")
+	public String offlineClassReserve()
+	{
+		return "/offline/offlineReserve";
 	}
 }
