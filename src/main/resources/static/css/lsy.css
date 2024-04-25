@@ -5,8 +5,11 @@
     @media (max-width: 767.98px) {
       .online-section {
         padding: 6em 0; } }
-
-
+        
+.classes-title:hover{
+    color: #477500 !important;
+    font-weight:800;
+}
 .sub-title{
 margin-top:20px;
 color:#89dd18;
@@ -73,3 +76,219 @@ margin: 50px auto 30px auto;
 .star-report{
 	margin-bottom:8px !important ;
 }
+
+/*동영상 재생*/
+.video-section{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 100dvh;
+    z-index: 1 !important;
+ }
+   /* @media (min-width: 576px) {
+        .video-section {
+        max-width: 540px; } }
+    @media (min-width: 768px) {
+        .video-section {
+        max-width: 720px; } }
+    @media (min-width: 992px) {
+        .video-section {
+        max-width: 960px; } }
+    @media (min-width: 1200px) {
+        .video-section {
+        max-width: 1140px; }
+      */
+    /* height: 100%;
+    display: grid;
+    place-items: center;
+     
+    }
+     */
+
+
+
+.video-container{
+    position:sticky;
+    top:8em;
+    bottom:2em;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin:0 auto 0 auto;
+}
+.video-contents{
+    border-radius:2ch;  
+    display: table-cell;
+    align-items:center;
+    vertical-align: middle;
+    height: 80vh;
+    padding:0;
+    margin-top:0 !important;
+}
+
+.footer-section{
+	height:5dvh;
+}
+
+/*비디오 버튼*/
+.video-button-area > button{
+	margin: 0 1.2dvh 0 0;
+    border-top-left-radius: 1ch;
+    border-top-right-radius: 1ch;
+    font-size: 1.8vh;
+    font-weight: bold;
+    letter-spacing: 0.2dvh;
+    padding: 1vh 1.2vh;
+    transition: transform 80ms ease-in;
+    background-color:#89dd18;
+    border:none;
+    color:white;
+}
+
+/*비디오 재생화면*/
+.video-area{
+    background-color: black;
+    height: 60vh;
+}
+.video-area > video{
+    width: 100%;
+    height: 100%;
+}
+
+.video-comment{
+    height:20dvh;
+    padding: 1%;
+    padding-top:2%;
+    
+}
+
+.comment-title{
+    display: flex;
+    align-items: center;
+}
+    .comment-title > h5{
+        padding-left: 7px;
+        font-size: 3vh;
+    }
+.comment-comments{
+    height: 75%;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    padding-left:4%;
+    font-size:2.5vh;
+}
+
+/*비디오 재생목록*/
+.video-list-title{
+    height:20dvh;
+    padding:2%;
+    align-items: center;
+}
+    .video-list-title > h5, h6{
+        color:rgb(98, 98, 98);
+        margin-bottom:0 !important;
+    }
+    .video-list-title > h5 {
+        padding-left: 7px;
+        font-size: 2.5vh;
+    }
+    .video-list-title > h6 {
+        padding-left: 10px;
+        font-size: 2vh;
+    }
+
+.instructor{
+    width:40px;
+    height:40px;
+    object-fit: cover;
+}
+.instructor-img{
+    width:40px;
+    height:40px;
+    object-fit: cover;
+}
+    
+.video-list-area{
+    height: 8dvh;
+    background-color: rgba(231, 231, 231, 0.804);
+    padding:2%;
+    padding-bottom: 0 !important;
+    margin:2%;
+    margin-bottom:0 !important;
+}
+    .video-list-area > p{
+        margin-bottom:0 !important;
+        font-size: 1.8vh;
+    }
+    .video-list-area > h6{
+        font-size: 2vh;
+    }
+
+
+.video-list{
+    background-color: rgba(231, 231, 231, 0.685);;
+    height:50vh;
+    overflow-y: scroll;
+    padding:2%;
+    padding-top: 0 !important;
+    margin:2%;
+    margin-top:0 !important;
+}
+
+.video-item{
+    width:100%;
+    height:10dvh;
+    background-color: white;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.video-img-area{
+    padding: 4px;
+    width:100%;
+    height: 9dvh;
+}
+    .video-img{
+        display:block;
+        background-size: cover;
+        width:100%;
+        height:8dvh;
+        padding: 0 !important;
+        align-items: center;
+        justify-content: center;
+    }
+    .video-imgBtn{
+        display:inline;
+        position: absolute;
+        width:5%;
+        top: 25%;
+        left:35%;
+    }
+
+.video-title-area{
+    height:9dvh;
+    width:100%;
+    padding:2% 4%;
+    vertical-align: center;
+}
+    .video-title-area > p{
+        margin : 0;
+        height:4dvh;
+    }
+    .title-num{
+        font-weight: 600;
+        font-size: 2.5vh;
+        align-items: center;
+        margin-bottom:2px;
+    }
+    .title-con{
+        width:100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 2vh;
+    }
