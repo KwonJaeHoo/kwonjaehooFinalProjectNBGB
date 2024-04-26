@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReferenceController {
 	
-	@GetMapping("/reference")
+	@GetMapping("/reference/referenceList")
 	public String reference(Model model)
 	{
-		return "reference";
+		return "reference/referenceList";
 	}
 
 }
