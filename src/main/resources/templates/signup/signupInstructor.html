@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<link rel="stylesheet" href="css/signupCustom.css">
-	<div th:replace="import/cssImport.html :: css-import"></div>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/signupCustom.css">
 </head>
 <body>
 
 <input type="hidden" id="instructorPassword" name="instructorPassword" placeholder="비밀번호" class="input" /> 
 <input type="hidden" id="instructorEmailCheck1" name="instructorEmailCheck1" placeholder="인증번호" class="input" />			
 
-
   <!--로고-->
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container-top">
         <div class="row m-auto">
             <div class="col-12 w-100 text-center">
-          <a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+          <a class="navbar-brand" href="/"><img src="/images/logo.png" width="300px"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
         </div>
         </div>
@@ -189,7 +188,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type:"POST",
-			url:"signup_instructor_idcheck",
+			url:"/signup/instructor/idcheck",
 			data : JSON.stringify
 			({	           
 				instructorId:$('#instructorId').val()
@@ -418,7 +417,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type:"POST",
-			url:"signup_emailCheck",
+			url:"/signup/emailCheck",
 			data : JSON.stringify
 			({	           
 				email:$('#instructorEmail').val()
@@ -659,7 +658,7 @@ function signUp()
 	$.ajax
 	({
 		type:"POST",
-		url:"/signup_instructor",
+		url:"/signup/instructor",
 		data: formData,
 		enctype: 'multipart/form-data',
         contentType: false,

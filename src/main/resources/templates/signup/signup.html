@@ -23,8 +23,63 @@
       <div class="form-area text-center">
         <div class="form-title"><h5>클래스를 시청하거나 예약하시려면?</h5></div>
         <div><img alt="" src="/images/signup-student.png" width="100px" height="100px"></div>
-        <div><button type="button" class="log-btn log-btn-first mt-4" id="userBtn" onclick="location.href='/signup_user'">개인회원 가입</button></div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/loginCustom.css">
+</head>
+<body>
+<!--로고-->
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  <div class="container-top">
+      <div class="row m-auto">
+          <div class="col-12 w-100 text-center">
+        <a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
+      </div>
+      </div>
+  </div>
+</nav>
+
+<div class="container-top w-75 mt-3">
+  <div class="container-index col-md-12">
+    <div class=" form-index">
+      <div class="form-area text-center">
+        <div class="form-title"><h5>클래스를 시청하거나 예약하시려면?</h5></div>
+        <div><img alt="" src="/images/signup-student.png" width="100px" height="100px"></div>
+        <div><button type="button" class="log-btn log-btn-first mt-4" id="userBtn" onclick="location.href='/signup/user'">개인회원 가입</button></div>
         <div class="navbar-brand-area">
+          <a class="navbar-brand" href="/"><img src="/oauth2/naver.png" width="40px"></a>
+          <a class="navbar-brand" href="/"><img src="/oauth2/kakao.png" width="40px"></a> 
+          <a class="navbar-brand" href="/"><img src="/oauth2/google.png" width="40px"></a>
+        </div>
+      </div>
+    </div>
+    <div class=" form-index">
+      <div class="form-area text-center">
+        <div class="form-title"><h4>클래스를 개설하시려면?</h4></div>
+        <div><img alt="" src="images/signup-teacher.png" width="100px" height="100px"></div>
+        <div claas="mt-4"><button type="button" class="log-btn log-btn-first mt-4" id="instructorBtn" onclick="location.href='/signup/instructor'">강사회원 가입</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="container-index col-md-12 mt-3">
+    <div class="form-index2">
+      <div>
+        <div>
+          <p class="form-index2-title">이미 개인·강사회원으로 가입하셨나요?</p>
+        </div>
+        <div class="text-center my-4">
+          <button type="button" class="log-btn log-btn-first" onclick="location.href='/login'">로그인하러가기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height:50px;"></div>
+</body>
+</html>        <div class="navbar-brand-area">
           <a class="navbar-brand" href="/"><img src="/oauth2/naver.png" width="40px"></a>
           <a class="navbar-brand" href="/"><img src="/oauth2/kakao.png" width="40px"></a> 
           <a class="navbar-brand" href="/"><img src="/oauth2/google.png" width="40px"></a>
