@@ -12,7 +12,7 @@
    
     function fn_sendFB(sns) {
 	      var thisUrl = document.URL;
-	      var titleStr = titleVal.value;
+	      var titleStr = '[[${offlineClass.offlineClassTitle}]]';
 	      var snsTitle = "[내방공방]"+titleStr;
 	      if( sns == 'twitter' ) 
 	      {
@@ -41,6 +41,7 @@
 		         objectType: 'feed',
 		         content: {
 		             title: '[내방공방] 공방 클래스',
+		             description: titleStr,
 		             imageUrl: 'https://postfiles.pstatic.net/MjAyNDA0MjJfMTQx/MDAxNzEzNzc1NjU3NDI0.NPeA0SHSox9hDZVGYGJ-h1Eoni75rlvah_nHHinVzvIg.gIdgBKcdvGbpzCCG62fuisFwXx56tZxwDNr6lm_fxsUg.PNG/logo.png?type=w966',
 		             link: {
 		                 mobileWebUrl: thisUrl,
@@ -49,21 +50,6 @@
 		         },
 		         installTalk : true
 		     });
-   	    
-   	        // 카카오링크 버튼 생성
-   	        Kakao.Link.createDefaultButton({
-   	            container: '#btnKakao', // HTML에서 작성한 ID값
-   	            objectType: 'feed',
-   	            content: {
-   	            title: "[내방공방] 공방 클래스", // 보여질 제목
-   	            description: titleStr, // 보여질 설명
-   	            imageUrl: "https://postfiles.pstatic.net/MjAyNDA0MjJfMTQx/MDAxNzEzNzc1NjU3NDI0.NPeA0SHSox9hDZVGYGJ-h1Eoni75rlvah_nHHinVzvIg.gIdgBKcdvGbpzCCG62fuisFwXx56tZxwDNr6lm_fxsUg.PNG/logo.png?type=w966", // 콘텐츠 URL
-   	            link: {
-   	                mobileWebUrl: thisUrl,
-   	                webUrl: thisUrl
-   	            }
-   	            }
-   	        });
 	      }
     }
    </script>
@@ -79,14 +65,15 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-8 w-100 ftco-animate">
-          
-            
+            <div>
+              <div>
 	          <!-- 메인 이미지 -->
 	            <img th:src="@{'/images/offlineThumbnail/' + ${offlineClassId} + '.jpg'}" alt="" class="offline_thumnail">
-	            
+	          </div> 
 	          <div style="height: auto;">
-	          	<h1 id="titleVal" style="color:#477500; margin-bottom: 0px;" th:value="${offlineClass.offlineClassTitle}"></h1>
+	          	<h1 id="titleVal" style="color:#477500; margin-bottom: 0px;" th:value="${offlineClass.offlineClassTitle}" th:text="${offlineClass.offlineClassTitle}"></h1>
 	          </div>
+	        </div>
 	          <div class="d-flex justify-content-between ">
 	          	  <div class="mb-3 d-flex justify-content-start align-items-center" >
 	          	    <span style="width:16; height:16; color:black;">[[${offlineClass.offlineClassPlace}]]</span>
@@ -148,9 +135,9 @@
               </div>
 	              <div class="tag-widget post-tag-container mb-5 mt-5">
 	              <div class="tagcloud">
-	                <a href="#" class="tag-cloud-link">오프라인</a>
-	                <a href="#" class="tag-cloud-link">공방</a>
-	                <a href="#" class="tag-cloud-link">[[${offlineClass.offlineClassCategory}]]</a>
+	                <a href="/offlineClass" class="tag-cloud-link">오프라인</a>
+	                <a href="/offlineClass" class="tag-cloud-link">공방</a>
+	                <a th:href="@{/offlineClass(searchType = 1, searchValue = ${offlineClass.offlineClassCategory})}" class="tag-cloud-link">[[${offlineClass.offlineClassCategory}]]</a>
 	              </div>
 	            </div>
             </div>
@@ -173,11 +160,10 @@
 			</div>
               <div class="d-flex justify-content-start">
               <h3 class="mb-4">[[${count}]]개의 후기가 있어요</h3>
-              <a href="#"><h6 class="d-flex align-items-center ml-3 mt-3 border-bottom" style="color: #676c7e;">더보기</h6></a>
               </div>
               
               <ul class="comment-list">
-               <div th:each="review : ${review}">
+               <div th:each="review : ${listPaging}">
                
                 <li class="comment">
                 
@@ -186,13 +172,21 @@
                   </div>
                   [[${review.userId.userNickname}]]
                   <div class="comment-body">
+                  <div class="d-flex justify-content-between">
                     <div class="d-flex justify-content-start">
                     <h3></h3>
                       <span style="width:16; height:16; color:gold;" class="icon-star"></span> [[${review.reviewRating}]]
-                    <div class="meta ml-2">[[${review.reviewRegdate}]]</div>
+                    <div class="meta ml-2" th:text="${#temporals.format(review.reviewRegdate, 'yyyy-MM-dd HH:mm:ss')}"></div>
                     </div>
+                    
+                    <div class="tagcloud ml-1 d-flex justify-content-end">
+                        <a href="#" class="tag-cloud-link">추천 : [[${review.reviewLikeCnt}]]</a>
+                    </div>
+                   </div>
+                    
                     <p>[[${review.reviewContent}]]</p>
                     <div class="carousel_main">
+                    <!-- 이미지 
                       <div class="carousel_wrapper">
                           <div class="carousel_slide">
                               <img src="https://www.doyeon0430.com/static/img/doyeon0430_logo.jpg" alt="doyeon0430 이미지" />
@@ -207,6 +201,7 @@
                               <img src="https://www.doyeon0430.com/media/physics/Physics_AGgemm2.webp" alt="doyeon0430 이미지" />
                           </div>
                       </div>
+                      -->
                       <div class="carousel_button_container">
                           <button type="button" class="carousel_prev">
                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
@@ -228,7 +223,9 @@
                           <div class="carousel_circle"></div>
                       </div>
                   </div>
+                    <!-- 대댓글 보류
                     <p><a href="#" class="reply">Reply</a></p>
+                     -->
                   </div>
                 </li>
                 
@@ -260,26 +257,32 @@
               
               
               <!--페이징-->
-              <div>
+              <div th:if="${!paging.isEmpty()}">
               <div class="row mt-5">
                 <div class="col">
                   <div class="block-27 smallpage" style="display:inline; text-align: center;">
                     <ul class="mb-2">
-                      <li><a href="#" class="smallpage">&lt;</a></li>
-                      <li class="active"><span class="smallpage">1</span></li>
-                      <li><a href="#" class="smallpage">2</a></li>
-                      <li><a href="#" class="smallpage">3</a></li>
-                      <li><a href="#" class="smallpage">4</a></li>
-                      <li><a href="#" class="smallpage">5</a></li>
-                      <li><a href="#" class="smallpage">&gt;</a></li>
+                      <li th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                      	<a class="smallpage" th:href="@{|?page=${paging.number-1}#space|}">&lt;</a></li>
+                      
+                      <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                          th:if="${page >= paging.number-2 and page <= paging.number+2}"
+                          th:classappend="${page == paging.number} ? 'active'" class="a">
+                        <a class="smallpage" th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a></li>
+                      
+                      <li class="a" th:classappend="${!paging.hasNext} ? 'disabled'">
+                        <a class="smallpage" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a></li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
+            
+            
               <div class="comment-form-wrap">                
               </div>
             </div>
+            <!-- 
             <h3 class="mt-5">이런 강의는 어때요?</h3><br/>
             <div class="row">
               
@@ -319,7 +322,7 @@
                 
 
             </div>
-            
+             -->
             
             
             

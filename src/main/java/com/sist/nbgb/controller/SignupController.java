@@ -41,35 +41,43 @@ public class SignupController
 		return "/signup/signup";
 	}
 	
-	@GetMapping("/signup_user")
-	public String userSignup()
-	{
-		return "/signup/signupUser";
-	}
-	
-	@GetMapping("/signup_instructor")
-	public String instructorSignup()
-	{
-		return "/signup/signupInstructor";
-	}
-	
-	
-	
-	
-	@PostMapping("/signup_emailCheck")	
+	@PostMapping("/signup/emailCheck")	
     @ResponseBody
     public ResponseEntity<String> EmailCheck(@RequestBody EmailCheckDto emailCheckDto) throws MessagingException, UnsupportedEncodingException 
 	{
         return ResponseEntity.ok(emailService.sendEmail(emailCheckDto.getEmail()));
     }
-	@PostMapping("/signup_user_idcheck")
+	
+	@GetMapping("/signup/user")
+	public String userSignup()
+	{
+		return "/signup/signupUser";
+	}
+	
+	@PostMapping("/signup/user/idcheck")
 	@ResponseBody
 	public ResponseEntity<Boolean> userSignupDuplicateId(@RequestBody UserIdCheckDto userIdCheckDto)
 	{	
 		//중복되는 경우 true, 중복되지 않은경우 false return
 		return ResponseEntity.ok(signupService.userSignupDuplicateId(userIdCheckDto));
 	}
-	@PostMapping("/signup_instructor_idcheck")
+	
+	@PostMapping("/signup/user")
+	@ResponseBody
+	public ResponseEntity<UserDto> userSignupProcess(@RequestBody @Valid UserDto userDto) throws RuntimeException
+	{
+		return ResponseEntity.ok(signupService.userSignup(userDto));	
+	}
+	
+	
+	
+	@GetMapping("/signup/instructor")
+	public String instructorSignup()
+	{
+		return "/signup/signupInstructor";
+	}
+		
+	@PostMapping("/signup/instructor/idcheck")
 	@ResponseBody
 	public ResponseEntity<Boolean> instructorSignupDuplicateId(@RequestBody InstructorIdCheckDto instructorIdCheckDto)
 	{	
@@ -77,14 +85,7 @@ public class SignupController
 		return ResponseEntity.ok(signupService.instructorSignupDuplicateId(instructorIdCheckDto));
 	}
 	
-	@PostMapping("/signup_user")
-	@ResponseBody
-	public ResponseEntity<UserDto> userSignupProcess(@RequestBody @Valid UserDto userDto) throws RuntimeException
-	{
-		return ResponseEntity.ok(signupService.userSignup(userDto));	
-	}
-	
-	@PostMapping("/signup_instructor")
+	@PostMapping("/signup/instructor")
 	@ResponseBody
 	public ResponseEntity<InstructorsDto> instructorSignupProcess(@RequestPart(value="instructorDto") @Valid InstructorsDto instructorsDto, @RequestPart(value="instructorImageFile") MultipartFile instructorImageFile) throws Exception
 	{
