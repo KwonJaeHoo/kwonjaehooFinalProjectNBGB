@@ -28,8 +28,9 @@
     transition-duration: 0.5s;
   }
   .menu > li:hover .submenu {
-    height: 300px; /*서브메뉴 li한개의 높이 50*5*/
+    height: 220px; /*서브메뉴 li한개의 높이 50*5*/
     transition-duration: 1s;
+    margin-bottom:0 !important;
   }
 
 /*채팅,맨 위로 버튼*/
@@ -81,3 +82,12 @@
 .nav-logo{
   visibility: hidden;
 } 
+
+.logo-background{
+  background-color:white;
+  width:100%;
+  margin-top:3rem;
+}
+.ftco-navbar-light2.scrolled{
+  display:hidden !important;
+}

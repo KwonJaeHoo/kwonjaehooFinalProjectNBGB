@@ -8,6 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class OfflineClassView {
+	private final long offlineClassId;
 	private final String offlineClassTitle;
 	private final String offlineClassContent;
 	private final LocalDateTime offlineClassRegdate;
@@ -18,6 +19,7 @@ public class OfflineClassView {
 	private final String category;
 	
 	public OfflineClassView(OfflineClass offlineClass) {
+		this.offlineClassId = offlineClass.getOfflineClassId();
 		this.offlineClassTitle = offlineClass.getOfflineClassTitle();
 		this.offlineClassContent = offlineClass.getOfflineClassContent();
 		this.offlineClassRegdate = offlineClass.getOfflineClassRegdate();

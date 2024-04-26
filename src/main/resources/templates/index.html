@@ -8,10 +8,8 @@
 	<!--사용자 네비게이션-->
 	<!--메뉴 네비게이션-->
 	<div th:insert="import/topImport.html :: top-import"></div>
-    <!--메뉴 네비게이션-->
-    <!--사용자 네비게이션-->
     
-
+	<!-- 내방 클래스/ 공방 클래스 바로가기 -->
 	<section class="home-slider owl-carousel">
 		<div class="slider-item" style="background-image: url('images/Online_Class.jpg');">
 		<!-- 출처 <a href="https://kr.freepik.com/free-photo/close-up-hand-holding-pen_15598755.htm#query=%EC%9B%90%EA%B2%A9%20%EA%B5%90%EC%9C%A1&position=1&from_view=keyword&track=ais&uuid=84153ad6-d9a3-4d91-b4de-085e124a5d8a">Freepik</a> -->
@@ -23,7 +21,7 @@
 						<h3 class="subheading" style="color:#01DFD7; font-weight:700">
 						집에서 바로 배우는 온라인 클래스가 궁금하시다면?<br/>
 						온라인 원데이 클래스 내 방 클래스를 확인해보세요.</h3>
-						<p>	<a href="#"	class="btn btn-black btn-outline-white px-4 py-3 mt-3" style="color:#2E2E2E">내방 클래스 바로가기</a> </p>
+						<p>	<a href="/onlineClass"	class="btn btn-black btn-outline-white px-4 py-3 mt-3" style="color:#2E2E2E">내방 클래스 바로가기</a> </p>
 					</div>
 				</div>
 			</div>
@@ -38,13 +36,14 @@
 						<h1 class="mb-4" style="color:#89DD18; font-weight:700">공방 클래스가 궁금하시다면?</h1>
 						<h3 class="subheading" style="color:#01DFD7; font-weight:700">사람들과 함께하는 오프라인 공방 클래스가 궁금하시다면?<br/>
 																						오프라인 원데이 클래스 공방 클래스를 확인해보세요.</h3>
-						<p> <a href="#" class="btn btn-black btn-outline-white px-4 py-3 mt-3" style="color:#2E2E2E;">공방 클래스 바로가기</a> </p>
+						<p> <a href="/offlineClass" class="btn btn-black btn-outline-white px-4 py-3 mt-3" style="color:#2E2E2E;">공방 클래스 바로가기</a> </p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
+	<!-- 내방 클래스 -->
 	<section class="ftco-section testimony-section">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
@@ -61,15 +60,14 @@
                 <div class="testimony-wrap p-4 pb-5">
                   <div class="blog-entry justify-content-end">
                   
-	              <!-- <a href="blog-single.html" class="block-20" th:style="'background-image: url(\'images/' + (${data.image} != null ? ${data.image} : 'default.png') + '\');'" alt="클래스 이미지"></a> -->
 	              <div class="text w-100 mt-3">
+	              <img style="border-radius: 20px; height: 200px;" class="img w-100 mb-3" th:src="@{'/images/onlineThumbnail/' + ${data.onlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/online/' + ${data.onlineClassId}}'|">
 	              	<div class="meta">
-	              	  <h3><span th:text="${dataStat.count}">온라인 강의 번호</span></h3>
-	                  <div><a href="#"><time th:text="${data.onlineClassRegdate}">온라인 강의 게시일</time></a></div>
-	                  <div><a href="#"><span th:text="${data.instructorNickname}">온라인 강의 강사 닉네임</span></a></div>
-	                  <div><a href="#" class="meta-chat"><span class="icon-eye"></span><span th:text="${data.onlineClassViews}">0</span></a></div></div>
+	                  <div><time th:text="${data.onlineClassRegdate}">온라인 강의 게시일</time></div>
+	                  <div><span th:text="${data.instructorNickname}">온라인 강의 강사 닉네임</span></div>
+	                  <div><class="meta-chat"><span class="icon-eye"></span><span th:text="${data.onlineClassViews}">0</span></class></div></div>
 	                </div>
-	                <h3 class="heading mt-2"><a href="#" th:text="${data.onlineClassTitle}">온라인 강의 제목</a></h3>
+	                <h3 class="heading mt-2"><a th:onclick="|location.href='@{'/online/' + ${data.onlineClassId}}'|" th:text="${data.onlineClassTitle}">온라인 강의 제목</a></h3>
 	                
 	                <!-- <a href="#" class="btn btn-primary" th:classappend="${data.onlineClassApprove == 'Y' ? 'btn-ghost btn-fill' : 'disabled'}" th:text="${data.onlineClassApprove == 'Y' ? '수강 가능' : '수강 불가'}">온라인 강의 수강 상태</a> -->
 	              </div>
@@ -82,7 +80,8 @@
       </div>
     </section>
 
-	<section class="ftco-section">
+	<!-- 공방 클래스 -->
+	<section class="ftco-section testimony-section">
     	<div class="container">
     		<div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-12 heading-section ftco-animate text-center">
@@ -94,19 +93,18 @@
         <div class="row ftco-animate">
           <div class="col-md-12">
             <div class="carousel-testimony owl-carousel">
-              <div class="item" th:each="offlineClassView, offlineClassViewStat : ${offlineClassView}">
+              <div class="item" th:each="offlineClassView, offlineClassViewStat : ${offlineClassView}" th:if="${offlineClassViewStat.count} <= 6">
                 <div class="testimony-wrap p-4 pb-5">
                   <div class="blog-entry justify-content-end">
                   
-	              <!-- <a href="blog-single.html" class="block-20" th:style="'background-image: url(\'images/' + (${data.image} != null ? ${data.image} : 'default.png') + '\');'" alt="클래스 이미지"></a> -->
 	              <div class="text w-100 mt-3">
+	              <img style="border-radius: 20px; height: 200px" class="img w-100 mb-3" th:src="@{'/images/offlineThumbnail/' + ${offlineClassView.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${offlineClassView.offlineClassId}}'|">
 	              	<div class="meta">
-	              	  <h3><span th:text="${offlineClassViewStat.count}">오프라인 강의 번호</span></h3>
-	                  <div><a href="#"><time th:text="${offlineClassView.offlineClassRegdate}">오프라인 강의 게시일</time></a></div>
-	                  <div><a href="#"><span th:text="${offlineClassView.instructorNickname}">오프라인 강의 강사 닉네임</span></a></div>
-	                  <div><a href="#" class="meta-chat"><span class="icon-eye"></span><span th:text="${offlineClassView.offlineClassViews}">0</span></a></div></div>
+	                  <div><time th:text="${offlineClassView.offlineClassRegdate}">오프라인 강의 게시일</time></div>
+	                  <div><span th:text="${offlineClassView.instructorNickname}">오프라인 강의 강사 닉네임</span></div>
+	                  <div><class="meta-chat"><span class="icon-eye"></span><span th:text="${offlineClassView.offlineClassViews}">0</span></class></div></div>
 	                </div>
-	                <h3 class="heading mt-2"><a href="#" th:text="${offlineClassView.offlineClassTitle}">오프라인 강의 제목</a></h3>
+	                <h3 class="heading mt-2"><a th:onclick="|location.href='@{'/offlineClass/' + ${offlineClassView.offlineClassId}}'|" th:text="${offlineClassView.offlineClassTitle}">오프라인 강의 제목</a></h3>
 	                
 	                <!-- <a href="#" class="btn btn-primary" th:classappend="${data.onlineClassApprove == 'Y' ? 'btn-ghost btn-fill' : 'disabled'}" th:text="${data.onlineClassApprove == 'Y' ? '수강 가능' : '수강 불가'}">온라인 강의 수강 상태</a> -->
 	              </div>
@@ -118,39 +116,34 @@
     	</div>
     </section>
 
-	<section class="ftco-counter img" id="section-counter" style="background-image: url(images/bg_3.jpg);" data-stellar-background-ratio="0.5">
+	<!-- 총 회원, 클래스 개수 출력 -->
+	<section class="ftco-counter img" id="section-counter" style="background-image: url(images/background_teach.jpg);" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-10">
 					<div class="row">
-						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
+						<div class="col-md-5 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 							<div class="block-18 text-center">
 								<div class="text">
-									<strong class="number" data-number="300">0</strong> <span>회원수</span>
+									<strong class="number" th:text="${userCount}" style="text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;">0</strong> 
+									<span style="text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;"><strong>총 회원</strong></span>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 							<div class="block-18 text-center">
 								<div class="text">
-									<strong class="number" data-number="60">0</strong> <span>내방
-										클래스</span>
+									<strong class="number" th:text="${onlineClassCount}" style="text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;">0</strong> 
+									<span style="text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;"><strong>내방 클래스</strong></span>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
 							<div class="block-18 text-center">
 								<div class="text">
-									<strong class="number" data-number="50">0</strong> <span>공방
-										클래스</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-							<div class="block-18 text-center">
-								<div class="text">
-									<strong class="number" data-number="100">0</strong> <span>후기글</span>
+									<strong class="number" th:text="${offlineClassCount}" style="text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;">0</strong> 
+									<span style="text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;"><strong>공방 클래스</strong></span>
 								</div>
 							</div>
 						</div>
@@ -160,11 +153,12 @@
 		</div>
 	</section>
 
+	<!-- 후기 -->
 	<section class="ftco-section testimony-section">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-10 heading-section ftco-animate text-center">
-            <h2 class="mb-1">베스트 후기</h2>
+            <h2 class="mb-1">후기</h2>
           </div>
         </div>
         <div class="row ftco-animate">
@@ -174,16 +168,16 @@
                 <div class="testimony-wrap p-4 pb-5">
                   <div class="text">
                   	<div class="line">
-	                    <p class="mb-4 pb-1" th:text="${reviewDTO.reviewContent}">후기 내용</p>
+	                    <p class="textoverflow mb-4 pb-1" th:text="${reviewDTO.reviewContent}">후기 내용</p>
 	                    <span class="quote d-flex align-items-center justify-content-center">
 	                      <i class="icon-quote-left"></i>
 	                    </span>
 	                  </div>
                     <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(images/person_1.jpg)">
+                    	<div class="user-img" style="background-image: url(images/person_1.jpg); height: 50px; width: 50px">
 		                  </div>
 		                  <div class="ml-4">
-		                  	<p class="name" th:text="${reviewDTO.userId}">후기 작성자(유저 아이디)</p>
+		                  	<p class="name" th:text="${reviewDTO.userNickname}">후기 작성자(유저 닉네임)</p>
 		                  </div>
                     </div>
                   </div>
@@ -196,6 +190,7 @@
     </section>
 
 
+	<!-- 후기 사진 -->
 	<section class="ftco-gallery ftco-section">
     	<div class="container-fluid px-md-5">
     		<div class="row justify-content-center mb-5 pb-3">
@@ -203,67 +198,85 @@
             <h2 class="mb-1">후기 사진</h2>
           </div>
         </div>
-    		<div class="row">
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-1.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-1.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-2.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-2.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-3.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-3.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-4.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-4.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-5.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-5.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-6.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-6.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-7.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-7.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
-					<div class="col-md-3 ftco-animate">
-						<a href="images/gallery-8.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-8.jpg);">
-							<div class="icon mb-4 d-flex align-items-center justify-content-center">
-    						<span class="icon-instagram"></span>
-    					</div>
-						</a>
-					</div>
+          
+   		<div class="row" th:each="reviewFileDto, reviewFileStat : ${reviewFileDto}" th:if="${reviewFileStat.count} <= 8">
+				<div class="col-md-3 ftco-animate">
+				<a th:src="@{'/images/reviewFile/' + ${reviewFileDto.reviewId} + '.jpg'}" class="gallery image-popup img d-flex align-items-center">
+					<!-- <a style="border-radius: 20px; height: 200px;" th:src="@{'/images/reviewFile/' + ${reviewFileDto.reviewId} + '.jpg'}" th:onclick="|location.href='@{'/review/' + ${reviewFileDto.reviewId}}'|"> -->
+					<!-- th:href="${reviewFileDto.reviewFileOrgName}" -->
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>	
         </div>
     	</div>
     </section>
+    
+    <!-- 
+   		<div class="row">
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-1.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-1.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-2.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-2.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-3.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-3.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-4.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-4.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-5.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-5.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-6.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-6.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-7.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-7.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+				<div class="col-md-3 ftco-animate">
+					<a href="images/gallery-8.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/gallery-8.jpg);">
+						<div class="icon mb-4 d-flex align-items-center justify-content-center">
+   						<span class="icon-instagram"></span>
+   					</div>
+					</a>
+				</div>
+       </div>
+   	</div>
+    </section>
+    	
+     -->
 	
 	
 	<!--채팅/맨 위로 버튼-->

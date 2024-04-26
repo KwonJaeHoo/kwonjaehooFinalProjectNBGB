@@ -42,7 +42,7 @@
     padding-right: 15px;
     padding-left: 15px;
     margin: 0 auto 0 auto; }
-    @media (min-width: 576px) {
+/*    @media (min-width: 576px) {
       .container {
         max-width: 540px; } }
     @media (min-width: 768px) {
@@ -54,16 +54,23 @@
     @media (min-width: 1200px) {
       .container {
         max-width: 1140px; }
+  }*/
+
+  .container-top2{
+  	height:80dvh;
   }
 
   .container-middle{
-  width:50%;
-  padding:1rem 1rem 0 1rem;
+  width:100dvh;
+  padding:1rem 0 0 0;
   margin:0 auto 0 auto;
   box-shadow: 10px 10px 20px 3px rgb(200, 200, 200);
   border-radius:2ch;
+  align-items:center;
   }
-  
+    .middle-title > h2{
+    	font-size:5vh;
+	}  
   .input-area{
     display: flex;
     flex-direction: row;
@@ -80,8 +87,9 @@
         border-radius: 1.2ch;
         padding: 0.3rem 0.7rem;
         margin: 0 1rem;
-        width: 80%;
-        height:2.3rem;
+        width: 80dvh;
+        height:5dvh;
+        font-size:2vh;
     }
 
   .input-msg{
@@ -89,7 +97,9 @@
     margin-bottom:9px !important;
     margin-top:4px !important;
     color:red;
-    height: 20px;
+    width:100%;
+    height: 2.5dvh;
+    font-size:2dvh;
   }  
   .input-name{
     text-align: right;
@@ -103,13 +113,34 @@
   .input-name-detail{
     margin-top: 0px !important;
     margin-bottom: 0px !important;
+    font-size:2dvh;
+  }
+
+.input[type=file]{
+	padding: 0.5dvh 0.3rem 0.5dvh 0.3rem;
+}
+.input[type=file]::file-selector-button {
+  width: 20%;
+  height: 4dvh;
+  background: #fff;
+  border: 1px solid rgb(77,77,77);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align:center;
+  font-size:2vh;
+  }
+.input[type=file]::file-selector-button:hover {
+    background: #89dd18;
+    color: #fff;
+    border: 1px solid white;
   }
 
 
   .form-area{
+    width:100dvh;
     display:flex;
     justify-content: center;
-    margin:0 3rem 0 3rem;
+    margin:0 auto 0 auto;
   }
 
   .log-btn-area{
@@ -122,19 +153,20 @@
   
 .log-btn{
     border-radius: 1.2ch;
-    font-size: 0.7rem;
     font-weight: bold;
     letter-spacing: 0.1rem;
     align-items: center;
-    line-height: 1.5rem;
+    line-height: 2dvh;
     transition: transform 80ms ease-in;
-    padding:5px 10px;
-    height:2.3rem;
+    padding:1dvh 1dvh;
+    height:2dvh;
   }
     .log-btn-first{
+    	font-size:1.5dvh;
         background-color: #89dd18;
         color:white;
         border:#89dd18 solid 3px;
+        height: 5dvh;
     }
         .log-btn-first:hover{
             background-color: white;
@@ -142,10 +174,11 @@
             border:#89dd18 solid 3px;
         }
     .log-btn-second{
+    font-size: 2dvh;
     background-color: white;
     color:#89dd18;
     border:#89dd18 solid 3px;
-    height: 3rem;
+    height: 7dvh;
     }
         .log-btn-second:hover{
             background-color: #89dd18;
@@ -162,3 +195,4 @@
   .log-btn:focus {
     outline: none;
   }
+  

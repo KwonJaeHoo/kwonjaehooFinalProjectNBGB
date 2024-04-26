@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <div th:replace="import/cssImport.html :: css-import"></div>
+    <link rel="stylesheet" href="/css/lsy.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  </head>
+  <body>
+  </body>
+</html>
+	<!--사용자 네비게이션-->
+		<!--메뉴 네비게이션-->
+	<div th:insert="import/topImport2.html :: top-import"></div>
+    	<!--메뉴 네비게이션-->
+    <!--사용자 네비게이션-->
+    
+<section class="container">
+    <div class="video-section w-100">
+      <div class="video-container ftco-animate col-md-12">
+      	<div class="col-md-12 video-button-area">
+      		<button>수강목록</button>
+      		<button>마이페이지</button>
+      	<div>
+      
+        <div class="video-contents col-md-8">
+          <div class="video-area">
+            <video  controls playsinline muted ><!--autoplay-->
+              <source src="video/test.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-comment">
+            <div class="comment-title">
+              <h5 class="me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle-fill mb-1" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
+              </svg>  1강.</h5><h5 style="color:rgb(98, 98, 98);">무봉제 카드지갑 만들기</h5>
+            </div>
+            <div class="comment-comments">
+              강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고
+                강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고 강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고강의 설명 어쩌고저쩌고
+            </div>
+          </div>
+        </div>
+        <div class="video-contents col-md-4">
+          <div class="video-list-title align-items-center">
+            <h5><span class="icon-check" style="color:#89dd18;"></span> 강의명</h5>
+            <h6 class="mb-1">어색한 자리에서 냉랭한 분위기를 전환시키고 싶다면? - 배워서 바로 써먹는 마술</h6>
+            <h5><span class="icon-check" style="color:#89dd18;"></span> 강사</h5>
+            <h6>강사이름</h6>
+          </div>
+          <div class="video-list-area">
+            <h6 class="mb-1"><b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+            </svg>
+              재생목록</b></h6>
+            <p class="ms-3">총 강의 수 : 3 / 10</p>
+          </div>
+          <div class="video-list scroll">
+            <!--온라인 강의 재생목록-->
+            <div class="video-item col-12">
+              <div class="col-4 video-img-area">
+                <a class="video-imgBtn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg></a>
+                <a class="video-img" href="#" style="background-image: url(images/bg_1.jpg)" ></a>
+              </div>
+              <div class="col-8 video-title-area">
+                <p class="title-num">n강</p>
+                <p class="title-con">강의제목을 ㅣ각가ㅓ가ㅓㅏ어라어</p>
+              </div>
+            </div>
+            <div class="video-item col-12">
+              <div class="col-4 video-img-area">
+                <a class="video-imgBtn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg></a>
+                <a class="video-img" href="#" style="background-image: url(images/bg_1.jpg)" ></a>
+              </div>
+              <div class="col-8 video-title-area">
+                <p class="title-num">n강</p>
+                <p class="title-con">강의제목을 ㅣ각가ㅓ가ㅓㅏ어라어</p>
+              </div>
+            </div>
+            <div class="video-item col-12">
+              <div class="col-4 video-img-area">
+                <a class="video-imgBtn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg></a>
+                <a class="video-img" href="#" style="background-image: url(images/bg_1.jpg)" ></a>
+              </div>
+              <div class="col-8 video-title-area">
+                <p class="title-num">n강</p>
+                <p class="title-con">강의제목을 ㅣ각가ㅓ가ㅓㅏ어라어</p>
+              </div>
+            </div>
+            <div class="video-item col-12">
+              <div class="col-4 video-img-area">
+                <a class="video-imgBtn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg></a>
+                <a class="video-img" href="#" style="background-image: url(images/bg_1.jpg)" ></a>
+              </div>
+              <div class="col-8 video-title-area">
+                <p class="title-num">n강</p>
+                <p class="title-con">강의제목을 ㅣ각가ㅓ가ㅓㅏ어라어</p>
+              </div>
+            </div>
+            <div class="video-item col-12">
+              <div class="col-4 video-img-area">
+                <a class="video-imgBtn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+                </svg></a>
+                <a class="video-img" href="#" style="background-image: url(images/bg_1.jpg)" ></a>
+              </div>
+              <div class="col-8 video-title-area">
+                <p class="title-num">n강</p>
+                <p class="title-con">강의제목을 ㅣ각가ㅓ가ㅓㅏ어라어</p>
+              </div>
+            </div>
+            
+          </div>
+        </div> 
+      </div>
+    </div>
+  </section>
+  <footer class="footer-section"></footer>	
+	<!--채팅/맨 위로 버튼-->
+	<button id="btn-chat" title="채팅">
+		<img src="/images/icon-chat.png" alt="chat">
+	</button>
+	<button onclick="backToTop()" id="btn-back-to-top" title="맨 위로">
+		<img src="/images/icon-arrow-top.png" alt="top">
+	</button>
+	<!--채팅/맨 위로 버튼-->
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

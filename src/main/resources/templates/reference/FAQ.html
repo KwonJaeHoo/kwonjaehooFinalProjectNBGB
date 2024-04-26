@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	<!--사용자 네비게이션-->
+	<!--메뉴 네비게이션-->
+	<div th:insert="import/topImport.html :: top-import"></div>
+	
+	<!-- 고객센터 제목, 부제목 -->
+	<a class="MainBanner" aria-current="page" th:href="@{/reference}"><h1>자주 묻는 질문</h1></a>
+	<a class="MainBanner"><h3>궁금한 점들을 빠르게 확인해보세요.</h3></a>
+	
+	<!-- 검색창 -->
+    <form class="search-box" action="" method="get">
+    	<input class="search-txt" type="text" name="" placeholder="검색어를 입력하세요.">
+    	<button class="search-btn" type="submit">
+    		<i class="fa-solid fa-magnifying-glass"></i>
+    	</button>
+    </form>
+    
+    <section class="ftco-section" style="padding: 1em 0;">
+
+      <div class="container">
+        <div class="row d-flex justify-content-between">
+          <div>
+            
+            
+          </div>
+          
+        </div>  
+      </div><br />
+      
+    	<div class="container">
+        <div class="row">
+        	
+        	
+        	
+        </div>
+
+    	</div>
+    </section>
+	
+    	
+	
+
+	<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>
