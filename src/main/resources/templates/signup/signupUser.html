@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<link rel="stylesheet" href="css/signupCustom.css">
 <div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/signupCustom.css">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
     <div class="container-top">
         <div class="row m-auto">
             <div class="col-12 w-100 text-center">
-          <a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+          <a class="navbar-brand" href="/"><img src="/images/logo.png" width="300px"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
         </div>
         </div>
@@ -161,7 +161,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type:"POST",
-			url:"signup_user_idcheck",
+			url:"/signup/user/idcheck",
 			data : JSON.stringify
 			({	           
 				userId:$('#userId').val()
@@ -239,7 +239,7 @@ $(document).ready(function()
 	//password2
 	$('#userPasswordCheck2').blur(function()
 	{ 
-		/* 비밀번호 확인은 일치여부만 체크하면 될 듯..?
+		//비밀번호 확인은 일치여부만 체크하면 될 듯..?
 		if($.trim($("#userPasswordCheck2").val()).length <= 0)
 		{
 			$('#userPasswordCheck2').css({'border':'1px solid red'});
@@ -255,7 +255,7 @@ $(document).ready(function()
 			userPasswordCheck = false;
 			return;
 		}
-		*/
+		
 		if($("#userPasswordCheck1").val() != $("#userPasswordCheck2").val())
 		{
 			$('#userPasswordCheck2').css({'border':'1px solid red'});
@@ -391,7 +391,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type:"POST",
-			url:"signup_emailCheck",
+			url:"/signup/emailCheck",
 			data : JSON.stringify
 			({	           
 				email:$('#userEmail').val()
@@ -569,7 +569,7 @@ function signUp()
 	$.ajax
 	({
 		type:"POST",
-		url:"/signup_user",
+		url:"/signup/user",
 		data : JSON.stringify
 		({
 			userId:$("#userId").val(),
