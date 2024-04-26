@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/signupCustom.css">
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/pay.css">
+<meta charset="UTF-8">
+</head>
+<body>
+<section class=" pt-4">
+	<div class="container d-flex justify-content-center">
+		<div class="row">
+			<div class="col-lg-2">
+			
+				<h2 class="d-flex justify-content-center mt-3 mb-4">결제가 완료되었습니다</h2>
+				
+				<table>
+					<tr>
+						<td  class="ttt pl-3" style="border-radius: 10px 10px 0 0;">상품정보</td>
+					</tr>
+					<tr>
+						<td class="pl-3"style="font-size:15px">[내방 클래스]  어색한 자리에서 냉랭한 분위기를 전환시키고 싶다면? - 배워서 바로 써먹는 마술</td>
+						
+					</tr>
+					<tr>
+						<td class="pl-3"> 30일 55,555원</td>
+					</tr>
+				</table>
+				
+				<table class="mt-3">
+					<tr>
+						<td colspan="2" class="ttt pl-3" style="border-radius: 10px 10px 0 0;">총 결제금액</td>
+					</tr>
+					<tr>
+						<td class="pl-3" style="width:100px;">상품 금액</td>
+						<td>11,000원</td>
+					</tr>
+					<tr>
+						<td class="pl-3" style="width:100px;">보유 포인트</td>
+						<td>1,000원</td>
+					</tr>
+					<tr>
+						<td class="pl-3" style="width:100px;">사용 포인트</td>
+						<td>1,000원</td>
+					</tr>
+					<tr>
+						<td class="pl-3" style="width:100px;">결제 금액</td>
+						<td>10,000원</td>
+					</tr>
+				</table>
+				<div id="btnClose" class="d-flex justify-content-center"><button class="payBox mt-4">닫기</button></div>
+
+			</div>
+		</div>
+	
+			
+	
+	</div>
+</section>
+
+<div th:replace="import/jsImport.html :: js-import"></div>
+<script th:inline="javascript"> //임시~!
+$(document).ready(function(){
+	$("#btnClose").click(function(){
+		window.close();
+	});
+});
+
+</script>
+
+</body>
+</html>
