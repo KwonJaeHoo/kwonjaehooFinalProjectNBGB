@@ -1,5 +1,6 @@
 const userChangeBtn = document.getElementById("userChangeBtn");
 const instructorChangeBtn = document.getElementById("instructorChangeBtn");
+const container = document.querySelector(".container");
 
 userChangeBtn.addEventListener("click", () => 
 {

@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class OnlineClassPlayController {
+public class OnlineClassPlayController 
+{
 	
 	//온라인 강의 재생 페이지
 	@GetMapping("/onlinePlay")
-	public String onlinePlay() {
+	public String onlinePlay() 
+	{
 		return "onlineClass/onlineClassPlay";
 	}
 }
