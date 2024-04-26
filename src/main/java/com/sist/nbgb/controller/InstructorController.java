@@ -16,6 +16,6 @@ public class InstructorController
 	@GetMapping("/instructor/intest")
 	public ResponseEntity<String> instTest()
 	{
-		return ResponseEntity.ok("asdsd");
+		return ResponseEntity.ok("test");
 	}
 }

@@ -11,31 +11,31 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.repository.InstructorsRepository;
-import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService 
+public class CustomInstructorsDetailsService implements UserDetailsService 
 {
-	private final UserRepository userRepository;
+	private final InstructorsRepository instructorsRepository;
 	
 	@Override
 	@Transactional
-	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException 
+	public UserDetails loadUserByUsername(String instructorId) throws UsernameNotFoundException 
 	{
-		return userRepository.findByUserId(userId)
-				.map(this::createUserDetails)
-				.orElseThrow(() -> new UsernameNotFoundException(userId + "-> 데이터베이스에서 찾을 수 없습니다."));
+		return instructorsRepository.findByInstructorId(instructorId)
+				.map(this::createInstructorsDetails)
+				.orElseThrow(() -> new UsernameNotFoundException(instructorId + "-> 데이터베이스에서 찾을 수 없습니다."));
 	}
 	
 	//DB 에 User 값이 존재한다면 UserDetails 객체로 만들어서 리턴
-    private UserDetails createUserDetails(com.sist.nbgb.entity.User user) 
+    private UserDetails createInstructorsDetails(Instructors instructors) 
     {
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().toString());
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(instructors.getAuthority().toString());
 
-        return new User(String.valueOf(user.getUserId()), user.getUserPassword(), Collections.singleton(grantedAuthority));
+        return new User(String.valueOf(instructors.getInstructorId()), instructors.getInstructorPassword(), Collections.singleton(grantedAuthority));
     }
 }
