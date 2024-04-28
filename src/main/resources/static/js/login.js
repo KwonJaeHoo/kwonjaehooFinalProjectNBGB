@@ -1,5 +1,6 @@
 const userChangeBtn = document.getElementById("userChangeBtn");
 const instructorChangeBtn = document.getElementById("instructorChangeBtn");
+const container = document.querySelector(".container");
 
 userChangeBtn.addEventListener("click", () => 
 {
@@ -10,4 +11,3 @@ instructorChangeBtn.addEventListener("click", () =>
 {
 	container.classList.add("right-panel-active");
 });
-
