@@ -1,6 +1,6 @@
 package com.sist.nbgb.dto;
 
-import com.sist.nbgb.entity.ClassLike;
+import com.sist.nbgb.entity.ReviewLike;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,17 +13,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class ClassLikeDTO {
-	private Long classId;
-	private String classIden;
+public class OnlineReviewLikeDTO {
+	private Long reviewId;
 	private String userId;
 	
-	public static ClassLikeDTO toDto(ClassLike like) {
-		return ClassLikeDTO.builder()
-				.classId(like.getClassId().getClassId())
-				.classIden(like.getClassId().getClassIden())
+	public static OnlineReviewLikeDTO toDto(ReviewLike like) {
+		return OnlineReviewLikeDTO.builder()
+				.reviewId(like.getReviewId().getReviewId().getReviewId())
 				.userId(like.getUserId().getUserId())
 				.build();
 	}
-	
 }

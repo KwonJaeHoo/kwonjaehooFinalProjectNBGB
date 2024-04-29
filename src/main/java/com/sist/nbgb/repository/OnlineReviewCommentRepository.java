@@ -3,6 +3,7 @@ package com.sist.nbgb.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,4 +18,5 @@ public interface OnlineReviewCommentRepository extends JpaRepository<ReviewComme
 	 		+ "IN (SELECT r.reviewId FROM Review r "
 	 		+ "WHERE r.classId = :onlineClassId AND r.classIden = 'ON') ")
 	List<ReviewComment> findOnlineComment(@Param("onlineClassId") Long onlineClassId);
+		
 }

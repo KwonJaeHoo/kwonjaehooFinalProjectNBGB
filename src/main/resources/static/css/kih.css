@@ -310,11 +310,13 @@ td input:focus {
 }
 
 .btnSubmit {
+		border-style: soild;
 	background-color:#89dd18;
 	border-color:#89dd18;
 	outline:none;
 	color:#FFFFFF;
 	border-radius: 10px;
+
 }
 
 .btnSubmit:hover {
@@ -323,4 +325,5 @@ td input:focus {
 	outline:none;
 	color:#89dd18;
 	border-radius: 10px;
+	border-style: soild;
 }
