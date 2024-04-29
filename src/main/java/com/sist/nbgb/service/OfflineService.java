@@ -2,15 +2,21 @@ package com.sist.nbgb.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.dto.OfflineLikeDto;
 import com.sist.nbgb.dto.OfflinePostDto;
+import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.repository.OfflineLikeRepository;
 import com.sist.nbgb.repository.OfflineRepository;
+import com.sist.nbgb.repository.OfflineUserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +25,10 @@ import lombok.RequiredArgsConstructor;
 public class OfflineService
 {
 	private final OfflineRepository offlineRepository;
+	
+	private final OfflineUserRepository userRepository;
+	
+	private final OfflineLikeRepository likeRepository;
 	
 	public List<OfflineClass> findAll()
 	{	
@@ -78,6 +88,25 @@ public class OfflineService
 		return offlineRepository.updateViews(offlineClassId);
 	}
 	
+	//찜
+	//찜 중복 검색
+	public int duplicationLike(Long offlineClassId, String userId)
+	{
+		return likeRepository.findDuplicationLike(offlineClassId, userId); 
+	}
+	
+	//찜 등록
+	@Transactional
+	public OfflineLikeDto offlineLike(OfflineLikeDto likeDto)
+	{
+		ClassLike classLike = ClassLike.builder()
+				.classId(likeDto.getClassId())
+				.userId(likeDto.getUserId())
+				.build();
+		
+		return OfflineLikeDto.toDto(likeRepository.save(classLike));
+	}
+	
 	//오프라인 등록
 	@Transactional
 	public OfflinePostDto offlinePost(OfflinePostDto offlinePostDto)
@@ -98,19 +127,19 @@ public class OfflineService
 				.offlineClassViews((long) 0)
 				.build();
 		
-		System.out.println("333333333333333333333333333");
-		
 		 // 저장 후에 offlineClassId 값을 가져옵니다.
 	    OfflineClass savedOfflineClass = offlineRepository.save(offlineClass);
 	    Long offlineClassId = savedOfflineClass.getOfflineClassId();
-	    
-	    System.out.println("4444444444444444444444444444");
 
 	    // 반환할 DTO에 offlineClassId 값을 설정한 후에 반환합니다.
 	    offlinePostDto.setOfflineClassId(offlineClassId);
 	    
-	    System.out.println("5555555555555555555555555555");
-	    
 	    return offlinePostDto;
+	}
+	
+	//오프라인 공방 예약하기
+	public Optional<User> findByUserId(String userId)
+	{
+		return userRepository.findByUserId(userId);
 	}
 }

@@ -8,6 +8,39 @@
     <script th:inline="javascript">
     $(document).ready(function(){
  	    $("#star").css("width", "[[${avgRating}]]%"); 
+ 	    
+ 	   var formData = new FormData();
+	    
+	    var likeDto = {
+	    		classId:$("#classId").val(),
+	    		classIden:'on',
+	    		userId:'sist1'
+	    }
+	    
+	    formData.append('likeDto', new Blob([JSON.stringify(likeDto)], {type: "application/json"}));
+ 	    
+ 	    $("#btnLike").on("click", function(){
+ 	    	$.ajax({
+		    	type:"POST",
+		    	url:"/offlineClass/like",
+		    	data:formData,
+		    	datatype:"JSON",
+		    	processData:false,
+		    	contentType:false,
+		    	cache:false,
+		    	beforeSend:function(xhr){
+		    		xhr.setRequestHeader("AJAX", "true");
+		    	},
+		    	success:function(response){
+		    		alert("찜 목록에 담겼습니다.");
+		    		window.location.reload(true);
+		    		//location.href = "redirect:/"//"/online/"+classId;
+		    	},
+		    	error:function(xhr, status, error){
+		    		alert("오류가 발생했습니다.");
+		    	}
+		    });
+ 	    });
     });
    
     function fn_sendFB(sns) {
@@ -100,7 +133,8 @@
               <div class="d-flex justify-content-start">
               	<button id="btnLike" class="btn-off"><span style="width:16; height:16; color:red;" class="icon-favorite"></span> 찜</button>&nbsp; &nbsp;
               	<div class="dropdown-share">
-              	  <button onclick="btnClick()" id="btnLike" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
+              	  <button onclick="btnClick()" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
+              	  <input type="hidden" id="classId" name="classId" th:value="${offlineClass.offlineClassId}" >
               	  <div id="dropdown-share-content" class="dropdown-share-content align-items-center">
                 	<ul class="ftco-footer-social mt-1" style="padding-left: 0px; margin-bottom: 0px;">
 		            	<li class="ftco-animate" style="margin:1px;"><a onclick="fn_sendFB('clip');return false;"><span class="icon-link2"></span></a></li>
@@ -111,7 +145,7 @@
             </div>
               </div>
               <div class="d-flex justify-content-end">
-                <button class="box">예약하기</button>
+                <button class="box" th:onclick="|location.href='@{'/offlineClass/reserve/' + ${offlineClass.offlineClassId}}'|">예약하기</button>
 		      </div>
             </div>
             </div>
