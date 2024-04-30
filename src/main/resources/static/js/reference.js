@@ -1,5 +1,8 @@
 (function ($) {
   $(function () {
+	
+	$('.js-ag-faq_text').hide();
+	
     // FAQ 제목 클릭 이벤트
     $('.js-ag-faq_title').on('click', function() {
       $(this).next('.js-ag-faq_sub_titles').slideToggle();
