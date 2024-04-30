@@ -30,11 +30,11 @@ public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> 
 	//후기 목록 페이징
 	Page<Review> findAllByClassIdAndClassIdenAndReviewStatus(Pageable pageable, Long classId, String classIden, Status reviewStatus);
 
-	//내가 후기 추천 했는지 확인
-	//Long countByReviewLikeId_reviewIdAndReviewLikeId_userId(Long reviewId, String userId);
-
 	//추천 시 추천 수 증가
 	@Modifying
-	@Query("update Review o set o.reviewLikeCnt = o.reviewLikeCnt + 1 where o.reviewId = :reviewId")
+	@Query("update Review o set o.reviewLikeCnt = o.reviewLikeCnt + 1 where o.reviewId.reviewId = :reviewId")
 	int updateReviewLikeCnt(@Param("reviewId") Long reviewId);
+	
+	//reviewId 가져오기
+	Review findFirstByReviewId_reviewId(Long reviewId);
 }

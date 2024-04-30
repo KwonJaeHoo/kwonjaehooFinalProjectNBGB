@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
@@ -26,6 +27,7 @@ import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.ReviewLike;
+import com.sist.nbgb.entity.ReviewLikeId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.ClassLikeRepository;
@@ -34,6 +36,7 @@ import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
 import com.sist.nbgb.repository.OnlineReviewRepository;
+import com.sist.nbgb.repository.ReviewLikeRepository;
 import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -50,6 +53,7 @@ public class OnlineClassService {
 	private final OnlineReviewRepository reviewRepository;
 	private final OnlineReviewCommentRepository reviewCommentRepository;
 	private final UserRepository userRepository;
+	private final ReviewLikeRepository reviewLikeRepository;
 	
 	/*온라인클래스 리스트*/
 	//카테고리명 조회
@@ -176,35 +180,27 @@ public class OnlineClassService {
 	}
 	
 	//후기 추천 여부
-//	public long findReviewLikeMe(long reviewId, String userId) {
-//		return reviewRepository.countByReviewLikeId_reviewIdAndReviewLikeId_userId(reviewId, userId);
-//	}
+	public long findReviewLikeMe(long reviewId, String userId) {
+		return reviewLikeRepository.countByReviewLikeId_reviewIdAndReviewLikeId_userId(reviewId, userId);
+	}
+	
+	//후기 추천 수 증가
+	@Transactional
+	public int updateReviewLike(long reviewId) {
+		return reviewRepository.updateReviewLikeCnt(reviewId);
+	}
 	
 	//후기 추천 등록
-//	@Transactional
-//	public OnlineReviewLikeDTO saveReviewLike(OnlineReviewLikeDTO likeDto) {
-//		OnlineClass tmpClass = onlineClassRepository.findFirstByonlineClassId(likeDto.getClassId());
-//		ClassId classId = ClassId.builder()
-//				.classId(tmpClass.getOnlineClassId())
-//				.classIden("on")
-//				.build();
-//		User user = userRepository.findFirstByUserId("sist1"); //아이디 받아오기
-//		
-//		
-//		Review tmpReview = reviewRepository.findById(likeDto.getReviewId());
-//		
-//		
-//		
-//		
-//		ReviewLike like = ReviewLike.builder()
-//				.reviewId(review)
-//				.userId(user)
-//				.build();
-//		
-//		reviewRepository.save(like);
-//		
-//		return likeDto;
-//	}
+	@Transactional
+	public OnlineReviewLikeDTO saveReviewLike(OnlineReviewLikeDTO likeDto) {
+		log.info("likeDto.getReviewId()" + likeDto.getReviewId());
+		
+		User user = userRepository.findFirstByUserId("sist1"); //아이디 받아오기
+		
+		reviewLikeRepository.insertReviewLike(likeDto.getReviewId(), user.getUserId());
+		
+		return likeDto;
+	}
 	
 	//후기 댓글 목록
 	public List<ReviewComment> findOnlineComment(@Param("onlineClassId") Long onlineClassId){
