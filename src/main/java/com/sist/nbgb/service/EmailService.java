@@ -48,7 +48,7 @@ public class EmailService
         createCode();
         String setFrom = "wogn2918@gmail.com";
         String toEmail = email;
-        String title = "내방공방 회원가입 인증번호 입니다.";
+        String title = "내방공방 인증번호 입니다.";
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, toEmail);
@@ -63,7 +63,7 @@ public class EmailService
         msgOfEmail += "<p>감사합니다.<p>";
         msgOfEmail += "<br>";
         msgOfEmail += "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgOfEmail += "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
+        msgOfEmail += "<h3 style='color:blue;'>인증 코드입니다.</h3>";
         msgOfEmail += "<div style='font-size:130%'>";
         msgOfEmail += "CODE : <strong>";
         msgOfEmail += authNum + "</strong><div><br/> ";
@@ -86,4 +86,51 @@ public class EmailService
 
         return authNum; //인증 코드 반환
     }
+    
+    
+    // 메일 양식 작성
+    public MimeMessage createEmailFormPassword(String email) throws MessagingException, UnsupportedEncodingException 
+    {
+        createCode();
+        String setFrom = "wogn2918@gmail.com";
+        String toEmail = email;
+        String title = "내방공방 임시 비밀번호 입니다.";
+
+        MimeMessage message = emailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, toEmail);
+        message.setSubject(title);
+
+        // 메일 내용
+        String msgOfEmail="";
+        msgOfEmail += "<div style='margin:20px;'>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<p>임시 비밀번호를 입력해주세요<p>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<p>감사합니다.<p>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgOfEmail += "<h3 style='color:blue;'>임시 비밀번호 입니다.</h3>";
+        msgOfEmail += "<div style='font-size:130%'>";
+        msgOfEmail += "CODE : <strong>";
+        msgOfEmail += authNum + "</strong><div><br/> ";
+        msgOfEmail += "</div>";
+
+        message.setFrom(setFrom);
+        message.setText(msgOfEmail, "utf-8", "html");
+
+        return message;
+    }
+    
+    //실제 메일 전송
+    public String sendEmailPassword(String email) throws MessagingException, UnsupportedEncodingException 
+    {
+
+        //메일전송에 필요한 정보 설정
+        MimeMessage emailForm = createEmailFormPassword(email);
+        //실제 메일 전송
+        emailSender.send(emailForm);
+
+        return authNum; //인증 코드 반환
+    }
+
 }

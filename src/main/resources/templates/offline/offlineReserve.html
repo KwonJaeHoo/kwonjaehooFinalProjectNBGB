@@ -7,6 +7,51 @@
 	</style>
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<script src="/js/offline.js"></script>
+	<script type="text/javascript">
+$(document).ready(function(){
+	let first_input = $("div").find(".first-input");
+	let hidden_input = $("div").find(".input__block").find("#repeat__password");
+	$("#tab-1").css("opacity","0");
+	$("#tab-2").css("opacity","0");
+	
+	
+   $('input[type=radio][name=chk]').on("click", function(){
+	   
+	  var chkValue = $('input[type=radio][name=chk]:checked').val();
+      
+      if(chkValue == '1'){
+		 first_input.addClass("first-input__block").removeClass("signup-input__block");
+		 $('#tab-1').parent().parent().css("background","1");
+		 $('#tab-2').parent().parent().css("opacity","0.6");
+         $('#page1').css('display', 'block');
+         $('#page2').css('display', 'none');
+      }
+      else if(chkValue == '2'){
+    	 first_input.removeClass("first-input__block").addClass("signup-input__block");
+    	 $('#tab-2').parent().parent().css("opacity","1");
+ 		 $('#tab-1').parent().parent().css("opacity","0.6");
+         $('#page2').css('display', 'block');
+         $('#page1').css('display', 'none');
+      }
+   });
+   
+   $("#btnRes").on("click", function(){
+	  if($.trim($("#resYear").val()).length <= 0 || $.trim($("#resMonth").val()).length <= 0 || $.trim($("#resDate").val()).length <= 0)
+	  {
+		  alert("예약일을 선택해주세요.");
+		  return;
+	  }
+	  
+	  alert($("#resYear").val() + " . " + $("#resMonth").val() + " . " + $("#resDate").val())
+	  
+	  if($.trim($("#resDate").val()).length <= 0)
+	  {
+		  alert("예약 시간을 선택해주세요.");
+		  return;
+	  }
+   });
+});
+</script>
 </head>
 <body>
 	<!--사용자 네비게이션-->
@@ -14,20 +59,121 @@
 	<div th:insert="import/topImport.html :: top-import"></div>
     	<!--메뉴 네비게이션-->
     <!--사용자 네비게이션-->
+    
+    <section class="ftco-section pt-3">
+      <div class="container">
+        <div class="row justify-content-center">
+        
+        	<div class="ftco-animate">
+    
+	<h2 class="mb-3" style="text-align:center;">공방 예약</h2>
+		<div id="page1" class="mb-2">
 
-
-<section class="ftco-section" style="padding: 1em 0;">
-
-      <div class="container" style="text-align: center;">
-		<div class="row">
-			<div id="calendar">
-		    <div id="calendar_header"><i class="icon-chevron-left"></i>          <h1></h1><i class="icon-chevron-right"></i>         </div>
-		    <div id="calendar_weekdays"></div>
-		    <div id="calendar_content"></div>
-		  </div>
+			<div class="container" style="display: inline-block;">
+				<div class="d-flex justify-content-start mt-4">
+					<h4>예약자 정보</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">예약자 정보를 확인해주세요.</p>
+				</div>
+				<table class="tbr mb-2" border="1">
+					<tr>
+						<td class="ttr" style="border-radius: 10px 0 0 0;">아이디</td>
+						<td><input type="text" name="title" id="title" th:value="${user.getUserId()}" readonly/></td>
+					</tr>
+					<tr>
+						<td class="ttr">이름</td>
+						<td><input type="text" name="title" id="title" th:value="${user.getUserName()}" readonly/></td>
+					</tr>
+					<tr>
+						<td class="ttr">연락처</td>
+						<td><input type="text" placeholder=" 강사명" th:value="${user.getUserPhone()}" readonly></td>
+					</tr>
+					<tr>
+						<td class="ttr" style="border-radius:0 0 0 10px;">이메일</td>
+						<td><input type="text" th:value="${user.getUserEmail()}" readonly></td>
+					</tr>
+			</table>
+			
+			<div class="d-flex justify-content-start mt-4">
+					<h4>공방 정보</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">공방 정보를 확인해주세요.</p>
+				</div>
+				<table class="tbr mb-2" border="1">
+					<tr>
+						<td class="ttr" style="border-radius: 10px 0 0 0;">클래스명</td>
+						<td><input type="text" name="title" id="title" th:value="${offlineClass.offlineClassTitle}" readonly /></td>
+					</tr>
+					<tr>
+						<td class="ttr">카테고리</td>
+						<td><input type="text" name="title" id="title" th:value="${offlineClass.offlineClassCategory}" readonly/></td>
+					</tr>
+					<tr>
+						<td class="ttr">강사명</td>
+						<td><input type="text" placeholder=" 강사명" th:value="${offlineClass.instructorNickname}" readonly></td>
+					</tr>
+					<tr>
+						<td class="ttr">가격</td>
+						<td><input type="text" th:value="${offlineClass.offlineClassPrice}" readonly></td>
+					</tr>
+					<tr>
+						<td class="ttr" style="border-radius:0 0 0 10px;">주소</td>
+						<td><input type="text" th:value="${offlineClass.offlineClassPlace}" readonly></td>
+					</tr>
+			</table>
+			</div>
+	</div>
+	
+	<div id="page2" style="display:none;">
+		<div class="d-flex justify-content-start mt-4">
+			<h4>&nbsp;&nbsp;예약일 선택</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">예약일과 시간을 선택해주세요.</p>
 		</div>
-       </div>
-    </section>
+	
+		<div class="calendar">
+			    <div class="calendar_header"><i class="icon-chevron-left"></i>          <h1></h1><i class="icon-chevron-right"></i>         </div>
+			    <div class="calendar_weekdays"></div>
+			    <div class="calendar_content"></div>
+		    </div>
+			
+			<br /><br />
+			
+			<div class="container" style="display: inline-block;">
+		    <div class="tbr mb-2" style="margin-top: 20px; border:1;">
+		     <div class="time">
+		       <div class="time-am">
+		    	<button class="btntime">09 : 00</button>
+		    	<button class="btntime">10 : 00</button>
+		    	<button class="btntime">11 : 00</button>
+		    	<button class="btntime">13 : 00</button>
+		       </div>
+		       <div class="time-pm">
+		    	<button class="btntime">14 : 00</button>
+		    	<button class="btntime">15 : 00</button>
+		    	<button class="btntime">16 : 00</button>
+		    	<button class="btntime">17 : 00</button>
+		       </div> 
+		     </div>
+		 	</div>
+		  </div>
+		  <input type="hidden" id="resYear" name="resDate" value="" >
+		  <input type="hidden" id="resMonth" name="resMonth" value="" >
+		  <input type="hidden" id="resDate" name="resDate" value="" >
+	</div>
+	
+	<!-- 페이지 출력 -->
+	<div class="block-27 smallpage" style="display:inline;text-align:center;border-color:#cecccc;">
+    <ul class="mb-2">
+		<li>
+	  		<a href="javascript:void(0);" class="smallpage"><input id="tab-1" type="radio" name="chk" value="1" style="display:none;"><label for="tab-1">&lt;</label></a>
+	  	</li>
+	  	<li>
+	 	 	<a href="javascript:void(0);" class="smallpage"><input id="tab-2" type="radio" name="chk" value="2" style="display:none;"><label for="tab-2">&gt;</label></a>
+	 	</li>
+	</ul>
+	</div>
+	<!-- 페이지 출력 끝 -->
+	
+	<p class="d-flex justify-content-end"><input type="submit" class="btnReserve" id="btnRes" value="예약하기"></p>
+			</div>
+		</div>
+	</div>
+</section>
 	
 	<!--채팅/맨 위로 버튼-->
 		<!--footer-->

@@ -1,5 +1,8 @@
 package com.sist.nbgb.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +24,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sist.nbgb.dto.CategoriesDTO;
 import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.ClassLikeDTO;
+import com.sist.nbgb.dto.OfflineUpload;
 import com.sist.nbgb.dto.OnlineClassView;
+import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.OnlineReviewDTO;
+import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Review;
@@ -42,6 +56,9 @@ public class OnlineClassController {
 	private static final Logger logger = LoggerFactory.getLogger(OnlineClassController.class);
 	
 	private final OnlineClassService onlineClassService;
+	
+	@Autowired
+	private OfflineUpload photoUtil;
 	
 	//온라인 리스트 조회
 	@GetMapping("/onlineClass")
@@ -166,9 +183,9 @@ public class OnlineClassController {
 		String likeStatus = "N";
 		
 		//쿠키아이디가져와야됨
-//		if(onlineClassService.findLikeMe(onlineClassId, "on", "sist1") > 0) {
-//			likeStatus = "Y";
-//		}
+		if(onlineClassService.findLikeMe(onlineClassId, "on", "sist1") > 0) {
+			likeStatus = "Y";
+		}
 		
 		//조회수 증가
 		onlineClassService.updateViews(onlineClassId);
@@ -204,27 +221,130 @@ public class OnlineClassController {
 	}
 	
 	//강의 좋아요(수정중)
-	@PostMapping("/api/onlineLike")
-	public String onlineLike(@ModelAttribute("likeDto") ClassLikeDTO classLikeDto, Model model) {
+//	@PostMapping("/api/onlineLike")
+//	@ResponseBody
+//	public String onlineLike(@ModelAttribute("likeDto") ClassLikeDTO classLikeDto, Model model) {
+//		log.info(classLikeDto.getClassId()+"classID");
+//		log.info(classLikeDto.getClassIden()+"iden");
+//		log.info(classLikeDto.getUserId()+"userID");
+//		
+//		
+//		try {
+//			ClassLike classLike = ClassLike.createClassLike(classLikeDto);
+//			onlineClassService.saveLike(classLike);
+//		} catch(IllegalStateException e) {
+//			model.addAttribute("errorMsg", e.getMessage());
+//		}
+//		
+//		return "redirect:/";
+//	}
+	
+	//온라인 클래스 좋아요 등록
+	@PostMapping("/online/likeBefore")
+	@ResponseBody
+	public ResponseEntity<ClassLikeDTO> onlineLike(@RequestPart(value="likeDto") ClassLikeDTO classLikeDto, Model model) {
+		ClassLikeDTO likeDto = onlineClassService.saveLike(classLikeDto);
+		
+		
 		log.info(classLikeDto.getClassId()+"classID");
 		log.info(classLikeDto.getClassIden()+"iden");
 		log.info(classLikeDto.getUserId()+"userID");
 		
 		
-		try {
-			ClassLike classLike = ClassLike.createClassLike(classLikeDto);
-			onlineClassService.saveLike(classLike);
-		} catch(IllegalStateException e) {
-			model.addAttribute("errorMsg", e.getMessage());
+		return ResponseEntity.ok(likeDto);
+	}
+	
+	//후기 추천
+	@PostMapping("/online/reviewLike")
+	@ResponseBody
+	public ResponseEntity<Integer> onReviewLike(@RequestPart (value="revLikeDto") OnlineReviewLikeDTO revLikeDto, Model model){
+		if(onlineClassService.findReviewLikeMe(revLikeDto.getReviewId(), revLikeDto.getUserId()) > 0) {
+			return ResponseEntity.ok(0); //이미 추천함
+		}
+		log.info("여기까지는옴1111111111111111111111111111111111111111111");
+		
+		if (onlineClassService.saveReviewLike(revLikeDto) != null ) {
+			log.info("세이브함ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+			int likeCnt = onlineClassService.updateReviewLike(revLikeDto.getReviewId());
+			return ResponseEntity.ok(likeCnt); //추천완료
+		} else {
+			log.info("세이브못함ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ");
+			return ResponseEntity.ok(-1); //오류
 		}
 		
-		return "redirect:/";
 	}
+	
+	//온라인 클래스 좋아요 취소
+	@PostMapping("/online/likeAfter")
+	@ResponseBody
+	public ResponseEntity<Integer> onlineLikeRemove(@RequestPart(value="likeDto") ClassLikeDTO classLikeDto, Model model) {
+		int result = 0;
+		result = onlineClassService.removeLike(classLikeDto);
+		
+		log.info(classLikeDto.getClassId()+"classID");
+		log.info(classLikeDto.getClassIden()+"iden");
+		log.info(classLikeDto.getUserId()+"userID");
+				
+		return ResponseEntity.ok(result);
+	}
+	
+	
+	
 	
 	//온라인 클래스 등록 신청(글 작성)
 	@GetMapping("/online/write")
 	public String onlineClassWrite() {
 		return "onlineClass/onlineClassWrite";
+	}
+	
+	//에디터 파일 저장
+	@ResponseBody
+	@PostMapping("/images/onlineUpload")
+	public ModelAndView onlineUpload(MultipartHttpServletRequest request)
+	{
+		ModelAndView mav = new ModelAndView("jsonView");
+		
+		String uploadPath = photoUtil.ckUploadOnline(request);
+		
+		mav.addObject("uploaded", true);
+		mav.addObject("url", "/images/onlineUpload" + uploadPath);
+		
+		return mav;
+	}
+	
+	//게시물 등록
+	@PostMapping("/online/write/post")
+	@ResponseBody
+	public ResponseEntity<OnlinePostDTO> onlinePost(@RequestPart(value="onlinePostDto") @Valid OnlinePostDTO onlinePostDto, @RequestPart(value="onlineFile") MultipartFile onlineFile)
+	{
+		OnlinePostDTO onDto = onlineClassService.onlinePost(onlinePostDto);
+		
+		System.out.println("1111111111111111111111111");
+		
+		String path = "C:/project/sts4/SFPN/src/main/resources/static/images/onlineThumbnail";
+		
+		String fileName = onDto.getOnlineClassId() + ".jpg";
+		
+		String filepath = path + "/" + fileName;
+		
+		File file = new File(filepath);
+		
+		try 
+	    {
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bufferedOutputStream.write(onlineFile.getBytes());
+            bufferedOutputStream.close();
+	        
+	    }
+	    catch (Exception e) 
+        {
+            throw new RuntimeException("오류가 발생했습니다.");
+        } 
+		
+		System.out.println("222222222222222222222222222222222");
+	       
+       return ResponseEntity.ok(onDto);   
+
 	}
 	
 }

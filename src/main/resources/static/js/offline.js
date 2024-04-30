@@ -50,9 +50,9 @@ function p(){
 
 function d(){
 	var t;
-	var n=$("#calendar").css("width",e+"px");
-	n.find(t="#calendar_weekdays, #calendar_content").css("width",e+"px").find("div").css({width:e/7+"px",height:e/7+"px","line-height":e/7+"px"});
-	n.find("#calendar_header").css({height:e*(1/7)+"px"}).find('i[class^="icon-chevron"]').css("line-height",e*(1/7)+"px")
+	var n=$(".calendar").css("width",e+"px");
+	n.find(t=".calendar_weekdays, .calendar_content").css("width",e+"px").find("div").css({width:e/7+"px",height:q/7+"px","line-height":q/7+"px"});
+	n.find(".calendar_header").css({height:q*(1/5)+"px"}).find('i[class^="icon-chevron"]').css("line-height",q*(1/5)+"px")
 }
 
 function v(e,t){
@@ -79,6 +79,8 @@ function b(){
 
 var e=480;
 
+var q=350;
+
 var t=2013;
 
 var n=9;
@@ -87,17 +89,19 @@ var r=[];
 
 var i=["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
 
+var k=["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+
 var s=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 var o=["#16a085","#1abc9c","#c0392b","#27ae60","#FF6860","#f39c12","#f1c40f","#e67e22","#2ecc71","#e74c3c","#d35400","#2c3e50"];
 
-var u=$("#calendar");
+var u=$(".calendar");
 
-var a=u.find("#calendar_header");
+var a=u.find(".calendar_header");
 
-var f=u.find("#calendar_weekdays");
+var f=u.find(".calendar_weekdays");
 
-var l=u.find("#calendar_content");
+var l=u.find(".calendar_content");
 
 b();
 
@@ -127,4 +131,33 @@ a.find('i[class^="icon-chevron"]').on("click",function(){
 		r("next")
 	}
 	
-})})
+})
+
+l.on("click", "div", function() {
+    // 클릭한 날짜의 배경색을 변경
+    var $clicked = $(this);
+    if (!$clicked.hasClass("selected")) { // 선택된 요소가 아닌 경우에만 처리
+        l.find("div.selected").removeClass("selected").css("background-color", ""); // 선택 클래스를 가진 모든 요소의 선택 클래스를 제거하고 배경색 초기화
+        $clicked.addClass("selected").css("background-color", o[n-1]); // 클릭한 요소에 선택 클래스를 추가하고 배경색 변경
+        l.find(".today").css("color", "#787878");
+        l.find(".today").removeClass("today").css("background-color", "");
+    }
+    
+	var selectedDate = $(".calendar_content").find(".selected").text();
+	var selectedMonth = k[n-1];
+	var selectedYear = t;
+	$("#resMonth").val(selectedMonth);
+	$("#resDate").val(selectedDate);
+	$("#resYear").val(selectedYear);
+	
+	$(document).ready(function(){
+		$(".btntime").on("click", function(){
+			// 현재 클릭된 요소에 대해서만 클래스 조작
+			$(".btntime").removeClass("btntime-clicked");
+			$(this).addClass("btntime-clicked");
+		});
+	});
+});
+
+})
+

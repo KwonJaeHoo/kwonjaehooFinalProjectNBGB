@@ -374,10 +374,51 @@ $(document).ready(function()
 			userEmailCheck = false;
 			return;
 		}
-
-		$('#userEmail').css({'border':'1px solid #89dd18'});
-		document.getElementById("userMsg6").innerHTML = "";
-		userEmailCheck = true;
+		
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/signup/user/emailcheck",
+			data : JSON.stringify
+			({	           
+				email:$('#userEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					if($('#userEmail').val() != '')
+					{
+						$('#userEmail').css({'border':'1px solid #89dd18'});
+						document.getElementById("userMsg6").innerHTML = "";
+						userEmailCheck = true;  
+						return;
+					}	           	
+				}
+				else if(data == true)
+				{
+					if($('#userEmail').val() != '')
+					{
+						$('#userEmail').css({'border':'1px solid red'});
+						document.getElementById("userMsg6").innerHTML = "이메일이 중복돼요.";
+						userEmailCheck = false;
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				return;
+			}
+		});
 	});	
 
 	$("#userEmailBtn").on("click", function()
@@ -391,7 +432,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type:"POST",
-			url:"/signup/emailCheck",
+			url:"/signup/emailsend",
 			data : JSON.stringify
 			({	           
 				email:$('#userEmail').val()

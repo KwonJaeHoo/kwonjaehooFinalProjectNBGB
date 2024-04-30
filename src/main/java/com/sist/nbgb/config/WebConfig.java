@@ -12,5 +12,8 @@ public class WebConfig implements WebMvcConfigurer
     {
         registry.addResourceHandler("/images/offlineUpload/**")
                 .addResourceLocations("file:///C:/project/sts4/SFPN/src/main/resources/static/images/offlineUpload/");
+        
+        registry.addResourceHandler("/images/onlineUpload/**")
+        .addResourceLocations("file:///C:/project/sts4/SFPN/src/main/resources/static/images/onlineUpload/");
     }
 }

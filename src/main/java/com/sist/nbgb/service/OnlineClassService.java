@@ -2,6 +2,7 @@ package com.sist.nbgb.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -10,13 +11,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.sist.nbgb.dto.ClassLikeDTO;
+import com.sist.nbgb.dto.OfflinePostDto;
+import com.sist.nbgb.dto.OnlinePostDTO;
+import com.sist.nbgb.dto.OnlineReviewLikeDTO;
+import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
+import com.sist.nbgb.entity.Instructors;
+import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineCategory;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
+import com.sist.nbgb.entity.ReviewLike;
+import com.sist.nbgb.entity.ReviewLikeId;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.ClassLikeRepository;
 import com.sist.nbgb.repository.OnlineCategoryRepository;
@@ -24,6 +36,8 @@ import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
 import com.sist.nbgb.repository.OnlineReviewRepository;
+import com.sist.nbgb.repository.ReviewLikeRepository;
+import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +52,8 @@ public class OnlineClassService {
 	private final OnlinePaymentApproveRepository onlinePaymentApproveRepository;
 	private final OnlineReviewRepository reviewRepository;
 	private final OnlineReviewCommentRepository reviewCommentRepository;
+	private final UserRepository userRepository;
+	private final ReviewLikeRepository reviewLikeRepository;
 	
 	/*온라인클래스 리스트*/
 	//카테고리명 조회
@@ -107,21 +123,35 @@ public class OnlineClassService {
 		return classLikeRepository.countByClassId_classIdAndClassId_classIdenAndClassId_userId(classId, classIden, userId);
 	}
 	
-	//게시글 찜 추가
-	public ClassLike saveLike(ClassLike classLike) {
-		validateDuplicateClassLike(classLike);
-		return classLikeRepository.save(classLike);
+	//게시글 찜 등록
+	@Transactional
+	public ClassLikeDTO saveLike(ClassLikeDTO likeDto) {
+		OnlineClass tmpClass = onlineClassRepository.findFirstByonlineClassId(likeDto.getClassId());
+		ClassId classId = ClassId.builder()
+				.classId(tmpClass.getOnlineClassId())
+				.classIden("on")
+				.build();
+		User user = userRepository.findFirstByUserId("sist1"); //아이디 받아오기
+		
+		ClassLike like = ClassLike.builder()
+				.classId(classId)
+				.userId(user)
+				.build();
+		
+		classLikeRepository.save(like);
+		
+		return likeDto;
 	}
 	
-	//게시글 찜 여부
-	public void validateDuplicateClassLike(ClassLike classLike) {
-		ClassLike findLike = classLikeRepository.findByClassId_classIdAndClassId_classIdenAndClassId_userId
-				(classLike.getClassId().getClassId(), classLike.getClassId().getClassIden(), classLike.getUserId().getUserId());
-		if(findLike != null) {
-			throw new IllegalStateException("이미 찜 목록에 담겨있습니다.");
+	//게시글 찜 취소
+	@Transactional
+	public int removeLike(ClassLikeDTO likeDto) {
+		if(findLikeMe(likeDto.getClassId(), likeDto.getClassIden(),likeDto.getUserId()) >= 1) {
+			return classLikeRepository.deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(likeDto.getClassId(), likeDto.getClassIden(), likeDto.getUserId());	
 		}
-	}
-	
+		
+		return 0;
+	}	
 	
 	//결제 날짜
 	public LocalDateTime findApproveAt(String itemCode, String partnerUserId) {
@@ -149,10 +179,70 @@ public class OnlineClassService {
 		return reviewRepository.starAvg(classId);
 	}
 	
+	//후기 추천 여부
+	public long findReviewLikeMe(long reviewId, String userId) {
+		return reviewLikeRepository.countByReviewLikeId_reviewIdAndReviewLikeId_userId(reviewId, userId);
+	}
+	
+	//후기 추천 수 증가
+	@Transactional
+	public int updateReviewLike(long reviewId) {
+		return reviewRepository.updateReviewLikeCnt(reviewId);
+	}
+	
+	//후기 추천 등록
+	@Transactional
+	public OnlineReviewLikeDTO saveReviewLike(OnlineReviewLikeDTO likeDto) {
+		log.info("likeDto.getReviewId()" + likeDto.getReviewId());
+		
+		User user = userRepository.findFirstByUserId("sist1"); //아이디 받아오기
+		
+		reviewLikeRepository.insertReviewLike(likeDto.getReviewId(), user.getUserId());
+		
+		return likeDto;
+	}
+	
 	//후기 댓글 목록
 	public List<ReviewComment> findOnlineComment(@Param("onlineClassId") Long onlineClassId){
 		return reviewCommentRepository.findOnlineComment(onlineClassId);
 	}
 	
+	//온라인 클래스 등록
+	@Transactional
+	public OnlinePostDTO onlinePost(OnlinePostDTO onlinePostDto) {
+		Instructors id = findById((long) 8).getInstructorId(); //아이디 받아오기
+		//카테고리 id로 카테고리 검색
+		OnlineCategory cate = onlineCategoryRepository.findFirstByOnlineCategoryId(onlinePostDto.getOnlineCategoryId());
+		System.out.println("333333333333333333333333333 " + cate);
+		System.out.println("333333333333333333333333333 " + cate.getOnlineCategoryId());;
+		
+		OnlineClass onlineClass = OnlineClass.builder()
+				.onlineClassTitle(onlinePostDto.getOnlineClassTitle())
+				.onlineClassContent(onlinePostDto.getOnlineClassContent())
+				.onlineClassRegdate(LocalDateTime.now())
+				.onlineCategoryId(cate)
+				.instructorId(id)
+				.onlineClassPrice(onlinePostDto.getOnlineClassPrice())
+				.onlineClassPeriod(onlinePostDto.getOnlineClassPeriod())
+				.onlineClassApprove(Status.Y)
+				.rejection(null)
+				.onlineClassViews((long) 0)
+				.build();
+		
+		System.out.println("333333333333333333333333333");
+		
+		 // 저장 후에 onlineClassId 값을 가져옵니다.
+	    OnlineClass savedOnlineClass = onlineClassRepository.save(onlineClass);
+	    Long onlineClassId = savedOnlineClass.getOnlineClassId();
+	    
+	    System.out.println("4444444444444444444444444444");
+
+	    // 반환할 DTO에 onlineClassId 값을 설정한 후에 반환합니다.
+	    onlinePostDto.setOnlineClassId(onlineClassId);
+	    
+	    System.out.println("5555555555555555555555555555");
+	    
+	    return onlinePostDto;
+	}
 }
 	

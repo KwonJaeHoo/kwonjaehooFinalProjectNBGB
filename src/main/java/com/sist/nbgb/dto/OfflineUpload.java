@@ -58,4 +58,35 @@ public class OfflineUpload
         }
         return realPath;
     }
+    
+    //온라인
+    public String ckUploadOnline(MultipartHttpServletRequest request) {
+        MultipartFile uploadFile = request.getFile("upload");
+
+        String fileName = getFileName(uploadFile); // 파일명만을 추출합니다.
+
+        String realPath = getPathOnline(request);
+
+        String savePath = realPath + fileName;
+
+        String uploadPath = "/" + fileName;
+
+        uploadFile(savePath, uploadFile);
+
+        return uploadPath;
+    }
+    
+    private String getPathOnline(MultipartHttpServletRequest request) {
+        // 실제 파일 저장 경로
+        String realPath = "C:/project/sts4/SFPN/src/main/resources/static/images/onlineUpload/";
+        Path directoryPath = Paths.get(realPath);
+        if (!Files.exists(directoryPath)) {
+            try {
+                Files.createDirectories(directoryPath);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create upload directory", e);
+            }
+        }
+        return realPath;
+    }
 }

@@ -4,6 +4,109 @@
     <div th:replace="import/cssImport.html :: css-import"></div>
     <link rel="stylesheet" href="/css/kih.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		var formData = new FormData();
+		    
+		    var likeDto = {
+		    		classId:$("#idValue").val(),
+		    		classIden:'on',
+		    		userId:'sist1'
+		    }
+		    
+		    formData.append('likeDto', new Blob([JSON.stringify(likeDto)], {type: "application/json"}));
+		    
+    		$("#likeBefore").on("click",function(){
+    			 		    
+    		    $.ajax({
+    		    	type:"POST",
+    		    	url:"/online/likeBefore",
+    		    	data:formData,
+    		    	datatype:"JSON",
+    		    	processData:false,
+    		    	contentType:false,
+    		    	cache:false,
+    		    	beforeSend:function(xhr){
+    		    		xhr.setRequestHeader("AJAX", "true");
+    		    	},
+    		    	success:function(response){
+    		    		alert("찜 목록에 담겼습니다.");
+    		    		window.location.reload(true);
+    		    		//location.href = "redirect:/"//"/online/"+classId;
+    		    	},
+    		    	error:function(xhr, status, error){
+    		    		alert("오류가 발생했습니다.");
+    		    	}
+    		    });
+    		});
+    		
+    		$("#likeAfter").on("click",function(){
+    			if(confirm("찜 목록에 담은 클래스입니다. 취소하시겠습니까?")) {
+    				$.ajax({
+        		    	type:"POST",
+        		    	url:"/online/likeAfter",
+        		    	data:formData,
+        		    	datatype:"JSON",
+        		    	processData:false,
+        		    	contentType:false,
+        		    	cache:false,
+        		    	beforeSend:function(xhr){
+        		    		xhr.setRequestHeader("AJAX", "true");
+        		    	},
+        		    	success:function(response){
+        		    		alert("찜 목록에서 제거하였습니다.");
+        		    		window.location.reload(true);
+        		    		//location.href = "redirect:/";//"/online/"+classId;
+        		    	},
+        		    	error:function(xhr, status, error){
+        		    		alert("오류가 발생했습니다.");
+        		    	}
+        		    });
+    			}
+    		});
+ 
+
+}); //ready끝
+    	
+//후기 추천
+function fn_like(num) {
+var formData = new FormData();
+
+	var revLikeDto = {
+	    		reviewId:num,
+	    		userId:'sist1'
+	}
+	    
+	formData.append('revLikeDto', new Blob([JSON.stringify(revLikeDto)], {type: "application/json"}));
+	
+    $.ajax({
+    	type:"POST",
+    	url:"/online/reviewLike",
+    	data:formData,
+    	datatype:"JSON",
+    	processData:false,
+    	contentType:false,
+    	cache:false,
+    	beforeSend:function(xhr){
+    		xhr.setRequestHeader("AJAX", "true");
+    	},
+    	success:function(response){
+    		if(response == "0") {
+    			alert("이미 추천한 후기입니다.");
+    		} else if(response > 0) {
+    			alert("후기를 추천했습니다.");
+    			$("#reviewLike"+num).html("추천 : " + response);
+    		} else {
+    			alert("추천 오류");
+    		}
+    	},
+    	error:function(xhr, status, error){
+    		alert("오류가 발생했습니다.");
+    	}
+    });
+//});
+}
+    </script>
   </head>
   <body>
    <!--사용자 네비게이션-->
@@ -19,8 +122,9 @@
 
             
           <!-- 메인 이미지 -->
-            <img src="/images/image_1.jpg" alt="" class="img-fluid mt-2">
-            
+          <div style="text-align: center;">
+            <img th:src="@{'/images/onlineThumbnail/'+${onlineClass.onlineClassId}+'.jpg'}" alt="이미지없음" class="img-fluid mt-2">
+           </div>
           <div class="d-flex justify-content-between">
           <h1 class="mb-3 d-flex justify-content-start" style="color:#477500" th:text="${onlineClass.onlineClassTitle}"></h1>
           <input type="hidden" id="titleVal" th:value="${onlineClass.onlineClassTitle}"></input>
@@ -35,33 +139,30 @@
             <div class="d-flex justify-content-between">
               <div class="d-flex justify-content-start">
                 <button th:if="${payStatus} == 'Y'" class="box"><span class="icon-play" style="color:white;"></span> &nbsp; 수강하기</button>
-                <button th:if="${payStatus} == 'N'" class="box">지금 바로 시작하기</button>
+                <button th:if="${payStatus} == 'N'" class="box" id="btnPay">지금 바로 시작하기</button>
                 <!--강의 들으러 가기-->
                 <h6 class="ml-3 d-flex align-items-center" style="height: 50px;" >[[${onlineClass.onlineClassPeriod}]]일 [[${#numbers.formatInteger(onlineClass.onlineClassPrice, 1, 'COMMA')}]]원</h6>
               </div>
               <div class="d-flex justify-content-end align-items-center" style="height: 50px;">
-                <button class="box2"> 별점<br/>
+                <button class="box2" style="pointer-events : none;">별점<br/>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
                   <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg> [[${starAvg}]]([[${reviewCnt}]]) </button> &nbsp; &nbsp;
-                   <form action="/api/onlineLike" method="post" role="form" th:object="${likeDto}">
-                  <button class="box2" th:if="${likeStatus} == 'N'" type="submit"> 찜 <br/>
+                  </svg> [[${starAvg}]]([[${reviewCnt}]]) </button>&nbsp; &nbsp;
+                   <form role="form">
+                  <button class="box2" th:id="likeBefore" th:name="likeBefore" th:if="${likeStatus} == 'N'" type="submit"> 찜 <br/>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart" viewBox="0 0 16 16">
                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
                   </svg> [[${likeCnt}]] </button>
-                   <div th:id="idValue" th:value="${onlineClass.onlineClassId}"></div>
+                   <input type="hidden" th:id="idValue" th:name="idValue" th:value="${onlineClass.onlineClassId}"></input>
+                   <!-- 여기수정 -->
                    
-                  <input type="hidden" class="form-control" th:field="*{classId}" value="[[${onlineClass.onlineClassId}]]"/>
-                  <input type="hidden" class="form-control" th:field="*{classIden}" value="on"></input>
-                  <input type="hidden" class="form-control" th:field="*{userId}" value="sist1"/> 
-                   
-                  <button class="box2" th:if="${likeStatus} == 'Y'" type="submit"> 찜 <br/> 
+                  <button class="box2" th:id="likeAfter" th:name="likeAfter" th:if="${likeStatus} == 'Y'" type="submit"> 찜 <br/> 
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
               </svg> [[${likeCnt}]] </button></form>
                 </div>
             </div>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between mt-2">
                <div class="d-flex justify-content-start">
                   <img src="/images/person_1.jpg" class="mr-2" style="border-radius: 50% !important;width: 40px;height: 40px;float:left;">
                   <h6 class="mt-2 mb-4" th:text="${onlineClass.instructorNickname}">
@@ -117,7 +218,7 @@
                   <div class="comment-body">
                    <div class="d-flex justify-content-between">
 	                    <div class="d-flex justify-content-start">
-	                    <h3 th:text="${rvList.userNickname}"></h3>
+	                    <h3 th:text="${rvList.userNickname}"></h3> <!-- 리뷰아이디!!! -->
 	                    <div>
 	                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill ml-2" viewBox="0 0 16 16">
 	                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
@@ -129,8 +230,7 @@
 	                    </div>
                     
 	                    <div class="tagcloud ml-1 d-flex justify-content-end">
-	                        <a href="#" class="tag-cloud-link">추천 : [[${rvList.reviewLikeCnt}]]</a>
-	                    </div>
+	                        <a href="#space" th:onclick="|fn_like(${rvList.reviewId})|" th:id="|reviewLike${rvList.reviewId}|" class="tag-cloud-link">추천 : [[${rvList.reviewLikeCnt}]]</a></div>    
                     </div>
                     <p>[[${rvList.reviewContent}]]</p>
                     <!-- 이미지 보류
@@ -337,6 +437,18 @@
           });
       }    
   }
+  
+	function fnPay() {
+		var win = window.open('/online/pay', '/online/pay',
+	  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
+	}
+	
+$(document).ready(function(){
+	$("#btnPay").click(function(){
+		fnPay();
+	});
+});
+
 
   </script>
   </body>

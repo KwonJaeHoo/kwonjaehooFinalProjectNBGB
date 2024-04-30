@@ -13,4 +13,7 @@ public interface ClassLikeRepository extends JpaRepository<ClassLike, ClassId>{
 	
 	//내가 좋아요 했는지 확인
 	Long countByClassId_classIdAndClassId_classIdenAndClassId_userId(Long classId, String classIden, String userId);
+	
+	//좋아요 삭제
+	int deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(Long classId, String classIden, String userId);
 }

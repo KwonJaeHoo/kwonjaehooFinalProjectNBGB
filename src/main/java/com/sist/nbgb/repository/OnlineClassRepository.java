@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
 
@@ -39,5 +40,8 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	@Modifying
 	@Query("update OnlineClass o set o.onlineClassViews = o.onlineClassViews + 1 where o.onlineClassId = :onlineClassId")
 	int updateViews(@Param("onlineClassId") Long onlineClassId);
+	
+	//찜 목록 추가 시 classId, classIden 가져오기
+	OnlineClass findFirstByonlineClassId(Long onlineClassId);
 	
 }

@@ -41,18 +41,20 @@ public class SignupController
 		return "/signup/signup";
 	}
 	
-	@PostMapping("/signup/emailCheck")	
-    @ResponseBody
-    public ResponseEntity<String> EmailCheck(@RequestBody EmailCheckDto emailCheckDto) throws MessagingException, UnsupportedEncodingException 
-	{
-        return ResponseEntity.ok(emailService.sendEmail(emailCheckDto.getEmail()));
-    }
-	
 	@GetMapping("/signup/user")
 	public String userSignup()
 	{
 		return "/signup/signupUser";
 	}
+	
+	@GetMapping("/signup/instructor")
+	public String instructorSignup()
+	{
+		return "/signup/signupInstructor";
+	}
+	
+	
+	
 	
 	@PostMapping("/signup/user/idcheck")
 	@ResponseBody
@@ -62,27 +64,45 @@ public class SignupController
 		return ResponseEntity.ok(signupService.userSignupDuplicateId(userIdCheckDto));
 	}
 	
-	@PostMapping("/signup/user")
-	@ResponseBody
-	public ResponseEntity<UserDto> userSignupProcess(@RequestBody @Valid UserDto userDto) throws RuntimeException
-	{
-		return ResponseEntity.ok(signupService.userSignup(userDto));	
-	}
-	
-	
-	
-	@GetMapping("/signup/instructor")
-	public String instructorSignup()
-	{
-		return "/signup/signupInstructor";
-	}
-		
 	@PostMapping("/signup/instructor/idcheck")
 	@ResponseBody
 	public ResponseEntity<Boolean> instructorSignupDuplicateId(@RequestBody InstructorIdCheckDto instructorIdCheckDto)
 	{	
 		//중복되는 경우 true, 중복되지 않은경우 false return
 		return ResponseEntity.ok(signupService.instructorSignupDuplicateId(instructorIdCheckDto));
+	}
+	
+	@PostMapping("/signup/user/emailcheck")	
+    @ResponseBody
+    public ResponseEntity<Boolean> userEmailCheck(@RequestBody EmailCheckDto emailCheckDto)
+	{
+        return ResponseEntity.ok(signupService.userSignupDuplicateEmail(emailCheckDto));
+    }
+	
+	@PostMapping("/signup/instructor/emailcheck")	
+    @ResponseBody
+    public ResponseEntity<Boolean> instructorEmailCheck(@RequestBody EmailCheckDto emailCheckDto)
+	{
+		System.out.println(emailCheckDto.getEmail());
+        return ResponseEntity.ok(signupService.instructorSignUpDuplicateEmail(emailCheckDto));
+    }
+	
+	@PostMapping("/signup/emailsend")	
+    @ResponseBody
+    public ResponseEntity<String> EmailSend(@RequestBody EmailCheckDto emailCheckDto) throws MessagingException, UnsupportedEncodingException 
+	{
+        return ResponseEntity.ok(emailService.sendEmail(emailCheckDto.getEmail()));
+    }
+	
+
+	
+
+	
+	@PostMapping("/signup/user")
+	@ResponseBody
+	public ResponseEntity<UserDto> userSignupProcess(@RequestBody @Valid UserDto userDto) throws RuntimeException
+	{
+		return ResponseEntity.ok(signupService.userSignup(userDto));	
 	}
 	
 	@PostMapping("/signup/instructor")

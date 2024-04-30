@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="css/loginCustom.css">
+<div th:replace="import/cssImport.html :: css-import"></div>
+</head>
+<body>
+	<!--로고-->
+  	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  		<div class="container-top">
+  		   <div class="row m-auto">
+          		<div class="col-12 w-100 text-center">
+	  				<a class="navbar-brand" href="/"><img src="images/logo.png" width="300px"></a>
+				    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
+	  			</div>
+  		   </div>
+  		</div>
+	</nav>
+    <div class="container mt-3">
+      <!-- 회원 아이디찾기 -->
+      <div class="container__form container--signin">
+        	<form class="form" id="userForm">
+				<h2 class="form-title">회원 아이디 찾기</h2>
+				<input type="text" class="input" id="userName" name="userName" placeholder="이름"/> 
+				<p class="input-msg" id="userMsg1"></p>	
+				<input type="text" class="input" id="userEmail" name="userEmail" placeholder="이메일"/> 
+				<p class="input-msg" id="userMsg2"></p>	
+		        <button type="button" class="log-btn log-btn-first" id="userIdFindBtn" name="userIdFindBtn">아이디 찾기</button>
+		        
+		        <a href="login" class="link">로그인</a>
+		       	<div>
+					<a href="findpassword" class="link">비밀번호 찾기</a>
+				</div>	
+			</form>
+		</div>
+		
+		
+		<!-- 강사 아이디찾기 -->
+    <div class="container__form container--signup">
+		<form class="form" id="instructorForm">
+        	<h2 class="form-title">강사 로그인</h2>
+          	<input type="text" class="input" id="instructorName" name="instructorName" placeholder="이름"/>
+          	<p class="input-msg" id="instructorMsg1"></p>	
+			<input type="text" class="input" id="instructorEmail" name="instructorEmail" placeholder="이메일"/>
+			<p class="input-msg" id="instructorMsg2"></p>	
+          	<button type="button" class="log-btn log-btn-first mb-3" id="instructorIdFindBtn" name="instructorIdFindBtn">아이디 찾기</button>
+          	
+          	<a href="login" class="link">로그인</a>	
+         	<div>
+				<a href="findpassword" class="link">비밀번호 찾기</a>
+			</div>	
+        </form>
+      </div>
+
+		 <!-- Overlay -->
+      <div class="container__overlay">
+        <div class="overlay">
+          <div class="overlay__panel overlay--left">
+            <button class="log-btn log-btn-second " id="userChangeBtn">회원 아이디 찾기</button>
+          </div>
+          <div class="overlay__panel overlay--right">
+            <button class="log-btn log-btn-second" id="instructorChangeBtn">강사 아이디 찾기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
+</body>
+<footer class="footer-section"></footer>
+<script>
+$(document).ready(function()
+{
+	//정규표현식
+	var emptyCheck = /\s/g;
+	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	
+	$("#userIdFindBtn").on("click", function()
+	{
+		if($.trim($("#userName").val()).length <= 0)
+		{
+			$('#userName').css({'border':'1px solid red'});
+			document.getElementById("userMsg1").innerHTML = "이름을 입력해주세요.";
+			return;
+		}
+		
+		$('#userName').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg1").innerHTML = "";
+		
+		
+		if($.trim($("#userEmail").val()).length <= 0)
+		{
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg2").innerHTML = "이메일을 입력해주세요.";
+			return;
+		}
+		
+		if(!emailCheck.test($("#userEmail").val()))
+		{
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg2").innerHTML = "이메일 형식이 올바르지 않아요.";
+			return;
+		}
+		
+		$('#userEmail').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg2").innerHTML = "";
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/findid/user",
+			data : JSON.stringify
+			({	           
+				name:$('#userName').val(),
+				email:$('#userEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				alert("아이디는 " + data.userId + " 입니다.");
+				return;
+			},
+			error:function(xhr, status, error)
+			{
+				$('#userName').css({'border':'1px solid red'});
+				$('#userEmail').css({'border':'1px solid red'});
+				document.getElementById("userMsg2").innerHTML = "일치하는 아이디가 없어요.";
+				return;
+			}
+		});
+	});
+	
+
+	$("#instructorIdFindBtn").on("click", function()
+	{
+		if($.trim($("#instructorName").val()).length <= 0)
+		{
+			$('#instructorName').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg1").innerHTML = "이름을 입력해주세요.";
+			return;
+		}
+		
+		$('#instructorName').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg1").innerHTML = "";
+		
+		
+		if($.trim($("#instructorEmail").val()).length <= 0)
+		{
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "이메일을 입력해주세요.";
+			return;
+		}
+		
+		if(!emailCheck.test($("#instructorEmail").val()))
+		{
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "이메일 형식이 올바르지 않아요.";
+			return;
+		}
+		
+		$('#instructorEmail').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg2").innerHTML = "";
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/findid/instructor",
+			data : JSON.stringify
+			({	           
+				name:$('#instructorName').val(),
+				email:$('#instructorEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				alert("아이디는 " + data.instructorId + " 입니다.");
+			},
+			error:function(xhr, status, error)
+			{
+				$('#instructorName').css({'border':'1px solid red'});
+				$('#instructorEmail').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg2").innerHTML = "일치하는 아이디가 없어요.";
+				return;
+			}
+		});
+	});
+});
+</script>
+</html>

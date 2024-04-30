@@ -2,20 +2,36 @@ package com.sist.nbgb.dto;
 
 import com.sist.nbgb.entity.ClassLike;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Builder
 public class ClassLikeDTO {
 	private Long classId;
 	private String classIden;
 	private String userId;
+	private int code;
 	
-//	public ClassLikeDTO(ClassLike like) {
-//		this.classId = like.getClassId().getClassId();
-//		this.classIden = like.getClassId().getClassIden();
-//		this.userId = like.getUserId().getUserId();
-//	}
-	
+	public static ClassLikeDTO toDto(ClassLike like) {
+		return ClassLikeDTO.builder()
+				.classId(like.getClassId().getClassId())
+				.classIden(like.getClassId().getClassIden())
+				.userId(like.getUserId().getUserId())
+				.build();
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}	
 }

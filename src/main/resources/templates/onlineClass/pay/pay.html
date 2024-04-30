@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/pay.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<meta charset="UTF-8">
+</head>
+<body>
+<section class=" pt-4">
+	<div class="container d-flex justify-content-center">
+		<div class="row">
+			<div class="col-lg-2">
+				<h4 class="d-flex justify-content-center mb-3">내방공방 결제</h4>
+				<form>
+					<table>
+						<tr>
+							<td  class="ttt pl-3" style="border-radius: 10px 10px 0 0;">상품정보</td>
+						</tr>
+						<tr>
+							<td class="pl-3"style="font-size:15px">[내방 클래스]  어색한 자리에서 냉랭한 분위기를 전환시키고 싶다면? - 배워서 바로 써먹는 마술</td>
+							
+						</tr>
+						<tr>
+							<td class="pl-3"> 30일 55,555원</td>
+						</tr>
+					</table>
+					
+					<table class="mt-3">
+						<tr>
+							<td colspan="2" class="ttt pl-3" style="border-radius: 10px 10px 0 0;">총 결제금액</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">상품 금액</td>
+							<td>11,000원</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">보유 포인트</td>
+							<td>1,000원</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">사용 포인트</td>
+							<td><input type="text" style="width:70px;background-color:aliceblue;">원</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">결제 금액</td>
+							<td>10,000원</td>
+						</tr>
+					</table>
+					
+					<div class="mt-3 mb-2" style="text-align:center;">결제하기 버튼을 누름으로써<br/>
+					<a href="#" class="border-bottom">서비스 약관, 환불 규정, 개인 정보 처리 방침</a>에<br/>
+					모두 동의합니다.</div>
+					
+					
+				</form>
+				<!-- 구현할땐 form에 넣어서 쓰거라 -->
+				<button id="btnPay" type="submit" class="payBox" style="float:right;"><span class="icon-comment" style="color:#FFFFFF;"></span> 결제하기</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script th:inline="javascript"> //임시~!
+function fnPay() {
+	//var win = window.open('/online/payResult', '/online/payResult',
+  	//'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
+	window.location.href="http://localhost:8008/online/payResult"; //얘는임시
+	window.opener.parent.location.reload();
+}
+
+$(document).ready(function(){
+	$("#btnPay").click(function(){
+		fnPay();
+	});
+});
+
+</script>
+</body>
+</html>
