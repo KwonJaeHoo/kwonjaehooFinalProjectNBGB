@@ -32,8 +32,8 @@ public class LoginController
 	private final PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/login")
-	public String login()
-	{
+	public String login(HttpSession httpSession)
+	{		
 		return "login/login";
 	}
 	
@@ -57,6 +57,7 @@ public class LoginController
 				HttpSession session = httpServletRequest.getSession(true);
 				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
 				
+				//SPRING_SECURITY_CONTEXT
 				return ResponseEntity.ok(200);
 	        }
 			else

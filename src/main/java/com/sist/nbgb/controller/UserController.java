@@ -21,6 +21,17 @@ public class UserController
     public ResponseEntity<String> getMyUserInfo() 
     {
     	String userid = SecurityContextHolder.getContext().getAuthentication().getName();
+    	
+    	System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities()); 
+    	return ResponseEntity.ok(userid);
+    }
+    
+    @GetMapping("/test")
+    public ResponseEntity<String> getTest()
+    {
+    	String userid = SecurityContextHolder.getContext().getAuthentication().getName();
+    	System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities()); 
+    	//[ROLE_ANONYMOUS]
     	return ResponseEntity.ok(userid);
     }
 }

@@ -13,20 +13,31 @@
 		<div class="container">
 			<div class="row d-flex">
 				<div class="col-md">
-					<div class="ftco-footer-widget mb-4">
-						<h2 class="ftco-heading-2">머 쓰지?</h2>
-						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities == null}" class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">로그인 해주세요.</h2>
+						<ul class="list-unstyled">
+							<li><a href="/login">로그인</a></li>
+							<li><a href="/signup">회원가입</a></li>
+						</ul>
+					</div>
+					
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">[[ ${session.SPRING_SECURITY_CONTEXT.Authentication.Name} ]] 님 환영해요.</h2>
+						<ul class="list-unstyled">
+							<li><a href="/mypage">마이페이지</a></li>
+							<li><a href="/logout">로그아웃</a></li>
+						</ul>
 					</div>
 				</div>
 				<div class="col-md">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
 						<h2 class="ftco-heading-2">내방 클래스</h2>
 						<ul class="list-unstyled">
-							<li><a href="#">건강 심성</a></li>
-							<li><a href="#">레저생활 스포츠</a></li>
-							<li><a href="#">생활문화예술</a></li>
-							<li><a href="#">문화예술향상</a></li>
-							<li><a href="#">기능적 소양</a></li>
+							<li><a href="/onlineClass?category=1">건강 심성</a></li>
+							<li><a href="/onlineClass?category=2">레저생활 스포츠</a></li>
+							<li><a href="/onlineClass?category=3">생활문화예술</a></li>
+							<li><a href="/onlineClass?category=4">문화예술향상</a></li>
+							<li><a href="/onlineClass?category=5">기능적 소양</a></li>
 						</ul>
 					</div>
 				</div>
@@ -34,11 +45,15 @@
 					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">공방 클래스</h2>
 						<ul class="list-unstyled">
-							<li><a href="#">Home</a></li>
-							<li><a href="#">About</a></li>
-							<li><a href="#">Classes</a></li>
-							<li><a href="#">Schedule</a></li>
-							<li><a href="#">Contact</a></li>
+							<li><a href="/offlineClass">공방 클래스</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">내방공방 소개</h2>
+						<ul class="list-unstyled">
+							<li><a href="#">소개</a></li>
 						</ul>
 					</div>
 				</div>
