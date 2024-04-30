@@ -400,9 +400,49 @@ $(document).ready(function()
 			return;
 		}
 		
-		$('#instructorEmail').css({'border':'1px solid #89dd18'});
-		document.getElementById("instructorMsg6").innerHTML = "";
-		instructorEmailCheck = true;
+		$.ajax
+		({
+			type:"POST",
+			url:"/signup/instructor/emailcheck",
+			data : JSON.stringify
+			({	           
+				email:$('#instructorEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					if($('#instructorEmail').val() != '')
+					{
+						$('#instructorEmail').css({'border':'1px solid #89dd18'});
+						document.getElementById("instructorMsg6").innerHTML = "";
+						instructorEmailCheck = true;  
+						return;
+					}
+				}
+				else if(data == true)
+				{
+					if($('#instructorEmail').val() != '')
+					{
+						$('#instructorEmail').css({'border':'1px solid red'});
+						document.getElementById("instructorMsg6").innerHTML = "이메일이 중복돼요.";
+						instructorEmailCheck = false;
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				return;
+			}
+		});
 	});	
 	
 	$("#instructorEmailBtn").on("click", function()
@@ -416,7 +456,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type:"POST",
-			url:"/signup/emailCheck",
+			url:"/signup/emailsend",
 			data : JSON.stringify
 			({	           
 				email:$('#instructorEmail').val()

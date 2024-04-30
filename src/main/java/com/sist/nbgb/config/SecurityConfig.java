@@ -2,22 +2,15 @@ package com.sist.nbgb.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-
-import com.sist.nbgb.repository.InstructorsRepository;
-import com.sist.nbgb.repository.UserRepository;
-import com.sist.nbgb.service.CustomInstructorsDetailsService;
-import com.sist.nbgb.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,11 +19,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig 
 {
-	private final UserRepository userRepository;
-    private final InstructorsRepository instructorsRepository;
-    
+   
 	@Bean
-    public MappingJackson2JsonView JsonView() 
+    public MappingJackson2JsonView jsonView() 
     {
         return new MappingJackson2JsonView();
     }
@@ -56,6 +47,9 @@ public class SecurityConfig
 				.and()
 				.csrf().disable() // 사이트 위변조 요청 방지
 				.headers().frameOptions().sameOrigin()
+				.and()
+				.sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 				.and()
 				.formLogin()
 					.loginPage("/login")// 사용자 정의 로그인 페이지 (아니면 시큐리티 자체 로그인창 뜸)

@@ -22,7 +22,9 @@
         	<form class="form" id="userForm">
 				<h2 class="form-title">회원 로그인</h2>
 				<input type="text" class="input" id="userId" name="userId" placeholder="아이디"/> 
+				<p class="input-msg" id="userMsg1"></p>	
 				<input type="password" class="input" id="userPassword" name="userPassword" placeholder="비밀번호"/> 
+				<p class="input-msg" id="userMsg2"></p>	
 		        <button type="button" class="log-btn log-btn-first" id="userLoginBtn" name="userLoginBtn">로그인</button>
 				
 				<div class="navbar-brand-area">
@@ -30,24 +32,29 @@
 					<a class="navbar-brand" href="/"><img class="icon" src="/oauth2/kakao.png" width="40px"></a>
 					<a class="navbar-brand" href="/"><img class="icon" src="/oauth2/google.png" width="40px"></a>
 				</div>
-	
+			
 				<a href="signup" class="link">회원가입</a>
-				<a href="#" class="link">아이디 / 비밀번호 찾기</a>
+				<div>
+					<a href="findid" class="link">아이디 찾기</a> /  <a href="findpassword" class="link">비밀번호 찾기</a>
+				</div>	
 			</form>
 		</div>
 		
 		
 		<!-- 강사 로그인 -->
-      <div class="container__form container--signup">
-        <form class="form" id="instructorForm">
-          <h2 class="form-title">강사 로그인</h2>
-          <input type="text" class="input" id="instructorId" name="instructorId" placeholder="아이디"/> 
-				  <input type="password" class="input" id="instructorPassword" name="instructorPassword" placeholder="비밀번호"/> 
-          <button type="button" class="log-btn log-btn-first mb-3" id="instructorLoginBtn" name="instructorLoginBtn" >로그인</button>
+    <div class="container__form container--signup">
+		<form class="form" id="instructorForm">
+        	<h2 class="form-title">강사 로그인</h2>
+          	<input type="text" class="input" id="instructorId" name="instructorId" placeholder="아이디"/>
+          	<p class="input-msg" id="instructorMsg1"></p>	
+			<input type="password" class="input" id="instructorPassword" name="instructorPassword" placeholder="비밀번호"/>
+			<p class="input-msg" id="instructorMsg2"></p>	
+          	<button type="button" class="log-btn log-btn-first mb-3" id="instructorLoginBtn" name="instructorLoginBtn" >로그인</button>
 
-          <a href="signup" class="link">회원가입</a>
-          <a href="#" class="link">아이디 / 비밀번호 찾기</a>
-          
+          	<a href="signup" class="link">회원가입</a>
+         	<div>
+				<a href="findid" class="link">아이디 찾기</a> /  <a href="findpassword" class="link">비밀번호 찾기</a>
+			</div>
         </form>
       </div>
 
@@ -77,16 +84,22 @@ $(document).ready(function()
 		if($.trim($("#userId").val()).length <= 0)
 		{
 			$('#userId').css({'border':'1px solid red'});
-			//document.getElementById("instructorMsg1").innerHTML = "아이디를 입력해주세요.";
+			document.getElementById("userMsg1").innerHTML = "아이디를 입력해주세요.";
 			return;
 		}
+		
+		$('#userId').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg1").innerHTML = "";
 		
 		if($.trim($("#userPassword").val()).length <= 0)
 		{
 			$('#userPassword').css({'border':'1px solid red'});
-			//document.getElementById("instructorMsg1").innerHTML = "아이디를 입력해주세요.";
+			document.getElementById("userMsg2").innerHTML = "비밀번호를 입력해주세요.";
 			return;
 		}
+		
+		$('#userPassword').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg2").innerHTML = "";
 		
 		$.ajax
 		({
@@ -105,11 +118,28 @@ $(document).ready(function()
 			},
 			success:function(data)
 			{
-				location.href="/";
+				if(data == 200)
+				{
+					location.href = "/";
+					return;
+				}
+				else if(data == 401)
+				{
+					$('#userId').css({'border':'1px solid red'});
+					$('#userId').val("");
+					$('#userPassword').css({'border':'1px solid red'});					
+					$('#userPassword').val("");
+					document.getElementById("userMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
+					return;
+				}
 			},
 			error:function(xhr, status, error)
 			{
-				alert("아이디 또는 비밀번호가 잘못됐어요.");
+				$('#userId').css({'border':'1px solid red'});
+				$('#userId').val("");
+				$('#userPassword').css({'border':'1px solid red'});					
+				$('#userPassword').val("");
+				document.getElementById("userMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
 				return;
 			}
 		});
@@ -121,16 +151,22 @@ $(document).ready(function()
 		if($.trim($("#instructorId").val()).length <= 0)
 		{
 			$('#instructorId').css({'border':'1px solid red'});
-			//document.getElementById("instructorMsg1").innerHTML = "아이디를 입력해주세요.";
+			document.getElementById("instructorMsg1").innerHTML = "아이디를 입력해주세요.";
 			return;
 		}
+		
+		$('#instructorId').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg1").innerHTML = "";
 		
 		if($.trim($("#instructorPassword").val()).length <= 0)
 		{
 			$('#instructorPassword').css({'border':'1px solid red'});
-			//document.getElementById("instructorMsg1").innerHTML = "아이디를 입력해주세요.";
+			document.getElementById("instructorMsg2").innerHTML = "비밀번호를 입력해주세요.";
 			return;
 		}
+		
+		$('#instructorPassword').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg2").innerHTML = "";
 		
 		$.ajax
 		({
@@ -149,11 +185,28 @@ $(document).ready(function()
 			},
 			success:function(data)
 			{
-				location.href="/";
+				if(data == 200)
+				{
+					location.href = "/";
+					return;
+				}
+				else if(data == 401)
+				{
+					$('#instructorId').css({'border':'1px solid red'});
+					$('#instructorId').val("");
+					$('#instructorPassword').css({'border':'1px solid red'});					
+					$('#instructorPassword').val("");
+					document.getElementById("instructorMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
+					return;
+				}
 			},
 			error:function(xhr, status, error)
 			{
-				alert("아이디 비번 잘못됨");
+				$('#instructorId').css({'border':'1px solid red'});
+				$('#instructorId').val("");
+				$('#instructorPassword').css({'border':'1px solid red'});					
+				$('#instructorPassword').val("");
+				document.getElementById("instructorMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
 				return;
 			}
 		});

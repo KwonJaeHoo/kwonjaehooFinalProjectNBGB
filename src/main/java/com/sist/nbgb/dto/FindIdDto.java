@@ -12,20 +12,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailCheckDto 
+public class FindIdDto 
 {
-    private String email;
-    
-	public static EmailCheckDto findUser(User user)
+	private String name;
+	
+	private String email;
+	
+	public static FindIdDto findUser(User user)
 	{
-		return EmailCheckDto.builder()		
+		return FindIdDto.builder()				
+				.name(user.getUserName())
 				.email(user.getUserEmail())
 				.build();
 	}
 	
-	public static EmailCheckDto findInstructor(Instructors instructors)
+	public static FindIdDto findInstructor(Instructors instructors)
 	{
-		return EmailCheckDto.builder()
+		return FindIdDto.builder()
+				.name(instructors.getInstructorName())
 				.email(instructors.getInstructorEmail())
 				.build();
 	}
