@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.ReviewId;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
 public interface OfflineReviewRepository extends JpaRepository<Review, ReviewId>
@@ -32,4 +33,7 @@ public interface OfflineReviewRepository extends JpaRepository<Review, ReviewId>
 	
 	//후기 목록 페이징
 	Page<Review> findAllByClassIdAndClassIdenAndReviewStatus(Pageable pageable, Long classId, String classIden, Status reviewStatus);
+	
+	//리뷰 아이디
+	Review findFirstByReviewId(Long reviewId);
 }

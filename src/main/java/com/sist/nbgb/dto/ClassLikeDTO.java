@@ -17,6 +17,7 @@ public class ClassLikeDTO {
 	private Long classId;
 	private String classIden;
 	private String userId;
+	private int code;
 	
 	public static ClassLikeDTO toDto(ClassLike like) {
 		return ClassLikeDTO.builder()
@@ -25,5 +26,12 @@ public class ClassLikeDTO {
 				.userId(like.getUserId().getUserId())
 				.build();
 	}
-	
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}	
 }

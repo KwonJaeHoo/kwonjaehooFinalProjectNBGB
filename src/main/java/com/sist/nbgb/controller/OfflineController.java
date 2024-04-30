@@ -27,9 +27,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
-import com.sist.nbgb.dto.OfflineClassIdDto;
-import com.sist.nbgb.dto.OfflineLikeDto;
 import com.sist.nbgb.dto.OfflinePostDto;
+import com.sist.nbgb.dto.OfflineReviewLikeDto;
 import com.sist.nbgb.dto.OfflineUpload;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
@@ -268,6 +267,7 @@ public class OfflineController
 				float rating = 0;
 				int count = 0;
 				float avgRating = 0;
+				Long cntLike = offlineService.countLike(offlineClassId);
 				
 				review = offlineReviewService.findReview(offlineClassId).stream()
 						.map(OfflineReviewResponse::new)
@@ -297,6 +297,7 @@ public class OfflineController
 				}
 				
 				model.addAttribute("review", review);
+				model.addAttribute("cntLike", cntLike);
 				model.addAttribute("count", count);
 				model.addAttribute("avgRating", avgRating);
 				model.addAttribute("offlineClass", new OfflineResponse(offlineClass));
@@ -317,46 +318,84 @@ public class OfflineController
 	}
 	
 	//찜
-	//찜 중복확인
+	//찜 등록
 	@ResponseBody
-	@PostMapping("/offlineClass/likeChk")
-	public ResponseEntity<Integer> LikeChk(Long offlineClassId)
+	@PostMapping("/offlineClass/like")
+	public ResponseEntity<ClassLikeDTO> like(@RequestPart(value="likeDto") ClassLikeDTO classLikeDto)
 	{
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		int cnt = 1;
+		ClassLikeDTO likeDto = null;
 		
-		if(userId == null)
+		if(userId.trim().equals("") || userId == null || userId.equals("anonymousUser"))
 		{
-			cnt = -1;
+			likeDto = new ClassLikeDTO();
+			likeDto.setCode(7);
 		}
 		else
 		{
-			cnt = offlineService.duplicationLike(offlineClassId, userId);
+			classLikeDto.setUserId(userId);
+			
+			if(offlineService.duplicationLike(classLikeDto.getClassId(), classLikeDto.getUserId()) > 0)
+			{
+				likeDto = new ClassLikeDTO();
+				likeDto.setCode(8);
+			}
+			else 
+			{
+				likeDto = offlineService.offlineLike(classLikeDto);
+				likeDto.setCode(0);
+			}
+			
 		}
 		
-		return ResponseEntity.ok(cnt);
+		return ResponseEntity.ok(likeDto);
 	}
 	
+	//찜 취소
 	@ResponseBody
-	@PostMapping("/offlineClass/like")
-	public ResponseEntity<OfflineLikeDto> like(@RequestPart(value="likeDto") ClassLikeDTO classLikeDto)
+	@PostMapping("/offlineClass/deleteLike")
+	public ResponseEntity<Integer> deleteLike(@RequestPart(value="likeDto") ClassLikeDTO classLikeDto)
 	{
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		OfflineClassIdDto offClassId = new OfflineClassIdDto(classLikeDto, userId);
+		int deleteLike = offlineService.deleteLike(classLikeDto.getClassId(), userId);
 		
-		System.out.println(classLikeDto.getClassId());
+		return ResponseEntity.ok(deleteLike);
+	}
+	
+	//리뷰 좋아요
+	@ResponseBody
+	@PostMapping("/offlineClass/reviewLike")
+	public ResponseEntity<OfflineReviewLikeDto> reviewLike(@RequestParam("reviewId") Long reviewId)
+	{
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		
-		offClassId.setClassId(classLikeDto.getClassId());
-		offClassId.setClassIden("OFF");
-		offClassId.setUserId(userId);
+		OfflineReviewLikeDto reviewLikedto = null;
 		
-		OfflineLikeDto likeDto = new OfflineLikeDto();
+		if(userId.trim().equals("") || userId == null || userId.equals("anonymousUser"))
+		{
+			reviewLikedto = new OfflineReviewLikeDto();
+			reviewLikedto.setCode(7);
+		}
+		else
+		{
+			reviewLikedto.setUserId(userId);
+			
+			if(offlineService.duplicationLike(reviewId, userId) > 0)
+			{
+				reviewLikedto = new OfflineReviewLikeDto();
+				reviewLikedto.setCode(8);
+			}
+			else 
+			{
+				reviewLikedto = offlineReviewService.reviewLike(reviewLikedto);
+				reviewLikedto.setCode(0);
+			}
+			
+		}
 		
-		likeDto.createClassLike(offClassId);
-		
-		return ResponseEntity.ok(offlineService.offlineLike(likeDto));
+		return ResponseEntity.ok(reviewLikedto);
 	}
 	
 	//오프라인 게시물 등록
@@ -422,6 +461,7 @@ public class OfflineController
 		OfflineClass offlineClass = null;
 		Optional<UserResponse> user = null;
 		
+		System.out.println("아이디어케넘어와" + userid + "공백없나있나체크용");
 		
 		if(offlineClassId <= 0)
 		{
@@ -439,9 +479,9 @@ public class OfflineController
 			}
 			else
 			{
-				if(userid == "" || userid == null || userid == " ")
+				if(userid.trim().equals("") || userid == null || userid.equals("anonymousUser"))
 				{
-					return "/login/login";
+					return "redirect:/login";
 				}
 				else
 				{
@@ -450,7 +490,7 @@ public class OfflineController
 					
 					if(user == null)
 					{
-						return "/signup/signup";
+						return "redirect:/signup";
 					}
 					else
 					{

@@ -1,14 +1,16 @@
 package com.sist.nbgb.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 
 public interface OfflineLikeRepository extends JpaRepository<ClassLike, ClassId>
 {
-	@Query("SELECT COUNT(classId) FROM ClassLike WHERE classId = :offlineClassId AND userId = :userId AND classIden = 'OFF'")
-	int findDuplicationLike(@Param("offlineClassId") Long offlineClassId, @Param("userId") String userId);
+	Long countByClassId_classIdAndClassId_classIdenAndClassId_userId(Long classId, String classIden, String userId);
+	
+	Long countByClassId_classIdAndClassId_classIden(Long classId, String classIden);
+	
+	//찜 삭제
+	int deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(Long classId, String classIden, String userId);
 }
