@@ -17,10 +17,10 @@ public class UserController
 {
 	private final UserService userService;
     
-    @GetMapping("/user/usertest")
+    @GetMapping("/user/test")
     public ResponseEntity<String> getMyUserInfo() 
     {
     	String userid = SecurityContextHolder.getContext().getAuthentication().getName();
-    	return ResponseEntity.ok("2131232131" + userid);
+    	return ResponseEntity.ok(userid);
     }
 }

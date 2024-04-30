@@ -6,11 +6,11 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +29,7 @@ public class LoginController
 {
 	private final CustomUserDetailsService customUserDetailsService;
 	private final CustomInstructorsDetailsService customInstructorsDetailsService;
+	private final PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/login")
 	public String login()
@@ -38,31 +39,59 @@ public class LoginController
 	
 	@ResponseBody
 	@PostMapping("/login/user")
-	public ResponseEntity<String> loginUser(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
+	public ResponseEntity<Object> loginUser(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
 	{
 		UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginDto.getId());
-		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 		
-		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-		securityContext.setAuthentication(authentication);
-		HttpSession session = httpServletRequest.getSession(true);
-		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-
-		return ResponseEntity.ok("200");
+		if(userDetails == null)
+		{
+            return  ResponseEntity.ok(401);
+		}
+		else
+		{
+			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
+			{
+				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
+				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+				securityContext.setAuthentication(authentication);
+				HttpSession session = httpServletRequest.getSession(true);
+				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+				
+				return ResponseEntity.ok(200);
+	        }
+			else
+			{
+				return  ResponseEntity.ok(401);
+			}
+		}	
 	}
 	
 	@ResponseBody
 	@PostMapping("/login/instructor")
-	public ResponseEntity<String> loginInstructors(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
+	public ResponseEntity<Object> loginInstructors(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
 	{
 		UserDetails userDetails = customInstructorsDetailsService.loadUserByUsername(loginDto.getId());
-		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-		
-		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-		securityContext.setAuthentication(authentication);
-		HttpSession session = httpServletRequest.getSession(true);
-		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-		
-		return ResponseEntity.ok("");
+
+		if(userDetails == null)
+		{
+            return  ResponseEntity.ok(401);
+		}
+		else
+		{
+			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
+			{
+				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
+				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+				securityContext.setAuthentication(authentication);
+				HttpSession session = httpServletRequest.getSession(true);
+				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+				
+				return ResponseEntity.ok(200);
+	        }
+			else
+			{
+				return  ResponseEntity.ok(401);
+			}
+		}	
 	}
 }
