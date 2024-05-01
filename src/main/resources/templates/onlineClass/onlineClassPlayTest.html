@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<div th:replace="import/cssImport.html :: css-import"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#submitBtn').on("click", function(){
+		var formData = new FormData();
+		formData.append("inputFile", $("#inputFile")[0].files[0]);
+		formData.append("comment", $('[name=inputComment]').val());
+		$.ajax({
+			url:"/videoTest/upload",
+			method:"POST",
+			data:formData,
+			processData : false,
+            contentType : false,
+            cache: false,
+            enctype: 'multipart/form-data',  
+			success:function(){
+				alert("성공");
+			},
+			error:function(){
+				alert("실패");
+			}
+		});
+		
+	});
+});
+
+</script>
+</head>
+<body>
+<h1>비디오 테스트</h1>
+  <form id="testForm" method="POST" enctype="multipart/form-data">
+	<input type="file" name="inputFile" id="inputFile" multiple="multiple">
+	<input type="text" name="inputComment" id="inputComment">
+	<button type="button" name="submitBtn" id="submitBtn">전송</button>
+  </form>
+</body>
+</html>

@@ -55,6 +55,8 @@ dependencies
 	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 	
+	implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.7.0'
+
 }
 
 tasks.named('test') 

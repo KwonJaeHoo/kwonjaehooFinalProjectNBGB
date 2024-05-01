@@ -39,8 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class OnlineClassController {
-	private static final Logger logger = LoggerFactory.getLogger(OnlineClassController.class);
-	
 	private final OnlineClassService onlineClassService;
 	
 	//온라인 리스트 조회
@@ -66,7 +64,7 @@ public class OnlineClassController {
 		
 		if(orderBy == 0 || orderBy == 1) {
 			if(category == null && nowCategory == null) {
-				if(searchKeyword == null && orderBy == 1) {
+				if(searchKeyword == null && (orderBy == 1  || orderBy==0)) {
 					classes = onlineClassService.findAll(Status.Y)
 							.stream().map(OnlineClassListDTO::new).collect(Collectors.toList());
 					orderByContent = "최신순";
@@ -111,9 +109,9 @@ public class OnlineClassController {
 		model.addAttribute("orderByContent", orderByContent);
 		model.addAttribute("classesSize", classes.size());
 	
-		logger.info("category : " + category + ", nowCategory : " + nowCategory);
-		logger.info("orderBy : " + orderBy + ", searchKeyword : " + searchKeyword);
-		logger.info("classesSize" + classes.size());
+		log.info("category : " + category + ", nowCategory : " + nowCategory);
+		log.info("orderBy : " + orderBy + ", searchKeyword : " + searchKeyword);
+		log.info("classesSize" + classes.size());
 		
 		return "onlineClass/onlineClassList";
 	}
