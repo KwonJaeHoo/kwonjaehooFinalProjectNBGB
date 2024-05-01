@@ -1,7 +1,5 @@
 package com.sist.nbgb.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class OnlineClassPlayController {
+public class OnlineClassPlayController 
+{
 	
 	private final OnlineClassService onlineClassService;
 	private final OnlineClassPlayService onlineClassPlayService;

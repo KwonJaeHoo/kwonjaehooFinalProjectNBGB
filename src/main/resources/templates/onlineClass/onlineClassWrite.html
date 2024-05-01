@@ -5,15 +5,15 @@
 <link rel="stylesheet" href="/css/kih.css">
 <meta charset="UTF-8">
 <script src="/ckeditor/build/ckeditor.js"></script>
-<script src="/ckeditor/src/UploadAdapter.js"></script>
+<script src="/ckeditor/src/OnlineUploadAdapter.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
   .ck-editor__editable { height: 400px; }
    .ck-content { font-size: 12px; }
 </style>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	//페이지
 	let first_input = $("div").find(".first-input");
 	let hidden_input = $("div").find(".input__block").find("#repeat__password");
 	$("#tab-1").css("opacity","0");
@@ -39,7 +39,180 @@ $(document).ready(function(){
          $('#page1').css('display', 'none');
       }
    });
+   
+   //동영상 파일 첨부
+   var i=2;
+	
+	$("#fileAdd").click(function() {
+		var addBox =
+			`<tr class="nemo${i}">
+			<td rowspan="2" style="width:50px;text-align:center;">${i}강</td>
+			<td><input type="file" class="filebox" id="onlineVideo${i}" name="onlineVideo${i}" /></td>
+			</tr>
+			<tr id="new${i}" class="nemo${i}">
+			<td><textarea rows="5" cols="90" id="onlineVideoContent${i}" name="onlineVideoContent${i}" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
+			</tr>`
+    		
+			$('#fileDel').css('display', 'block');
+			
+			if(i==2){
+				$('#new').after(addBox);
+			} else if(i==11){
+				alert("강의는 최대 10개까지 등록 가능합니다.");
+				return;
+			} else {
+				$('#new'+(i-1)).after(addBox);
+			}
+	   		
+			i++;
+	  });
+
+	$("#fileDel").click(function(){
+		if(i==2){
+			$('#new').remove();
+		} else if(i==3){
+			$('.nemo'+(i-1)).remove();
+			$('#fileDel').css('display', 'none');
+		} else {
+			$('.nemo'+(i-1)).remove();
+		}
+	
+		i--;
+	});
+	
+   //글작성
+   $("#btnSubmit").on("click", function(){
+		if($.trim($("#onlineClassTitle").val()).length <= 0)
+		{
+			$("#onlineClassTitle").val("");
+			$("#onlineClassTitle").focus();
+			alert("제목을 입력하세요.");
+			return;
+		}
+		
+		if($.trim($("#onlineCategory").val()).length <= 0)
+		{
+			$("#onlineCategory").val("");
+			$("#onlineCategory").focus();
+			alert("카테고리를 선택하세요.");
+			return;
+		}
+		
+		if($("#onlineCategory").val() == "select")
+		{
+			$("#onlineCategory").focus();
+			alert("카테고리를 선택하세요.");
+			return;
+		}
+		
+		if($.trim($("#onlineClassPeriod").val()).length <= 0)
+		{
+			$("#onlineClassPeriod").val("");
+			$("#onlineClassPeriod").focus();
+			alert("수강 기간를 입력하세요.");
+			return;
+		}
+		
+		if(!fn_number($("#onlineClassPeriod").val()))
+		{
+			alert("숫자만 입력하세요.");
+			$("#onlineClassPeriod").val("");
+			$("#onlineClassPeriod").focus();
+			return;
+		}
+		
+		if($.trim($("#onlineClassPrice").val()).length <= 0)
+		{
+			$("#onlineClassPrice").val("");
+			$("#onlineClassPrice").focus();
+			alert("가격을 입력하세요.");
+			return;
+		}
+		
+		if(!fn_number($("#onlineClassPrice").val()))
+		{
+			alert("숫자만 입력하세요.");
+			$("#onlineClassPrice").val("");
+			$("#onlineClassPrice").focus();
+			return;
+		}
+				
+		let onlineClassContent = editor.getData();
+		
+		if($.trim(onlineClassContent).length <= 0)
+		{
+			$("#editor").val("");
+			$("#editor").focus();
+			alert("내용을 입력하세요.");
+			return;
+		}
+		
+		if($('#onlineFile').val() == "")
+		{
+			alert("다음 페이지에서 대표사진을 등록해주세요.");
+		    return;
+		}
+		
+		var fileVal = $("#onlineFile").val();
+		
+	    if(fileVal != "")
+	    {
+	        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+	        //아래 확장자가 있는지 체크
+	        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+	        {
+	        	alert("대표 이미지는 jpg, jpeg, png 파일만 업로드 할 수 있습니다.");
+	          	return;
+	        }
+	    }
+	    
+	    //대표 이미지 첨부
+	    var onlineFile =  $("#onlineFile")[0].files[0];
+	    var formData = new FormData();
+	    
+	    formData.append('onlineFile', onlineFile);
+	    
+	    var onlinePostDto = {
+	    		onlineClassTitle:$("#onlineClassTitle").val(),
+	    		instructorId:'inst10',
+	    		onlineClassLimitPeople:$("#onlineClassLimitPeople").val(),
+	    		onlineCategoryId:$("#onlineCategory").val(),
+	    		onlineClassPrice:$("#onlineClassPrice").val(),
+	    		onlineClassPeriod:$("#onlineClassPeriod").val(),
+	    		onlineClassContent:onlineClassContent
+	    }
+	    
+	    formData.append('onlinePostDto', new Blob([JSON.stringify(onlinePostDto)], {type: "application/json"}));
+	    
+	    $.ajax({
+	    	type:"POST",
+	    	url:"/online/write/post",
+	    	enctype:"multipart/form-data",
+	    	data:formData,
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+	    	beforeSend:function(xhr){
+	    		xhr.setRequestHeader("AJAX", "true");
+	    	},
+	    	success:function(response){
+	    		alert("등록 되었습니다.\n관리자 확인 후 게시글이 업로드됩니다.");
+	    		location.href = "/onlineClass";
+	    	},
+	    	error:function(xhr, status, error){
+	    		alert("오류가 발생했습니다.");
+	    	}
+	    });
+		
+	});
 });
+
+function fn_number(value)
+{
+	var num = /^[0-9]+$/;
+	
+	return num.test(value)
+}
 </script>
 </head>
 <body>
@@ -52,68 +225,68 @@ $(document).ready(function(){
         	<div class="col-lg-8 w-100 ftco-animate">
     
 	<h2 class="mb-3" style="text-align:center;">온라인 클래스 등록 신청</h2>
-	<form method="POST" onsubmit="return false;" enctype="multipart/form-data">
+	<form id="onlineForm" name="onlineForm" method="POST" onsubmit="return false;" enctype="multipart/form-data">
 		<div id="page1" class="mb-2">
-
+		<h6 style="float:right">1/2</h6>
 			<table class="tb mb-2" border="1">
 			<tr>
 				<td class="tt" style="border-radius: 10px 0 0 0;">제목</td>
-				<td><input type="text" name="title" id="title" placeholder=" 제목을 입력하세요" /></td>
+				<td><input type="text" name="onlineClassTitle" id="onlineClassTitle" placeholder=" 제목을 입력하세요" /></td>
 			</tr>
 			<tr>
 				<td class="tt">카테고리</td>
-				<td><select name="category" id="category" style="border:none;outline:none;">
+				<td><select name="onlineCategory" id="onlineCategory" style="border:none;outline:none;">
+				    <option value="select">카테고리</option>
 				    <option value="1">건강 심성</option>
 				    <option value="2">레저생활 스포츠</option>
 				    <option value="3">생활문화예술</option>
 				    <option value="4">문화예술향상</option>
 				    <option value="5">기능적 소양</option>
-				    <option value="6">인문학적 교양</option>
-				    <option value="7">기타</option>
 				    </select>
 				</td>
 			</tr>
 			<tr>
 				<td class="tt">강사명</td>
-				<td><input type="text" placeholder=" 강사명" value=" 회원가입때한거예명" readonly></td>
+				<td><input type="text" id="instructorNickname" name="instructorNickname" placeholder=" 강사명" value=" 회원가입때한거예명" readonly></td>
 			</tr>
 			<tr>
 				<td class="tt">수강 기간</td>
-				<td><input type="text" placeholder=" 수강 기간을 입력하세요"></td>
+				<td><input type="text" id="onlineClassPeriod" name="onlineClassPeriod" placeholder=" 수강 기간을 입력하세요" style="width:160px">(일)</td>
 			</tr>
 			<tr>
 				<td class="tt" style="border-radius:0 0 0 10px;">가격</td>
-				<td><input type="text" placeholder=" 가격을 입력하세요"></td>
+				<td><input type="text" id="onlineClassPrice" name="onlineClassPrice" placeholder=" 가격을 입력하세요" style="width:160px">(원)</td>
 			</tr>
 			</table>
 			
-			<textarea rows="5" cols="50" id="editor" placeholder="내 클래스를 잘 나타낼 수 있는 내용을 입력하세요. 예) 클래스 소개, 수강 효과, 추천 대상, 커리큘럼, 강사 소개 등"></textarea>
-			이건 editor 추가하면 잘 맞습니다..지금 없어서 이렇게 나옴...
+			<textarea rows="5" cols="50" id="editor" name="editor" placeholder="내 클래스를 잘 나타낼 수 있는 내용을 입력하세요. 예) 클래스 소개, 수강 효과, 추천 대상, 커리큘럼, 강사 소개 등"></textarea>
+			
 	</div>
 	
 	<div id="page2" style="display:none;">
+	<h6 style="float:right">2/2</h6>
 		<table class="tb mb-2" border="1">
 		<!-- 대표 사진 첨부-->
 		<tr>
 			<td class="tt" style="border-radius: 10px 10px 0 0;">대표 이미지</td></tr>
 		<tr>
 			<td class="insert pt-2" style="border-radius: 0 0 10px 10px;">
-		        <input type="file" class="filebox" />	
+		        <input type="file" class="filebox" id="onlineFile" name="onlineFile" />	
 		    </td>
 		</tr>
 		</table>
 	
 	<div class="d-flex justify-content-start mt-4">
-		<h4>커리큘럼</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">파일명은 강의 제목으로 등록해주세요.</p>
+		<h4>커리큘럼</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">파일명은 강의 제목으로 등록해주세요. (최대 10개)</p>
 	</div>
 	
 	<table class="tb" border="1">
 		<tr>
 			<td rowspan="2" style="width:50px;text-align:center;">1강</td>
-			<td><input type="file" class="filebox" /></td>
+			<td><input type="file" class="filebox" id="onlineVideo1" name="onlineVideo1"/></td>
 		</tr>
 		<tr id="new">
-			<td><textarea rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
+			<td><textarea id="onlineVideoContent1" name="onlineVideoContent1" rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
 		</tr>
 		<!-- 이 위치에 추가/삭제되도록 -->
 	</table>
@@ -147,7 +320,7 @@ $(document).ready(function(){
 	</div>
 	<!-- 페이지 출력 끝 -->
 	
-	<p class="d-flex justify-content-end"><input type="submit" class="btnSubmit" onclick="post()" value="등록하기"></p>
+	<p class="d-flex justify-content-end"><input type="submit" id="btnSubmit" class="btnSubmit" value="등록하기"></p>
 	</form>
 			</div>
 		</div>
@@ -157,6 +330,7 @@ $(document).ready(function(){
 <div th:insert="import/bottomImport.html :: bottom-import"></div>
 <div th:replace="import/jsImport.html :: js-import"></div>
 <script>
+/*
 $(document).ready(function() {
 	var i=2;
 	
@@ -164,16 +338,19 @@ $(document).ready(function() {
 		var addBox =
 			`<tr class="nemo${i}">
 			<td rowspan="2" style="width:50px;text-align:center;">${i}강</td>
-			<td><input type="file" class="filebox" /></td>
+			<td><input type="file" class="filebox" id="onlineVideo${i}" name="onlineVideo${i}" /></td>
 			</tr>
 			<tr id="new${i}" class="nemo${i}">
-			<td><textarea rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
+			<td><textarea rows="5" cols="90" id="onlineVideoContent${i}" name="onlineVideoContent${i}" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
 			</tr>`
     		
 			$('#fileDel').css('display', 'block');
 			
 			if(i==2){
 				$('#new').after(addBox);
+			} else if(i==11){
+				alert("강의는 최대 10개까지 등록 가능합니다.");
+				return;
 			} else {
 				$('#new'+(i-1)).after(addBox);
 			}
@@ -192,11 +369,10 @@ $(document).ready(function() {
 		}
 	
 		i--;
-	});
-});
+	}); 
+});*/
 
 //에디터
-/*
 function MyCustomUploadAdapterPlugin(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
         return new UploadAdapter(loader)
@@ -220,7 +396,7 @@ function post(){
    alert('f12를 눌러 콘솔을 확인하세요');
 	
 	console.log(editor_data);
-}*/
+}
 </script>
 </body>
 </html>

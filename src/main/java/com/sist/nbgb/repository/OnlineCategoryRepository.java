@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.sist.nbgb.entity.OnlineCategory;
 
 public interface OnlineCategoryRepository extends JpaRepository<OnlineCategory, Long> {
-
+	OnlineCategory findFirstByOnlineCategoryId(Long id);
 }

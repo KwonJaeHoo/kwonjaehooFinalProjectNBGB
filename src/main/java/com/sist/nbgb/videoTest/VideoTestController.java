@@ -44,8 +44,6 @@ public class VideoTestController {
 		String path="C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\video";
 		String fileOrgName = insertFile.getOriginalFilename().substring(0, insertFile.getOriginalFilename().lastIndexOf("."));
 		String fileExt = insertFile.getOriginalFilename().substring(insertFile.getOriginalFilename().lastIndexOf("."));
-		//String uuidName = new String(insertFile.getOriginalFilename().getBytes("8859_1"),"UTF-8");
-		//String fileSaveName = String.valueOf(onlineClassId) + "_" + String.valueOf(onlineFileId) + "강_" + UUID.randomUUID() + "." + fileExt;
 		String fileSaveName = String.valueOf(onlineClassId) + "_" + String.valueOf(onlineFileId) + "강_" + insertFile.getOriginalFilename();
 		Long fileSize = insertFile.getSize();
 		
@@ -67,7 +65,6 @@ public class VideoTestController {
 		try {
 			File file = new File(path, fileSaveName);
 			insertFile.transferTo(file);
-			//InputStream fileStream = new FileInputStream(file);
 			videoService.saveThumnail(file);
 		} catch (Exception e) {
 			e.printStackTrace();

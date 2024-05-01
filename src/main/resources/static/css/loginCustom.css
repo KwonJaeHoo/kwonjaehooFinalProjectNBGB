@@ -334,6 +334,16 @@ body {
   font-size:2vh;
 }
 
+  .input-msg{
+    margin:0 !important;
+    margin-bottom:9px !important;
+    margin-top:4px !important;
+    color:red;
+    width:100%;
+    height: 2.5dvh;
+    font-size:2dvh;
+  }  
+
 .footer-section{
 	height:1dvh;
 }

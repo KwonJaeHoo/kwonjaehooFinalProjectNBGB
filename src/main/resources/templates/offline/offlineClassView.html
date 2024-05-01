@@ -8,7 +8,86 @@
     <script th:inline="javascript">
     $(document).ready(function(){
  	    $("#star").css("width", "[[${avgRating}]]%"); 
+ 	    
+ 	   var formData = new FormData();
+	    
+	    var likeDto = {
+	    		classId:$("#classId").val(),
+	    		classIden:'OFF'
+	    }
+	    
+	    formData.append('likeDto', new Blob([JSON.stringify(likeDto)], {type: "application/json"}));
+ 	    
+ 	    $("#btnLike").on("click", function(){
+ 	    	$.ajax({
+		    	type:"POST",
+		    	url:"/offlineClass/like",
+		    	data:formData,
+		    	datatype:"JSON",
+		    	processData:false,
+		    	contentType:false,
+		    	cache:false,
+		    	beforeSend:function(xhr){
+		    		xhr.setRequestHeader("AJAX", "true");
+		    	},
+		    	success:function(res){
+		    		if(res.code == 7){
+		    			alert("로그인 후 이용가능합니다.");
+		    		}
+		    		else if(res.code == 8)
+		    		{
+		    			if(confirm("이미 찜한 게시물 입니다. 찜을 취소하시겠습니까?") == true){
+		    				fn_removeLike();
+		    			}
+		    		}
+		    		else if(res.code == 0){
+			    		alert("찜 목록에 담겼습니다.");
+			    		window.location.reload(true);
+			    		//location.href = "redirect:/"//"/online/"+classId;
+		    		}
+		    	},
+		    	error:function(xhr, status, error){
+		    		alert("오류가 발생했습니다.");
+		    	}
+		    });
+ 	    });
     });
+    
+    function fn_removeLike(){
+		var formData = new FormData();
+	    
+	    var likeDto = {
+	    		classId:$("#classId").val(),
+	    		classIden:'OFF'
+	    }
+	    
+	    formData.append('likeDto', new Blob([JSON.stringify(likeDto)], {type: "application/json"}));
+    	
+	    $.ajax({
+	    	type:"POST",
+	    	url:"/offlineClass/deleteLike",
+	    	data:formData,
+	    	datatype:"JSON",
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+	    	beforeSend:function(xhr){
+	    		xhr.setRequestHeader("AJAX", "true");
+	    	},
+	    	success:function(res){
+	    		if(res == 1){
+		    		alert("찜이 삭제되었습니다.");
+		    		window.location.reload(true);
+	    		}
+	    		else{
+	    			alert("오류가 발생했습니다.");
+	    		}
+	    	},
+	    	error:function(xhr, status, error){
+	    		alert("오류가 발생했습니다.");
+	    	}
+	    });
+    }
    
     function fn_sendFB(sns) {
 	      var thisUrl = document.URL;
@@ -52,6 +131,43 @@
 		     });
 	      }
     }
+    
+    function fn_reviewLike(reviewId)
+    {    	
+    	$.ajax({
+            url : "/offlineClass/reviewLike",
+            data : {"reviewId" : reviewId},
+            type : "POST",
+            dataType : "json",
+            async : false,
+            beforeSend:function(xhr){
+	    		xhr.setRequestHeader("AJAX", "true");
+	    	},
+	    	success:function(res){
+	    		if(res.code == 7){
+	    			alert("로그인 후 이용가능합니다.");
+	    		}
+	    		else if(res.code == 8)
+	    		{
+	    			if(confirm("이미 찜한 게시물 입니다. 찜을 취소하시겠습니까?") == true){
+	    				fn_removeRevLike();
+	    			}
+	    		}
+	    		else if(res.code == 0){
+	    			alert("좋아요가 등록되었습니다.");
+		    		window.location.reload(true);
+	    		}
+	    	},
+	    	error:function(xhr, status, error){
+	    		alert("오류가 발생했습니다.");
+	    	}
+        });
+    }
+    
+    function fn_removeRevLike()
+    {
+    	alert("삭제");
+    }
    </script>
   </head>
   <body>
@@ -79,7 +195,7 @@
 	          	    <span style="width:16; height:16; color:black;">[[${offlineClass.offlineClassPlace}]]</span>
 		          </div>
 		          <div class="d-flex justify-content-end">
-		            <span style="width:16; height:16; color:red;" class="icon-favorite"></span>100 &nbsp;
+		            <span style="width:16; height:16; color:red;" class="icon-favorite"></span>[[${cntLike}]] &nbsp;
 		            <span style="width:16; height:16; color:gold;" class="icon-star"></span>[[${rating}]]([[${count}]]) &nbsp;
 		            <span style="width:16; height:16; color:black"  class="icon-eye"></span> &nbsp; [[${#numbers.formatInteger(offlineClass.offlineClassViews, 1, 'COMMA')}]]
 		          </div>
@@ -100,7 +216,8 @@
               <div class="d-flex justify-content-start">
               	<button id="btnLike" class="btn-off"><span style="width:16; height:16; color:red;" class="icon-favorite"></span> 찜</button>&nbsp; &nbsp;
               	<div class="dropdown-share">
-              	  <button onclick="btnClick()" id="btnLike" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
+              	  <button onclick="btnClick()" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
+              	  <input type="hidden" id="classId" name="classId" th:value="${offlineClass.offlineClassId}" >
               	  <div id="dropdown-share-content" class="dropdown-share-content align-items-center">
                 	<ul class="ftco-footer-social mt-1" style="padding-left: 0px; margin-bottom: 0px;">
 		            	<li class="ftco-animate" style="margin:1px;"><a onclick="fn_sendFB('clip');return false;"><span class="icon-link2"></span></a></li>
@@ -111,7 +228,7 @@
             </div>
               </div>
               <div class="d-flex justify-content-end">
-                <button class="box">예약하기</button>
+                <button class="box" th:onclick="|location.href='@{'/offlineClass/reserve/' + ${offlineClass.offlineClassId}}'|">예약하기</button>
 		      </div>
             </div>
             </div>
@@ -180,7 +297,7 @@
                     </div>
                     
                     <div class="tagcloud ml-1 d-flex justify-content-end">
-                        <a href="#" class="tag-cloud-link">추천 : [[${review.reviewLikeCnt}]]</a>
+                        <a th:onclick="fn_reviewLike([[${review.reviewId}]])" class="tag-cloud-link">추천 : [[${review.reviewLikeCnt}]]</a>
                     </div>
                    </div>
                     

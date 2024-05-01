@@ -79,7 +79,7 @@
 
           <div class="input-area justify-content-center col-md-12">
             <div class="col-3 input-name"><p class="input-name-detail">연락처</p></div>
-            <input type="text" id="userPhone" name="userPhone" placeholder="연락처를 입력해주세요." class="input col-9" size="20"/>
+            <input type="text" id="userPhone" name="userPhone" placeholder="연락처를 입력해주세요. (010-1234-5678 형식으로)" class="input col-9" size="20"/>
             <div class="col-3"></div>
           </div>
           <p class="input-msg" id="userMsg8"></p>
@@ -128,6 +128,7 @@ $(document).ready(function()
 	var userNameCheck = false;
 	var userNicknameCheck = false;
 	var userEmailCheck = false;
+	var userEmailSendCheck = false;
 	var userEmailCodeCheck = false;
 	var userPhoneCheck = false;
 	var userBirthCheck = false;
@@ -197,7 +198,10 @@ $(document).ready(function()
 			},
 			error:function(xhr, status, error)
 			{
-				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				$('#userId').css({'border':'1px solid red'});
+				document.getElementById("userMsg1").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				userIdCheck = false; 
+				return;
 			}
 		});
 	});
@@ -374,24 +378,68 @@ $(document).ready(function()
 			userEmailCheck = false;
 			return;
 		}
-
-		$('#userEmail').css({'border':'1px solid #89dd18'});
-		document.getElementById("userMsg6").innerHTML = "";
-		userEmailCheck = true;
+		
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/signup/user/emailcheck",
+			data : JSON.stringify
+			({	           
+				email:$('#userEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					if($('#userEmail').val() != '')
+					{
+						$('#userEmail').css({'border':'1px solid #89dd18'});
+						document.getElementById("userMsg6").innerHTML = "";
+						userEmailCheck = true;  
+						return;
+					}	           	
+				}
+				else if(data == true)
+				{
+					if($('#userEmail').val() != '')
+					{
+						$('#userEmail').css({'border':'1px solid red'});
+						document.getElementById("userMsg6").innerHTML = "이메일이 중복돼요.";
+						userEmailCheck = false;
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				$('#userEmail').css({'border':'1px solid red'});
+				document.getElementById("userMsg6").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				userEmailCheck = false;
+				return;           
+			}
+		});
 	});	
 
 	$("#userEmailBtn").on("click", function()
 	{
 		if(userEmailCheck == false)
 		{
-			alert("올바른 이메일을 입력해주세요.");
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg6").innerHTML = "올바른 이메일을 입력해주세요.";
 			return;
 		}
 
 		$.ajax
 		({
 			type:"POST",
-			url:"/signup/emailCheck",
+			url:"/signup/emailsend",
 			data : JSON.stringify
 			({	           
 				email:$('#userEmail').val()
@@ -405,14 +453,19 @@ $(document).ready(function()
 			success:function(data)
 			{
 				alert("인증메일이 전송되었습니다.");
+				document.getElementById("userMsg6").innerHTML = "";
+				$('#userEmail').css({'border':'1px solid #89dd18'});				
 				$("#userEmail").attr("readonly",true);
+				
 				$("button").remove("#userEmailBtn");
 				$('#userDiv').css("display", "block");
 				$('#userEmailCheck1').val(data);
+				userEmailSendCheck = true;
 			},
 			error:function(xhr, status, error)
 			{
-				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				$('#userEmail').css({'border':'1px solid red'});
+				document.getElementById("userMsg6").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
 				return;
 			}
 		});
@@ -426,7 +479,7 @@ $(document).ready(function()
 			document.getElementById("userMsg7").innerHTML = "인증코드가 일치하지 않아요.";
 			return;	
 		}
-
+ 	
 		document.getElementById("userMsg7").innerHTML = "";
 		$('#userEmailCheck').css({'border':'1px solid #89dd18'});
 		$("#userEmailCheck").attr("readonly",true);
@@ -528,10 +581,17 @@ $(document).ready(function()
 			if(userEmailCheck == false)
 			{
 				$('#userEmail').css({'border':'1px solid red'});
+				document.getElementById("userMsg6").innerHTML = "올바른 이메일을 입력해주세요.";
+				return; 	
+			}
+
+			if(userEmailSendCheck == false)
+			{
+				$('#userEmail').css({'border':'1px solid red'});
 				document.getElementById("userMsg6").innerHTML = "이메일 인증을 해주세요";
 				return;
 			}
-
+				
 			if(userEmailCodeCheck == false)
 			{
 				$('#userEmailCheck1').css({'border':'1px solid red'});
@@ -600,5 +660,4 @@ function signUp()
    	});
 }
 </script>
-</html>
 </html>

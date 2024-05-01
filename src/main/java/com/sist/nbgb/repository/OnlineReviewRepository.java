@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -28,4 +29,12 @@ public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> 
 
 	//후기 목록 페이징
 	Page<Review> findAllByClassIdAndClassIdenAndReviewStatus(Pageable pageable, Long classId, String classIden, Status reviewStatus);
+
+	//추천 시 추천 수 증가
+	@Modifying
+	@Query("update Review o set o.reviewLikeCnt = o.reviewLikeCnt + 1 where o.reviewId.reviewId = :reviewId")
+	int updateReviewLikeCnt(@Param("reviewId") Long reviewId);
+	
+	//reviewId 가져오기
+	Review findFirstByReviewId_reviewId(Long reviewId);
 }

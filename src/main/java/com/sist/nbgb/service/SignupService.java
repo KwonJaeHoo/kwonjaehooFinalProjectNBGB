@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.dto.UserDto;
@@ -37,6 +38,18 @@ public class SignupService
 	{
 		return instructorsRepository.existsByInstructorId(instructorIdCheckDto.getInstructorId());
 	}
+	
+	public Boolean userSignupDuplicateEmail(EmailCheckDto emailCheckDto)
+	{
+		return userRepository.existsByUserEmailAndUserProvider(emailCheckDto.getEmail(), Provider.LOCAL);
+	}
+	
+	public Boolean instructorSignUpDuplicateEmail(EmailCheckDto emailCheckDto)
+	{
+		System.out.println(emailCheckDto.getEmail());
+		return instructorsRepository.existsByInstructorEmail(emailCheckDto.getEmail());
+	}
+	
 	
 	@Transactional
 	public UserDto userSignup(UserDto userDto) throws RuntimeException

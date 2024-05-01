@@ -40,11 +40,11 @@ public class ClassLike
 	@JoinColumn(name = "userId", columnDefinition = "VARCHAR2(20)")
 	private User userId;
 	
-	public static ClassLike createClassLike(ClassLikeDTO likeDto) {
-		ClassLike like = new ClassLike();
-		like.classId.setClassId(likeDto.getClassId());
-		like.classId.setClassIden(likeDto.getClassIden());
-		like.userId.setUserId(likeDto.getUserId());
-		return like;
-	}
+//	public static ClassLike createClassLike(ClassLikeDTO likeDto) {
+//		ClassLike like = new ClassLike();
+//		like.classId.setClassId(likeDto.getClassId());
+//		like.classId.setClassIden(likeDto.getClassIden());
+//		like.userId.setUserId(likeDto.getUserId());
+//		return like;
+//	}
 }

@@ -2,15 +2,26 @@ package com.sist.nbgb.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OfflinePostDto;
+import com.sist.nbgb.dto.OfflineReviewLikeDto;
+import com.sist.nbgb.entity.ClassId;
+import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
+import com.sist.nbgb.entity.ReviewId;
+import com.sist.nbgb.entity.ReviewLike;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.repository.OfflineLikeRepository;
 import com.sist.nbgb.repository.OfflineRepository;
+import com.sist.nbgb.repository.OfflineUserRepository;
+import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +30,12 @@ import lombok.RequiredArgsConstructor;
 public class OfflineService
 {
 	private final OfflineRepository offlineRepository;
+	
+	private final OfflineUserRepository userRepository;
+	
+	private final OfflineLikeRepository likeRepository;
+	
+	private final UserRepository userRepository2;
 	
 	public List<OfflineClass> findAll()
 	{	
@@ -78,6 +95,49 @@ public class OfflineService
 		return offlineRepository.updateViews(offlineClassId);
 	}
 	
+	//찜
+	//찜 중복 검색
+	public Long duplicationLike(Long offlineClassId, String userId)
+	{		
+		return likeRepository.countByClassId_classIdAndClassId_classIdenAndClassId_userId(offlineClassId, "OFF" , userId); 
+	}
+	
+	//찜 등록
+	@Transactional
+	public ClassLikeDTO offlineLike(ClassLikeDTO likeDto)
+	{
+		ClassId classId = ClassId.builder()
+				.classId(likeDto.getClassId())
+				.classIden(likeDto.getClassIden())
+				.build();
+		
+		User user = userRepository2.findFirstByUserId(likeDto.getUserId());
+		
+		ClassLike classLike = ClassLike.builder()
+				.classId(classId)
+				.userId(user)
+				.build();
+		
+		return ClassLikeDTO.toDto(likeRepository.save(classLike));
+	}
+	
+	//찜 갯수
+	public Long countLike(Long offlineClassId)
+	{
+		return likeRepository.countByClassId_classIdAndClassId_classIden(offlineClassId, "OFF");
+	}
+	
+	//찜 취소
+	@Transactional
+	public int deleteLike(Long classId, String userId)
+	{
+		if(duplicationLike(classId, userId) > 0)
+		{
+			return likeRepository.deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(classId, "OFF", userId);
+		}
+		return 0;
+	}
+	
 	//오프라인 등록
 	@Transactional
 	public OfflinePostDto offlinePost(OfflinePostDto offlinePostDto)
@@ -98,19 +158,19 @@ public class OfflineService
 				.offlineClassViews((long) 0)
 				.build();
 		
-		System.out.println("333333333333333333333333333");
-		
 		 // 저장 후에 offlineClassId 값을 가져옵니다.
 	    OfflineClass savedOfflineClass = offlineRepository.save(offlineClass);
 	    Long offlineClassId = savedOfflineClass.getOfflineClassId();
-	    
-	    System.out.println("4444444444444444444444444444");
 
 	    // 반환할 DTO에 offlineClassId 값을 설정한 후에 반환합니다.
 	    offlinePostDto.setOfflineClassId(offlineClassId);
 	    
-	    System.out.println("5555555555555555555555555555");
-	    
 	    return offlinePostDto;
+	}
+	
+	//오프라인 공방 예약하기
+	public Optional<User> findByUserId(String userId)
+	{
+		return userRepository.findByUserId(userId);
 	}
 }

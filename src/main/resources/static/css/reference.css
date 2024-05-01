@@ -1,0 +1,144 @@
+/* 메인 제목, 부제목 */
+.MainBanner {
+	color: #00ff00;
+	text-align: center;
+}
+
+/* 검색창 */
+.search-box {
+	height: 50px;
+	width: 600px;
+	background: white;
+	border-radius: 40px;
+	padding: 10px;
+	border: 1px solid #f9deec;
+	margin: auto;
+	display: block;
+}
+
+.search-txt {
+	border: none;
+	background: none;
+	outline: none;
+	float: left;
+	padding: 0px;
+	color: #797979;
+	font-size: 16px;
+	line-height: 30px;
+	width: 520px;
+	margin-left: 10px;
+}
+
+.search-btn {
+	color: #f9deec;
+	float: right;
+	width: 40px;
+	height: 100%;
+	border-radius: 50%;
+	background: white;
+	border: none;
+	font-size: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+/* FAQ 리스트 */
+.ag-format-container {
+  width: 1142px;
+  margin: 0 auto;
+}
+
+.js-ag-hide {
+  display: none;
+}
+
+.ag-faq_list {
+  padding: 50px 0;
+}
+.ag-faq_item {
+  margin: 0 0 15px;
+}
+
+.js-ag-faq_sub_titles {
+  display: none;
+}
+
+.js-ag-faq_title {
+  padding: 15px 30px;
+  border: 2px solid #71b337;
+  border-radius: 10px;
+  margin: 20px 0;
+
+  cursor: pointer;
+
+  font-size: 20px;
+  color: #595959;
+  
+  display: block;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+.js-ag-faq_sub_title {
+    font-size: 18px;
+    color: #333;
+    padding: 10px 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    display: block;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+
+.js-ag-faq_text {
+  line-height: 1.42;
+  padding: 30px 40px;
+  background-color: #eee;
+  
+  border-radius: 5px;
+  display: block;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+
+  font-size: 14px;
+  color: #5b5b5b;
+}
+
+
+@media only screen and (max-width: 767px) {
+  .ag-format-container {
+    width: 96%;
+  }
+
+}
+
+@media only screen and (max-width: 639px) {
+
+}
+
+@media only screen and (max-width: 479px) {
+
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .ag-format-container {
+    width: 750px;
+  }
+
+}
+
+@media (min-width: 980px) and (max-width: 1161px) {
+  .ag-format-container {
+    width: 960px;
+  }
+
+}
