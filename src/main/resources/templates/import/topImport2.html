@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body th:fragment="top-import">
-	<!--<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-white ftco-navbar-light .ftco-navbar-light2 w-100" id="ftco-navbar">-->
 		<div class="py-2 bg-light nav-gnb ftco_navbar" id="ftco-navbar">
 			<div class="container">
 				<div class="row align-items-center">
@@ -12,17 +11,20 @@
 					 -->
 					 
 					</div>
-					<div class="col-lg-3 text-right">
-						<a href="login" class="medium mr-3"><span class="icon-unlock"></span> 로그인</a>
-              			<a href="signup" class="medium mr-3"><span class="icon-people_outline"></span> 회원가입</a>
-					<!-- 로그아웃 상태
-              		
-           			 -->
-           			 <!-- 
-						<a class="medium mr-3"> 사용자 님</a> 
-						<a href="#" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
-						<a href="logout" class="medium mr-3"><span class="icon-input"></span> 로그아웃</a>
-					 -->
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities == null}" class="col-lg-3 text-right">
+						<a href="/login" class="medium mr-3"><span class="icon-unlock"></span> 로그인</a>
+              			<a href="/signup" class="medium mr-3"><span class="icon-people_outline"></span> 회원가입</a> 
+					</div>
+					
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right">
+						<a class="medium mr-3">[[ ${session.SPRING_SECURITY_CONTEXT.Authentication.Name} ]] 님</a> 
+						
+						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
+							th:href="@{/user/mypage/{id} (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
+						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}"
+							th:href="@{/instructor/mypage/{id} (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
+						
+						<a href="/logout" class="medium mr-3"><span class="icon-input"></span> 로그아웃</a>
 					</div>
 				</div>
 			</div>
@@ -34,8 +36,5 @@
 	  			</div>
 	  		</div>
   		</div>
-
- 
-	<!--</nav> -->
 </body>
 </html>
