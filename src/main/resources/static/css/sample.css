@@ -74,6 +74,13 @@
     width:95%;
     justify-content: center;
     margin: 0 auto;
+    padding:0;
+}
+.list-section-second{
+    width:100%;
+    justify-content: center;
+    margin: 0 auto;
+    padding:0;
 }
 
 .list-title{
@@ -85,15 +92,22 @@
     border-radius: 2rem;
     font-weight: 600;
     color: white;
+    width:100%;
+    margin:0 auto;
 }
 .list-item{
     height: 4rem;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    margin:0 auto;
 }
     .list-item-title{
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
 
 .list-title-second{
     align-items: center;

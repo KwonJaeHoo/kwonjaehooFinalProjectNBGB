@@ -45,9 +45,9 @@ public class OnlineClassPlayController
 	private final OnlineClassLogRepository onlineClassLogRepository;
 	//재생페이지랑 재생 목록 페이지에서 결제여부 및 수강 기간 체크하기!!
 	//온라인 강의 재생 목록
-	@GetMapping("/sample1")
+	@GetMapping("/sample3")
 	public String test() {
-		return "/mypage/sample1";
+		return "/mypage/sample3";
 	}
 	
 	//온라인 강의 재생 페이지
