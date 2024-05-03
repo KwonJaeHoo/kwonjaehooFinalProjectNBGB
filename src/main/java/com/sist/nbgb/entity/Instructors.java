@@ -70,11 +70,6 @@ public class Instructors
 	@Enumerated(EnumType.STRING)
 	private Role Authority;
 	
-	@Column
-	@Comment("강사 상태")
-	@Enumerated(EnumType.STRING)
-	private Status instructorStatus;
-	
 	@CreatedDate
 	@Comment("강사 가입일")
 	private LocalDateTime instructorRegdate;

@@ -29,7 +29,7 @@ public class OnlineClassLogDTO {
 		return OnlineClassLog.builder()
 				.onlineClassLogId(onlineClassLogId)
 				.userId(userId)
-				.OnlineClassFile(onlineClassFile)
+				.onlineClassFile(onlineClassFile)
 				.onlineLogCurr(onlineLogCurr)
 				.onlineLogDate(LocalDateTime.now().withNano(0))
 				.status(status)

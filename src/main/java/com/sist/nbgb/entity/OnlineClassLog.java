@@ -54,7 +54,7 @@ public class OnlineClassLog
 		@JoinColumn(name = "onlineFileLength")
 	})
 	
-	private OnlineClassFile OnlineClassFile;
+	private OnlineClassFile onlineClassFile;
 	 
 	@Column
 	@Comment("영상 시청(마지막 시청 위치)")
