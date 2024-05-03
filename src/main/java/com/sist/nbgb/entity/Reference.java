@@ -47,7 +47,7 @@ public class Reference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userId")
 	@Comment("문의 작성자")
-	private User UserId;
+	private User userId;
 	
 	@CreatedDate
 	@Comment("문의 등록일")

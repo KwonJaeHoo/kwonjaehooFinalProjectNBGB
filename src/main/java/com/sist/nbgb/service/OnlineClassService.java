@@ -1,37 +1,43 @@
 package com.sist.nbgb.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
-import com.sist.nbgb.dto.OfflinePostDto;
 import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
-import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineCategory;
 import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.entity.OnlineClassFile;
+import com.sist.nbgb.entity.OnlineClassFileId;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
-import com.sist.nbgb.entity.ReviewLike;
-import com.sist.nbgb.entity.ReviewLikeId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.ClassLikeRepository;
+import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OnlineCategoryRepository;
+import com.sist.nbgb.repository.OnlineClassFileRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
@@ -54,6 +60,11 @@ public class OnlineClassService {
 	private final OnlineReviewCommentRepository reviewCommentRepository;
 	private final UserRepository userRepository;
 	private final ReviewLikeRepository reviewLikeRepository;
+	private final InstructorsRepository instRepository;
+	private final OnlineClassFileRepository fileRepository;
+	
+    @Value("${online.video.file.dir}")
+    private String fileDir;
 	
 	/*온라인클래스 리스트*/
 	//카테고리명 조회
@@ -131,7 +142,7 @@ public class OnlineClassService {
 				.classId(tmpClass.getOnlineClassId())
 				.classIden("on")
 				.build();
-		User user = userRepository.findFirstByUserId("sist1"); //아이디 받아오기
+		User user = userRepository.findFirstByUserId(likeDto.getUserId()); //아이디 받아오기
 		
 		ClassLike like = ClassLike.builder()
 				.classId(classId)
@@ -190,14 +201,19 @@ public class OnlineClassService {
 		return reviewRepository.updateReviewLikeCnt(reviewId);
 	}
 	
+	//후기 추천 갯수
+	public int countReviewLike(long reviewId) {
+		return reviewRepository.countReviewLike(reviewId);
+	}
+	
 	//후기 추천 등록
 	@Transactional
 	public OnlineReviewLikeDTO saveReviewLike(OnlineReviewLikeDTO likeDto) {
 		log.info("likeDto.getReviewId()" + likeDto.getReviewId());
 		
-		User user = userRepository.findFirstByUserId("sist1"); //아이디 받아오기
+		//User user = userRepository.findFirstByUserId(likeDto.getUserId()); //아이디 받아오기
 		
-		reviewLikeRepository.insertReviewLike(likeDto.getReviewId(), user.getUserId());
+		reviewLikeRepository.insertReviewLike(likeDto.getReviewId(), likeDto.getUserId());
 		
 		return likeDto;
 	}
@@ -207,10 +223,28 @@ public class OnlineClassService {
 		return reviewCommentRepository.findOnlineComment(onlineClassId);
 	}
 	
+	//강사 정보
+	public Instructors findInst(String userId) {
+		Instructors inst = null;
+		inst = instRepository.findFirstByInstructorId(userId); //아이디 받아오기
+		
+		return inst;
+	}
+	
+	//강사 권한 반환
+	public boolean hasInstRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        return authorities.stream().filter(o -> o.getAuthority().equals("ROLE_INSTRUCTOR")).findAny().isPresent();
+    }
+	
+	/* 온라인 클래스 등록 */
 	//온라인 클래스 등록
 	@Transactional
 	public OnlinePostDTO onlinePost(OnlinePostDTO onlinePostDto) {
-		Instructors id = findById((long) 8).getInstructorId(); //아이디 받아오기
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		Instructors id = instRepository.findFirstByInstructorId(userId); //아이디 받아오기
 		//카테고리 id로 카테고리 검색
 		OnlineCategory cate = onlineCategoryRepository.findFirstByOnlineCategoryId(onlinePostDto.getOnlineCategoryId());
 		System.out.println("333333333333333333333333333 " + cate);
@@ -244,5 +278,58 @@ public class OnlineClassService {
 	    
 	    return onlinePostDto;
 	}
+	
+	//동영상 파일 업로드
+	 public Long saveFile(MultipartFile files, Long classId, List<String> fileContent) throws IOException {
+        if (files.isEmpty()) {
+            return null;
+        }
+
+        // 원래 파일 이름 추출
+        String origName = files.getOriginalFilename();
+
+        // 확장자 추출
+        String extension = origName.substring(origName.lastIndexOf("."));
+        String origName2 = origName.substring(0, origName.lastIndexOf("."));
+        
+        OnlineClass id = onlineClassRepository.findFirstByonlineClassId(classId);
+        
+        Long fileCnt = fileRepository.countByOnlineClassFileId_onlineClassId(classId);
+
+        long len = 180;
+        OnlineClassFileId fileId = OnlineClassFileId.builder()
+        		.onlineClassId(classId)
+        		.onlineFileId(fileCnt+1)
+        		.onlineFileLength(len)
+        		.build();
+        
+        // 확장자 결합
+        String savedName = classId + "_" + (fileCnt+1) + "강_" + origName;// + extension;
+
+        // 파일을 불러올 때 사용할 파일 경로
+        String savedPath = fileDir + savedName;
+        
+        log.info("파일 등록 " + (fileCnt+1) + "번쨰");
+        int idx = fileCnt.intValue();
+        OnlineClassFile file = OnlineClassFile.builder()
+                .onlineClassId(id)
+                .onlineClassFileId(fileId)
+                .onlineFileOrgName(origName2)
+                .onlineFileName(savedName)
+                .onlineFileExt(extension)
+                .onlineFileSize(files.getSize())
+                .onlineFileRegdate(LocalDateTime.now())
+                .onlineFileContent(fileContent.get(idx))
+                .build();
+
+        // 실제로 로컬에 저장
+        files.transferTo(new File(savedPath));
+
+        // 데이터베이스에 파일 정보 저장 
+        OnlineClassFile savedFile = fileRepository.save(file);
+
+        return savedFile.getOnlineClassId().getOnlineClassId();
+    }
 }
 	
+

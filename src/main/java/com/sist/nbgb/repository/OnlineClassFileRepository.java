@@ -19,4 +19,5 @@ public interface OnlineClassFileRepository extends JpaRepository<OnlineClassFile
 	//강의 자료 리스트 전체 조회
 	List<OnlineClassFile> findAllByOnlineClassFileIdOnlineClassIdOrderByOnlineFileName(@Param("onlineClassId") Long onlineClassId);
 	
+	Long countByOnlineClassFileId_onlineClassId(Long onlineClassId);
 }

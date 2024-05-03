@@ -63,7 +63,7 @@ public class SecurityConfig
 					.antMatchers("/", "/signup/**", "/login/**", "/onlineClass", "/offlineClass").permitAll()
 					.antMatchers("/user/**").hasAnyAuthority("ROLE_USER")
 					.antMatchers("/instructor/**").hasAnyAuthority("ROLE_INSTRUCTOR")					
-					.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+					//.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
 				.and()
 				.build();
 	}
