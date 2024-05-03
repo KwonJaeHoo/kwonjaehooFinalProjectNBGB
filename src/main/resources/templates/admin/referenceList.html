@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+	<a class="MainBanner" aria-current="page" href="/reference/referenceList"><h1>문의 게시판</h1></a>
+	
+	<div class="container" style="max-width: 1000px">
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>글 번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="refList : ${referenceList}">
+                <td><a th:text="${refList.refId}">문의글 ID</a></td>
+                <td><a th:text="${refList.refTitle}">문의글 제목</a></td>
+                <td><a th:text="${refList.userId.userId}">작성자</a></td>
+                <td><a th:text="${refList.refRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))}">등록일</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!--페이징 처리-->
+	<div class="row mt-5">
+        <div class="col">
+          <div class="block-27 smallpage" style="display:inline; text-align: center;">
+            <ul class="mb-2">
+	        <!-- Previous page button -->
+	        <li th:if="${page.hasPrevious}">
+	            <a href="@{/reference/referenceList(page=${page.number - 1})}">&lt;</a>
+	        </li>
+	        
+	        <!-- Page number buttons -->
+	        <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:if="${page.totalPages > 1}">
+	            <a th:href="@{/reference/referenceList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
+	        </li>
+	
+	        <!-- Next page button -->
+	        <li th:if="${page.hasNext}">
+	            <a href="@{/reference/referenceList(page=${page.number + 1})}">&gt;</a>
+	        </li>
+	    	</ul>
+	    </div>
+	    </div>
+	</div>
+    
+            
+  <div class="comment-form-wrap">                
+    </div>
+
+</div> <!-- /container -->
+
+<!-- 검색창 -->
+    <form class="search-box" action="/reference/referenceList" method="get">
+	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
+	    <button class="search-btn" type="submit">
+	        <i class="fa-solid fa-magnifying-glass"></i>
+	    </button>
+	</form>
+
+
+<script src="/js/reference.js"></script>
+
+
+<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.sist.nbgb.service;
 
 import org.springframework.stereotype.Service;
 import com.sist.nbgb.dto.UserIdCheckDto;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -17,4 +18,10 @@ public class UserService
 				.map(UserIdCheckDto :: of)
 				.orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
 	}
+	
+	public User findUserById(String userId) {
+	    return userRepository.findById(userId)
+	            .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+	}
+
 }

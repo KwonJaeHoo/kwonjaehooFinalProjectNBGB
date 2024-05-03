@@ -1,0 +1,31 @@
+/* Pagination container */
+.pagination-container {
+    text-align: center; /* 가운데 정렬 */
+}
+
+/* Pagination list */
+.pagination {
+    display: inline-flex; /* 가로로 나열 */
+    list-style: none; /* 기본 목록 스타일 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+}
+
+/* Pagination item */
+.pagination li {
+    margin: 0 5px; /* 좌우 마진으로 버튼 사이 간격 조정 */
+}
+
+/* Pagination links */
+.pagination li a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    padding: 5px 10px; /* 패딩으로 크기 조정 */
+    background-color: #f0f0f0; /* 배경색 */
+    color: #333; /* 글자색 */
+    border-radius: 5px; /* 모서리 둥글게 */
+}
+
+/* Active page link style */
+.pagination li a.active {
+    background-color: #007bff; /* 활성 페이지 배경색 */
+    color: #ffffff; /* 활성 페이지 글자색 */
+}
