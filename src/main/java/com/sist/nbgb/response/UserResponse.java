@@ -34,8 +34,6 @@ public class UserResponse
 	
 	private Role Authority;
 	
-	private Status userStatus;
-	
 	private LocalDateTime userRegdate;
 	
 	public UserResponse(User user)
@@ -61,8 +59,6 @@ public class UserResponse
 		this.userProvider = user.getUserProvider();
 		
 		this.Authority = user.getAuthority();
-		
-		this.userStatus = user.getUserStatus();
 		
 		this.userRegdate = user.getUserRegdate();
 	}

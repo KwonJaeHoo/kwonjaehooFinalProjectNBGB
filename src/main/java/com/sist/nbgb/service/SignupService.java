@@ -71,7 +71,6 @@ public class SignupService
 				.userPoint((long)0)
 				.userProvider(Provider.LOCAL)
 				.Authority(Role.ROLE_USER)
-				.userStatus(Status.Y)
 				.userRegdate(LocalDateTime.now().withNano(0))
 				.build();
 		
@@ -96,7 +95,6 @@ public class SignupService
 				.instructorBank(instructorsDto.getInstructorBank())
 				.instructorAccount(instructorsDto.getInstructorAccount())
 				.Authority(Role.ROLE_INSTRUCTOR)
-				.instructorStatus(Status.Y)
 				.instructorRegdate(LocalDateTime.now())
 				.instructorCategory(instructorsDto.getInstructorCategory())
 				.build();

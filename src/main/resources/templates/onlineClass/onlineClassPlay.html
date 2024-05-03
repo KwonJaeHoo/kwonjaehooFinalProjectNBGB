@@ -6,53 +6,70 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	var onlineClassId = "[[ ${onlineClass.onlineClassId} ]]";
+	var onlineClassId = "[[${onlineClass.onlineClassId}]]";
 	var onlineFileId = "[[${classFile.onlineClassFileId.onlineFileId}]]";
     var video = document.getElementById('video');
 
     //미디어 로드되고 준비 완료 시 비디오 총 영상 길이 출력(video.duration)
     video.addEventListener('loadedmetadata', function(){
         var videoDuration = formatDate(video.duration);
-        console.log(video.duration);
+        console.log("총 영상 길이 : " + video.duration);
     });
     
     //비디오 재생 시 5초 간격으로 재생 위치 출력. 정지 시 타이머 멈춤
-    //페이지 들어갈 때 insert, 5초마다 update, 정지할 때 update
+    //페이지 들어갈 때 insert, 5초마다 update
     video.addEventListener('play', () => {
             console.log("비디오 재생");
-       
-            var timer = setInterval(() => {
-            console.log(formatDate(video.currentTime));
-            console.log(typeof(video.currentTime));
-            console.log(video.currentTime);
-            
-            var startLog = video.currentTime;
-            
-           /* var param = {"onlineClassId" : onlineClassId, "onlineFileId" : onlineFileId, "onlineLogCurr" : startLog };
+            var currentTime = Math.ceil(video.currentTime);
+            var formData = new FormData();
+			formData.append("onlineClassId", onlineClassId);
+			formData.append("onlineFileId", onlineFileId);
+			formData.append("onlineLogCurr", currentTime);
 			$.ajax({
-				url:"onlinePlay",
+				url:"/onlinePlay",
 				method:"POST",
-				data: JSON.stringify(param),
-				dataType: "json",
-		        contentType: "application/json",
-		        success: function(data) {
-		            alert("성공");
-		        },
-		        error: function(errorThrown) {
-		            alert("실패");
-		        }
-			});*/
-            
-            
-            } 
-            ,5000);
+				data:formData,
+				processData : false,
+	            contentType : false,
+	            cache: false,
+	            enctype: 'multipart/form-data',  
+				success:function(){
+					console.log("총 영상 길이 : " + video.duration + ", 현재 재생 위치 : " + video.currentTime);
+				},
+				error:function(){
+					console.log("Log update Fail");
+				}
+			});
+
+            var timer = setInterval(() => {
+	            console.log(video.currentTime);
+	            var currentTime = Math.ceil(video.currentTime);
+	            var formData = new FormData();
+				formData.append("onlineClassId", onlineClassId);
+				formData.append("onlineFileId", onlineFileId);
+				formData.append("onlineLogCurr", currentTime);
+				$.ajax({
+					url:"/onlinePlay",
+					method:"PUT",
+					data:formData,
+					processData : false,
+		            contentType : false,
+		            cache: false,
+		            enctype: 'multipart/form-data',  
+					success:function(){
+						console.log("총 영상 길이 : " + formatDate(video.duration) + ", 현재 재생 위치 : " + formatDate(video.currentTime));
+					},
+					error:function(){
+						console.log("Log update Fail");
+					}
+				});
+            },5000);
             video.addEventListener('pause', () => {
                     console.log("비디오 정지");
                     clearInterval(timer);
             });
     });
         
-	// 초를 시,분,초로 변환(데이터 넣을 때는 안 해도 됨)
 	function formatDate(seconds) {
 	  var secondsNumber = parseInt(seconds, 10)
 	  var hours = Math.floor(secondsNumber / 3600)
@@ -93,7 +110,7 @@ $(document).ready(function(){
         <div class="video-contents col-md-8">
           <div class="video-area">
             <video id="video" controls playsinline muted ><!--autoplay-->
-              <source th:src="|@{'/video/' + ${videoFileName}}|"  type="video/mp4" />	<!--확장자명 뒤에 #t=숫자 / 입력하면 시작 위치 지정-->
+              <source th:src="|@{'/video/' + ${videoFileName} + '#t=' + ${index}}|"  type="video/mp4" />	<!--확장자명 뒤에 #t=숫자 / 입력하면 시작 위치 지정-->
             </video>
           </div>
           <div class="video-comment">

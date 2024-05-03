@@ -54,7 +54,7 @@ public class OnlineClassLog
 		@JoinColumn(name = "onlineFileLength")
 	})
 	
-	private OnlineClassFile OnlineClassFile;
+	private OnlineClassFile onlineClassFile;
 	 
 	@Column
 	@Comment("영상 시청(마지막 시청 위치)")
@@ -68,4 +68,10 @@ public class OnlineClassLog
 	@Comment("상태")
 	@Enumerated(EnumType.STRING)
 	private Status status;
+	
+	public void update(Long onlineLogCurr, LocalDateTime onlineLogDate, Status status) {
+		this.onlineLogCurr = onlineLogCurr;
+		this.onlineLogDate = onlineLogDate;
+		this.status = status;
+	}
 }
