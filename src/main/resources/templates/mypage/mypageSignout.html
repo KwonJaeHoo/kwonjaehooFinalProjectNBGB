@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/signupCustom.css">
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+	<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">마이페이지</h1>
+    	<p class="sub-title"></p>
+  	</div>
+  	
+	<section class="ftco-animate my-4" >
+    	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}" class=" list-area">
+      		<div class="side-menu">
+        		<h3 class="text-center mb-3">menu</h3>
+        		<ul>
+          			<li class="menu-item">
+            			<a class="active" aria-current="page" th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
+          			</li>
+          			<ol>
+            			<li><a th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
+            			<li class="menu-item"><a class="active" th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원 탈퇴</a></li>
+          			</ol>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/payment (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>결제내역</a>
+          			</li>
+              		<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>수강목록</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/reference (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 문의</a>
+          			</li>
+        		</ul>
+      		</div>
+      		
+      		<div class="list-container">
+        		<div class="container info-section row">
+          			<div class="info-detail">
+						<p>정말 회원탈퇴를 진행하시겠어요? 작성하신 후기 내역은 삭제되지 않아요.</p>
+						<p>회원탈퇴를 진행하기 위해서 비밀번호를 입력해주세요.</p>
+          			</div>
+					<div>
+						<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">비밀번호</p></div>
+          						<input type="password" id="userPassword" name="userPassword"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="userMsg1"></p>
+						<div class="col-3 log-btn-area"><button type="button" id="userResignBtn" name="userResignBtn" class="log-btn log-btn-first">회원탈퇴</button></div>					
+					</div>
+          			<div style="display: none;"><input id="userId" name="userId" th:value="${userInfoDto.userId}"/></div> 
+        		</div>
+      		</div>
+     	</div>		
+	</section>	
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	var userPasswordCheck = false;
+	
+	$('#userPassword').blur(function()
+	{ 
+		if($.trim($("#userPassword").val()).length <= 0)
+		{
+			$('#userPassword').css({'border':'1px solid red'});
+			document.getElementById("userMsg1").innerHTML = "비밀번호를 입력해주세요.";
+			userPasswordCheck = false;
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/info/nowuserpasswordcheck",
+			data : JSON.stringify
+			({	           
+				id:$('#userId').val(),
+				password:$('#userPassword').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{	               
+					if($('#userPassword').val() != '')
+					{
+						$('#userPassword').css({'border':'1px solid #89dd18'});
+						document.getElementById("userMsg1").innerHTML = "";
+						userPasswordCheck = true;   
+						return;
+					}	           	
+				}
+				else if(data == 400)
+				{
+					if($('#userPassword').val()!='')
+					{
+						$('#userPassword').css({'border':'1px solid red'});
+						document.getElementById("userMsg1").innerHTML = "비밀번호가 일치하지 않아요.";
+						userPasswordCheck = false; 
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				$('#userPassword').css({'border':'1px solid red'});
+				document.getElementById("userMsg1").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				userPasswordCheck = false; 
+				return;
+			}
+		});		
+	});
+	
+	$("#userResignBtn").on("click", function()
+	{
+		if(confirm("회원탈퇴를 진행 하시겠어요?"))
+		{
+			if(userPasswordCheck == false)
+			{
+				$('#userPassword').css({'border':'1px solid red'});
+				document.getElementById("userMsg1").innerHTML = "비밀번호를 확인해 주세요.";
+				return;
+			}
+			userResign();
+		}
+	});
+});
+
+function userResign()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/signout",
+		data : JSON.stringify
+		({
+			userId:$("#userId").val(),
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("회원탈퇴가 완료 되었습니다. 그 동안 이용해 주셔서 감사합니다.");
+			location.href = "/logout";
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+</script>
+</html>

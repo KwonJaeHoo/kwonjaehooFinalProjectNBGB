@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
 import com.sist.nbgb.enums.Role;
-import com.sist.nbgb.enums.Status;
 
 import lombok.Getter;
 
