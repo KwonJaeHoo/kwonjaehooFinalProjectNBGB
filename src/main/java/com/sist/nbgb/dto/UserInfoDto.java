@@ -34,6 +34,8 @@ public class UserInfoDto
 	
 	private String userBirth;
 	
+	private char userGender;
+	
 	private Long userPoint;
 	
 	private LocalDateTime userRegdate; 
@@ -48,6 +50,7 @@ public class UserInfoDto
 				.userEmail(user.get(0).getUserEmail())
 				.userPhone(user.get(0).getUserPhone())
 				.userBirth(user.get(0).getUserBirth())
+				.userGender(user.get(0).getUserGender())
 				.userPoint(user.get(0).getUserPoint())
 				.userRegdate(user.get(0).getUserRegdate())
 				.build();

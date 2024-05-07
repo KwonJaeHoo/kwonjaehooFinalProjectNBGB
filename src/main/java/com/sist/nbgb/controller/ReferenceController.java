@@ -61,12 +61,12 @@ public class ReferenceController {
 	        throw new IllegalArgumentException("userId는 null일 수 없습니다.");
 	    }
 	    
-	    //User user = userService.findUserById(userId); 
+	    User user = userService.findUserById(userId); 
 	    
 	    ReferenceDTO referenceDTO = ReferenceDTO.builder()
 	            .refTitle(refTitle)
 	            .refContent(refContent)
-	            //.userId(user)
+	            .userId(user)
 	            .build();
 
 	    referenceService.saveReference(referenceDTO);

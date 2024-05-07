@@ -91,7 +91,7 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorCategory(instructorCategory));	
+		instructors.ifPresent(value -> value.setInstructorCategory(instructorCategory));
 			
 		return 200;
 	}

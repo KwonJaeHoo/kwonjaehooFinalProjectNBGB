@@ -1,12 +1,14 @@
 package com.sist.nbgb.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,14 +25,11 @@ import com.sist.nbgb.dto.BankAccountChangeDto;
 import com.sist.nbgb.dto.CategoryChangeDto;
 import com.sist.nbgb.dto.EmailChangeDto;
 import com.sist.nbgb.dto.EmailCheckDto;
+import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorInfoDto;
-import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.dto.NicknameChangeDto;
 import com.sist.nbgb.dto.PhoneChangeDto;
-import com.sist.nbgb.dto.UserFileDto;
-import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.SignupService;
@@ -71,7 +71,7 @@ public class InstructorController
     
     @PostMapping("/mypage/info/nowinstructorpasswordcheck")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoPasswordCheck(@RequestBody LoginDto loginDto)
+    public ResponseEntity<Object> mypageInstructorInfoPasswordCheck(@RequestBody LoginDto loginDto)
     {  	
     	InstructorInfoDto instructorInfoDto = instructorsService.findByInstructorId(loginDto.getId());
     	
@@ -85,7 +85,7 @@ public class InstructorController
     
     @PostMapping("/mypage/info/instructorpassword")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoPassword(@RequestBody LoginDto loginDto)
+    public ResponseEntity<Object> mypageInstructorInfoPassword(@RequestBody LoginDto loginDto)
     {
     	System.out.println(loginDto.getId());
     	System.out.println(loginDto.getPassword());
@@ -94,14 +94,14 @@ public class InstructorController
     
     @PostMapping("/mypage/info/instructornickname")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoNickname(@RequestBody NicknameChangeDto nicknameChangeDto)
+    public ResponseEntity<Object> mypageInstructorInfoNickname(@RequestBody NicknameChangeDto nicknameChangeDto)
     {
     	return ResponseEntity.ok(instructorsService.changeInstructorNickname(nicknameChangeDto.getId(), nicknameChangeDto.getNickname()));
     }
     
 	@PostMapping("/mypage/info/emailcheck")	
     @ResponseBody
-    public ResponseEntity<Boolean> userEmailCheck(@RequestBody EmailCheckDto emailCheckDto)
+    public ResponseEntity<Boolean> instructorEmailCheck(@RequestBody EmailCheckDto emailCheckDto)
 	{
         return ResponseEntity.ok(signupService.instructorSignUpDuplicateEmail(emailCheckDto));
     }
@@ -115,7 +115,7 @@ public class InstructorController
 	
     @PostMapping("/mypage/info/instructoremail")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoEmail(@RequestBody EmailChangeDto emailChangeDto)
+    public ResponseEntity<Object> mypageInstructorInfoEmail(@RequestBody EmailChangeDto emailChangeDto)
     {
     	return ResponseEntity.ok(instructorsService.changeInstructorEmail(emailChangeDto.getId(), emailChangeDto.getEmail()));
     }
@@ -124,31 +124,50 @@ public class InstructorController
     
     @PostMapping("/mypage/info/instructorphone")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoPhone(@RequestBody PhoneChangeDto phoneChangeDto)
+    public ResponseEntity<Object> mypageInstructorInfoPhone(@RequestBody PhoneChangeDto phoneChangeDto)
     {
     	return ResponseEntity.ok(instructorsService.changeInstructorPhone(phoneChangeDto.getId(), phoneChangeDto.getPhone()));
     }
     
     @PostMapping("/mypage/info/instructorbankaccount")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoBankAccount(@RequestBody BankAccountChangeDto bankAccountChangeDto)
+    public ResponseEntity<Object> mypageInstructorInfoBankAccount(@RequestBody BankAccountChangeDto bankAccountChangeDto)
     {
     	return ResponseEntity.ok(instructorsService.changeInstructorBankAccount(bankAccountChangeDto.getId(), bankAccountChangeDto.getBank(), bankAccountChangeDto.getAccount()));
     }
     
     @PostMapping("/mypage/info/instructorcategory")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoCategory(@RequestBody CategoryChangeDto categoryChangeDto)
+    public ResponseEntity<Object> mypageInstructorInfoCategory(@RequestBody CategoryChangeDto categoryChangeDto)
     {
-    	return ResponseEntity.ok(instructorsService.changeInstructorPhone(categoryChangeDto.getId(), categoryChangeDto.getCategory()));
+    	return ResponseEntity.ok(instructorsService.changeInstructorCategory(categoryChangeDto.getId(), categoryChangeDto.getCategory()));
     }
     
     
-//    @PostMapping("/mypage/{id}/info/userfile")
-//    public ResponseEntity<UserFileDto> mypageUserInfoFile(InstructorsDto instructorsDto, MultipartFile instructorImageFile) throws Exception
-//    {
-//    	return ResponseEntity.ok(null);
-//    }
+    @PostMapping("/mypage/info/instructorfile")
+	@ResponseBody
+	public ResponseEntity<Object> mypageInstructorInfoFile(@RequestPart(value="instructorId") @Valid InstructorIdCheckDto instructorIdCheckDto, @RequestPart(value="instructorImageFile") MultipartFile instructorImageFile) throws Exception
+	{
+	    String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\instructor";
+	    String filename = instructorIdCheckDto.getInstructorId() + ".png"; // 기본 파일명
+	    String filepath = path + "/" + filename;
+		
+        File file = new File(filepath);
+        file.delete();
+        
+        try 
+        {
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bufferedOutputStream.write(instructorImageFile.getBytes());
+            bufferedOutputStream.close();
+            
+            return ResponseEntity.ok(200);
+        }
+        catch (Exception e) 
+        {
+            throw new RuntimeException("오류가 발생했습니다.");
+        }
+	}
     
     
     @GetMapping("/mypage/{id}/lecture")

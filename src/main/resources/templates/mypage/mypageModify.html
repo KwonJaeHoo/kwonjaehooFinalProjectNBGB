@@ -121,11 +121,11 @@
           			<div>
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">이미지변경</p></div>
-          						<input type="file" id="userFile" name="userFile"  class="input col-9" size="32"/>
+          						<input type="file" id="userImageFile" name="userImageFile"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>	
          				</div>
          				<p class="input-msg" id="userMsg8"></p>
-         				<div class="col-3 log-btn-area"><button type="button" id="userFileBtn" name="userFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>	          			
+         				<div class="col-3 log-btn-area"><button type="button" id="userImageFileBtn" name="userImageFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>	          			
           			</div>
         		</div>
       		</div>
@@ -255,40 +255,40 @@
          				</div>
          				<p class="input-msg" id="instructorMsg9"></p>
          				
-         				<div class="col-3 log-btn-area"><button type="button" id="instructorAccountBtn" name="instructorAccountBtn" class="log-btn log-btn-first">계좌 변경</button></div>
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorBankAccountBtn" name="instructorBankAccountBtn" class="log-btn log-btn-first">계좌 변경</button></div>
           			</div>
           			
           			<div>
           				<div class="input-area justify-content-center col-md-12">
 					    	<div class="col-3 input-name"><p class="input-name-detail">강의 종목</p></div>
-					        	<select id="instructorCategory" name="instructorCategory" class="input col-9" >
-					            	<option value="" selected="selected" class="input">강의 종목 선택</option>
+					        	<select id="instructorCategory" name="instructorCategory" class="input col-9"  th:value="${instructorInfoDto.instructorCategory}">
+					            	<option value="" class="input">강의 종목 선택</option>
 					                	<optgroup label="온라인 강의">
-					                  		<option value="건강 심성">건강 심성</option>
-					                		<option value="레저생활 스포츠">레저생활 스포츠</option>
-					                  		<option value="생활문화예술" >생활문화예술</option>
-					                		<option value="문화예술향상">문화예술향상</option>	
-					                  		<option value="기능적 소양">기능적 소양</option>
+					                  		<option th:selected="${instructorInfoDto.instructorCategory} == '건강 심성'" value="건강 심성">건강 심성</option>
+					                		<option th:selected="${instructorInfoDto.instructorCategory} == '레저생활 스포츠'" value="레저생활 스포츠">레저생활 스포츠</option>
+					                  		<option th:selected="${instructorInfoDto.instructorCategory} == '생활문화예술'" value="생활문화예술" >생활문화예술</option>
+					                		<option th:selected="${instructorInfoDto.instructorCategory} == '문화예술향상'" value="문화예술향상">문화예술향상</option>	
+					                  		<option th:selected="${instructorInfoDto.instructorCategory} == '기능적 소양'" value="기능적 소양">기능적 소양</option>
 					                	</optgroup>	
 					              	<optgroup label="오프라인 강의">
-					                	<option value="공방">공방</option>
+					                	<option th:selected="${instructorInfoDto.instructorCategory} == '공방'" value="공방">공방</option>
 					              	</optgroup>
 					            </select>
 					       <div class="col-3"></div>
 						</div>
 						<p class="input-msg" id="instructorMsg10"></p>
           			
-						<div class="col-3 log-btn-area"><button type="button" id="instructorCategodyBtn" name="instructorCategodyBtn" class="log-btn log-btn-first">강의 종목 변경</button></div>
+						<div class="col-3 log-btn-area"><button type="button" id="instructorCategoryBtn" name="instructorCategoryBtn" class="log-btn log-btn-first">강의 종목 변경</button></div>
           			</div>
    			
           			<div>
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">이미지변경</p></div>
-          							<input type="file" id="" name=""  class="input col-9" size="32" />
+          							<input type="file" id="instructorImageFile" name="instructorImageFile"  class="input col-9" size="32" />
           					<div class="col-3 log-btn-area"></div>	
          				</div>
-         				<p class="input-msg" id=""></p>
-         				<div class="col-3 log-btn-area"><button type="button" id="" name="" class="log-btn log-btn-first">이미지 변경</button></div>	          			
+         				<p class="input-msg" id="instructorMsg11"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorImageFileBtn" name="instructorImageFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>	          			
           			</div>
         		</div>
       		</div>
@@ -322,6 +322,8 @@ $(document).ready(function()
 	var userEmailSendCheck = false;
 	var userEmailCodeCheck = false;
 	var userPhoneCheck = false;
+	const userImageFileCheck = $("#userImageFile")[0];
+	
 	
 	var nowInstructorPasswordCheck = false;
 	var newInstructorPasswordCheck = false;
@@ -330,6 +332,10 @@ $(document).ready(function()
 	var instructorEmailSendCheck = false;
 	var instructorEmailCodeCheck = false;
 	var instructorPhoneCheck = false;
+	var instructorBankCheck = false;
+	var instructorAccountCheck = false;
+	var instructorCategoryCheck = false;
+	const instructorImageFileCheck = $("#instructorImageFile")[0];
 	
 	$('#nowUserPassword').blur(function()
 	{ 
@@ -716,6 +722,42 @@ $(document).ready(function()
 	});
 	
 	
+	$("#userImageFileBtn").on("click", function()
+	{
+		if(confirm("이미지를 변경 하시겠어요?"))
+		{
+			if(userImageFile.files.length === 0)
+			{
+				$('#userImageFile').css({'border':'1px solid red'});
+				document.getElementById("userMsg8").innerHTML = "이미지를 업로드 해 주세요";
+			    return;
+			}
+			
+			var fileVal = $("#userImageFile").val();
+			
+		    if(fileVal != "")
+		    {
+		        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+		        //아래 확장자가 있는지 체크
+		        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+		        {
+		        	$('#userImageFile').css({'border':'1px solid red'});
+		        	document.getElementById("userMsg8").innerHTML = "jpg, jpeg, png 파일만 업로드 할 수 있어요.";
+		          	return;
+		        }
+		    }
+		    
+		    userImageFileChange();
+		}
+	});
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -1073,7 +1115,7 @@ $(document).ready(function()
 		if($.trim($("#instructorPhone").val()).length <= 0)
 		{
 			$('#instructorPhone').css({'border':'1px solid red'});
-			document.getElementById("instructorMsg7").innerHTML = "연락처를 입력해 주세요";
+			document.getElementById("instructorMsg7").innerHTML = "연락처를 입력해 주세요.";
 			instructorPhoneCheck = false;
 			return;
 		}		
@@ -1102,6 +1144,117 @@ $(document).ready(function()
 			}
 			instructorPhoneChange();
 		}		
+	});
+	
+	$('#instructorBank').blur(function()
+	{ 	
+		if($.trim($("#instructorBank").val()).length <= 0)
+		{
+			$('#instructorBank').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg8").innerHTML = "은행명을 입력해 주세요.";
+			instructorBankCheck = false;
+			return;
+		}		
+
+		$('#instructorBank').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg8").innerHTML = "";
+		instructorBankCheck = true;
+	});
+	
+	$('#instructorAccount').blur(function()
+	{ 	
+		if($.trim($("#instructorAccount").val()).length <= 0)
+		{
+			$('#instructorAccount').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg9").innerHTML = "계좌번호를 입력해 주세요.";
+			instructorAccountCheck = false;
+			return;
+		}		
+		
+		$('#instructorAccount').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg9").innerHTML = "";
+		instructorAccountCheck = true;
+	});
+	
+	$("#instructorBankAccountBtn").on("click", function()
+	{
+		if(confirm("계좌번호를 변경 하시겠어요?"))
+		{
+			if(instructorBankCheck == false)
+			{
+				$('#instructorBank').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg8").innerHTML = "은행명을 확인해 주세요.";
+				return;
+			}
+			
+			if(instructorAccountCheck == false)
+			{
+				$('#instructorAccount').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg9").innerHTML = "계좌번호를 확인해 주세요.";
+				return;
+			}
+			
+			instructorBankAccountChange();
+		}		
+	});
+	
+	$('#instructorCategory').blur(function()
+	{ 	
+		if($.trim($("#instructorCategory").val()).length <= 0)
+		{
+			$('#instructorCategory').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg10").innerHTML = "카테고리를 선택 해 주세요.";
+			instructorCategoryCheck = false;
+			return;
+		}		
+		
+		$('#instructorCategory').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg10").innerHTML = "";
+		instructorCategoryCheck = true;
+	});
+	
+	$("#instructorCategoryBtn").on("click", function()
+	{
+		if(confirm("카테고리를 변경 하시겠어요?"))
+		{
+			if(instructorCategoryCheck == false)
+			{
+				$('#instructorCategory').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg10").innerHTML = "카테고리를 확인 해 주세요.";
+				return;
+			}
+			instructorCategoryChange();
+		}		
+	});
+	
+	
+	$("#instructorImageFileBtn").on("click", function()
+	{
+		if(confirm("이미지를 변경 하시겠어요?"))
+		{
+			if(instructorImageFile.files.length === 0)
+			{
+				$('#instructorImageFile').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg11").innerHTML = "이미지를 업로드 해 주세요";
+			    return;
+			}
+			
+			var fileVal = $("#instructorImageFile").val();
+			
+		    if(fileVal != "")
+		    {
+		        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+		        //아래 확장자가 있는지 체크
+		        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+		        {
+		        	$('#instructorImageFile').css({'border':'1px solid red'});
+		        	document.getElementById("instructorMsg11").innerHTML = "jpg, jpeg, png 파일만 업로드 할 수 있어요.";
+		          	return;
+		        }
+		    }
+		    
+		    instructorImageFileChange();
+		}
 	});
 });
 
@@ -1232,6 +1385,49 @@ function userPhoneChange()
 }
 
 
+function userImageFileChange()
+{
+	var userImageFile = $("#userImageFile")[0].files[0];
+	var formData = new FormData();
+    formData.append('userImageFile', userImageFile);
+    
+	var userId = 
+	{
+		userId:$("#userId").val()
+	}
+	
+	formData.append("userId", new Blob([JSON.stringify(userId)], {type: "application/json"}));
+
+	
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/userfile",
+		data: formData,
+		enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        cache: false,
+		datatype:"JSON",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+
+	
+}
+
+
 
 function instructorPasswordChange()
 {
@@ -1347,6 +1543,108 @@ function instructorPhoneChange()
 			alert("오류가 발생했습니다. 다시 시도해주세요.");
 		}
    	});	
+}
+
+function instructorBankAccountChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorbankaccount",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			bank:$("#instructorBank").val(),
+			account:$("#instructorAccount").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+}
+
+
+function instructorCategoryChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorcategory",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			category:$("#instructorCategory").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+}
+
+
+function instructorImageFileChange()
+{
+	var instructorImageFile = $("#instructorImageFile")[0].files[0];
+	var formData = new FormData();
+    formData.append('instructorImageFile', instructorImageFile);
+    
+	var instructorId = 
+	{
+		instructorId:$("#instructorId").val()
+	}
+	
+	formData.append("instructorId", new Blob([JSON.stringify(instructorId)], {type: "application/json"}));
+
+	
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorfile",
+		data: formData,
+		enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        cache: false,
+		datatype:"JSON",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+
 }
 </script>
 </html>

@@ -52,6 +52,12 @@ public class UserService
 				.orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
 	}
 	
+	public User findUserById(String userId)
+	{
+		return userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+	}
+	
 	public UserInfoDto findByUserId(String userId)
 	{
 		return UserInfoDto.infoUser(userRepository.findAllByUserId(userId));
@@ -139,7 +145,14 @@ public class UserService
 		return 200;
 	}
 	
-
+	@Transactional
+	public Object uploadUserFile(UserFileDto userFileDto)
+	{
+		
+		return 200;
+	}
+	
+	
 	@Transactional
 	public Object changeUserFile()
 	{
