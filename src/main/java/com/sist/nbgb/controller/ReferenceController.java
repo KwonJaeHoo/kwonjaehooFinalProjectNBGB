@@ -33,44 +33,46 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 public class ReferenceController {
-	
-	private final ReferenceService referenceService;
-	private final UserService userService;
-	
-	//자주 묻는 질문 페이지 불러오기
-	@GetMapping("/reference/FAQ")
-	public String FAQ(Model model)
-	{
-		return "reference/FAQ";
-	}
-	
-	@GetMapping("/reference/referenceWrite")
-	public String referenceWrite(Model model)
-	{
-		return "reference/referenceWrite";
-	}
-	
-	//문의 등록
-	@PostMapping("/reference/referenceWrite/post")
-	public ModelAndView writeReference(@RequestParam("refTitle") String refTitle,
-	                                   @RequestParam("refContent") String refContent,
-	                                   Principal principal) {
-	    String userId = principal.getName();
-	    
-	    if (userId == null || userId.trim().isEmpty()) {
-	        throw new IllegalArgumentException("userId는 null일 수 없습니다.");
-	    }
-	    
-	    User user = userService.findUserById(userId); 
-	    
-	    ReferenceDTO referenceDTO = ReferenceDTO.builder()
-	            .refTitle(refTitle)
-	            .refContent(refContent)
-	            .userId(user)
-	            .build();
+   
+   private final ReferenceService referenceService;
+   private final UserService userService;
+   
+   //자주 묻는 질문 페이지 불러오기
+   @GetMapping("/reference/FAQ")
+   public String FAQ(Model model)
+   {
+      return "reference/FAQ";
+   }
+   
+   @GetMapping("/reference/referenceWrite")
+   public String referenceWrite(Model model)
+   {
+      return "reference/referenceWrite";
+   }
+   
+   //문의 등록
+   @PostMapping("/reference/referenceWrite/post")
+   @ResponseBody
+   public ResponseEntity<Object> writeReference(@RequestParam("refTitle") String refTitle,
+                                      @RequestParam("refContent") String refContent,
+                                      Principal principal) {
+       String userId = principal.getName();
+       
+       if (userId == null || userId.trim().isEmpty()) 
+       {
+           throw new IllegalArgumentException("userId는 null일 수 없습니다.");
+       }
+       
+       User user = userService.findUserById(userId); 
+       
+       ReferenceDTO referenceDTO = ReferenceDTO.builder()
+               .refTitle(refTitle)
+               .refContent(refContent)
+               .userId(user)
+               .build();
 
-	    referenceService.saveReference(referenceDTO);
-	    return new ModelAndView("redirect:/reference/referenceList");
-	}
+       referenceService.saveReference(referenceDTO);
+       return ResponseEntity.ok(200);
+   }
 
 }

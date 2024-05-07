@@ -2,8 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="import/cssImport.html :: css-import"></div>
-	<link rel="stylesheet" href="/css/reference.css" >
-<script type="text/javascript">
+   <link rel="stylesheet" href="/css/reference.css" >
+
+<script th:inline="javascript">
+
+/*<![CDATA[*/
+var referenceListUrl = /*[[@{/user/mypage/{id}/reference(id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}]]*/ 'defaultPath';
+/*]]>*/
+
 $(document).ready(function(){
     $("#btnSubmit").on("click", function(e){
         e.preventDefault(); // 폼의 기본 제출 동작 방지
@@ -40,11 +46,13 @@ $(document).ready(function(){
             beforeSend: function(xhr){
                 xhr.setRequestHeader("AJAX", "true");
             },
-            success: function(response){
+            success: function(data)
+            {
                 alert("문의글이 등록되었습니다.");
-                location.href = "/reference/referenceList";
+                location.href = referenceListUrl;
             },
             error: function(xhr, status, error){
+            	console.log(response);
                 alert("오류가 발생했습니다.");
             }
         });
@@ -53,14 +61,14 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	<!--사용자 네비게이션-->
-	<!--메뉴 네비게이션-->
-	<div th:insert="import/topImport.html :: top-import"></div>
-	
-	<a class="MainBanner" aria-current="page"><h1>문의글 작성하기</h1></a>
-	
-	
-	<div class="container">
+   <!--사용자 네비게이션-->
+   <!--메뉴 네비게이션-->
+   <div th:insert="import/topImport.html :: top-import"></div>
+   
+   <a class="MainBanner" aria-current="page"><h1>문의글 작성하기</h1></a>
+   
+   
+   <div class="container">
 
     <form method="post">
 
@@ -74,10 +82,10 @@ $(document).ready(function(){
             <input type="text" id="refTitle" name="refTitle" class="form-control" placeholder="제목을 입력하세요.">
         </div>
         <div>
-        	<label for="userId">아이디</label>
-        	<input type="text" id="userId" name="userId" 
-       		th:value="${#authentication.principal.username}" class="form-control" placeholder="" readonly
-       		style="width: 50%; background-color: #A4A4A4;">
+           <label for="userId">아이디</label>
+           <input type="text" id="userId" name="userId" 
+             th:value="${#authentication.principal.username}" class="form-control" placeholder="" readonly
+             style="width: 50%; background-color: #A4A4A4;">
         </div>
         <div>
             <label for="refContent">내용</label>
@@ -102,16 +110,16 @@ $(document).ready(function(){
     </form>
 
 </div> <!-- /container -->
-	
-	
-	<!--채팅/맨 위로 버튼-->
-		<!--footer-->
-			<!-- loader -->
-	<div th:insert="import/bottomImport.html :: bottom-import"></div>
-			<!-- loader -->
-		<!--footer-->
-	<!--채팅/맨 위로 버튼-->
-	
-	<div th:replace="import/jsImport.html :: js-import"></div>
+   
+   
+   <!--채팅/맨 위로 버튼-->
+      <!--footer-->
+         <!-- loader -->
+   <div th:insert="import/bottomImport.html :: bottom-import"></div>
+         <!-- loader -->
+      <!--footer-->
+   <!--채팅/맨 위로 버튼-->
+   
+   <div th:replace="import/jsImport.html :: js-import"></div>
 </body>
 </html>

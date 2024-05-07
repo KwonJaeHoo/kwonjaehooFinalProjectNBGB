@@ -1,5 +1,7 @@
 package com.sist.nbgb.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -7,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,4 +50,56 @@ public class AdminController {
 		
 		return "admin/referenceList";
 	}
+	
+	//문의 게시글 상세페이지
+	@GetMapping("/referenceView/{refId}")
+	public String referenceView(Model model, @PathVariable Long refId) {
+		
+		List<Reference> refList = referenceService.findByView(refId);
+		
+		model.addAttribute("refList", refList);
+		
+		
+		return "admin/referenceView";
+	}
+	
+	
+	//일반회원 리스트 불러오기
+	@GetMapping("/admin/userList")
+	public String userList(Model  model)
+	{
+		return "admin/userList";
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
