@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+function kakaoPayResult(pgToken)
+{
+	$("#pgToken").val(pgToken);
+	
+	console.log("log : " + $("#tId").val());
+	
+	document.kakaoForm.action = "/offlineClass/reserve/pay/payResult";
+	document.kakaoForm.submit();
+}
+</script>
+</head>
+<body>
+<iframe width="100%" height="650" th:src="${payDto.pcUrl}" frameboder="0" allowfullscreen=""></iframe>
+<form name="kakaoForm" id="kakaoForm" method="POST">
+	<input type="hidden" name="tid" id="tid" th:value="${payDto.tid}"/>
+	<input type="hidden" name="pcUrl" id="pcUrl" th:value="${payDto.pcUrl}"/>
+	<input type="hidden" name="orderId" id="orderId" th:value="${payDto.orderId}"/>
+	<input type="hidden" name="pgToken" id="pgToken" value=""/>
+	<!-- <input type="hidden" id="offlineClassPrice" name="offlineClassPrice" th:value="${payDto.offlineClassPrice}" />
+	<input type="hidden" id="userPoint" name="userPoint" th:value="${payDto.userPoint}" />
+	<input type="hidden" id="userId" name="userId" th:value="${payDto.userId}" />
+	<input type="hidden" id="offlineClassId" name="offlineClassId" th:value="${payDto.offlineClassId}" />
+	<input type="hidden" id="offlineClassTitle" name="offlineClassTitle" th:value="${payDto.offlineClassTitle}" />
+	<input type="hidden" id="usedPoint" name="usedPoint" th:value="${payDto.usedPoint}">
+	<input type="hidden" id="bookingDate" name="bookingDate" th:value="${payDto.bookingDate}">
+	<input type="hidden" id="resTime" name="resTime" th:value="${payDto.resTime}">
+	<input type="hidden" id="totalAmount" name="totalAmount" th:value="${payDto.offlineClassPrice}"> -->
+</form>
+</body>
+</html>

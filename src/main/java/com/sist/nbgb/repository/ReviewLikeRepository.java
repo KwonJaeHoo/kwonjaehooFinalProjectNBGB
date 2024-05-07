@@ -17,5 +17,6 @@ public interface ReviewLikeRepository extends JpaRepository<ReviewLike, ReviewLi
 	@Query(value="insert into nbgb_review_like values (:reviewId, :userId)", nativeQuery=true)
 	int insertReviewLike(@Param("reviewId") Long reviewId, @Param("userId") String userId);
 	
-	
+	//후기 좋아요를 위한 갯수새기
+	Long countByReviewLikeId_reviewId(Long reviewId);
 }
