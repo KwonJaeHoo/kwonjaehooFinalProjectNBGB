@@ -65,8 +65,7 @@ public class OnlineClassPlayController
     {
     	return "mypage/sample3";
     }
-	
-	
+
 	//재생페이지랑 재생 목록 페이지에서 결제여부 및 수강 기간 체크하기!!
 	//온라인 강의 재생 목록
 	@GetMapping("/onlinePlayList")
@@ -76,6 +75,7 @@ public class OnlineClassPlayController
 		
 		User user = userRepository.findFirstByUserId(principal.getName());
 		if(user.getAuthority().equals(Role.ROLE_USER)) {
+						
 			//강의 조회
 			OnlineClass onlineClass = onlineClassService.findById(onlineClassId);
 			//강의 재생목록 조회
