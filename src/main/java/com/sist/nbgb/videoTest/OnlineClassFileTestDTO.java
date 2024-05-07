@@ -37,8 +37,5 @@ public class OnlineClassFileTestDTO {
 				.onlineFileRegdate(LocalDateTime.now().withNano(0))
 				.build();
 	}
-	
-	
 
-//	}
 }

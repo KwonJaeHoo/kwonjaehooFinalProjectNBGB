@@ -20,7 +20,7 @@ public class OnlineClassLogIdDTO {
 	public OnlineClassLogId toEntity() {
 		return OnlineClassLogId.builder()
 				.userId(userId)
-				.OnlineClassFileId(OnlineClassFileId.builder().onlineClassId(onlineClassId).onlineFileId(onlineFileId).onlineFileLength(Long.valueOf(180)).build())
+				.onlineClassFileId(OnlineClassFileId.builder().onlineClassId(onlineClassId).onlineFileId(onlineFileId).onlineFileLength(Long.valueOf(180)).build())
 				.build();
 	}
 }

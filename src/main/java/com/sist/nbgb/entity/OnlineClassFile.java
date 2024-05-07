@@ -37,7 +37,7 @@ public class OnlineClassFile
 	@MapsId("onlineClassId")
 	@Comment("온라인 강의 번호")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "onlieClassId")
+	@JoinColumn(name = "onlineClassId")
 	private OnlineClass onlineClassId;
 	
 	@Column(length = 100)

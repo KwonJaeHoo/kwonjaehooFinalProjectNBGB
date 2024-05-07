@@ -79,12 +79,7 @@ public class User
 	@Comment("권한")
 	@Enumerated(EnumType.STRING)
 	private Role Authority;
-	
-	@Column
-	@Comment("회원 상태")
-	@Enumerated(EnumType.STRING)
-	private Status userStatus;
-	
+
 	@CreatedDate
 	@Comment("회원 가입일")
 	private LocalDateTime userRegdate;

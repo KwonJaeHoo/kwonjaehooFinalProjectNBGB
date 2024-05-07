@@ -45,20 +45,28 @@ public class LoginController
 		
 		if(userDetails == null)
 		{
-            return  ResponseEntity.ok(401);
+            return ResponseEntity.ok(401);
 		}
 		else
 		{
 			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
 			{
-				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
-				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-				securityContext.setAuthentication(authentication);
-				HttpSession session = httpServletRequest.getSession(true);
-				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+				if(userDetails.getAuthorities().toString().equals("[ROLE_USER]"))
+				{
+					Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
+					SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+					securityContext.setAuthentication(authentication);
+					HttpSession session = httpServletRequest.getSession(true);
+					session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+					
+					//SPRING_SECURITY_CONTEXT
+					return ResponseEntity.ok(200);
+				}
+				else
+				{
+					return ResponseEntity.ok(401);
+				}
 				
-				//SPRING_SECURITY_CONTEXT
-				return ResponseEntity.ok(200);
 	        }
 			else
 			{

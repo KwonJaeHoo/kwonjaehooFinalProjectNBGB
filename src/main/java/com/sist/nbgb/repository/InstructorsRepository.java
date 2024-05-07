@@ -1,5 +1,6 @@
 package com.sist.nbgb.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,9 @@ public interface InstructorsRepository extends JpaRepository<Instructors, String
 	Instructors findInstructorEmailByInstructorIdAndInstructorNameAndInstructorEmail(String instructorId, String instructorName, String instructorEmail);
 	
 	Optional<Instructors> findByInstructorId(String instructorId);
+	
+	List<Instructors> findAllByInstructorId(String instructorId);
+	
+	//아이디로 찾기
+	Instructors findFirstByInstructorId(String instructorId);
 }

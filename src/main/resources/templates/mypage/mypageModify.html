@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/signupCustom.css">
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+	<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">마이페이지</h1>
+    	<p class="sub-title"></p>
+  	</div>
+
+	<section class="ftco-animate my-4" >
+    	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}" class=" list-area">
+      		<div class="side-menu">
+        		<h3 class="text-center mb-3">menu</h3>
+        		<ul>
+          			<li class="menu-item">
+            			<a class="active" aria-current="page" th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
+          			</li>
+          			<ol>
+            			<li class="menu-item"><a class="active" th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
+            			<li><a th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원 탈퇴</a></li>
+          			</ol>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/payment (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>결제내역</a>
+          			</li>
+              		<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>수강목록</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/reference (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 문의</a>
+          			</li>
+        		</ul>
+      		</div>
+      		
+      		<div class="list-container">
+        		<div class="container info-section row">
+        		
+          			<div>			
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">현재 비밀번호</p></div>
+          						<input type="password" id="nowUserPassword" name="nowUserPassword"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="userMsg1"></p>
+          				
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호</p></div>
+          						<input type="password" id="newUserPassword" name="newUserPassword"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="userMsg2"></p>
+          				
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호 확인</p></div>
+          						<input type="password" id="newUserPasswordCheck" name="newUserPasswordCheck"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="userMsg3"></p>
+          				
+						<div class="col-3 log-btn-area"><button type="button" id="userPasswordBtn" name="userPasswordBtn" class="log-btn log-btn-first">비밀번호 변경</button></div>					
+          			
+          			</div>
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">닉네임</p></div>
+          						<input type="text" id="userNickname" name="userNickname" class="input col-9" size="32" th:value="${userInfoDto.userNickname}" />
+          					<div class="col-3 log-btn-area"></div>
+          							
+         				</div>
+         				<p class="input-msg" id="userMsg4"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="userNicknameBtn" name="userNicknameBtn" class="log-btn log-btn-first">닉네임 변경</button></div>
+          			</div>
+          			
+          			
+          			<div>
+						<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">이메일</p></div>
+          						<input type="text" id="userEmail" name="userEmail" class="input col-9" size="32" th:value="${userInfoDto.userEmail}"/>
+          					<div class="col-3 log-btn-area"></div>
+
+         				</div>
+         				<p class="input-msg" id="userMsg5"></p>
+         				
+         				<div class="col-3 log-btn-area"><button type="button" id="userEmailBtn" name="userEmailBtn" class="log-btn log-btn-first">인증번호 발송</button></div>		
+         				
+         				<div id="userDiv" style="display: none;">
+         					<div class="input-area justify-content-center col-md-12">
+          						<div class="col-3 input-name"><p class="input-name-detail">인증번호</p></div>
+          							<input type="text" id="userEmailCheck" name="userEmailCheck"  class="input col-9" size="32"/>
+          						<div class="col-3 log-btn-area"></div>
+         					</div>
+         					<p class="input-msg" id="userMsg6"></p>
+         					
+         					<div class="col-3 log-btn-area"><button type="button" id="userEmailCheckBtn" name="userEmailCheckBtn" class="log-btn log-btn-first">인증번호 확인</button></div>
+         						      			
+          				</div>
+          				<div id="userDiv2" style="display: none;">
+          					<div class="col-3 log-btn-area"><button type="button" id="userEmailChangeBtn" name="userEmailChangeBtn" class="log-btn log-btn-first">이메일 변경</button></div>
+          				</div>
+          			</div>
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">전화번호</p></div>
+          						<input type="text" id="userPhone" name="userPhone" class="input col-9" size="32" th:value="${userInfoDto.userPhone}" placeholder="전화번호는 010-1234-5678 형식으로 입력해주세요"/>
+          					<div class="col-3 log-btn-area"></div>
+          							
+         				</div>
+         				<p class="input-msg" id="userMsg7"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="userPhoneBtn" name="userPhoneBtn" class="log-btn log-btn-first">전화번호 변경</button></div>
+          			</div>
+          			
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">이미지변경</p></div>
+          						<input type="file" id="userImageFile" name="userImageFile"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>	
+         				</div>
+         				<p class="input-msg" id="userMsg8"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="userImageFileBtn" name="userImageFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>	          			
+          			</div>
+        		</div>
+      		</div>
+      			<div style="display: none;"><input id="userId" name="userId" th:value="${userInfoDto.userId}"/></div> 
+      			<div style="display: none;"><input id="userPassword" name="userPassword"/></div>
+      			<div style="display: none;"><input id="userEmailCheck1" name="userEmailCheck1" class="input"/></div>
+      	</div>
+      	
+      	
+      	<!--                                                                                                                                                          -->
+      	
+      	
+      	
+      	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}" class=" list-area">
+			<div class="side-menu">
+        		<h3 class="text-center mb-3">menu</h3>
+        		<ul>
+          			<li class="menu-item">
+            			<a class="active" aria-current="page" th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
+          			</li>
+          			<ol>
+            			<li class="menu-item"><a class="active" th:href="@{/instructor/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
+          			</ol>
+              		<li class="menu-item">
+            			<a class="" th:href="@{/instructor/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>내 강의</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/instructor/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
+          			</li>
+        		</ul>
+      		</div>
+      		
+      		<div class="list-container">
+        		<div class="container info-section row">
+          			
+          			<div>			
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">현재 비밀번호</p></div>
+          						<input type="password" id="nowInstructorPassword" name="nowInstructorPassword"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="instructorMsg1"></p>
+          				
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호</p></div>
+          						<input type="password" id="newInstructorPassword" name="newInstructorPassword"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="instructorMsg2"></p>
+          				
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호 확인</p></div>
+          						<input type="password" id="newInstructorPasswordCheck" name="newInstructorPasswordCheck"  class="input col-9" size="32"/>
+          					<div class="col-3 log-btn-area"></div>
+         				</div>
+          				<p class="input-msg" id="instructorMsg3"></p>
+          				
+						<div class="col-3 log-btn-area"><button type="button" id="instructorPasswordBtn" name="instructorPasswordBtn" class="log-btn log-btn-first">비밀번호 변경</button></div>					
+          			
+          			</div>
+          			
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">닉네임</p></div>
+          						<input type="text" id="instructorNickname" name="instructorNickname" class="input col-9" size="32" th:value="${instructorInfoDto.instructorNickname}" />
+          					<div class="col-3 log-btn-area"></div>
+          							
+         				</div>
+         				<p class="input-msg" id="instructorMsg4"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorNicknameBtn" name="instructorNicknameBtn" class="log-btn log-btn-first">닉네임 변경</button></div>
+          			</div>
+          			
+          			
+          			<div>
+						<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">이메일</p></div>
+          						<input type="text" id="instructorEmail" name="instructorEmail" class="input col-9" size="32" th:value="${instructorInfoDto.instructorEmail}"/>
+          					<div class="col-3 log-btn-area"></div>
+
+         				</div>
+         				<p class="input-msg" id="instructorMsg5"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorEmailBtn" name="instructorEmailBtn" class="log-btn log-btn-first">인증번호 발송</button></div>		
+         				
+         				
+         				<div id="instructorDiv" style="display: none;">
+         					<div class="input-area justify-content-center col-md-12">
+          						<div class="col-3 input-name"><p class="input-name-detail">인증번호</p></div>
+          							<input type="text" id="instructorEmailCheck" name="instructorEmailCheck" class="input col-9" size="32"/>
+          						<div class="col-3 log-btn-area"></div>
+         					</div>
+         					<p class="input-msg" id="instructorMsg6"></p>
+         					
+         					<div class="col-3 log-btn-area"><button type="button" id="instructorEmailCheckBtn" name="instructorEmailCheckBtn" class="log-btn log-btn-first">인증번호 확인</button></div>
+         						      			
+          				</div>
+          				<div id="instructorDiv2" style="display: none;">
+          					<div class="col-3 log-btn-area"><button type="button" id="instructorEmailChangeBtn" name="instructorEmailChangeBtn" class="log-btn log-btn-first">이메일 변경</button></div>
+          				</div>
+          			</div>
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">전화번호</p></div>
+          						<input type="text" id="instructorPhone" name="instructorPhone" class="input col-9" size="32" th:value="${instructorInfoDto.instructorPhone}" placeholder="전화번호는 010-1234-5678 형식으로 입력해주세요"/>
+          					<div class="col-3 log-btn-area"></div>
+          							
+         				</div>
+         				<p class="input-msg" id="instructorMsg7"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorPhoneBtn" name="instructorPhoneBtn" class="log-btn log-btn-first">전화번호 변경</button></div>
+          			</div>
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">계좌 명</p></div>
+          						<input type="text" id="instructorBank" name="instructorBank" class="input col-9" size="10" th:value="${instructorInfoDto.instructorBank}"/>
+          					<div class="col-3 log-btn-area"></div>
+          							
+         				</div>
+         				<p class="input-msg" id="instructorMsg8"></p>
+         				
+         				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">계좌 번호</p></div>
+          						<input type="text" id="instructorAccount" name="instructorAccount" class="input col-9" size="10" th:value="${instructorInfoDto.instructorAccount}"/>
+          					<div class="col-3 log-btn-area"></div>
+          							
+         				</div>
+         				<p class="input-msg" id="instructorMsg9"></p>
+         				
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorBankAccountBtn" name="instructorBankAccountBtn" class="log-btn log-btn-first">계좌 변경</button></div>
+          			</div>
+          			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+					    	<div class="col-3 input-name"><p class="input-name-detail">강의 종목</p></div>
+					        	<select id="instructorCategory" name="instructorCategory" class="input col-9"  th:value="${instructorInfoDto.instructorCategory}">
+					            	<option value="" class="input">강의 종목 선택</option>
+					                	<optgroup label="온라인 강의">
+					                  		<option th:selected="${instructorInfoDto.instructorCategory} == '건강 심성'" value="건강 심성">건강 심성</option>
+					                		<option th:selected="${instructorInfoDto.instructorCategory} == '레저생활 스포츠'" value="레저생활 스포츠">레저생활 스포츠</option>
+					                  		<option th:selected="${instructorInfoDto.instructorCategory} == '생활문화예술'" value="생활문화예술" >생활문화예술</option>
+					                		<option th:selected="${instructorInfoDto.instructorCategory} == '문화예술향상'" value="문화예술향상">문화예술향상</option>	
+					                  		<option th:selected="${instructorInfoDto.instructorCategory} == '기능적 소양'" value="기능적 소양">기능적 소양</option>
+					                	</optgroup>	
+					              	<optgroup label="오프라인 강의">
+					                	<option th:selected="${instructorInfoDto.instructorCategory} == '공방'" value="공방">공방</option>
+					              	</optgroup>
+					            </select>
+					       <div class="col-3"></div>
+						</div>
+						<p class="input-msg" id="instructorMsg10"></p>
+          			
+						<div class="col-3 log-btn-area"><button type="button" id="instructorCategoryBtn" name="instructorCategoryBtn" class="log-btn log-btn-first">강의 종목 변경</button></div>
+          			</div>
+   			
+          			<div>
+          				<div class="input-area justify-content-center col-md-12">
+          					<div class="col-3 input-name"><p class="input-name-detail">이미지변경</p></div>
+          							<input type="file" id="instructorImageFile" name="instructorImageFile"  class="input col-9" size="32" />
+          					<div class="col-3 log-btn-area"></div>	
+         				</div>
+         				<p class="input-msg" id="instructorMsg11"></p>
+         				<div class="col-3 log-btn-area"><button type="button" id="instructorImageFileBtn" name="instructorImageFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>	          			
+          			</div>
+        		</div>
+      		</div>
+      		    <div style="display: none;"><input id="instructorId" name="instructorId" th:value="${instructorInfoDto.instructorId}"/></div> 
+      			<div style="display: none;"><input id="instructorPassword" name="instructorPassword"/></div>
+      			<div style="display: none;"><input id="instructorEmailCheck1" name="instructorEmailCheck1" class="input"/></div>
+		</div>
+	</section>	
+	
+<div style="height:100px"></div>
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+<script type="text/javascript" >
+
+
+$(document).ready(function()
+{
+	//정규표현식
+	var emptyCheck = /\s/g;
+	var pwdCheck = /^.*(?=^.{8,32}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+	var nicknameCheck =	/^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+	var emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	var phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/;
+	var dateCheck = /^(19[7-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+	var nowUserPasswordCheck = false;
+	var newUserPasswordCheck = false;
+	var userNicknameCheck = false;
+	var userEmailCheck = false;
+	var userEmailSendCheck = false;
+	var userEmailCodeCheck = false;
+	var userPhoneCheck = false;
+	const userImageFileCheck = $("#userImageFile")[0];
+	
+	
+	var nowInstructorPasswordCheck = false;
+	var newInstructorPasswordCheck = false;
+	var instructorNicknameCheck = false;
+	var instructorEmailCheck = false;
+	var instructorEmailSendCheck = false;
+	var instructorEmailCodeCheck = false;
+	var instructorPhoneCheck = false;
+	var instructorBankCheck = false;
+	var instructorAccountCheck = false;
+	var instructorCategoryCheck = false;
+	const instructorImageFileCheck = $("#instructorImageFile")[0];
+	
+	$('#nowUserPassword').blur(function()
+	{ 
+		if($.trim($("#nowUserPassword").val()).length <= 0)
+		{
+			$('#nowUserPassword').css({'border':'1px solid red'});
+			document.getElementById("userMsg1").innerHTML = "비밀번호를 입력해주세요.";
+			nowUserPasswordCheck = false;
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/info/nowuserpasswordcheck",
+			data : JSON.stringify
+			({	           
+				id:$('#userId').val(),
+				password:$('#nowUserPassword').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{	               
+					if($('#nowUserPassword').val() != '')
+					{
+						$('#nowUserPassword').css({'border':'1px solid #89dd18'});
+						document.getElementById("userMsg1").innerHTML = "";
+						nowUserPasswordCheck = true;   
+						return;
+					}	           	
+				}
+				else if(data == 400)
+				{
+					if($('#nowUserPassword').val()!='')
+					{
+						$('#nowUserPassword').css({'border':'1px solid red'});
+						document.getElementById("userMsg1").innerHTML = "비밀번호가 일치하지 않아요.";
+						nowUserPasswordCheck = false; 
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				$('#nowUserPassword').css({'border':'1px solid red'});
+				document.getElementById("userMsg1").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				nowUserPasswordCheck = false; 
+				return;
+			}
+		});		
+	});
+	
+	$('#newUserPassword').blur(function()
+	{ 
+		if($.trim($("#newUserPassword").val()).length <= 0)
+		{
+			$('#newUserPassword').css({'border':'1px solid red'});
+			document.getElementById("userMsg2").innerHTML = "비밀번호를 입력해 주세요.";
+			newUserPasswordCheck = false;
+			return;
+		}
+		if(!pwdCheck.test($("#newUserPassword").val()))
+		{
+			$('#newUserPassword').css({'border':'1px solid red'});
+			document.getElementById("userMsg2").innerHTML = "비밀번호는 숫자,영문,특수문자 포함해서 최소 8자 최대 32자까지 입력해주세요.";
+			newUserPasswordCheck = false;
+			return;
+		}
+
+		if($("#newUserPasswordCheck").val().length > 0 && $("#newUserPassword").val() != $("#newUserPasswordCheck").val())
+		{
+			$('#newUserPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("userMsg2").innerHTML = "";
+			document.getElementById("userMsg3").innerHTML = "비밀번호가 일치하지 않아요.";
+
+			newUserPasswordCheck = false;
+			return;	
+		}		
+
+		$('#newUserPassword').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg2").innerHTML = "";
+
+	});
+
+	//password2
+	$('#newUserPasswordCheck').blur(function()
+	{
+		if($.trim($("#newUserPasswordCheck").val()).length <= 0)
+		{
+			$('#newUserPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("userMsg3").innerHTML = "비밀번호를 입력해주세요.";
+			newUserPasswordCheck = false;
+			return;
+		}
+		
+		if(!pwdCheck.test($("#newUserPasswordCheck").val()))
+		{
+			$('#newUserPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("userMsg3").innerHTML = "비밀번호는 숫자,영문,특수문자 포함해서 최소 8자 최대 32자까지 입력해주세요.";
+			newUserPasswordCheck = false;
+			return;
+		}
+		
+		if($("#newUserPassword").val() != $("#newUserPasswordCheck").val())
+		{
+			$('#newUserPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("userMsg3").innerHTML = "비밀번호가 일치하지 않아요.";
+			newUserPasswordCheck = false;
+			return;	
+		}		
+
+		if($("#newUserPassword").val() == $("#newUserPasswordCheck").val())
+		{
+			$('#newUserPassword').css({'border':'1px solid #89dd18'});
+			$('#newUserPasswordCheck').css({'border':'1px solid #89dd18'});
+			document.getElementById("userMsg2").innerHTML = "";
+			document.getElementById("userMsg3").innerHTML = "";
+
+			$("#userPassword").val($("#newUserPassword").val());
+			newUserPasswordCheck = true;	
+			return;
+		}
+	});
+
+	
+	$("#userPasswordBtn").on("click", function()
+	{
+		if(confirm("비밀번호를 변경 하시겠어요?"))
+		{
+			if(nowUserPasswordCheck == false)
+			{
+				$('#nowUserPassword').css({'border':'1px solid red'});
+				document.getElementById("userMsg1").innerHTML = "비밀번호를 확인해 주세요.";
+				return;
+			}
+			
+			if(newUserPasswordCheck == false)
+			{
+				$('#newUserPassword').css({'border':'1px solid red'});
+				$('#newUserPasswordCheck').css({'border':'1px solid red'});
+				document.getElementById("userMsg2").innerHTML = "비밀번호를 확인해 주세요.";
+				document.getElementById("userMsg3").innerHTML = "비밀번호를 확인해 주세요.";
+				return;
+			}
+			userPasswordChange();
+		}
+	});
+	
+	
+	//nickname
+	$('#userNickname').blur(function()
+	{ 
+		if($.trim($("#userNickname").val()).length <= 0)
+		{
+			$('#userNickname').css({'border':'1px solid red'});
+			document.getElementById("userMsg4").innerHTML = "닉네임을 입력해 주세요.";
+			userNicknameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#userNickname").val()))
+		{
+			$('#userNickname').css({'border':'1px solid red'});
+			document.getElementById("userMsg4").innerHTML = "닉네임에 공백을 넣을 수 없어요.";
+			userNicknameCheck = false;
+			return;
+		}
+
+		if(!nicknameCheck.test($("#userNickname").val()))
+		{
+			$('#userNickname').css({'border':'1px solid red'});
+			document.getElementById("userMsg4").innerHTML = "닉네임 형식이 올바르지 않아요.";
+			userNicknameCheck = false;
+			return;
+		}
+
+		$('#userNickname').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg4").innerHTML = "";
+		userNicknameCheck = true;
+	});	
+	
+	
+	$("#userNicknameBtn").on("click", function()
+	{
+		if(confirm("닉네임을 변경 하시겠어요?"))
+		{
+			if(userNicknameCheck == false)
+			{
+				$('#userNickname').css({'border':'1px solid red'});
+				document.getElementById("userMsg4").innerHTML = "닉네임을 확인해 주세요.";
+				return;
+			}
+			userNicknameChange();
+		}		
+	});
+	
+	
+	//email
+	$('#userEmail').blur(function()
+	{ 
+		if($.trim($("#userEmail").val()).length <= 0)
+		{
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg5").innerHTML = "이메일을 입력해 주세요.";
+			userEmailCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#userEmail").val()))
+		{
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg5").innerHTML = "이메일에 공백을 넣을 수 없어요.";
+			userEmailCheck = false;
+			return;
+		}
+
+		if(!emailCheck.test($("#userEmail").val()))
+		{
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg5").innerHTML = "이메일 형식이 올바르지 않아요.";
+			userEmailCheck = false;
+			return;
+		}
+		
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/info/emailcheck",
+			data : JSON.stringify
+			({	           
+				email:$('#userEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					if($('#userEmail').val() != '')
+					{
+						$('#userEmail').css({'border':'1px solid #89dd18'});
+						document.getElementById("userMsg5").innerHTML = "";
+						userEmailCheck = true;  
+						return;
+					}	           	
+				}
+				else if(data == true)
+				{
+					if($('#userEmail').val() != '')
+					{
+						$('#userEmail').css({'border':'1px solid red'});
+						document.getElementById("userMsg5").innerHTML = "이메일이 중복돼요.";
+						userEmailCheck = false;
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				$('#userEmail').css({'border':'1px solid red'});
+				document.getElementById("userMsg5").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				userEmailCheck = false;
+				return;           
+			}
+		});
+	});	
+	
+	$("#userEmailBtn").on("click", function()
+	{
+		if(userEmailCheck == false)
+		{
+			$('#userEmail').css({'border':'1px solid red'});
+			document.getElementById("userMsg5").innerHTML = "올바른 이메일을 입력해주세요.";
+			return;
+		}
+
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/info/emailsend",
+			data : JSON.stringify
+			({	           
+				email:$('#userEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				alert("인증메일이 전송되었습니다.");
+				document.getElementById("userMsg5").innerHTML = "";
+				$('#userEmail').css({'border':'1px solid #89dd18'});				
+				$("#userEmail").attr("readonly",true);
+				
+				$("button").remove("#userEmailBtn");
+				$('#userDiv').css("display", "block");
+				$('#userEmailCheck1').val(data);
+				userEmailSendCheck = true;
+			},
+			error:function(xhr, status, error)
+			{
+				$('#userEmail').css({'border':'1px solid red'});
+				document.getElementById("userMsg6").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				return;
+			}
+		});
+	});
+
+	$("#userEmailCheckBtn").on("click", function()
+	{
+		if($("#userEmailCheck").val() != $("#userEmailCheck1").val())
+		{
+			$('#userEmailCheck').css({'border':'1px solid red'});
+			document.getElementById("userMsg6").innerHTML = "인증코드가 일치하지 않아요.";
+			return;	
+		}
+ 	
+		document.getElementById("userMsg6").innerHTML = "";
+		$('#userEmailCheck').css({'border':'1px solid #89dd18'});
+		$("#userEmailCheck").attr("readonly",true);
+		$("button").remove("#userEmailCheckBtn");
+		$('#userDiv2').css("display", "block");
+		userEmailCodeCheck = true;
+	});
+	
+	$("#userEmailChangeBtn").on("click", function()
+	{
+		if(confirm("이메일을 변경 하시겠어요?"))
+		{
+			userEmailChange();
+		}		
+	});
+	
+	//phone
+	$('#userPhone').blur(function()
+	{ 	
+		if($.trim($("#userPhone").val()).length <= 0)
+		{
+			$('#userPhone').css({'border':'1px solid red'});
+			document.getElementById("userMsg7").innerHTML = "연락처를 입력해 주세요";
+			userPhoneCheck = false;
+			return;
+		}		
+		if(!phoneCheck.test($("#userPhone").val()))
+		{
+			$('#userPhone').css({'border':'1px solid red'});
+			document.getElementById("userMsg7").innerHTML = "연락처 형식이 올바르지 않아요.";
+			userPhoneCheck = false;
+			return;
+		}
+
+		$('#userPhone').css({'border':'1px solid #89dd18'});
+		document.getElementById("userMsg7").innerHTML = "";
+		userPhoneCheck = true;
+	});
+	
+	$("#userPhoneBtn").on("click", function()
+	{
+		if(confirm("연락처를 변경 하시겠어요?"))
+		{
+			if(userPhoneCheck == false)
+			{
+				$('#userPhone').css({'border':'1px solid red'});
+				document.getElementById("userMsg7").innerHTML = "연락처를 확인해 주세요.";
+				return;
+			}
+			userPhoneChange();
+		}		
+	});
+	
+	
+	$("#userImageFileBtn").on("click", function()
+	{
+		if(confirm("이미지를 변경 하시겠어요?"))
+		{
+			if(userImageFile.files.length === 0)
+			{
+				$('#userImageFile').css({'border':'1px solid red'});
+				document.getElementById("userMsg8").innerHTML = "이미지를 업로드 해 주세요";
+			    return;
+			}
+			
+			var fileVal = $("#userImageFile").val();
+			
+		    if(fileVal != "")
+		    {
+		        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+		        //아래 확장자가 있는지 체크
+		        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+		        {
+		        	$('#userImageFile').css({'border':'1px solid red'});
+		        	document.getElementById("userMsg8").innerHTML = "jpg, jpeg, png 파일만 업로드 할 수 있어요.";
+		          	return;
+		        }
+		    }
+		    
+		    userImageFileChange();
+		}
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	$('#nowInstructorPassword').blur(function()
+	{ 
+		if($.trim($("#nowInstructorPassword").val()).length <= 0)
+		{
+			$('#nowInstructorPassword').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg1").innerHTML = "비밀번호를 입력해주세요.";
+			nowInstructorPasswordCheck = false;
+			return;
+		}
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/instructor/mypage/info/nowinstructorpasswordcheck",
+			data : JSON.stringify
+			({	           
+				id:$('#instructorId').val(),
+				password:$('#nowInstructorPassword').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{	               
+					if($('#nowInstructorPassword').val() != '')
+					{
+						$('#nowInstructorPassword').css({'border':'1px solid #89dd18'});
+						document.getElementById("instructorMsg1").innerHTML = "";
+						nowInstructorPasswordCheck = true;   
+						return;
+					}	           	
+				}
+				else if(data == 400)
+				{
+					if($('#nowInstructorPassword').val()!='')
+					{
+						$('#nowInstructorPassword').css({'border':'1px solid red'});
+						document.getElementById("instructorMsg1").innerHTML = "비밀번호가 일치하지 않아요.";
+						nowInstructorPasswordCheck = false; 
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				$('#nowInstructorPassword').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg1").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				nowInstructorPasswordCheck = false; 
+				return;
+			}
+		});		
+	});
+	
+	$('#newInstructorPassword').blur(function()
+	{ 
+		if($.trim($("#newInstructorPassword").val()).length <= 0)
+		{
+			$('#newInstructorPassword').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "비밀번호를 입력해 주세요.";
+			newInstructorPasswordCheck = false;
+			return;
+		}
+		if(!pwdCheck.test($("#newInstructorPassword").val()))
+		{
+			$('#newInstructorPassword').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "비밀번호는 숫자,영문,특수문자 포함해서 최소 8자 최대 32자까지 입력해주세요.";
+			newInstructorPasswordCheck = false;
+			return;
+		}
+
+		if($("#newInstructorPasswordCheck").val().length > 0 && $("#newInstructorPassword").val() != $("#newInstructorPasswordCheck").val())
+		{
+			$('#newinstructorPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg2").innerHTML = "";
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호가 일치하지 않아요.";
+
+			newInstructorPasswordCheck = false;
+			return;	
+		}		
+
+		$('#newInstructorPassword').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg2").innerHTML = "";
+
+	});
+
+	//password2
+	$('#newInstructorPasswordCheck').blur(function()
+	{
+		if($.trim($("#newInstructorPasswordCheck").val()).length <= 0)
+		{
+			$('#newInstructorPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호를 입력해주세요.";
+			newInstructorPasswordCheck = false;
+			return;
+		}
+		
+		if(!pwdCheck.test($("#newInstructorPasswordCheck").val()))
+		{
+			$('#newInstructorPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호는 숫자,영문,특수문자 포함해서 최소 8자 최대 32자까지 입력해주세요.";
+			newInstructorPasswordCheck = false;
+			return;
+		}
+		
+		if($("#newInstructorPassword").val() != $("#newInstructorPasswordCheck").val())
+		{
+			$('#newInstructorPasswordCheck').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg3").innerHTML = "비밀번호가 일치하지 않아요.";
+			newInstructorPasswordCheck = false;
+			return;	
+		}		
+
+		if($("#newInstructorPassword").val() == $("#newInstructorPasswordCheck").val())
+		{
+			$('#newInstructorPassword').css({'border':'1px solid #89dd18'});
+			$('#newInstructorPasswordCheck').css({'border':'1px solid #89dd18'});
+			document.getElementById("instructorMsg2").innerHTML = "";
+			document.getElementById("instructorMsg3").innerHTML = "";
+
+			$("#instructorPassword").val($("#newInstructorPassword").val());
+			newInstructorPasswordCheck = true;	
+			return;
+		}
+	});
+
+	
+	$("#instructorPasswordBtn").on("click", function()
+	{
+		if(confirm("비밀번호를 변경 하시겠어요?"))
+		{
+			if(nowInstructorPasswordCheck == false)
+			{
+				$('#nowInstructorPassword').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg1").innerHTML = "비밀번호를 확인해 주세요.";
+				return;
+			}
+			
+			if(newInstructorPasswordCheck == false)
+			{
+				$('#newInstructorPassword').css({'border':'1px solid red'});
+				$('#newInstructorPasswordCheck').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg2").innerHTML = "비밀번호를 확인해 주세요.";
+				document.getElementById("instructorMsg3").innerHTML = "비밀번호를 확인해 주세요.";
+				return;
+			}
+			instructorPasswordChange();
+		}
+	});
+	
+	
+	//nickname
+	$('#instructorNickname').blur(function()
+	{ 
+		if($.trim($("#instructorNickname").val()).length <= 0)
+		{
+			$('#instructorNickname').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg4").innerHTML = "닉네임을 입력해 주세요.";
+			instructorNicknameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#instructorNickname").val()))
+		{
+			$('#instructorNickname').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg4").innerHTML = "닉네임에 공백을 넣을 수 없어요.";
+			instructorNicknameCheck = false;
+			return;
+		}
+
+		if(!nicknameCheck.test($("#instructorNickname").val()))
+		{
+			$('#instructorNickname').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg4").innerHTML = "닉네임 형식이 올바르지 않아요.";
+			instructorNicknameCheck = false;
+			return;
+		}
+
+		$('#instructorNickname').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg4").innerHTML = "";
+		instructorNicknameCheck = true;
+	});	
+	
+	
+	$("#instructorNicknameBtn").on("click", function()
+	{
+		if(confirm("닉네임을 변경 하시겠어요?"))
+		{
+			if(instructorNicknameCheck == false)
+			{
+				$('#instructorNickname').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg4").innerHTML = "닉네임을 확인해 주세요.";
+				return;
+			}
+			instructorNicknameChange();
+		}		
+	});
+	
+	
+	//email
+	$('#instructorEmail').blur(function()
+	{ 
+		if($.trim($("#instructorEmail").val()).length <= 0)
+		{
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "이메일을 입력해 주세요.";
+			instructorEmailCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#instructorEmail").val()))
+		{
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "이메일에 공백을 넣을 수 없어요.";
+			instructorEmailCheck = false;
+			return;
+		}
+
+		if(!emailCheck.test($("#instructorEmail").val()))
+		{
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "이메일 형식이 올바르지 않아요.";
+			instructorEmailCheck = false;
+			return;
+		}
+		
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/instructor/mypage/info/emailcheck",
+			data : JSON.stringify
+			({	           
+				email:$('#instructorEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == false)
+				{	               
+					if($('#instructorEmail').val() != '')
+					{
+						$('#instructorEmail').css({'border':'1px solid #89dd18'});
+						document.getElementById("instructorMsg5").innerHTML = "";
+						instructorEmailCheck = true;  
+						return;
+					}	           	
+				}
+				else if(data == true)
+				{
+					if($('#instructorEmail').val() != '')
+					{
+						$('#instructorEmail').css({'border':'1px solid red'});
+						document.getElementById("instructorMsg5").innerHTML = "이메일이 중복돼요.";
+						instructorEmailCheck = false;
+						return;                 
+					}	
+	       	    }
+			},
+			error:function(xhr, status, error)
+			{
+				$('#instructorEmail').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg5").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				instructorEmailCheck = false;
+				return;           
+			}
+		});
+	});	
+	
+	$("#instructorEmailBtn").on("click", function()
+	{
+		if(instructorEmailCheck == false)
+		{
+			$('#instructorEmail').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg5").innerHTML = "올바른 이메일을 입력해주세요.";
+			return;
+		}
+
+		$.ajax
+		({
+			type:"POST",
+			url:"/instructor/mypage/info/emailsend",
+			data : JSON.stringify
+			({	           
+				email:$('#instructorEmail').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				alert("인증메일이 전송되었습니다.");
+				document.getElementById("instructorMsg5").innerHTML = "";
+				$('#instructorEmail').css({'border':'1px solid #89dd18'});				
+				$("#instructorEmail").attr("readonly",true);
+				
+				$("button").remove("#instructorEmailBtn");
+				$('#instructorDiv').css("display", "block");
+				$('#instructorEmailCheck1').val(data);
+				instructorEmailSendCheck = true;
+			},
+			error:function(xhr, status, error)
+			{
+				$('#instructorEmail').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg6").innerHTML = "오류가 발생했습니다. 다시 시도해주세요.";
+				return;
+			}
+		});
+	});
+
+	$("#instructorEmailCheckBtn").on("click", function()
+	{
+		if($("#instructorEmailCheck").val() != $("#instructorEmailCheck1").val())
+		{
+			$('#instructorEmailCheck').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg6").innerHTML = "인증코드가 일치하지 않아요.";
+			return;	
+		}
+ 	
+		document.getElementById("instructorMsg6").innerHTML = "";
+		$('#instructorEmailCheck').css({'border':'1px solid #89dd18'});
+		$("#instructorEmailCheck").attr("readonly",true);
+		$("button").remove("#instructorEmailCheckBtn");
+		$('#instructorDiv2').css("display", "block");
+		instructorEmailCodeCheck = true;
+	});
+	
+	$("#instructorEmailChangeBtn").on("click", function()
+	{
+		if(confirm("이메일을 변경 하시겠어요?"))
+		{
+			instructorEmailChange();
+		}		
+	});
+	
+	//phone
+	$('#instructorPhone').blur(function()
+	{ 	
+		if($.trim($("#instructorPhone").val()).length <= 0)
+		{
+			$('#instructorPhone').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg7").innerHTML = "연락처를 입력해 주세요.";
+			instructorPhoneCheck = false;
+			return;
+		}		
+		if(!phoneCheck.test($("#instructorPhone").val()))
+		{
+			$('#instructorPhone').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg7").innerHTML = "연락처 형식이 올바르지 않아요.";
+			instructorPhoneCheck = false;
+			return;
+		}
+
+		$('#instructorPhone').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg7").innerHTML = "";
+		instructorPhoneCheck = true;
+	});
+	
+	$("#instructorPhoneBtn").on("click", function()
+	{
+		if(confirm("연락처를 변경 하시겠어요?"))
+		{
+			if(instructorPhoneCheck == false)
+			{
+				$('#instructorPhone').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg7").innerHTML = "연락처를 확인해 주세요.";
+				return;
+			}
+			instructorPhoneChange();
+		}		
+	});
+	
+	$('#instructorBank').blur(function()
+	{ 	
+		if($.trim($("#instructorBank").val()).length <= 0)
+		{
+			$('#instructorBank').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg8").innerHTML = "은행명을 입력해 주세요.";
+			instructorBankCheck = false;
+			return;
+		}		
+
+		$('#instructorBank').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg8").innerHTML = "";
+		instructorBankCheck = true;
+	});
+	
+	$('#instructorAccount').blur(function()
+	{ 	
+		if($.trim($("#instructorAccount").val()).length <= 0)
+		{
+			$('#instructorAccount').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg9").innerHTML = "계좌번호를 입력해 주세요.";
+			instructorAccountCheck = false;
+			return;
+		}		
+		
+		$('#instructorAccount').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg9").innerHTML = "";
+		instructorAccountCheck = true;
+	});
+	
+	$("#instructorBankAccountBtn").on("click", function()
+	{
+		if(confirm("계좌번호를 변경 하시겠어요?"))
+		{
+			if(instructorBankCheck == false)
+			{
+				$('#instructorBank').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg8").innerHTML = "은행명을 확인해 주세요.";
+				return;
+			}
+			
+			if(instructorAccountCheck == false)
+			{
+				$('#instructorAccount').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg9").innerHTML = "계좌번호를 확인해 주세요.";
+				return;
+			}
+			
+			instructorBankAccountChange();
+		}		
+	});
+	
+	$('#instructorCategory').blur(function()
+	{ 	
+		if($.trim($("#instructorCategory").val()).length <= 0)
+		{
+			$('#instructorCategory').css({'border':'1px solid red'});
+			document.getElementById("instructorMsg10").innerHTML = "카테고리를 선택 해 주세요.";
+			instructorCategoryCheck = false;
+			return;
+		}		
+		
+		$('#instructorCategory').css({'border':'1px solid #89dd18'});
+		document.getElementById("instructorMsg10").innerHTML = "";
+		instructorCategoryCheck = true;
+	});
+	
+	$("#instructorCategoryBtn").on("click", function()
+	{
+		if(confirm("카테고리를 변경 하시겠어요?"))
+		{
+			if(instructorCategoryCheck == false)
+			{
+				$('#instructorCategory').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg10").innerHTML = "카테고리를 확인 해 주세요.";
+				return;
+			}
+			instructorCategoryChange();
+		}		
+	});
+	
+	
+	$("#instructorImageFileBtn").on("click", function()
+	{
+		if(confirm("이미지를 변경 하시겠어요?"))
+		{
+			if(instructorImageFile.files.length === 0)
+			{
+				$('#instructorImageFile').css({'border':'1px solid red'});
+				document.getElementById("instructorMsg11").innerHTML = "이미지를 업로드 해 주세요";
+			    return;
+			}
+			
+			var fileVal = $("#instructorImageFile").val();
+			
+		    if(fileVal != "")
+		    {
+		        var ext = fileVal.split('.').pop().toLowerCase(); //확장자분리
+		        //아래 확장자가 있는지 체크
+		        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
+		        {
+		        	$('#instructorImageFile').css({'border':'1px solid red'});
+		        	document.getElementById("instructorMsg11").innerHTML = "jpg, jpeg, png 파일만 업로드 할 수 있어요.";
+		          	return;
+		        }
+		    }
+		    
+		    instructorImageFileChange();
+		}
+	});
+});
+
+
+
+
+
+
+
+
+
+
+
+function userPasswordChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/userpassword",
+		data : JSON.stringify
+		({
+			id:$("#userId").val(),
+			password:$("#userPassword").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function userNicknameChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/usernickname",
+		data : JSON.stringify
+		({
+			id:$("#userId").val(),
+			nickname:$("#userNickname").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function userEmailChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/useremail",
+		data : JSON.stringify
+		({
+			id:$("#userId").val(),
+			email:$("#userEmail").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function userPhoneChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/userphone",
+		data : JSON.stringify
+		({
+			id:$("#userId").val(),
+			phone:$("#userPhone").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+}
+
+
+function userImageFileChange()
+{
+	var userImageFile = $("#userImageFile")[0].files[0];
+	var formData = new FormData();
+    formData.append('userImageFile', userImageFile);
+    
+	var userId = 
+	{
+		userId:$("#userId").val()
+	}
+	
+	formData.append("userId", new Blob([JSON.stringify(userId)], {type: "application/json"}));
+
+	
+	$.ajax
+	({
+		type:"POST",
+		url:"/user/mypage/info/userfile",
+		data: formData,
+		enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        cache: false,
+		datatype:"JSON",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+
+	
+}
+
+
+
+function instructorPasswordChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorpassword",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			password:$("#instructorPassword").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function instructorNicknameChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructornickname",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			nickname:$("#instructorNickname").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function instructorEmailChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructoremail",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			email:$("#instructorEmail").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function instructorPhoneChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorphone",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			phone:$("#instructorPhone").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+}
+
+function instructorBankAccountChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorbankaccount",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			bank:$("#instructorBank").val(),
+			account:$("#instructorAccount").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+}
+
+
+function instructorCategoryChange()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorcategory",
+		data : JSON.stringify
+		({
+			id:$("#instructorId").val(),
+			category:$("#instructorCategory").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+}
+
+
+function instructorImageFileChange()
+{
+	var instructorImageFile = $("#instructorImageFile")[0].files[0];
+	var formData = new FormData();
+    formData.append('instructorImageFile', instructorImageFile);
+    
+	var instructorId = 
+	{
+		instructorId:$("#instructorId").val()
+	}
+	
+	formData.append("instructorId", new Blob([JSON.stringify(instructorId)], {type: "application/json"}));
+
+	
+	$.ajax
+	({
+		type:"POST",
+		url:"/instructor/mypage/info/instructorfile",
+		data: formData,
+		enctype: 'multipart/form-data',
+        contentType: false,
+        processData: false,
+        cache: false,
+		datatype:"JSON",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("변경이 완료 되었습니다.");
+			document.location.href = document.location.href;
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+
+}
+</script>
+</html>

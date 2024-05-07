@@ -15,7 +15,6 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
 import com.sist.nbgb.enums.Role;
-import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.UserRepository;
 
@@ -71,7 +70,6 @@ public class SignupService
 				.userPoint((long)0)
 				.userProvider(Provider.LOCAL)
 				.Authority(Role.ROLE_USER)
-				.userStatus(Status.Y)
 				.userRegdate(LocalDateTime.now().withNano(0))
 				.build();
 		
@@ -96,7 +94,6 @@ public class SignupService
 				.instructorBank(instructorsDto.getInstructorBank())
 				.instructorAccount(instructorsDto.getInstructorAccount())
 				.Authority(Role.ROLE_INSTRUCTOR)
-				.instructorStatus(Status.Y)
 				.instructorRegdate(LocalDateTime.now())
 				.instructorCategory(instructorsDto.getInstructorCategory())
 				.build();

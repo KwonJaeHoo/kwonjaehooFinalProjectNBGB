@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.sist.nbgb.enums.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -68,6 +70,6 @@ public class OnlinePaymentApprove
 	
 	@Column(columnDefinition = "CHAR(1)")
 	@Comment("상태(시청전:N,시청후:Y)")
-	private String status;
+	private Status status;
 	
 }

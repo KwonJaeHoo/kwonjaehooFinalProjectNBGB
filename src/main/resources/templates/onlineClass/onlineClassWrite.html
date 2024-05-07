@@ -47,7 +47,7 @@ $(document).ready(function(){
 		var addBox =
 			`<tr class="nemo${i}">
 			<td rowspan="2" style="width:50px;text-align:center;">${i}강</td>
-			<td><input type="file" class="filebox" id="onlineVideo${i}" name="onlineVideo${i}" /></td>
+			<td><input type="file" class="filebox filebox2" id="files${i}" name="files${i}" /></td>
 			</tr>
 			<tr id="new${i}" class="nemo${i}">
 			<td><textarea rows="5" cols="90" id="onlineVideoContent${i}" name="onlineVideoContent${i}" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
@@ -79,14 +79,17 @@ $(document).ready(function(){
 	
 		i--;
 	});
-	
+	    
    //글작성
    $("#btnSubmit").on("click", function(){
+	   $("#btnSubmit").prop("disabled", true);
+	   
 		if($.trim($("#onlineClassTitle").val()).length <= 0)
 		{
 			$("#onlineClassTitle").val("");
 			$("#onlineClassTitle").focus();
 			alert("제목을 입력하세요.");
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
@@ -95,6 +98,7 @@ $(document).ready(function(){
 			$("#onlineCategory").val("");
 			$("#onlineCategory").focus();
 			alert("카테고리를 선택하세요.");
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
@@ -102,6 +106,7 @@ $(document).ready(function(){
 		{
 			$("#onlineCategory").focus();
 			alert("카테고리를 선택하세요.");
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
@@ -110,6 +115,7 @@ $(document).ready(function(){
 			$("#onlineClassPeriod").val("");
 			$("#onlineClassPeriod").focus();
 			alert("수강 기간를 입력하세요.");
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
@@ -118,6 +124,7 @@ $(document).ready(function(){
 			alert("숫자만 입력하세요.");
 			$("#onlineClassPeriod").val("");
 			$("#onlineClassPeriod").focus();
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
@@ -126,6 +133,7 @@ $(document).ready(function(){
 			$("#onlineClassPrice").val("");
 			$("#onlineClassPrice").focus();
 			alert("가격을 입력하세요.");
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
@@ -134,6 +142,7 @@ $(document).ready(function(){
 			alert("숫자만 입력하세요.");
 			$("#onlineClassPrice").val("");
 			$("#onlineClassPrice").focus();
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 				
@@ -144,12 +153,14 @@ $(document).ready(function(){
 			$("#editor").val("");
 			$("#editor").focus();
 			alert("내용을 입력하세요.");
+			$("#btnSubmit").prop("disabled", false);
 			return;
 		}
 		
 		if($('#onlineFile').val() == "")
 		{
 			alert("다음 페이지에서 대표사진을 등록해주세요.");
+			$("#btnSubmit").prop("disabled", false);
 		    return;
 		}
 		
@@ -162,19 +173,57 @@ $(document).ready(function(){
 	        if($.inArray(ext, ['jpg','jpeg','png']) == -1) 
 	        {
 	        	alert("대표 이미지는 jpg, jpeg, png 파일만 업로드 할 수 있습니다.");
+	        	$("#btnSubmit").prop("disabled", false);
 	          	return;
 	        }
 	    }
 	    
-	    //대표 이미지 첨부
-	    var onlineFile =  $("#onlineFile")[0].files[0];
 	    var formData = new FormData();
 	    
+	    //대표 이미지 첨부
+	    var onlineFile =  $("#onlineFile")[0].files[0];
 	    formData.append('onlineFile', onlineFile);
+	    
+	    //동영상 첨부
+		for (var z = 1; z <= 10; z++) {
+		    var fileInput = document.getElementById("files" + z);
+		    if (fileInput) {
+		        var files = fileInput.files;
+		        for (var i = 0; i < files.length; i++) {
+		            formData.append('files', files[i]);
+		            console.log("files:"+files);
+		        }
+		    }
+		}
+
+		var fileContentList = [];
+	    fileContentList.push($("#onlineVideoContent1").val());
+	    for (var z = 2; z <= 10; z++) {
+	 	   if($("#onlineVideoContent"+z).val() != null) {
+			   var contentValue = $("#onlineVideoContent" + z).val();
+	 	       if (contentValue !== null) {
+		           fileContentList.push(contentValue);
+		       }
+		   }
+	   }
+	    
+	   fileContentList.forEach(function(content, index) {
+	       formData.append('fileContent', content);
+	   });
+	   
+	   /*
+	   var endIdx = 0;
+	   for (var pair of formData.entries()) {
+	       endIdx++; 
+		   console.log(pair[0] + ': ' + pair[1]);  
+	    }
+	   
+	   console.log("갯수:"+fileContentList.length);
+	   */
 	    
 	    var onlinePostDto = {
 	    		onlineClassTitle:$("#onlineClassTitle").val(),
-	    		instructorId:'inst10',
+	    		instructorId:$("#instId").val(),
 	    		onlineClassLimitPeople:$("#onlineClassLimitPeople").val(),
 	    		onlineCategoryId:$("#onlineCategory").val(),
 	    		onlineClassPrice:$("#onlineClassPrice").val(),
@@ -201,6 +250,7 @@ $(document).ready(function(){
 	    	},
 	    	error:function(xhr, status, error){
 	    		alert("오류가 발생했습니다.");
+	    		$("#btnSubmit").prop("disabled", false);
 	    	}
 	    });
 		
@@ -226,12 +276,13 @@ function fn_number(value)
     
 	<h2 class="mb-3" style="text-align:center;">온라인 클래스 등록 신청</h2>
 	<form id="onlineForm" name="onlineForm" method="POST" onsubmit="return false;" enctype="multipart/form-data">
+	<input type="hidden" th:id="instId" th:value=${inst.instructorId}/>
 		<div id="page1" class="mb-2">
 		<h6 style="float:right">1/2</h6>
 			<table class="tb mb-2" border="1">
 			<tr>
 				<td class="tt" style="border-radius: 10px 0 0 0;">제목</td>
-				<td><input type="text" name="onlineClassTitle" id="onlineClassTitle" placeholder=" 제목을 입력하세요" /></td>
+				<td><input type="text" class="pl-1" name="onlineClassTitle" id="onlineClassTitle" placeholder="제목을 입력하세요" /></td>
 			</tr>
 			<tr>
 				<td class="tt">카테고리</td>
@@ -247,15 +298,15 @@ function fn_number(value)
 			</tr>
 			<tr>
 				<td class="tt">강사명</td>
-				<td><input type="text" id="instructorNickname" name="instructorNickname" placeholder=" 강사명" value=" 회원가입때한거예명" readonly></td>
+				<td><input type="text" class="pl-1" id="instructorNickname" name="instructorNickname" placeholder="강사명" value=" 회원가입때한거예명" th:value="${inst.instructorNickname}" readonly></td>
 			</tr>
 			<tr>
 				<td class="tt">수강 기간</td>
-				<td><input type="text" id="onlineClassPeriod" name="onlineClassPeriod" placeholder=" 수강 기간을 입력하세요" style="width:160px">(일)</td>
+				<td><input type="text" class="pl-1" id="onlineClassPeriod" name="onlineClassPeriod" placeholder="수강 기간을 입력하세요" style="width:160px">(일)</td>
 			</tr>
 			<tr>
 				<td class="tt" style="border-radius:0 0 0 10px;">가격</td>
-				<td><input type="text" id="onlineClassPrice" name="onlineClassPrice" placeholder=" 가격을 입력하세요" style="width:160px">(원)</td>
+				<td><input type="text" class="pl-1" id="onlineClassPrice" name="onlineClassPrice" placeholder="가격을 입력하세요" style="width:160px">(원)</td>
 			</tr>
 			</table>
 			
@@ -277,16 +328,16 @@ function fn_number(value)
 		</table>
 	
 	<div class="d-flex justify-content-start mt-4">
-		<h4>커리큘럼</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">파일명은 강의 제목으로 등록해주세요. (최대 10개)</p>
+		<h4>커리큘럼</h4> &nbsp;&nbsp; <p class="text-align-center pt-2">파일명은 강의 순서대로 강의 제목과 동일하게 등록해주세요. (최대 10개)</p>
 	</div>
-	
+
 	<table class="tb" border="1">
 		<tr>
 			<td rowspan="2" style="width:50px;text-align:center;">1강</td>
-			<td><input type="file" class="filebox" id="onlineVideo1" name="onlineVideo1"/></td>
+			<td><input type="file" class="filebox filebox2" id="files1" name="files1"/></td>
 		</tr>
 		<tr id="new">
-			<td><textarea id="onlineVideoContent1" name="onlineVideoContent1" rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
+			<td><textarea id="onlineVideoContent1" name="onlineVideoContent1" rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요." maxlength="100"></textarea></td>
 		</tr>
 		<!-- 이 위치에 추가/삭제되도록 -->
 	</table>
@@ -330,48 +381,6 @@ function fn_number(value)
 <div th:insert="import/bottomImport.html :: bottom-import"></div>
 <div th:replace="import/jsImport.html :: js-import"></div>
 <script>
-/*
-$(document).ready(function() {
-	var i=2;
-	
-	$("#fileAdd").click(function() {
-		var addBox =
-			`<tr class="nemo${i}">
-			<td rowspan="2" style="width:50px;text-align:center;">${i}강</td>
-			<td><input type="file" class="filebox" id="onlineVideo${i}" name="onlineVideo${i}" /></td>
-			</tr>
-			<tr id="new${i}" class="nemo${i}">
-			<td><textarea rows="5" cols="90" id="onlineVideoContent${i}" name="onlineVideoContent${i}" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
-			</tr>`
-    		
-			$('#fileDel').css('display', 'block');
-			
-			if(i==2){
-				$('#new').after(addBox);
-			} else if(i==11){
-				alert("강의는 최대 10개까지 등록 가능합니다.");
-				return;
-			} else {
-				$('#new'+(i-1)).after(addBox);
-			}
-	   		
-			i++;
-	  });
-
-	$("#fileDel").click(function(){
-		if(i==2){
-			$('#new').remove();
-		} else if(i==3){
-			$('.nemo'+(i-1)).remove();
-			$('#fileDel').css('display', 'none');
-		} else {
-			$('.nemo'+(i-1)).remove();
-		}
-	
-		i--;
-	}); 
-});*/
-
 //에디터
 function MyCustomUploadAdapterPlugin(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
@@ -397,6 +406,8 @@ function post(){
 	
 	console.log(editor_data);
 }
+
+
 </script>
 </body>
 </html>

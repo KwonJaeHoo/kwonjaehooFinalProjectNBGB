@@ -1,18 +1,26 @@
 package com.sist.nbgb.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-import com.sist.nbgb.dto.OnlineClassLogDTO;
-import com.sist.nbgb.dto.OnlineClassLogIdDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+
+import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassLog;
 import com.sist.nbgb.entity.OnlineClassLogId;
-
-
+import com.sist.nbgb.entity.User;
 
 public interface OnlineClassLogRepository extends JpaRepository<OnlineClassLog, OnlineClassLogId> {
 	//강의 선택 회차 로그 유무 조회
-	//OnlineClassLog findByOnlineClassLogId(OnlineClassLogIdDTO dto);
+	//List<OnlineClassLog> findByOnlineClassLogId_UserIdAndOnlineClassLogId_OnlineClassFileId_onlineClassId(@Param("userId") String userId, @Param("onlineClassId") Long onlineClassId);
 	
-	//강의 선택 회차 첫번째 로그
-	//OnlineClassLog save(OnlineClassLogDTO dto);
+	//강의 선택 회차 첫번째 로그 저장
+	@SuppressWarnings("unchecked")
+	OnlineClassLog save(OnlineClassLog onlineClassLog);
+	
+	//강의 선택 회차 로그 조회
+	OnlineClassLog findByOnlineClassLogId(OnlineClassLogId onlineClassLogId);
+	
+	//강의 선택 회차 로그 유무
+	boolean countByOnlineClassLogId(OnlineClassLogId onlineClassLogId);
 }

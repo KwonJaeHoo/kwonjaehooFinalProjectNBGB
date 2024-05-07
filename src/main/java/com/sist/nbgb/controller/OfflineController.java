@@ -494,20 +494,20 @@ public class OfflineController
 					}
 					else
 					{
-						System.out.println(user.get().getUserStatus());
-						
-						if(user.get().getUserStatus().equals(Status.Y))
-						{
+//						System.out.println(user.get().getUserStatus());
+//						
+//						if(user.get().getUserStatus().equals(Status.Y))
+//						{
 							model.addAttribute("user", user.get());
 							model.addAttribute("offlineClass", new OfflineResponse(offlineClass));
 							
 							return "/offline/offlineReserve";
-						}
-						else
-						{
-							System.out.println("상태 이상");
-							return "/offline/error";
-						}
+//						}
+//						else
+//						{
+//							System.out.println("상태 이상");
+//							return "/offline/error";
+//						}
 					}
 				}
 			}

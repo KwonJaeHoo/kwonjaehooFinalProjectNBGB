@@ -26,10 +26,10 @@
 						<ul class="list-unstyled">
 
 						<li><a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
-							th:href="@{/user/mypage/{id} (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a>
+							th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a>
 						</li> 
 						<li><a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}"
-							th:href="@{/instructor/mypage/{id} (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a> 
+							th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a> 
 						</li>
 							<li><a href="/logout">로그아웃</a></li>
 						</ul>
@@ -69,7 +69,6 @@
 						<div class="block-23 mb-3">
 							<ul class="list-unstyled">
 								<li><a href="/reference/FAQ">자주 묻는 질문</a></li>
-								<li><a href="/reference/referenceList">문의 게시판</a></li>
 								<li><a href="/reference/referenceWrite">문의하기</a></li>
 							</ul>
 						</div>

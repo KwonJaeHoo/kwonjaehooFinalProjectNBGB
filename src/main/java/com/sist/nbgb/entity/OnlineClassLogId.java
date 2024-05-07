@@ -22,5 +22,5 @@ public class OnlineClassLogId implements Serializable
 	
 	private String userId;
 
-	private OnlineClassFileId OnlineClassFileId;
+	private OnlineClassFileId onlineClassFileId;
 }

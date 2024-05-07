@@ -1,5 +1,6 @@
 package com.sist.nbgb.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,7 +21,5 @@ public interface UserRepository extends JpaRepository<User, String>
 	Optional<User> findByUserId(String userId);
 
 	User findFirstByUserId(String userId);
-	
-	Optional<User> findById(String userId);
+	List<User> findAllByUserId(String userId);
 }
-

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
 import com.sist.nbgb.enums.Role;
-import com.sist.nbgb.enums.Status;
 
 import lombok.Getter;
 
@@ -34,8 +33,6 @@ public class UserResponse
 	
 	private Role Authority;
 	
-	private Status userStatus;
-	
 	private LocalDateTime userRegdate;
 	
 	public UserResponse(User user)
@@ -61,8 +58,6 @@ public class UserResponse
 		this.userProvider = user.getUserProvider();
 		
 		this.Authority = user.getAuthority();
-		
-		this.userStatus = user.getUserStatus();
 		
 		this.userRegdate = user.getUserRegdate();
 	}

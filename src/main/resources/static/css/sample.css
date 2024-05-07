@@ -1,0 +1,149 @@
+.list-area{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width:80%;
+    margin:0 auto;
+}
+
+/*사이드메뉴*/
+.side-menu{
+    width:20% !important;
+    margin-top: 2em;
+    border: 2px solid #88dd1879;
+    border-radius: 1rem;
+    padding:1rem;
+    justify-content: start;
+    height:50%;
+}
+    .side-menu > h3 {
+        /*-webkit-text-stroke: 1px #88dd18b3;*/
+        color:#88dd18b3;
+        font-size: x-large;
+    }
+    .side-menu > ul{
+        padding-inline-start: 1em;
+        list-style: none;
+        font-weight: 600;
+    }
+    .side-menu >ul > li, .side-menu > ul > ol > li{
+        margin-bottom:0.5rem;
+    }
+    .side-menu > ul > ol{
+        padding-inline-start: 1em;
+        list-style:none;
+        color:rgb(178, 178, 178);
+        margin-bottom:1rem;
+    }
+    .side-menu > ul > ol > li > a{
+        color:gray !important;
+    }
+    .side-menu > ul > ol > li > a:hover{
+        color:#89dd18 !important;
+    }
+
+.menu-item {
+    font-weight: 700;
+    padding-inline-start: 0;
+}
+    .menu-item > a:hover {
+        color: #477500 !important;
+    }
+    .menu-item > .active {
+        color: #477500 !important;
+    }
+    .menu-item > a > span{
+        color:inherit;
+    }
+
+    
+/*리스트*/    
+.list-container{
+    width:80% !important;
+    margin:2em 2em 0 2em;
+    justify-content: start;
+}
+
+.list-container-second{
+    width:80% !important;
+    margin:2em auto 0 auto;
+    justify-content: center;
+}
+
+.list-section, .paging-area{
+    width:95%;
+    justify-content: center;
+    margin: 0 auto;
+    padding:0;
+}
+.list-section-second{
+    width:100%;
+    justify-content: center;
+    margin: 0 auto;
+    padding:0;
+}
+
+.list-title{
+    align-items: center;
+    justify-content: center;
+    height:3rem;
+    border-bottom: 4px solid #88dd1879;
+    background-color: #88dd1879;
+    border-radius: 2rem;
+    font-weight: 600;
+    color: white;
+    width:100%;
+    margin:0 auto;
+}
+.list-item{
+    height: 4rem;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    margin:0 auto;
+}
+    .list-item-title{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+.list-title-second{
+    align-items: center;
+    justify-content: center;
+    height:3rem;
+    border: 2px solid #88dd1879;
+    border-radius: 2rem;
+    font-weight: 600;
+    color: rgba(88, 88, 88, 0.748);
+}
+
+/*사용자정보*/
+.info-section{
+    width:90% !important;
+    margin:0 auto 0 auto;
+    justify-content: start;
+    /*border:3px solid #88dd1879;*/
+    height: 100%;
+    border-radius: 2rem;
+    box-shadow: 1px 1px 3px 1px #dadce0;
+}
+    .info-section > div {
+        padding:2rem;
+    }
+
+.info-detail{
+    width: 65% !important;
+}
+.info-picture{
+    width:35% !important;
+    padding:1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    .info-picture > img {
+        width:100%;
+        height:250px;
+    }
