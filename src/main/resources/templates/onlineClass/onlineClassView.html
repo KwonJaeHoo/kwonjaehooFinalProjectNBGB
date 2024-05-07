@@ -145,7 +145,7 @@ var formData = new FormData();
 
             <div class="d-flex justify-content-between">
               <div class="d-flex justify-content-start">
-                <button th:if="${payStatus} == 'Y'" class="box"><span class="icon-play" style="color:white;"></span> &nbsp; 수강하기</button>
+                <button th:if="${payStatus} == 'Y'" class="box" th:onclick="|location.href='@{/onlinePlayList(classId=${onlineClass.onlineClassId})}'|"><span class="icon-play" style="color:white;"></span> &nbsp; 수강하기</button>
                 <button th:if="${payStatus} == 'N'" class="box" id="btnPay">지금 바로 시작하기</button>
                 <!--강의 들으러 가기-->
                 <h6 class="ml-3 d-flex align-items-center" style="height: 50px;" >[[${onlineClass.onlineClassPeriod}]]일 [[${#numbers.formatInteger(onlineClass.onlineClassPrice, 1, 'COMMA')}]]원</h6>

@@ -12,7 +12,7 @@ import com.sist.nbgb.entity.OnlineClassFileId;
 public interface OnlineClassFileRepository extends JpaRepository<OnlineClassFile, OnlineClassFileId>{
 	//강의 자료 조회
 	OnlineClassFile findByOnlineClassFileIdOnlineClassIdAndOnlineClassFileIdOnlineFileId(@Param("onlineClassId") Long onlineClassId, @Param("onlineFileId") Long onlineFileId);
-	
+	OnlineClassFile findByOnlineClassFileId(OnlineClassFileId onlineClassFileId);
 	//강의 자료 개수 조회
 	Long countByOnlineClassFileIdOnlineClassId(@Param("onlineClassId") Long onlineClassId);
 	
@@ -20,4 +20,6 @@ public interface OnlineClassFileRepository extends JpaRepository<OnlineClassFile
 	List<OnlineClassFile> findAllByOnlineClassFileIdOnlineClassIdOrderByOnlineFileName(@Param("onlineClassId") Long onlineClassId);
 	
 	Long countByOnlineClassFileId_onlineClassId(Long onlineClassId);
+	
+	
 }

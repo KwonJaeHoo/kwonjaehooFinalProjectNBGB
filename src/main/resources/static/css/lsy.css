@@ -115,6 +115,16 @@ margin: 50px auto 30px auto;
 	width:100%;
 }
 
+.video-side{
+	background-color:red;
+	width: 10%;
+	height:15%;
+	position: sticky;
+	top:40%;
+	margin-left:10px;
+	background-color: #ffe3e3;
+}
+
 .video-container{
     position:sticky;
     top:8em;
@@ -187,7 +197,7 @@ margin: 50px auto 30px auto;
     font-size:2.5vh;
 }
 
-/*비디오 재생목록*/
+/*비디오 재생페이지*/
 .video-list-title{
     height:20dvh;
     padding:2%;
@@ -309,3 +319,95 @@ margin: 50px auto 30px auto;
 	    .title-con:hover{
 			color:#bfbfbf;
 	    }
+
+
+
+/*수강페이지 리스트*/
+.playBtn{
+    background-color: white;
+    border: none;
+}
+    .playBtn > img{
+        width:40px;
+        height:40px;
+    }
+    .playBtn > img:hover{
+        transform: scale(1.2);
+    }
+.playBtn:focus{
+	outline:none;
+} 
+.playThum{
+    height:5rem;
+    display:block;
+    background-size: cover;
+    width:90%;
+    justify-content: center;
+}
+
+.playThum-Btn{
+    display:inline;
+    position: absolute;
+    width:5%;
+    top: 30%;
+    left:35%;
+}
+.play-index{
+    width:80%;
+    height:15rem;
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem auto 0 auto;
+    filter: drop-shadow(0 0 17px rgba(195, 197, 192, 0.3));
+    position: relative;
+    .play-index-sub {
+        height: auto;
+        aspect-ratio: 416 / 395;
+        background: #fff;
+        position: relative;
+        width:80%;
+        height:15rem;
+    }
+}
+
+
+.play-index-pin{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+    .play-index-pin > img{
+        width:30px;
+        height:30px;
+    }
+
+.play-index-info{
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    width:80%;
+    height:80%;
+    margin:0 auto;
+}
+    .play-index-info > div{
+        margin-bottom:1rem;
+    }
+    .play-index-info > div > p{
+        margin-bottom: 0 !important;
+        font-weight: 400;
+        color: rgb(116, 116, 116);
+    }
+
+.play-index-title{
+    margin-bottom:0  !important;
+}
+
+.list-item > .text, .list-item > .text > a {
+    font-size: 17.5px;
+    font-weight: 600;
+    color:rgb(101, 101, 101);
+}
+.list-item > .text > a:hover {
+    color:#89dd18;
+}
+
