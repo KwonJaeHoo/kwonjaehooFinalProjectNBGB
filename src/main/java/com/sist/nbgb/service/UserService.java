@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto;
+import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.UserFileDto;
 import com.sist.nbgb.dto.UserReviewDto;
@@ -154,7 +154,7 @@ public class UserService
 	
 	
 	@Transactional
-	public Object changeUserFile()
+	public Object changeUserFile(UserFileDto userFileDto)
 	{
 		return 200;
 	}

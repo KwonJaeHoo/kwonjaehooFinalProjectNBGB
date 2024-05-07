@@ -40,9 +40,10 @@ $(document).ready(function(){
             beforeSend: function(xhr){
                 xhr.setRequestHeader("AJAX", "true");
             },
-            success: function(response){
+            success: function(data)
+            {
                 alert("문의글이 등록되었습니다.");
-                location.href = "/reference/referenceList";
+                document.location.href = document.location.href;
             },
             error: function(xhr, status, error){
                 alert("오류가 발생했습니다.");

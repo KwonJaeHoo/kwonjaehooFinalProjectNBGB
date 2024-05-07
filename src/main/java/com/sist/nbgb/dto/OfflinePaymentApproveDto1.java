@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class OfflinePaymentApproveDto 
+public class OfflinePaymentApproveDto1 
 {
 	private String partnerOrderId;
 	
@@ -35,7 +35,7 @@ public class OfflinePaymentApproveDto
 
 	private LocalDateTime approvedAt;
 	
-	public OfflinePaymentApproveDto(OfflinePaymentApprove offlinePaymentApprove)
+	public OfflinePaymentApproveDto1(OfflinePaymentApprove offlinePaymentApprove)
 	{
 		this.partnerOrderId = offlinePaymentApprove.getPartnerOrderId();
 		this.partnerUserId = offlinePaymentApprove.getPartnerUserId();

@@ -52,12 +52,14 @@ public class ReferenceController {
 	
 	//문의 등록
 	@PostMapping("/reference/referenceWrite/post")
-	public ModelAndView writeReference(@RequestParam("refTitle") String refTitle,
+	@ResponseBody
+	public ResponseEntity<Object> writeReference(@RequestParam("refTitle") String refTitle,
 	                                   @RequestParam("refContent") String refContent,
 	                                   Principal principal) {
 	    String userId = principal.getName();
 	    
-	    if (userId == null || userId.trim().isEmpty()) {
+	    if (userId == null || userId.trim().isEmpty()) 
+	    {
 	        throw new IllegalArgumentException("userId는 null일 수 없습니다.");
 	    }
 	    
@@ -70,7 +72,7 @@ public class ReferenceController {
 	            .build();
 
 	    referenceService.saveReference(referenceDTO);
-	    return new ModelAndView("redirect:/reference/referenceList");
+	    return ResponseEntity.ok(200);
 	}
 
 }

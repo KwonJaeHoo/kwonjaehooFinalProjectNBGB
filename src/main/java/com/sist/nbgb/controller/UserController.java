@@ -29,7 +29,7 @@ import com.sist.nbgb.dto.EmailChangeDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.dto.NicknameChangeDto;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto;
+import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
@@ -224,8 +224,8 @@ public class UserController
     		System.out.println(onlinePaymentApproveDto);
     		System.out.println(onlinePaymentApproveDto.size());
     		
-    		List<OfflinePaymentApproveDto> offlinePaymentApproveDto = userService.userOfflineApproveFindAll(id)
-    				.stream().map(OfflinePaymentApproveDto::new).collect(Collectors.toList());
+    		List<OfflinePaymentApproveDto1> offlinePaymentApproveDto = userService.userOfflineApproveFindAll(id)
+    				.stream().map(OfflinePaymentApproveDto1::new).collect(Collectors.toList());
     		
     		System.out.println(offlinePaymentApproveDto);
     		
