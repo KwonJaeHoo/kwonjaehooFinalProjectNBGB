@@ -13,30 +13,7 @@
 
 	<section class="ftco-animate my-4" >
     	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}" class=" list-area">
-      		<div class="side-menu">
-        		<h3 class="text-center mb-3">menu</h3>
-        		<ul>
-          			<li class="menu-item">
-            			<a class="active" aria-current="page" th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
-          			</li>
-          			<ol>
-            			<li class="menu-item"><a class="active" th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
-            			<li><a th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원 탈퇴</a></li>
-          			</ol>
-          			<li class="menu-item">
-            			<a class="" th:href="@{/user/mypage/{id}/payment (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>결제내역</a>
-          			</li>
-              		<li class="menu-item">
-            			<a class="" th:href="@{/user/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>수강목록</a>
-          			</li>
-          			<li class="menu-item">
-            			<a class="" th:href="@{/user/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
-          			</li>
-          			<li class="menu-item">
-            			<a class="" th:href="@{/user/mypage/{id}/reference (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 문의</a>
-          			</li>
-        		</ul>
-      		</div>
+      		<p th:insert="import/mypageUserImport.html :: mypageUser-import"></p>
       		
       		<div class="list-container">
         		<div class="container info-section row">
@@ -140,23 +117,7 @@
       	
       	
       	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}" class=" list-area">
-			<div class="side-menu">
-        		<h3 class="text-center mb-3">menu</h3>
-        		<ul>
-          			<li class="menu-item">
-            			<a class="active" aria-current="page" th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
-          			</li>
-          			<ol>
-            			<li class="menu-item"><a class="active" th:href="@{/instructor/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
-          			</ol>
-              		<li class="menu-item">
-            			<a class="" th:href="@{/instructor/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>내 강의</a>
-          			</li>
-          			<li class="menu-item">
-            			<a class="" th:href="@{/instructor/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
-          			</li>
-        		</ul>
-      		</div>
+			<p th:insert="import/mypageInstructorImport.html :: mypageInstructor-import"></p>
       		
       		<div class="list-container">
         		<div class="container info-section row">

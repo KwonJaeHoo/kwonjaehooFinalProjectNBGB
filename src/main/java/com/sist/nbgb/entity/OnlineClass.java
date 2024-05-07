@@ -81,7 +81,7 @@ public class OnlineClass
 	
 	@CreatedDate
 	@Comment("반려날짜")
-	private LocalDateTime rejectionRedgate;
+	private LocalDateTime rejectionRegdate;
 	
 	@Column
 	@Comment("온라인 강의 조회수")
