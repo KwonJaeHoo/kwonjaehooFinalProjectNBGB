@@ -72,6 +72,6 @@ public class OfflinePaymentCancel
 	
 	@CreatedDate
 	@Comment("취소날짜")
-	private LocalDateTime canceled_at;
+	private LocalDateTime canceledAt;
 	
 }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+	<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">마이페이지</h1>
+    	<p class="sub-title"></p>
+  	</div>
+
+	<section class="ftco-animate my-4" >
+    	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}" class=" list-area">
+      		<div class="side-menu">
+        		<h3 class="text-center mb-3">menu</h3>
+        		<ul>
+          			<li class="menu-item">
+            			<a class="active" aria-current="page" th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
+          			</li>
+          			<ol>
+            			<li><a th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
+            			<li><a th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원 탈퇴</a></li>
+          			</ol>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/payment (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>결제내역</a>
+          			</li>
+              		<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>수강목록</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/user/mypage/{id}/reference (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 문의</a>
+          			</li>
+        		</ul>
+      		</div>
+
+		   	<div class="list-container">
+        		<div class="container info-section row">
+          			<div class="info-detail">
+          				아이디<p th:text="${userInfoDto.userId}"></p>
+			            이름 <p th:text="${userInfoDto.userName}"></p>
+			            닉네임 <p th:text="${userInfoDto.userNickname}"></p>
+			            이메일 <p th:text="${userInfoDto.userEmail}"></p>
+			            연락처 <p th:text="${userInfoDto.userPhone}"></p>
+			            생년월일 <p th:text="${userInfoDto.userBirth}"></p>
+			            포인트 <p th:text="${userInfoDto.userPoint}"></p>
+          			</div>
+          			<div th:if="${userFileDto == 'userFileDtoIsNull'}" class="info-picture">
+            			<img src="/images/user/emptyImage.png">
+          			</div>
+          			
+          			
+          			<div th:if="${userFileDto != 'userFileDtoIsNull'}" class="info-picture">
+          				<img th:src="@{'/images/user/' + ${userFileDto.userFileName} + '.png'}">
+          			</div>
+          			
+          			<div>
+          				<a th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">회원정보 수정</a>
+        			</div>
+        			<div>
+        				<a th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">회원탈퇴</a>
+        			</div>
+        		</div>
+      		</div>
+    	</div>
+    	
+    	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}" class=" list-area">
+      		<div class="side-menu">
+        		<h3 class="text-center mb-3">menu</h3>
+        		<ul>
+          			<li class="menu-item">
+            			<a class="active" aria-current="page" th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" active><span class="icon-check2"></span>사용자 정보</a>
+          			</li>
+          			<ol>
+            			<li><a th:href="@{/instructor/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
+          			</ol>
+              		<li class="menu-item">
+            			<a class="" th:href="@{/instructor/mypage/{id}/lecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>내 강의</a>
+          			</li>
+          			<li class="menu-item">
+            			<a class="" th:href="@{/instructor/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>작성한 후기</a>
+          			</li>
+        		</ul>
+      		</div>
+
+
+			<div class="list-container">
+        		<div class="container info-section row">
+          			<div class="info-detail">
+          				아이디<p th:text="${instructorDto.instructorId}"></p>
+			            이름 <p th:text="${instructorDto.instructorName}"></p>
+			            닉네임 <p th:text="${instructorDto.instructorNickname}"></p>
+			            이메일 <p th:text="${instructorDto.instructorEmail}"></p>
+			            연락처 <p th:text="${instructorDto.instructorPhone}"></p>
+			            계좌 <p th:text="${instructorDto.instructorBank}"></p>
+			            계좌번호 <p th:text="${instructorDto.instructorAccount}"></p>
+			            주 카테고리<p th:text="${instructorDto.instructorCategory}"></p>
+          			</div>
+          			<div class="info-picture">
+          				<img th:src="@{'/images/instructor/' + ${instructorDto.instructorId} + '.png'}">
+          			</div>
+          			<div>
+          				<a th:href="@{/instructor/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">회원정보 수정</a>
+        			</div>
+        		</div>
+      		</div>
+      		
+    	</div>	
+  	</section>
+
+
+<div style="height:100px"></div>
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

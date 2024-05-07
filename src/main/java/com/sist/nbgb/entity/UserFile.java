@@ -54,7 +54,7 @@ public class UserFile
 	
 	@Column
 	@Comment("파일 크기")
-	private String userFileSize;
+	private Long userFileSize;
 	
 	@CreatedDate
 	@Comment("파일 등록일")

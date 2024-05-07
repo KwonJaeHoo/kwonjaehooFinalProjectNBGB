@@ -26,10 +26,10 @@
 						<ul class="list-unstyled">
 
 						<li><a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
-							th:href="@{/user/mypage/{id} (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a>
+							th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a>
 						</li> 
 						<li><a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}"
-							th:href="@{/instructor/mypage/{id} (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a> 
+							th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3">마이페이지</a> 
 						</li>
 							<li><a href="/logout">로그아웃</a></li>
 						</ul>
