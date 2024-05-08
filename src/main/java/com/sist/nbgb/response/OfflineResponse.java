@@ -2,6 +2,9 @@ package com.sist.nbgb.response;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedDate;
+
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;
@@ -35,6 +38,10 @@ public class OfflineResponse
 	
 	private Long offlineClassViews;
 	
+	private String rejection;
+	
+	private LocalDateTime rejectionRedgate;
+	
 	public OfflineResponse(OfflineClass classes)
 	{
 		this.offlineClassId = classes.getOfflineClassId();
@@ -49,5 +56,7 @@ public class OfflineResponse
 		this.offlineClassApprove = classes.getOfflineClassApprove();
 		this.offlineClassLimitPeople = classes.getOfflineClassLimitPeople();
 		this.offlineClassViews = classes.getOfflineClassViews();
+		this.rejection = classes.getRejection();
+		this.rejectionRedgate = classes.getRejectionRedgate();
 	}
 }
