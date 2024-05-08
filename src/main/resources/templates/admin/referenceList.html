@@ -26,7 +26,7 @@
             <tbody>
             <tr th:each="refList : ${referenceList}">
                 <td><a th:text="${refList.refId}">문의글 ID</a></td>
-                <td><a th:text="${refList.refTitle}">문의글 제목</a></td>
+                <td><a th:text="${refList.refTitle}" th:onclick="|location.href='@{'referenceView/' + ${refList.refId}}'|">문의글 제목</a></td>
                 <td><a th:text="${refList.userId.userId}">작성자</a></td>
                 <td><a th:text="${refList.refRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))}">등록일</a></td>
             </tr>
@@ -41,17 +41,17 @@
             <ul class="mb-2">
 	        <!-- Previous page button -->
 	        <li th:if="${page.hasPrevious}">
-	            <a href="@{/reference/referenceList(page=${page.number - 1})}">&lt;</a>
+	            <a href="@{/admin/referenceList(page=${page.number - 1})}">&lt;</a>
 	        </li>
 	        
 	        <!-- Page number buttons -->
 	        <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:if="${page.totalPages > 1}">
-	            <a th:href="@{/reference/referenceList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
+	            <a th:href="@{/admin/referenceList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
 	        </li>
 	
 	        <!-- Next page button -->
 	        <li th:if="${page.hasNext}">
-	            <a href="@{/reference/referenceList(page=${page.number + 1})}">&gt;</a>
+	            <a href="@{/admin/referenceList(page=${page.number + 1})}">&gt;</a>
 	        </li>
 	    	</ul>
 	    </div>

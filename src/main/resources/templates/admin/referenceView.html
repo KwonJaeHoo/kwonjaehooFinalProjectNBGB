@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+</head>
+<body>
+	<a class="MainBanner" aria-current="page"><h1>문의 글</h1></a>
+	
+	
+	<section class="ftco-section pt-5">
+      <div class="container" th:each="refList: ${refList}">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 w-100 ftco-animate">
+            <div>
+            <input type="hidden" id="name" class="form-control" value="testUser" placeholder="제목을 입력하세요.">
+
+        </div>
+
+        <div>
+            <label for="refTitle">제목</label>
+            <input th:value="${refList.refTitle}" class="form-control" readonly>
+        </div>
+        <div>
+        	<label for="userId">아이디</label>
+        	<input type="text" id="userId" name="userId" 
+       		th:value="${refList.userId.userId}" class="form-control" placeholder="" readonly
+       		style="width: 50%; background-color: #A4A4A4;">
+        </div>
+        <div>
+            <label for="refContent">내용</label>
+            <textarea cols="150" rows="10" th:text="${refList.refContent}" class="form-control" placeholder="내용을 입력하세요." readonly>
+
+            </textarea>
+
+        </div>
+          </div>
+        </div>
+      </div>
+    </section>
+	
+	
+	<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

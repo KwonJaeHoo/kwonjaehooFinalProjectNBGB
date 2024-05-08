@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class OfflinePostDto {
     private Long offlineClassId; // 오프라인 클래스의 ID
 
+    private String instructorId;
     private String offlineClassTitle;
     private String offlineClassContent;
     private String offlineClassPlace;
@@ -26,6 +27,7 @@ public class OfflinePostDto {
 
     public static OfflinePostDto toDto(OfflineClass offlineClass) {
         return OfflinePostDto.builder()
+        		.instructorId(offlineClass.getInstructorId().getInstructorId())
                 .offlineClassTitle(offlineClass.getOfflineClassTitle())
                 .offlineClassContent(offlineClass.getOfflineClassContent())
                 .offlineClassPlace(offlineClass.getOfflineClassPlace())

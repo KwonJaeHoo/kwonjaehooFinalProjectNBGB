@@ -42,15 +42,71 @@ $(document).ready(function(){
 		  return;
 	  }
 	  
-	  alert($("#resYear").val() + " . " + $("#resMonth").val() + " . " + $("#resDate").val())
+	  $("#resDay").val($("#resYear").val() + " . " + $("#resMonth").val() + " . " + $("#resDate").val());
 	  
-	  if($.trim($("#resDate").val()).length <= 0)
+	  if($.trim($("#resDate").val()).length == 1)
+	  {
+		  $("#bookingDate").val($("#resYear").val() +  $("#resMonth").val() + 0 + $("#resDate").val());
+	  }
+	  else
+	  {
+		  $("#bookingDate").val($("#resYear").val() +  $("#resMonth").val() + $("#resDate").val());
+	  }
+	  
+	  
+	  if($.trim($("#resTime").val()).length <= 0)
 	  {
 		  alert("예약 시간을 선택해주세요.");
 		  return;
 	  }
+
+	  $.ajax({
+			type:"POST",
+			url:"/offlineClass/reserve/find",
+			data:{
+				classId:$("#offlineClassId").val(),
+				userId:$("#userId").val(),
+				bookingDate:$("#bookingDate").val(),
+				resTime:$("#resTime").val()
+			},
+			dataType : "json",
+	        async : false,
+			beforeSend:function(xhr){
+				xhr.setRequestHeader("AJAX", "true");
+			},
+			success:function(response){
+				if(response == 0)
+				{
+					fn_payPopUp();
+				}
+				else
+				{
+					alert("마감된 클래스입니다.");
+					return;
+				}
+			},
+			error:function(xhr, status, error){
+				alert("오류가 발생했습니다.");
+			}
+		});
    });
 });
+
+function fn_time(time){
+	$("#resTime").val(time);
+}
+
+function fn_payPopUp()
+{	
+	var payPop = document.payForm;
+	var url = '/offlineClass/reserve/pay';
+	
+	window.open('','pay','width=450, height=600, top=100, left=750, scrollbars=yes');
+
+	payPop.action = url;
+	payPop.target = 'pay';
+	payPop.submit();
+}
 </script>
 </head>
 <body>
@@ -110,7 +166,7 @@ $(document).ready(function(){
 					</tr>
 					<tr>
 						<td class="ttr">가격</td>
-						<td><input type="text" th:value="${offlineClass.offlineClassPrice}" readonly></td>
+						<td><input type="text" th:value="${#numbers.formatInteger(offlineClass.offlineClassPrice, 1, 'COMMA')}" readonly></td>
 					</tr>
 					<tr>
 						<td class="ttr" style="border-radius:0 0 0 10px;">주소</td>
@@ -137,16 +193,16 @@ $(document).ready(function(){
 		    <div class="tbr mb-2" style="margin-top: 20px; border:1;">
 		     <div class="time">
 		       <div class="time-am">
-		    	<button class="btntime">09 : 00</button>
-		    	<button class="btntime">10 : 00</button>
-		    	<button class="btntime">11 : 00</button>
-		    	<button class="btntime">13 : 00</button>
+		    	<button class="btntime" onclick="fn_time('09')">09 : 00</button>
+		    	<button class="btntime" onclick="fn_time('10')">10 : 00</button>
+		    	<button class="btntime" onclick="fn_time('11')">11 : 00</button>
+		    	<button class="btntime" onclick="fn_time('13')">13 : 00</button>
 		       </div>
 		       <div class="time-pm">
-		    	<button class="btntime">14 : 00</button>
-		    	<button class="btntime">15 : 00</button>
-		    	<button class="btntime">16 : 00</button>
-		    	<button class="btntime">17 : 00</button>
+		    	<button class="btntime" onclick="fn_time('14')">14 : 00</button>
+		    	<button class="btntime" onclick="fn_time('15')">15 : 00</button>
+		    	<button class="btntime" onclick="fn_time('16')">16 : 00</button>
+		    	<button class="btntime" onclick="fn_time('17')">17 : 00</button>
 		       </div> 
 		     </div>
 		 	</div>
@@ -154,6 +210,18 @@ $(document).ready(function(){
 		  <input type="hidden" id="resYear" name="resDate" value="" >
 		  <input type="hidden" id="resMonth" name="resMonth" value="" >
 		  <input type="hidden" id="resDate" name="resDate" value="" >
+		  
+		  <form name="payForm" id="payForm" method="post">
+			<input type="hidden" id="resDay" name="resDay" value="" />
+			<input type="hidden" id="bookingDate" name="bookingDate" value="" />
+			<input type="hidden" id="resTime" name="resTime" value="" >
+			<input type="hidden" name="userId" id="userId" th:value="${user.getUserId()}" />
+			<input type="hidden" name="userPoint" id="userPoint" th:value="${user.getUserPoint()}" />
+			<input type="hidden" name="offlineClassTitle" id="offlineClassTitle" th:value="${offlineClass.offlineClassTitle}"  />
+			<input type="hidden" name="offlineClassPlace" id="offlineClassPlace" th:value="${offlineClass.offlineClassPlace}" />
+			<input type="hidden" name="offlineClassPrice" id="offlineClassPrice" th:value="${offlineClass.offlineClassPrice}" />
+			<input type="hidden" name="offlineClassId" id="offlineClassId" th:value="${offlineClass.offlineClassId}" />
+		  </form>
 	</div>
 	
 	<!-- 페이지 출력 -->

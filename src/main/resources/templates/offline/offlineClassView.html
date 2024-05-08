@@ -39,6 +39,14 @@
 		    			if(confirm("이미 찜한 게시물 입니다. 찜을 취소하시겠습니까?") == true){
 		    				fn_removeLike();
 		    			}
+		    			else
+		    			{
+		    				return;
+		    			}
+		    		}
+		    		else if(res.code == 9)
+		    		{
+		    			alert("일반회원만 이용가능한 기능입니다.");
 		    		}
 		    		else if(res.code == 0){
 			    		alert("찜 목록에 담겼습니다.");
@@ -149,9 +157,11 @@
 	    		}
 	    		else if(res.code == 8)
 	    		{
-	    			if(confirm("이미 찜한 게시물 입니다. 찜을 취소하시겠습니까?") == true){
-	    				fn_removeRevLike();
-	    			}
+	    			alert("이미 좋아요를 누르셨습니다.");
+	    		}
+	    		else if(res.code == 9)
+	    		{
+	    			alert("일반회원만 이용가능한 기능입니다.");
 	    		}
 	    		else if(res.code == 0){
 	    			alert("좋아요가 등록되었습니다.");

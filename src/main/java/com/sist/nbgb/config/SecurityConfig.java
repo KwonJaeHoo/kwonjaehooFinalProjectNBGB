@@ -61,7 +61,7 @@ public class SecurityConfig
 				.and()
 				.authorizeHttpRequests()
 					.antMatchers("/", "/signup/**", "/login/**", "/onlineClass", "/offlineClass").permitAll()
-					.antMatchers("/user/**").hasAnyAuthority("ROLE_USER")
+					.antMatchers("/user/**", "/reference/referenceWrite").hasAnyAuthority("ROLE_USER")
 					.antMatchers("/instructor/**").hasAnyAuthority("ROLE_INSTRUCTOR")					
 					//.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
 				.and()

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/pay.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#usePoint').change( function() {
+        var a = $( '#usePoint' ).val();
+        var b = $( '#offlineClassPrice' ).val();
+        var ab = b - a;
+        
+        var userPoint = $( '#userPoint' ).val();
+        
+        var num = /^[0-9]+$/;
+        
+        if(!num.test($( '#usePoint' ).val()))
+        {
+        	alert("숫자만 입력하세요.");
+        	$( '#usePoint' ).val('');
+        	return;
+        }
+        
+        if(parseInt(a) > parseInt(userPoint))
+        {
+        	alert("보유하신 포인트보다 많습니다.");
+        	$( '#usePoint' ).val('');
+        	return;
+        }
+        
+        if(parseInt(a) > parseInt(b))
+        {
+        	alert("결제 금액보다 포인트가 많습니다.");
+        	$( '#usePoint' ).val('');
+        	return;
+        }
+        
+        $( '#ab' ).text( ab );
+        $('#usedPoint').val($( '#usePoint' ).val());
+        $('#totalAmount').val(ab);
+      } );
+	
+	$("#btnPay").on("click", function(){
+		if(!document.getElementById('chk').checked)
+		{
+			alert("약관에 동의를 하셔야 결제가 진행됩니다.");
+        	return;
+		}
+		
+		var formData = new FormData();
+	    
+	    var offlinePayBeforeDto = {
+	    		userId:$("#userId").val(),
+			    userPoint:$("#userPoint").val(),
+			    offlineClassId:$("#offlineClassId").val(),
+			    offlineClassTitle:$("#offlineClassTitle").val(),
+			    usedPoint:$("#usedPoint").val(),
+			    totalAmount:$("#totalAmount").val(),
+			    bookingDate:$("#bookingDate").val(),
+			    resTime:$("#resTime").val()
+	    }
+	    
+	    formData.append('offlinePayBeforeDto', new Blob([JSON.stringify(offlinePayBeforeDto)], {type: "application/json"}));
+		
+		var offlinePayBeforeDto = document.payForm;
+		
+		$("#btnPay").prop("disabled", true);
+		
+		$.ajax({
+			type:"POST",
+			url:"/offlineClass/reserve/pay/payReady",
+			data:formData,
+			dataType:"JSON",
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+			beforeSend:function(xhr){
+				xhr.setRequestHeader("AJAX", "true");
+			},
+			success:function(response){
+				if(response.code == 0)
+				{
+					var tId = response.tid;
+					var pcUrl = response.next_redirect_pc_url;
+					var orderId = response.orderId;
+					
+					console.log("log : " + orderId);
+					console.log("tId : " + tId);
+					
+					 $(".tid").val(tId);
+					 $(".pcUrl").val(pcUrl);
+					 $(".orderId").val(orderId);
+					 
+					 console.log("log2 : " + $(".pcUrl").val());
+					 
+					 var win = window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=650,left=100,top=100');
+					 
+					 setTimeout(function(){top.window.opener = top;top.window.open('','_parent','');top.window.close();});
+					 
+					 document.kakaoForm.action="/offlineClass/reserve/pay/payPopUp"
+					 document.kakaoForm.submit();
+				   
+				     $("#btnPay").prop("disabled", false);
+				}
+				else
+				{
+					alert("오류가 발생하였습니다.");
+					$("#btnPay").prop("disabled", false);
+				}
+			},
+			error:function(xhr, status, error){
+				alert("오류가 발생했습니다.");
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<section class=" pt-4">
+	<div class="container d-flex justify-content-center">
+		<div class="row">
+			<div class="col-lg-2">
+				<h4 class="d-flex justify-content-center mb-3">내방공방 결제</h4>
+				
+					<table>
+						<tr>
+							<td  class="ttt pl-3" style="border-radius: 10px 10px 0 0;">상품정보</td>
+						</tr>
+						<tr>
+							<td class="pl-3"style="font-size:15px">[공방 클래스] [[${offlinePopDto.offlineClassTitle}]]</td>
+							
+						</tr>
+						<tr>
+							<td class="pl-3"> [[${offlinePopDto.offlineClassPlace}]]</td>
+						</tr>
+						<tr>
+							<td class="pl-3"> [[${offlinePopDto.resDay}]]&nbsp;&nbsp;&nbsp; [[${offlinePopDto.resTime}]] : 00</td>
+						</tr>
+					</table>
+					
+					<table class="mt-3">
+						<tr>
+							<td colspan="2" class="ttt pl-3" style="border-radius: 10px 10px 0 0;">총 결제금액</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">상품 금액</td>
+							<td>[[${#numbers.formatInteger(offlinePopDto.offlineClassPrice, 1, 'COMMA')}]]원</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">보유 포인트</td>
+							<td>[[${#numbers.formatInteger(offlinePopDto.userPoint, 1, 'COMMA')}]]P</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">사용 포인트</td>
+							<td><input type="text" id="usePoint" name="usePoint" style="width:70px;background-color:aliceblue;">P</td>
+						</tr>
+						<tr>
+							<td class="pl-3" style="width:100px;">결제 금액</td>
+							<td><p id="ab" name="ab" style="margin: 0 0 0 0;"></p></td>
+						</tr>
+					</table>
+					
+					<div class="mt-3 mb-2" style="text-align:center; display:inline-block;">
+					<ul class="join_box">
+						<li class="checkBox">
+							<ul class="clearfix">
+								<li class="checkAllBtn">
+								<input type="checkbox" name="chkAll" id="chk" class="chkAll">&nbsp;<a href="#" class="border-bottom">서비스 약관, 환불 규정, 개인 정보 처리 방침</a>에 모두 동의합니다.</li>
+							</ul>
+						</li>
+					</ul>
+					</div>
+					
+				<form name="payForm" id="payForm" method="post">
+					<input type="hidden" id="offlineClassPrice" name="offlineClassPrice" th:value="${offlinePopDto.offlineClassPrice}" />
+					<input type="hidden" id="userPoint" name="userPoint" th:value="${offlinePopDto.userPoint}" />
+					<input type="hidden" id="userId" name="userId" th:value="${offlinePopDto.userId}" />
+					<input type="hidden" id="offlineClassId" name="offlineClassId" th:value="${offlinePopDto.offlineClassId}" />
+					<input type="hidden" id="offlineClassTitle" name="offlineClassTitle" th:value="${offlinePopDto.offlineClassTitle}" />
+					<input type="hidden" id="usedPoint" name="usedPoint" value="0">
+					<input type="hidden" id="bookingDate" name="bookingDate" th:value="${offlinePopDto.bookingDate}">
+					<input type="hidden" id="resTime" name="resTime" th:value="${offlinePopDto.resTime}">
+					<input type="hidden" id="totalAmount" name="totalAmount" th:value="${offlinePopDto.offlineClassPrice}">
+				</form>
+				<!-- 구현할땐 form에 넣어서 쓰거라 -->
+				<button id="btnPay" type="submit" class="payBox" style="float:right;"><span class="icon-comment" style="color:#FFFFFF;"></span> 결제하기</button>
+			</div>
+		</div>
+	</div>
+	<form name="kakaoForm" id="kakaoForm" method="POST" target="kakaoPopUp">
+		<input type="hidden" class="tid" name="tid" id="tid" value=""/>
+		<input type="hidden" class="pcUrl" name="pcUrl" id="pcUrl" value=""/>
+		<input type="hidden" class="orderId" id="orderId" name="orderId" value="" />
+		<!-- <input type="hidden" class="userId" id="userId" name="userId" value="" />
+		<input type="hidden" class="offlineClassId" id="offlineClassId" name="offlineClassId" value="" />
+		<input type="hidden" class="offlineClassTitle" id="offlineClassTitle" name="offlineClassTitle" value="" />
+		<input type="hidden" class="usedPoint" id="usedPoint" name="usedPoint" value="">
+		<input type="hidden" class="bookingDate" id="bookingDate" name="bookingDate" value="">
+		<input type="hidden" class="resTime" id="resTime" name="resTime" value="">
+		<input type="hidden" class="totalAmount" id="totalAmount" name="totalAmount" value=""> -->
+	</form>
+</section>
+</body>
+</html>

@@ -3,25 +3,35 @@ package com.sist.nbgb.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
+import com.sist.nbgb.dto.OfflineApproveResponse;
+import com.sist.nbgb.dto.OfflinePayBeforeDto;
+import com.sist.nbgb.dto.OfflinePaymentApproveDto;
+import com.sist.nbgb.dto.OfflinePopDto;
 import com.sist.nbgb.dto.OfflinePostDto;
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
+import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.ReviewId;
 import com.sist.nbgb.entity.ReviewLike;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineLikeRepository;
+import com.sist.nbgb.repository.OfflinePaymentApproveRepository;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OfflineUserRepository;
 import com.sist.nbgb.repository.UserRepository;
+import com.sist.nbgb.response.UUIDUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +46,10 @@ public class OfflineService
 	private final OfflineLikeRepository likeRepository;
 	
 	private final UserRepository userRepository2;
+	
+	private final InstructorsRepository instructorRepository;
+	
+	private final OfflinePaymentApproveRepository approveRepository;
 	
 	public List<OfflineClass> findAll()
 	{	
@@ -142,7 +156,8 @@ public class OfflineService
 	@Transactional
 	public OfflinePostDto offlinePost(OfflinePostDto offlinePostDto)
 	{
-		Instructors id = findByView((long) 5).getInstructorId();
+		Instructors id = instructorRepository.findFirstByInstructorId(offlinePostDto.getInstructorId());
+		
 		
 		OfflineClass offlineClass = OfflineClass.builder()
 				.offlineClassTitle(offlinePostDto.getOfflineClassTitle())
@@ -157,7 +172,7 @@ public class OfflineService
 				.offlineClassLimitPeople(offlinePostDto.getOfflineClassLimitPeople())
 				.offlineClassViews((long) 0)
 				.build();
-		
+
 		 // 저장 후에 offlineClassId 값을 가져옵니다.
 	    OfflineClass savedOfflineClass = offlineRepository.save(offlineClass);
 	    Long offlineClassId = savedOfflineClass.getOfflineClassId();
@@ -172,5 +187,80 @@ public class OfflineService
 	public Optional<User> findByUserId(String userId)
 	{
 		return userRepository.findByUserId(userId);
+	}
+	
+	//강사 찾기
+	public Optional<Instructors> findByInstructorId(String instructorId)
+	{
+		return instructorRepository.findById(instructorId);
+	}
+	
+	
+	//결제 저장
+	@Transactional
+	public OfflinePaymentApproveDto payUpload(OfflinePayBeforeDto payDto)
+	{
+		String orderId = UUIDUtil.uniqueValue();
+		
+		
+		OfflinePaymentApprove offlinePaymentApprove = OfflinePaymentApprove.builder()
+				.partnerOrderId(orderId)
+				.partnerUserId(payDto.getUserId())
+				.itemCode(payDto.getOfflineClassId())
+				.itemName(payDto.getOfflineClassTitle())
+				.bookingDate(payDto.getBookingDate())
+				.bookingTime(payDto.getResTime())
+				.point(Long.parseLong(payDto.getUsedPoint()))
+				.totalAmount(Long.parseLong(payDto.getTotalAmount()))
+				.build();
+
+		 // 저장 후에 offlineClassId 값을 가져옵니다.
+		OfflinePaymentApprove savedOfflineClass = approveRepository.save(offlinePaymentApprove);
+	    String partnerOrderId = savedOfflineClass.getPartnerOrderId();
+
+	    // 반환할 DTO에 offlineClassId 값을 설정한 후에 반환합니다.
+	    OfflinePaymentApproveDto approveDto = new OfflinePaymentApproveDto();
+	    approveDto.setPartnerOrderId(partnerOrderId);
+	    approveDto.setPartnerUserId(savedOfflineClass.getPartnerUserId());
+	    approveDto.setItemCode(savedOfflineClass.getItemCode());
+	    approveDto.setItemName(savedOfflineClass.getItemName());
+	    approveDto.setBookingDate(savedOfflineClass.getBookingDate());
+	    approveDto.setBookingTime(savedOfflineClass.getBookingTime());
+	    approveDto.setPoint(savedOfflineClass.getPoint());
+	    approveDto.setTotalAmount(savedOfflineClass.getTotalAmount());
+	    
+	    return approveDto;
+	}
+	
+	//결제 오류시 삭제
+	@Transactional
+	public int deletePay(String orderId)
+	{
+		return approveRepository.deleteByPartnerOrderId(orderId);
+	}
+	
+	//결제찾기
+	public Optional<OfflinePaymentApprove> findbyPartnerOrderId(String orderId)
+	{
+		return approveRepository.findAllByPartnerOrderId(orderId);
+	}
+	
+	//업데이트
+	@Transactional
+	public int updatePay(OfflineApproveResponse payDto)
+	{
+		return approveRepository.updatePay(payDto.getPartner_order_id(), payDto.getTid(), payDto.getCid());
+	}
+	
+	@Transactional
+	public int updatePoint(String userId, Long point)
+	{
+		return userRepository.updatePoint(userId, point);
+	}
+	
+	//결제 갯수 조회
+	public Long countPeople(String classId, String date, String time)
+	{
+		return approveRepository.countPeople(classId, date, time);
 	}
 }

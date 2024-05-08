@@ -1,21 +1,8 @@
 package com.sist.nbgb.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.entity.UserFile;
-import com.sist.nbgb.entity.UserFileId;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +29,11 @@ public class UserFileDto
 	{
 		return UserFileDto
 				.builder()
-				
+				.userId(userFile.getUserId())
+				.userFileOrgName(userFile.getUserFileOrgName())
+				.userFileName(userFile.getUserFileName())
+				.userFileExt(userFile.getUserFileExt())
+				.userFileSize(userFile.getUserFileSize())
 				.build();
 	}
 	

@@ -311,3 +311,24 @@ i[class^=icon-chevron]{
 	border-radius: 10px;
 }
 
+.join_box{
+	padding: 0 0 0 0;
+	list-style-type: none;
+	display:inline-block;
+}
+
+.checkBox{
+	padding: 0 0 0 0;
+	list-style-type: none;
+	display:inline-block;
+}
+
+.clearfix{
+	padding: 0 0 0 0;
+	list-style-type: none;
+	display:inline-block;
+}
+
+.chkAll{
+	display:center;
+}

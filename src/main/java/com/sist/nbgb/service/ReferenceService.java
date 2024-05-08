@@ -23,6 +23,12 @@ public class ReferenceService {
 	
 	private final ReferenceRepository referenceRepository;
 	
+	//상세 페이지(View)
+	public List<Reference> findByView(Long refId)
+	{
+		return referenceRepository.findByView(refId);
+	}
+	
 	//문의글 등록
 	@Transactional
 	public ReferenceDTO referenceDTO(ReferenceDTO refDTO)

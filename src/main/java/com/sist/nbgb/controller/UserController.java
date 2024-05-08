@@ -1,11 +1,14 @@
 package com.sist.nbgb.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,13 +19,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.EmailChangeDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.dto.NicknameChangeDto;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto;
+import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
@@ -150,11 +155,42 @@ public class UserController
     }
     
     
-//    @PostMapping("/mypage/{id}/info/userfile")
-//    public ResponseEntity<UserFileDto> mypageUserInfoFile(InstructorsDto instructorsDto, MultipartFile instructorImageFile) throws Exception
-//    {
-//    	return ResponseEntity.ok(null);
-//    }
+    @PostMapping("/mypage/info/userfile")
+	@ResponseBody
+	public ResponseEntity<Object> mypageUserInfoFile(@RequestPart(value="userId") @Valid UserIdCheckDto userIdCheckDto, @RequestPart(value="userImageFile") MultipartFile userImageFile) throws Exception
+	{
+    	UserFileDto userFileDto = userService.findByUserIdFile(userIdCheckDto.getUserId()); 
+    	
+    	if(userFileDto != null)
+    	{
+    		
+    	}
+    	else
+    	{
+    	
+    	}
+    	
+    	
+	    String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+	    String filename = userIdCheckDto.getUserId() + ".png"; // 기본 파일명
+	    String filepath = path + "/" + filename;
+		
+        File file = new File(filepath);
+        file.delete();
+        
+        try 
+        {
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bufferedOutputStream.write(userImageFile.getBytes());
+            bufferedOutputStream.close();
+            
+            return ResponseEntity.ok(200);
+        }
+        catch (Exception e) 
+        {
+            throw new RuntimeException("오류가 발생했습니다.");
+        }
+	}
     
     
     
@@ -189,8 +225,8 @@ public class UserController
     		System.out.println(onlinePaymentApproveDto);
     		System.out.println(onlinePaymentApproveDto.size());
     		
-    		List<OfflinePaymentApproveDto> offlinePaymentApproveDto = userService.userOfflineApproveFindAll(id)
-    				.stream().map(OfflinePaymentApproveDto::new).collect(Collectors.toList());
+    		List<OfflinePaymentApproveDto1> offlinePaymentApproveDto = userService.userOfflineApproveFindAll(id)
+    				.stream().map(OfflinePaymentApproveDto1::new).collect(Collectors.toList());
     		
     		System.out.println(offlinePaymentApproveDto);
     		

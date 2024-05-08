@@ -10,17 +10,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
+import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
-import com.sist.nbgb.entity.ReviewId;
 import com.sist.nbgb.entity.ReviewLike;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OfflineReviewLikeRepository;
 import com.sist.nbgb.repository.OfflineReviewReplyRepository;
 import com.sist.nbgb.repository.OfflineReviewRepository;
+import com.sist.nbgb.repository.ReviewLikeRepository;
 import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -33,9 +33,9 @@ public class OfflineReviewService
 	
 	private final OfflineReviewReplyRepository replyRepository;
 	
-	private final OfflineReviewLikeRepository likeRepository;
+	private final ReviewLikeRepository likeRepository;
 	
-	private final UserRepository userRepository2;
+	private final UserRepository userRepository;
 	
 	public float offCountRating(Long offlineClassId)
 	{
@@ -66,24 +66,27 @@ public class OfflineReviewService
 	}
 	
 	//리뷰 좋아요
-	@Transactional
-	public OfflineReviewLikeDto reviewLike(OfflineReviewLikeDto like)
-	{
-		Review reviewId = offlineReviewRepository.findFirstByReviewId(like.getReviewId());
-		
-		User user = userRepository2.findFirstByUserId(like.getUserId());
-		
-		ReviewLike reviewLike1 = ReviewLike.builder()
-				.reviewId(reviewId)
-				.userId(user)
-				.build();
-		
-		return OfflineReviewLikeDto.toDto(likeRepository.save(reviewLike1));
+	//후기 추천 여부
+	public long findReviewLikeMe(long reviewId, String userId) {
+		return likeRepository.countByReviewLikeId_reviewIdAndReviewLikeId_userId(reviewId, userId);
 	}
 	
-	//리뷰 중복 검색
-	public Long duplicationReviewLike(Long reviewId, String userId)
-	{
-		return likeRepository.countByReviewId_ReviewIdAndAndReviewId_userId(reviewId, userId);
+	//후기 추천 수 증가
+	@Transactional
+	public int updateReviewLike(long reviewId) {
+		Long likeCnt = likeRepository.countByReviewLikeId_reviewId(reviewId);
+		
+		return offlineReviewRepository.updateReviewLikeCnt(reviewId, likeCnt);
+	}
+	
+	//후기 추천 등록
+	@Transactional
+	public OfflineReviewLikeDto saveReviewLike(OfflineReviewLikeDto likeDto) {
+		
+		User user = userRepository.findFirstByUserId(likeDto.getUserId()); //아이디 받아오기
+		
+		likeRepository.insertReviewLike(likeDto.getReviewId(), user.getUserId());
+		
+		return likeDto;
 	}
 }

@@ -119,13 +119,14 @@ public class SignupController
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
             bufferedOutputStream.write(instructorImageFile.getBytes());
             bufferedOutputStream.close();
+    	    
+    	    return ResponseEntity.ok(signupService.instructorSignup(instructorsDto));	
         
         }
         catch (Exception e) 
         {
             throw new RuntimeException("오류가 발생했습니다.");
         } 
-	    
-	    return ResponseEntity.ok(signupService.instructorSignup(instructorsDto));	
+
 	}
 }

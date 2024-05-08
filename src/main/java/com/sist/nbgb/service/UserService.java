@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto;
+import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.UserFileDto;
 import com.sist.nbgb.dto.UserReviewDto;
@@ -49,6 +49,12 @@ public class UserService
 	{
 		return userRepository.findByUserId(userIdCheckDto.getUserId())
 				.map(UserIdCheckDto :: of)
+				.orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
+	}
+	
+	public User findUserById(String userId)
+	{
+		return userRepository.findById(userId)
 				.orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
 	}
 	
@@ -139,9 +145,16 @@ public class UserService
 		return 200;
 	}
 	
-
 	@Transactional
-	public Object changeUserFile()
+	public Object uploadUserFile(UserFileDto userFileDto)
+	{
+		
+		return 200;
+	}
+	
+	
+	@Transactional
+	public Object changeUserFile(UserFileDto userFileDto)
 	{
 		return 200;
 	}
