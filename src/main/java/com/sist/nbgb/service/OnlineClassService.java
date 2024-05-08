@@ -3,6 +3,7 @@ package com.sist.nbgb.service;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
+import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.entity.ClassId;
@@ -330,6 +333,18 @@ public class OnlineClassService {
 
         return savedFile.getOnlineClassId().getOnlineClassId();
     }
+	 
+	/*마이페이지 수강목록*/
+	@Transactional
+	public List<OnlinePaymentClassListDTO> userLectureList(String partnerUserId){
+		Sort sort = sortByDate();
+		return onlineClassRepository.userLectureList(partnerUserId, sort);
+	}
+	
+	private Sort sortByDate() {
+	    return JpaSort.unsafe(Sort.Direction.DESC, "approvedAt + o.onlineClassPeriod");
+	}
+	
 }
 	
 

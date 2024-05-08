@@ -1,15 +1,13 @@
 package com.sist.nbgb.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
-import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,30 +16,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.EmailChangeDto;
 import com.sist.nbgb.dto.EmailCheckDto;
-import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.dto.NicknameChangeDto;
 import com.sist.nbgb.dto.OfflinePaymentApproveDto;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
+import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserFileDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
+import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.OfflineService;
 import com.sist.nbgb.service.OnlineClassService;
 import com.sist.nbgb.service.SignupService;
 import com.sist.nbgb.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -258,19 +254,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
-    				.stream()
-    				.map(UserReviewDto::new)
-    				.collect(Collectors.toList());
-    		
-//    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
-//    				.stream().map(OnlineClassTitleDto::new).collect(Collectors.toList());
-    				
-    		
-    	//	List<OfflineResponse> offlineClassListDto = offlineService.
-    		
-    		
-        	model.addAttribute("userReviewDto", userReviewDto);
+    		List<OnlinePaymentClassListDTO> classes = onlineClassService.userLectureList(id);
+
+        	model.addAttribute("classes", classes);
     	}
     	
     	return "mypage/mypageLecture";

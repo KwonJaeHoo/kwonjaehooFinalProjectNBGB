@@ -3,14 +3,16 @@ package com.sist.nbgb.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.sist.nbgb.entity.OfflineClass;
+import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
+
 
 
 public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
@@ -44,4 +46,17 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	//찜 목록 추가 시 classId, classIden 가져오기
 	OnlineClass findFirstByonlineClassId(Long onlineClassId);
 	
+	//마이페이지 수강목록
+	@Query(value = "select p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, "
+			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
+			+ "from OnlinePaymentApprove p, OnlineClass o "
+			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and p.status in ('N', 'Y') ")
+	List<OnlinePaymentClassListDTO> userLectureList(@Param("partnerUserId")String partnerUserId , Sort sort);
+	
+	//수강정보 및 결제정보
+	@Query(value = "select p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, "
+			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
+			+ "from OnlinePaymentApprove p, OnlineClass o "
+			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and o.onlineClassId = :onlineClassId")
+	OnlinePaymentClassListDTO userLectureInfo(@Param("partnerUserId")String partnerUserId , @Param("onlineClassId")Long onlineClassId);
 }

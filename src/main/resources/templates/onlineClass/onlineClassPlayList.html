@@ -26,9 +26,9 @@
         </div>
         <div class="col-8">
           <p>[[${onlineClass.onlineClassTitle}]]</p>
-          <p>[[${onlineClass.instructorNickname}]]</p>
-          <p>2923.493/383 </p>
-          <p>223/435/555 </p>
+          <p>[[${onlineClass.instructorId.instructorNickname}]]</p>
+          <p>[[|${#temporals.format(onlineClass.approvedAt,'yyyy-MM-dd HH:mm')}|]]</p>
+          <p>[[|${#temporals.format(onlineClass.approvedAt.plusDays(onlineClass.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|]]</p>
         </div>
       </div>
     </div>

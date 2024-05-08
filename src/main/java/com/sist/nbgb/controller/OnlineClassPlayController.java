@@ -24,6 +24,7 @@ import com.sist.nbgb.dto.OnlineClassLogDTO;
 import com.sist.nbgb.dto.OnlineClassLogIdDTO;
 import com.sist.nbgb.dto.OnlineClassLogReqDTO;
 import com.sist.nbgb.dto.OnlineClassView;
+import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
 import com.sist.nbgb.entity.OnlineClassLog;
@@ -77,7 +78,7 @@ public class OnlineClassPlayController
 		if(user.getAuthority().equals(Role.ROLE_USER)) {
 						
 			//강의 조회
-			OnlineClass onlineClass = onlineClassService.findById(onlineClassId);
+			OnlinePaymentClassListDTO onlineClass = onlineClassPlayService.userLectureInfo(user.getUserId(), onlineClassId);
 			//강의 재생목록 조회
 			List<OnlineClassFileResponseDTO> classList = onlineClassPlayService.selectClassList(onlineClassId)
 					.stream().map(OnlineClassFileResponseDTO::new)
@@ -89,7 +90,7 @@ public class OnlineClassPlayController
 				map.put(Integer.parseInt(String.valueOf(log.getOnlineClassFile().getOnlineClassFileId().getOnlineFileId())),
 						String.valueOf(Math.round(Double.valueOf(log.getOnlineLogCurr()) /Double.valueOf(log.getOnlineClassFile().getOnlineClassFileId().getOnlineFileLength()) * 100.0)));
 			}
-			model.addAttribute("onlineClass", new OnlineClassView(onlineClass));
+			model.addAttribute("onlineClass", onlineClass);
 			model.addAttribute("classList", classList);
 			model.addAttribute("log", map);
 			
@@ -141,6 +142,7 @@ public class OnlineClassPlayController
 	
 	//온라인 강의 로그 추가(수강시작)
 	//해당 강의 회차에 데이터가 없을 시에만 insert
+	//결제데이터 상태 N -----------------> Y로 전환**********************
 	@ResponseBody
 	@PostMapping("/onlinePlay")
 	public ResponseEntity<OnlineClassLogDTO> onlinePlayLog(Principal principal, @RequestParam(value="onlineClassId", required=false) String onlineClassId,

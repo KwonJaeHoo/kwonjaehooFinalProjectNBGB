@@ -411,3 +411,42 @@ margin: 50px auto 30px auto;
     color:#89dd18;
 }
 
+
+
+/*마이페이지 수강목록*/
+.mypage-lectureImg img{
+	width:180px;
+	height:100px;
+}
+
+.list-item-lecture{
+	height:8em !important; 
+}
+.item-lecture-title{
+    font-size: 17.5px;
+    font-weight: 600;
+    color:rgb(101, 101, 101);
+}
+
+.my-lectureBtn{
+    padding:4px 8px;
+    border:#89dd18 solid 3px;
+    border-radius: 1ch;
+    background-color: #89dd18;
+    color:white;
+}
+    .my-lectureBtn:hover{
+        background-color: white;
+        color:#89dd18;
+        border:#89dd18 solid 3px;
+    }
+    .my-lectureBtn:disabled{
+    	background-color: #BDBDBD;
+        color:white;
+        border:#BDBDBD solid 3px;
+   	}
+   	.my-lectureBtn:focus{
+	outline:none;
+} 
+
+

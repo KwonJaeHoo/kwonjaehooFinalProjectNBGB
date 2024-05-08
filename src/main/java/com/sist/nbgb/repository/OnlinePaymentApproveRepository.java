@@ -16,4 +16,5 @@ public interface OnlinePaymentApproveRepository extends JpaRepository<OnlinePaym
 	LocalDateTime findApproveAt(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId);
 	
 	List<OnlinePaymentApprove> findAllByPartnerUserId(String partnerUserId);
+	
 }
