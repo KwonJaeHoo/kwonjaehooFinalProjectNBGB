@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -48,7 +49,9 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
 import com.sist.nbgb.entity.Review;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.response.UserResponse;
 import com.sist.nbgb.service.OnlineClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -149,6 +152,7 @@ public class OnlineClassController {
 		
 		Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		log.info("이게멀까?@@!!!!!!!!!!!!!!!!!!!!!!! 권한:" + auth);
+		Optional<User> user = null;
 		
 		//페이징 안한 리뷰목록
 		List<OnlineReviewDTO> reviewList = onlineClassService.findOnReview(onlineClassId, "ON", Status.Y)
@@ -219,6 +223,9 @@ public class OnlineClassController {
 					payStatus = "Y";
 				}
 			}
+			
+			user = onlineClassService.findByUserId(userId);
+			
 		}
 		
 		model.addAttribute("onlineClass", new OnlineClassView(onlineClass));
@@ -231,6 +238,7 @@ public class OnlineClassController {
 		model.addAttribute("likeDto", new ClassLikeDTO());
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("auth", auth);
+		model.addAttribute("user", user.get());
 		
 		return "onlineClass/onlineClassView";
 	}

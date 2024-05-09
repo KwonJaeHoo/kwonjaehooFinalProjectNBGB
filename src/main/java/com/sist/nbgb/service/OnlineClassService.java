@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -442,6 +443,11 @@ public class OnlineClassService {
 		return fileRepository.deleteFile(onlineClassId, fileId);
 	}
 	
+	//user 찾기
+	public Optional<User> findByUserId(String userId)
+	{
+		return userRepository.findByUserId(userId);
+	}
 }
 	
 

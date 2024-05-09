@@ -413,6 +413,15 @@ var formData = new FormData();
       <!--footer-->
    <!--채팅/맨 위로 버튼-->
    
+   <form name="payForm" id="payForm" method="post">
+			<input type="hidden" id="onlineClassPrice" name="onlineClassPrice" th:value="${onlineClass.onlineClassPrice}" />
+			<input type="hidden" id="userPoint" name="userPoint" th:value="${user.userPoint}" />
+			<input type="hidden" id="userId" name="userId" th:value="${user.userId}" />
+			<input type="hidden" id="onlineClassId" name="offlineClassId" th:value="${onlineClass.onlineClassId}" />
+			<input type="hidden" id="onlineClassTitle" name="onlineClassTitle" th:value="${onlineClass.onlineClassTitle}" />
+			<input type="hidden" id="onlineClassPeriod" name="onlineClassPeriod" th:value="${onlineClass.onlineClassPeriod}">
+			<input type="hidden" id="totalAmount" name="totalAmount" th:value="${onlineClass.onlineClassPrice}">
+		  </form>
    <div th:replace="import/jsImport.html :: js-import"></div>
   <script src="/js/carousel.js"></script>
   <script src="/js/onlineView.js"></script>
@@ -447,47 +456,19 @@ var formData = new FormData();
       }    
   }
   
-	function fnPay() {
-		var data = {
-	    	classId:$("#idValue").val(),
-	    	onlineClassTitle:$("#titleVal").val(),
-	    	onlineClassPeriod:$("#periodVal").val(),
-	    	onlineClassPrice:$("#priceVal").val()
-	    }
+function fnPay() {    
+	//var win = window.open('/online/pay', '/online/pay',
+  	//'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
 
-		formData.append('data', new Blob([JSON.stringify(data)], {type: "application/json"}));
-			
-		    $.ajax({
-		    	type:"POST",
-		    	url:"/online/likeBefore",
-		    	data:data,
-		    	datatype:"JSON",
-		    	processData:false,
-		    	contentType:false,
-		    	cache:false,
-		    	beforeSend:function(xhr){
-		    		xhr.setRequestHeader("AJAX", "true");
-		    	},
-		    	success:function(response){
-		    		if(response.code == 7){
-		    			alert("로그인 후 이용가능합니다.");
-		    		} else if(response.code == 8){
-		    			alert("찜은 일반 회원만 가능합니다.");
-		    		} else {
-    		    		alert("찜 목록에 담겼습니다.");
-    		    		window.location.reload(true);
-    		    		//location.href = "redirect:/"//"/online/"+classId;
-		    		}
-		    	},
-		    	error:function(xhr, status, error){
-		    		alert("오류가 발생했습니다.");
-		    	}
-		    });
-		
-	    
-		var win = window.open('/online/pay', '/online/pay',
-	  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
-	}
+	var payPop = document.payForm;
+	var url = '/online/pay';
+	
+	window.open('','pay','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
+
+	payPop.action = url;
+	payPop.target = 'pay';
+	payPop.submit();
+}
 	
 $(document).ready(function(){
 	$("#btnPay").click(function(){
