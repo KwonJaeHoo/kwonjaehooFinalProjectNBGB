@@ -13,7 +13,6 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	
 	//페이지
 	let first_input = $("div").find(".first-input");
 	let hidden_input = $("div").find(".input__block").find("#repeat__password");
@@ -41,14 +40,32 @@ $(document).ready(function(){
       }
    });
    
+   //이미지 첨부 
+   target=document.getElementById('onlineFile');
+   target.addEventListener('change',function(){ // change 함수
+		
+		if(target.value.length){ // 파일 첨부인 상태일경우 파일명 출력
+			$('#beforeFilename').html(target.files[0].name);
+			$('#beforeImage').remove("");
+		}else{ //버튼 클릭후 취소(파일 첨부 없을 경우)할때 파일명값 안보이게
+			$('#beforeFilename').html("");
+		}
+		
+	});
+   
    //동영상 파일 첨부
-   var i=2;
+   var i=$('#lastIdx').val();
+   console.log("idx:"+i);
+   if(i > 1){
+	   $('#fileDel').css('display', 'block');
+   }
 	
 	$("#fileAdd").click(function() {
+		i++;
 		var addBox =
 			`<tr class="nemo${i}">
 			<td rowspan="2" style="width:50px;text-align:center;">${i}강</td>
-			<td><input type="file" class="filebox filebox2" id="files${i}" name="files${i}" /></td>
+			<td><input type="file" class="filebox filebox2" id="files${i}" name="files${i}" onchange="fn_change(${i})"/></td>
 			</tr>
 			<tr id="new${i}" class="nemo${i}">
 			<td><textarea rows="5" cols="90" id="onlineVideoContent${i}" name="onlineVideoContent${i}" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요."></textarea></td>
@@ -57,7 +74,7 @@ $(document).ready(function(){
 			$('#fileDel').css('display', 'block');
 			
 			if(i==2){
-				$('#new').after(addBox);
+				$('#new1').after(addBox);
 			} else if(i==11){
 				alert("강의는 최대 10개까지 등록 가능합니다.");
 				return;
@@ -65,20 +82,21 @@ $(document).ready(function(){
 				$('#new'+(i-1)).after(addBox);
 			}
 	   		
-			i++;
+			console.log("addidx:"+i);
 	  });
 
 	$("#fileDel").click(function(){
-		if(i==2){
-			$('#new').remove();
-		} else if(i==3){
-			$('.nemo'+(i-1)).remove();
+		if(i == 2){
+			$('.nemo'+i).remove();
 			$('#fileDel').css('display', 'none');
 		} else {
-			$('.nemo'+(i-1)).remove();
+			$('.nemo'+i).remove();
 		}
-	
+		console.log(i+"강을 지우다");
+		fn_del(i);
 		i--;
+		
+		console.log("delidx:"+i);
 	});
 	    
    //글작성
@@ -158,13 +176,6 @@ $(document).ready(function(){
 			return;
 		}
 		
-		if($('#onlineFile').val() == "")
-		{
-			alert("다음 페이지에서 대표사진을 등록해주세요.");
-			$("#btnSubmit").prop("disabled", false);
-		    return;
-		}
-		
 		var fileVal = $("#onlineFile").val();
 		
 	    if(fileVal != "")
@@ -186,17 +197,26 @@ $(document).ready(function(){
 	    formData.append('onlineFile', onlineFile);
 	    
 	    //동영상 첨부
+	    var idxList = [];
 		for (var z = 1; z <= 10; z++) {
 		    var fileInput = document.getElementById("files" + z);
 		    if (fileInput) {
-		        var files = fileInput.files;
+		    	var files = fileInput.files;
 		        for (var i = 0; i < files.length; i++) {
 		            formData.append('files', files[i]);
-		            console.log("files:"+files);
+		            console.log("files:"+files[i].name);
+		            idxList.push(z);
+			        console.log("idxList:"+idxList);
 		        }
+		        
 		    }
+		    console.log("formdata:"+formData);
 		}
-
+		
+		idxList.forEach(function(content, index) {
+	       formData.append('idxList', content);
+		});
+		 
 		var fileContentList = [];
 	    fileContentList.push($("#onlineVideoContent1").val());
 	    for (var z = 2; z <= 10; z++) {
@@ -207,7 +227,6 @@ $(document).ready(function(){
 		       }
 		   }
 	   }
-	    
 	   fileContentList.forEach(function(content, index) {
 	       formData.append('fileContent', content);
 	   });
@@ -222,21 +241,21 @@ $(document).ready(function(){
 	   console.log("갯수:"+fileContentList.length);
 	   */
 	    
-	    var onlinePostDto = {
+	    var onlineUpdateDto = {
 	    		onlineClassTitle:$("#onlineClassTitle").val(),
-	    		instructorId:$("#instId").val(),
-	    		onlineClassLimitPeople:$("#onlineClassLimitPeople").val(),
 	    		onlineCategoryId:$("#onlineCategory").val(),
 	    		onlineClassPrice:$("#onlineClassPrice").val(),
 	    		onlineClassPeriod:$("#onlineClassPeriod").val(),
 	    		onlineClassContent:onlineClassContent
 	    }
 	    
-	    formData.append('onlinePostDto', new Blob([JSON.stringify(onlinePostDto)], {type: "application/json"}));
+	    formData.append('onlineUpdateDto', new Blob([JSON.stringify(onlineUpdateDto)], {type: "application/json"}));
 	    
+	   var onlineClassId = $("#idVal").val();
+	   
 	    $.ajax({
-	    	type:"POST",
-	    	url:"/online/write/post",
+	    	type:"PATCH",
+	    	url:"/online/update/post/"+onlineClassId,
 	    	enctype:"multipart/form-data",
 	    	data:formData,
 	    	processData:false,
@@ -246,8 +265,14 @@ $(document).ready(function(){
 	    		xhr.setRequestHeader("AJAX", "true");
 	    	},
 	    	success:function(response){
-	    		alert("등록 되었습니다.\n관리자 확인 후 게시글이 업로드됩니다.");
-	    		location.href = "/onlineClass";
+	    		if(response == 1) {
+	    			alert("수정 되었습니다.\n관리자 확인 후 게시글이 업로드됩니다.");
+	    			//location.href = "/onlineClass";
+	    		} else if(reponse == -1){
+	    			alert("대표 이미지 삭제 오류");
+	    		} else {
+	    			alert("오류가 발생했습니다. 잠시 후 다시 시도하세요.");
+	    		}
 	    	},
 	    	error:function(xhr, status, error){
 	    		alert("오류가 발생했습니다.");
@@ -264,6 +289,40 @@ function fn_number(value)
 	
 	return num.test(value)
 }
+
+//동영상 파일 수정
+function fn_change(i) {
+	$('#beforeName'+i).html("");
+	document.getElementById('files'+i).classList.remove('beforeFile');
+}
+
+//동영상 파일 삭제
+function fn_del(onlineFileId) {
+	var onlineClassId = $("#idVal").val();
+	$.ajax({
+    	type:"DELETE",
+    	url:"/online/update/post/"+onlineClassId+"/"+onlineFileId,
+    	enctype:"multipart/form-data",
+    	//data:{"onlineFileId":id},
+    	processData:false,
+    	contentType:false,
+    	cache:false,
+    	beforeSend:function(xhr){
+    		xhr.setRequestHeader("AJAX", "true");
+    	},
+    	success:function(response){
+    		if(response == 1) {
+    			alert("삭제함");
+    			//location.href = "/onlineClass";
+    		} else {
+    			alert("오류가 발생했습니다. 잠시 후 다시 시도하세요.");
+    		}
+    	},
+    	error:function(xhr, status, error){
+    		alert("오류가 발생했습니다.");
+    	}
+    });
+}
 </script>
 </head>
 <body>
@@ -275,25 +334,26 @@ function fn_number(value)
         
         	<div class="col-lg-8 w-100 ftco-animate">
     
-	<h2 class="mb-3" style="text-align:center;">온라인 클래스 등록 신청</h2>
+	<h2 class="mb-3" style="text-align:center;">온라인 클래스 수정 신청</h2>
 	<form id="onlineForm" name="onlineForm" method="POST" onsubmit="return false;" enctype="multipart/form-data">
-	<input type="hidden" th:id="instId" th:value=${inst.instructorId}/>
+	<input type="hidden" th:id="instId" th:value="${inst.instructorId}" />
+	<input type="hidden" th:id="idVal" th:value="${onlineClass.onlineClassId}" />
 		<div id="page1" class="mb-2">
 		<h6 style="float:right">1/2</h6>
 			<table class="tb mb-2" border="1">
 			<tr>
 				<td class="tt" style="border-radius: 10px 0 0 0;">제목</td>
-				<td><input type="text" class="pl-1" name="onlineClassTitle" id="onlineClassTitle" placeholder="제목을 입력하세요" /></td>
+				<td><input type="text" class="pl-1" name="onlineClassTitle" id="onlineClassTitle" placeholder="제목을 입력하세요" th:value="${onlineClass.onlineClassTitle}" /></td>
 			</tr>
 			<tr>
 				<td class="tt">카테고리</td>
 				<td><select name="onlineCategory" id="onlineCategory" style="border:none;outline:none;">
-				    <option value="select">카테고리</option>
-				    <option value="1">건강 심성</option>
-				    <option value="2">레저생활 스포츠</option>
-				    <option value="3">생활문화예술</option>
-				    <option value="4">문화예술향상</option>
-				    <option value="5">기능적 소양</option>
+				    <option th:selected="${onlineClass.onlineCategoryId.onlineCategoryId} == 'select'" th:value="select">카테고리</option>
+				    <option th:selected="${onlineClass.onlineCategoryId.onlineCategoryId} == '1'" th:value="1">건강 심성</option>
+				    <option th:selected="${onlineClass.onlineCategoryId.onlineCategoryId} == '2'" th:value="2">레저생활 스포츠</option>
+				    <option th:selected="${onlineClass.onlineCategoryId.onlineCategoryId} == '3'" th:value="3">생활문화예술</option>
+				    <option th:selected="${onlineClass.onlineCategoryId.onlineCategoryId} == '4'" th:value="4">문화예술향상</option>
+				    <option th:selected="${onlineClass.onlineCategoryId.onlineCategoryId} == '5'" th:value="5">기능적 소양</option>
 				    </select>
 				</td>
 			</tr>
@@ -303,15 +363,15 @@ function fn_number(value)
 			</tr>
 			<tr>
 				<td class="tt">수강 기간</td>
-				<td><input type="text" class="pl-1" id="onlineClassPeriod" name="onlineClassPeriod" placeholder="수강 기간을 입력하세요" style="width:160px">(일)</td>
+				<td><input type="text" class="pl-1" id="onlineClassPeriod" name="onlineClassPeriod" placeholder="수강 기간을 입력하세요" style="width:160px" th:value="${onlineClass.onlineClassPeriod}">(일)</td>
 			</tr>
 			<tr>
 				<td class="tt" style="border-radius:0 0 0 10px;">가격</td>
-				<td><input type="text" class="pl-1" id="onlineClassPrice" name="onlineClassPrice" placeholder="가격을 입력하세요" style="width:160px">(원)</td>
+				<td><input type="text" class="pl-1" id="onlineClassPrice" name="onlineClassPrice" placeholder="가격을 입력하세요" style="width:160px" th:value="${onlineClass.onlineClassPrice}">(원)</td>
 			</tr>
 			</table>
 			
-			<textarea rows="5" cols="50" id="editor" name="editor" placeholder="내 클래스를 잘 나타낼 수 있는 내용을 입력하세요. 예) 클래스 소개, 수강 효과, 추천 대상, 커리큘럼, 강사 소개 등"></textarea>
+			<textarea rows="5" cols="50" id="editor" name="editor" placeholder="내 클래스를 잘 나타낼 수 있는 내용을 입력하세요. 예) 클래스 소개, 수강 효과, 추천 대상, 커리큘럼, 강사 소개 등" th:text="${onlineClass.onlineClassContent}"></textarea>
 			
 	</div>
 	
@@ -320,10 +380,14 @@ function fn_number(value)
 		<table class="tb mb-2" border="1">
 		<!-- 대표 사진 첨부-->
 		<tr>
-			<td class="tt" style="border-radius: 10px 10px 0 0;">대표 이미지</td></tr>
+			<td class="tt" style="border-radius: 10px 10px 0 0;">기존 대표 이미지</td>
+		</tr>
 		<tr>
 			<td class="insert pt-2" style="border-radius: 0 0 10px 10px;">
-		        <input type="file" class="filebox" id="onlineFile" name="onlineFile" />	
+				<img th:src="@{'/images/onlineThumbnail/'+${onlineClass.onlineClassId}+'.jpg'}" alt="이미지없음" th:id="beforeImage" class="img-fluid mt-2">
+		       <input type="file" class="filebox pt-1 beforeFile" id="onlineFile" name="onlineFile" /><span id="beforeFilename" style="color:black;" >대표 이미지 수정하려면 새로 파일을 첨부해주세요 </span>
+		       
+		        
 		    </td>
 		</tr>
 		</table>
@@ -333,13 +397,22 @@ function fn_number(value)
 	</div>
 
 	<table class="tb" border="1">
-		<tr>
-			<td rowspan="2" style="width:50px;text-align:center;">1강</td>
-			<td><input type="file" class="filebox filebox2" id="files1" name="files1"/></td>
+		<div th:each="classFile, idx : ${classFile}">
+		<tr th:class="${'nemo'+idx.count}">
+			<td rowspan="2" style="width:50px;text-align:center;">[[${idx.count}]]강
+			<input type="hidden" th:value="${idx.count}"/></td>
+			<td><input type="file" class="filebox filebox2 beforeFile" th:id="${'files'+idx.count}" th:name="${'files'+idx.count}" th:onchange="fn_change([[${idx.count}]])"/>
+			<span th:id="${'beforeName'+idx.count}" style="color:black;" th:text="${classFile.onlineFileOrgName}"></span>
+			</td>
 		</tr>
-		<tr id="new">
-			<td><textarea id="onlineVideoContent1" name="onlineVideoContent1" rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요." maxlength="100"></textarea></td>
+		<tr th:if="${idx.last}" th:id="${'new'+idx.count}" th:class="${'nemo'+idx.count}">
+			<td><textarea th:id="${'onlineVideoContent'+idx.count}" th:name="${'onlineVideoContent'+idx.count}"  rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요." maxlength="100" th:text="${classFile.onlineFileContent}"></textarea>
+			<input type="hidden" th:id="lastIdx" th:value="${idx.count}"/></td>
 		</tr>
+		<tr th:unless="${idx.last}" th:id="${'new'+idx.count}" th:class="${'nemo'+idx.count}">
+			<td><textarea th:id="${'onlineVideoContent'+idx.count}" th:name="${'onlineVideoContent'+idx.count}"  rows="5" cols="90" style="border:none;outline:none;" placeholder=" 강의 설명을 입력하세요." maxlength="100" th:text="${classFile.onlineFileContent}"></textarea></td>
+		</tr>
+		</div>
 		<!-- 이 위치에 추가/삭제되도록 -->
 	</table>
 		<div class="d-flex justify-content-end m-3">

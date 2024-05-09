@@ -328,3 +328,9 @@ td input:focus {
 	border-style: soild;
 }
 
+.beforeFile {
+	width:75px;
+	height:35px;
+	overflow:hidden;
+	border:0;
+}

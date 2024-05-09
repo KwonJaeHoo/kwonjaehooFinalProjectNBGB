@@ -149,6 +149,8 @@ var formData = new FormData();
                 <button th:if="${payStatus} == 'N'" class="box" id="btnPay">지금 바로 시작하기</button>
                 <!--강의 들으러 가기-->
                 <h6 class="ml-3 d-flex align-items-center" style="height: 50px;" >[[${onlineClass.onlineClassPeriod}]]일 [[${#numbers.formatInteger(onlineClass.onlineClassPrice, 1, 'COMMA')}]]원</h6>
+              	<input type="hidden" th:id="periodVal" th:value="${onlineClass.onlineClassPeriod}"/>
+              	<input type="hidden" th:id="priceVal" th:value="${onlineClass.onlineClassPrice}" />
               </div>
               <div class="d-flex justify-content-end align-items-center" style="height: 50px;">
                 <button class="box2" style="pointer-events : none;">별점<br/>
@@ -446,6 +448,43 @@ var formData = new FormData();
   }
   
 	function fnPay() {
+		var data = {
+	    	classId:$("#idValue").val(),
+	    	onlineClassTitle:$("#titleVal").val(),
+	    	onlineClassPeriod:$("#periodVal").val(),
+	    	onlineClassPrice:$("#priceVal").val()
+	    }
+
+		formData.append('data', new Blob([JSON.stringify(data)], {type: "application/json"}));
+			
+		    $.ajax({
+		    	type:"POST",
+		    	url:"/online/likeBefore",
+		    	data:data,
+		    	datatype:"JSON",
+		    	processData:false,
+		    	contentType:false,
+		    	cache:false,
+		    	beforeSend:function(xhr){
+		    		xhr.setRequestHeader("AJAX", "true");
+		    	},
+		    	success:function(response){
+		    		if(response.code == 7){
+		    			alert("로그인 후 이용가능합니다.");
+		    		} else if(response.code == 8){
+		    			alert("찜은 일반 회원만 가능합니다.");
+		    		} else {
+    		    		alert("찜 목록에 담겼습니다.");
+    		    		window.location.reload(true);
+    		    		//location.href = "redirect:/"//"/online/"+classId;
+		    		}
+		    	},
+		    	error:function(xhr, status, error){
+		    		alert("오류가 발생했습니다.");
+		    	}
+		    });
+		
+	    
 		var win = window.open('/online/pay', '/online/pay',
 	  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
 	}

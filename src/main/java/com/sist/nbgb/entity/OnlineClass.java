@@ -87,4 +87,16 @@ public class OnlineClass
 	@Comment("온라인 강의 조회수")
 	private Long onlineClassViews;
 	
+	public void update(String title, String content, Long cate, Long period, Long price, String rejection) {
+		this.onlineClassTitle = title;
+		this.onlineClassContent = content;
+		OnlineCategory category = OnlineCategory.builder().onlineCategoryId(cate).build();
+		this.onlineCategoryId = category;
+		this.onlineClassPeriod = period;
+		this.onlineClassPrice = price;
+		this.rejection = rejection;
+		this.onlineClassApprove = Status.N;
+		this.rejectionRegdate = LocalDateTime.now();
+	}
 }
+

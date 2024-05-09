@@ -15,15 +15,15 @@
      			<li class="menu-item">
        				<a th:href="@{/user/mypage/{id}/payment (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>결제내역</a>
      			</li>
-         		<li class="menu-item">
-       				<a><span class="icon-check2"></span>수강목록</a>
+         		<li class="menu-item" >
+       				<span style="color:#89dd18;"><span class="icon-check2" style="color:#89dd18;"></span>수강목록</span>
      			</li>
      			<ol>
        				<li><a th:href="@{/user/mypage/{id}/onlinelecturelist (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 내방 수강 목록</a></li>
        				<li><a th:href="@{/user/mypage/{id}/offlinelecturelist (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 공방 수강 목록</a></li>
      			</ol>
      			<li class="menu-item">
-       				<a><span class="icon-check2"></span>찜 목록</a>
+       				<span style="color:#89dd18;"><span class="icon-check2" style="color:#89dd18;"></span>찜 목록</span>
      			</li>
      			<ol>
        				<li><a th:href="@{/user/mypage/{id}/onlinelikelist (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 내방 찜 목록</a></li>
