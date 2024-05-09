@@ -96,6 +96,7 @@ public class AdminController {
 	@PostMapping("/admin/roleUser")
 	public ResponseEntity<User> roleUser(@RequestParam("userId") String userId,
 										 @RequestParam("Authority") String Authority) {
+		return null;
 	}
 	
 	//강사회원 리스트 불러오기
