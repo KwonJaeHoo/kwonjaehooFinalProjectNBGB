@@ -5,10 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> c85882fb4dccfb129882f7997e656f03624e1d27
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -321,11 +318,7 @@ public class UserController
     
     
     @GetMapping("/mypage/{id}/onlinelecturelist")
-<<<<<<< HEAD
-    public String mypageUserLecture(Model model, @PathVariable String id)
-=======
     public String mypageUserOnlineLecture(Model model, @PathVariable String id)
->>>>>>> c85882fb4dccfb129882f7997e656f03624e1d27
     {
     	if(id != null)
     	{
@@ -347,9 +340,6 @@ public class UserController
     	
     	return "mypage/mypageOnlineLectureList";
     }
-<<<<<<< HEAD
-
-=======
     
     @GetMapping("/mypage/{id}/offlinelecturelist")
     public String mypageUserOfflineLecture(Model model, @PathVariable String id)
@@ -394,7 +384,6 @@ public class UserController
     	return "mypage/mypageOfflineLikeList";
     }
     
->>>>>>> c85882fb4dccfb129882f7997e656f03624e1d27
     @GetMapping("/mypage/{id}/review")
     public String mypageUserReview(Model model, @PathVariable String id)
     {
