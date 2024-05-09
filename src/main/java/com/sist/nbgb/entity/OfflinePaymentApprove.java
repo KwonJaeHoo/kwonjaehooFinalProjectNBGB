@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.sist.nbgb.enums.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -73,4 +75,7 @@ public class OfflinePaymentApprove
 	@Comment("결제날짜")
 	private LocalDateTime approvedAt;
 	
+	@Column(columnDefinition = "CHAR(1)")
+	@Comment("상태(결제취소:N,결제:Y,데이터부족:S)")
+	private String status;
 }

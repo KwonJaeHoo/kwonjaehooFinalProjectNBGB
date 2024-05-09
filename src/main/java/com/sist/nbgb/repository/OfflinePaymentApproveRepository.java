@@ -1,5 +1,6 @@
 package com.sist.nbgb.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,9 @@ int deleteByPartnerOrderId(String orderId);
 			+ ", tid = :tid "
 			+ ", taxFreeAmount = 0 "
 			+ ", approvedAt = SYSDATE "
+			+ ", status = 'Y' "
 			+ "WHERE partnerOrderId = :orderId")
-	int updatePay(@Param("orderId") String orderId, @Param("tid") String tId, @Param("cid") String cid );
+	int updatePay(@Param("orderId") String orderId, @Param("tid") String tId, @Param("cid") String cid);
 	
 	@Query("SELECT COUNT(partner_order_id) "
 			+ "FROM OfflinePaymentApprove "
@@ -33,4 +35,13 @@ int deleteByPartnerOrderId(String orderId);
 			+ "AND bookingDate = :date "
 			+ "AND bookingTime = :time ")
 	Long countPeople(@Param("classId") String classId, @Param("date") String date, @Param("time") String time);
+	
+	//시간 찾기
+	@Query("SELECT DISTINCT bookingTime "
+			+ "FROM OfflinePaymentApprove "
+			+ "WHERE itemCode = :offlineClassId "
+			+ "AND bookingDate = :date")
+	ArrayList<String> timeList(@Param("offlineClassId") String offlineClassId, @Param("date") String date);
+	
+	List<OfflinePaymentApprove> findByBookingDateAndBookingTimeAndItemCode(String bookingDate, String bookingTime, String itemCode);
 }

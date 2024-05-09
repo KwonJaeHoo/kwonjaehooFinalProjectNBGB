@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<script src="/js/kjsMyPage.js"></script>
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+
+<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">마이페이지</h1>
+    	<p class="sub-title" style="color:gray;">공방 신청 목록</p>
+  	</div>
+
+	<section class="ftco-animate my-4" >     	
+     	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}" class=" list-area">
+			<p th:insert="import/mypageInstructorImport.html :: mypageInstructor-import"></p>
+
+      		<div class="list-container">
+      			<div class="container list-section">
+				    <div class="row mb-4 list-title-calender">
+				    	<div style="height: auto;">
+	          				<h5 id="titleVal" style="color:white; margin-bottom: 0px; text-shadow:1px 1px 1px gray;">[[${offlineClass.offlineClassTitle}]]</h5>
+	          			</div>
+       				</div>
+        		</div>
+      		
+        		<div class="container list-section">
+	        		<div class="list-item" style="height: 450px;">
+	        			<div class="list-item-title kjs" style="margin-bottom:10px;">
+	        				<h6 style="color:black; margin-bottom: 0px;">-강의 일자</h6>
+	        			</div>
+	            			<div class="calendar">
+							    <div class="calendar_header"><i class="icon-chevron-left"></i>          <h1></h1><i class="icon-chevron-right"></i>         </div>
+							    <div class="calendar_weekdays"></div>
+							    <div class="calendar_content"></div>
+						    </div>
+          			</div>
+        		</div><br />
+        		
+        		<div class="container list-section" id="payList" style="display:none;">
+        			<div class="list-item-title kjs" id="sinchoung"  style="display:none;">
+        				<h6 style="color:black; margin-bottom: 0px;">-신청 명단</h6>
+        			</div>
+        			<div id="offtime">
+        				
+        			</div>
+        			<div id="list">
+        			</div>
+       			</div>
+       		</div>
+  <input type="hidden" name="offlineClassId" id="offlineClassId" th:value="${offlineClass.offlineClassId}"/>
+      		</div>
+     	</div>
+	</section><br />
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

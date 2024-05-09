@@ -212,6 +212,7 @@ public class OfflineService
 				.bookingTime(payDto.getResTime())
 				.point(Long.parseLong(payDto.getUsedPoint()))
 				.totalAmount(Long.parseLong(payDto.getTotalAmount()))
+				.status("S")
 				.build();
 
 		 // 저장 후에 offlineClassId 값을 가져옵니다.

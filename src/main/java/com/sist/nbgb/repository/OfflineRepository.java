@@ -87,4 +87,7 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	
 	//마이페이지 페이징
 	Page<OfflineClass> findByInstructorId(Pageable pageable, Instructors instructorId);
+	
+	//마이페이지 페이징
+	Page<OfflineClass> findByInstructorIdAndOfflineClassApprove(Pageable pageable, Instructors instructorId, Status onlineClassApprove);
 }
