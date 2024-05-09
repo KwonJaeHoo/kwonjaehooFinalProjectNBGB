@@ -18,6 +18,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OnlinePaymentApproveDto 
 {
+	//가맹점 코드(고정값)
+	private String cid;
+	
+	//결제 고유번호(20자,카카오 제공)
+	private String tid;
+	
 	private String partnerOrderId;
 	
 	private String partnerUserId;
@@ -29,6 +35,8 @@ public class OnlinePaymentApproveDto
 	private Long point;
 	
 	private Long totalAmount;
+	
+	private Long taxFreeAmount;
 	
 	private LocalDateTime approvedAt;
 	
@@ -44,5 +52,19 @@ public class OnlinePaymentApproveDto
 		this.totalAmount = onlinePaymentApprove.getTotalAmount();
 		this.approvedAt = onlinePaymentApprove.getApprovedAt();
 		this.status = onlinePaymentApprove.getStatus();
+	}
+	
+	public static OnlinePaymentApproveDto toDto(OnlinePaymentApprove approve) {
+		return OnlinePaymentApproveDto.builder()
+				.cid(approve.getCid())
+				.tid(approve.getTid())
+				.partnerOrderId(approve.getPartnerOrderId())
+				.partnerUserId(approve.getPartnerUserId())
+				.itemCode(approve.getItemCode())
+				.itemName(approve.getItemName())
+				.point(approve.getPoint())
+				.taxFreeAmount(approve.getTaxFreeAmount())
+				.approvedAt(approve.getApprovedAt())
+				.build();
 	}
 }

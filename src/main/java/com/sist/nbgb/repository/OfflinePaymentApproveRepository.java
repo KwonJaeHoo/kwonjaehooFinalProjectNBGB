@@ -14,7 +14,7 @@ public interface OfflinePaymentApproveRepository extends JpaRepository<OfflinePa
 {
 	List<OfflinePaymentApprove> findAllByPartnerUserId(String userId);
 	
-int deleteByPartnerOrderId(String orderId);
+	int deleteByPartnerOrderId(String orderId);
 	
 	Optional<OfflinePaymentApprove> findAllByPartnerOrderId(String orderId);
 	

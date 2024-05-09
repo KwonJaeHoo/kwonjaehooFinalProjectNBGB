@@ -34,12 +34,78 @@ $(document).ready(function(){
         	return;
         }
         
-        $('#ab').text(ab.toLocaleString());
-        $('#usedPoint').val($('#usePoint').val().toLocaleString());
-        var tmp = ab.toLocaleString()+"원";
-        $('#totalAmount').val(tmp);
-        
+        $('#ab').text(ab.toLocaleString()+"원");
+        $('#usedPoint').val($('#usePoint').val());
+        $('#totalAmount').val(ab);
       });
+	
+	$("#btnPay").on("click", function(){		
+		var formData = new FormData();
+	    
+	    var onlinePayBeforeDto = {
+	    		userId:$("#userId").val(),
+			    userPoint:$("#userPoint").val(),
+			    onlineClassId:$("#onlineClassId").val(),
+			    onlineClassTitle:$("#onlineClassTitle").val(),
+			    onlineClassPeriod:$("#onlineClassPeriod").val(),
+			    usedPoint:$("#usedPoint").val(),
+			    totalAmount:$("#totalAmount").val()
+	    }
+	    
+	    formData.append('onlinePayBeforeDto', new Blob([JSON.stringify(onlinePayBeforeDto)], {type: "application/json"}));
+		
+		var onlinePayBeforeDto = document.payForm;
+		
+		$("#btnPay").prop("disabled", true);
+		
+		$.ajax({
+			type:"POST",
+			url:"/online/payReady",
+			data:formData,
+			dataType:"JSON",
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+			beforeSend:function(xhr){
+				xhr.setRequestHeader("AJAX", "true");
+			},
+			success:function(response){
+				if(response.code == 0)
+				{
+					var tId = response.tid;
+					var pcUrl = response.next_redirect_pc_url;
+					var orderId = response.orderId;
+					
+					console.log("log : " + orderId);
+					console.log("tId : " + tId);
+					
+					 $(".tid").val(tId);
+					 $(".pcUrl").val(pcUrl);
+					 $(".orderId").val(orderId);
+					 
+					 console.log("log2 : " + $(".pcUrl").val());
+					 
+					 var win = window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=650,left=100,top=100');
+					 
+					 setTimeout(function(){top.window.opener = top;top.window.open('','_parent','');top.window.close();});
+					 
+					 document.kakaoForm.action="/online/payPopUp"
+					 document.kakaoForm.submit();
+				   
+				     $("#btnPay").prop("disabled", false);
+				}
+				else
+				{
+					alert("오류가 발생하였습니다.");
+					$("#btnPay").prop("disabled", false);
+				}
+			},
+			error:function(xhr, status, error){
+				alert("오류가 발생했습니다.");
+			}
+		});
+	});
+	
 }); //ready
 </script>
 </head>

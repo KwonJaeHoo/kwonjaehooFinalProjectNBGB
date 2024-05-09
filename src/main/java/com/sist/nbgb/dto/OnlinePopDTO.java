@@ -10,13 +10,15 @@ public class OnlinePopDTO {
 	private String onlineClassTitle;
 	private String onlineClassPrice;
 	private String onlineClassPeriod;
+	private String totalAmount;
 	
 	public OnlinePopDTO(String userId,
 						String userPoint,
 						String onlineClassId,
 						String onlineClassTitle,
 						String onlineClassPrice,
-						String onlineClassPeriod)
+						String onlineClassPeriod,
+						String totalAmount)
 	{
 		this.userId = userId;
 		this.userPoint =userPoint;
@@ -24,5 +26,6 @@ public class OnlinePopDTO {
 		this.onlineClassTitle = onlineClassTitle;
 		this.onlineClassPrice = onlineClassPrice;
 		this.onlineClassPeriod = onlineClassPeriod;
+		this.totalAmount = totalAmount;
 	}
 }

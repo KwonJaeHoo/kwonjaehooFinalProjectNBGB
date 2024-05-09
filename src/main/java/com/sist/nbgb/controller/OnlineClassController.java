@@ -210,7 +210,7 @@ public class OnlineClassController {
 			}
 			
 			//강의 결제 관련
-			LocalDateTime approvedAt = onlineClassService.findApproveAt(str, userId);
+			LocalDateTime approvedAt = onlineClassService.findApproveAt(str, userId).get(0);
 			//강의 수강 기간
 			long period = onlineClass.getOnlineClassPeriod();
 			//강의 들을 수 있는 날짜

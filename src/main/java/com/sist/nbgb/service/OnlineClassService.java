@@ -2,6 +2,8 @@ package com.sist.nbgb.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -18,14 +20,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
+import com.sist.nbgb.dto.OfflinePaymentApproveDto;
+import com.sist.nbgb.dto.OfflineReadyResponse;
+import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.dto.OnlineUpdateDTO;
@@ -72,6 +82,10 @@ public class OnlineClassService {
 	
     @Value("${online.video.file.dir}")
     private String fileDir;
+	
+    static final String cid = "TC0ONETIME";
+	static final String admin_Key = "b5da1907f4cf9df4cafd9ebb58dfcf1e";
+	private OfflineReadyResponse payReady;
 	
 	/*온라인클래스 리스트*/
 	//카테고리명 조회
@@ -172,8 +186,8 @@ public class OnlineClassService {
 	}	
 	
 	//결제 날짜
-	public LocalDateTime findApproveAt(String itemCode, String partnerUserId) {
-		return onlinePaymentApproveRepository.findApproveAt(itemCode, partnerUserId);		
+	public List<LocalDateTime> findApproveAt(String itemCode, String partnerUserId) {
+		return onlinePaymentApproveRepository.findApproveAt(itemCode, partnerUserId, PageRequest.of(0, 1));		
 	}
 
 	//후기 목록 조회
@@ -465,6 +479,53 @@ public class OnlineClassService {
 	
 	public OnlineClass userLectureInfo(Long onlineClassId) {
 		return onlineClassRepository.findByOnlineClassId(onlineClassId);
+	}
+	
+	/*pay*/
+	//결제 QR
+	public OfflineReadyResponse payReady(OnlinePaymentApproveDto onPayDto) {
+		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		
+		String auth = "KakaoAK " + admin_Key;
+		
+		System.out.println("service : " + onPayDto.getTotalAmount());
+		
+		httpHeaders.set("Authorization", auth);
+		httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		
+		parameters.add("cid", cid);
+        parameters.add("partner_order_id", onPayDto.getPartnerOrderId());
+        parameters.add("partner_user_id", onPayDto.getPartnerUserId());
+        parameters.add("item_name", onPayDto.getItemName());
+        parameters.add("quantity", "1");
+        parameters.add("total_amount", String.valueOf(onPayDto.getTotalAmount()));
+        parameters.add("vat_amount", "0");
+        parameters.add("tax_free_amount", "0");
+        parameters.add("approval_url", "http://localhost:8008/onlineClass/paysuccess"); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:8008/onlineClass/paycancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:8008/onlineClass/payfail");
+        
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, httpHeaders);
+        
+        RestTemplate restTemplate = new RestTemplate();
+        
+        try 
+		{
+        	payReady = restTemplate.postForObject(
+	        		new URI("https://kapi.kakao.com/v1/payment/ready"),
+	        		requestEntity, 
+	        		OfflineReadyResponse.class);
+	        
+	        payReady.setTid(payReady.getTid());
+		}
+		catch(URISyntaxException e) 
+		{
+			System.out.println(e);
+		}
+        
+        return payReady;
 	}
 }
 	
