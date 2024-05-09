@@ -5,7 +5,7 @@
 		<div class="py-2 bg-light nav-gnb">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-lg-9 d-none d-lg-block">
+					<div class="col-lg-9 d-none d-lg-block" style="flex: 0 0 70%; max-width: 70%">
 						<a class="nav-logo" href="/"><img src="/images/logo.png" width="100px"></a>
 					<!-- 
 						<a href="#" class="medium mr-3"><span class="icon-user-secret"></span>관리자 페이지</a>
@@ -17,7 +17,7 @@
               			<a href="/signup" class="medium mr-3"><span class="icon-people_outline"></span> 회원가입</a> 
 					</div>
 					
-					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right">
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right" style="flex: 0 0 30%; max-width: 30%;">
 						<a class="medium mr-3">[[ ${session.SPRING_SECURITY_CONTEXT.Authentication.Name} ]] 님</a> 
 						
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
