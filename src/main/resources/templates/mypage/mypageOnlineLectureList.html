@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/signupCustom.css">
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script type="text/javascript">
+	function writeReview(classId) {
+	    var win = window.open('/user/userReview/'+classId, '/user/userReview/'+classId,
+		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
+	}
+	</script>
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+	<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">수강목록</h1>
+    	<p class="sub-title"></p>
+  	</div>
+  	
+	<section class="ftco-animate my-4" >
+		<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}" class="list-area">
+    		<p th:insert="import/mypageUserImport.html :: mypageUser-import"></p>
+      		
+      		<div class="list-container">
+        		<div class="container list-section">
+          			<div class="row mb-4 list-title">
+            			<div class="col-8 text-center">강의명</div>
+            			<div class="col-2 text-center">종료일자</div>
+            			<div class="col-2 text-center">수강/리뷰</div>
+          			</div>
+        		</div>
+        		<div class="container list-section">
+        			<div th:if="${classes} != null" th:each="class:${classes}" class="row list-item list-item-lecture mb-2">
+            			<div class="col-3 text-center mypage-lectureImg">
+            				<a th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}"><img th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}" /></a>
+            			</div>
+            			<div class="col-5 list-item-title">
+            				<a class="item-lecture-title" th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}">[[${class.onlineClassTitle}]]</a>
+            			</div>
+        			<div class="col-2 text-center" th:text="|${#temporals.format(class.approvedAt.plusDays(class.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|"><br/></div>
+            			<div class="col-2 text-center">
+            				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId})}'|" 
+            						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1">수강하기</button>
+            				<button type="button" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1" disabled>기간만료</button>
+            				<button type="button" th:if="${reviewChk[__${class.onlineClassId}__] == 0}" th:onclick="writeReview([[${class.onlineClassId}]])" class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
+            				<button type="button" th:if="${reviewChk[__${class.onlineClassId}__] != 0}"class="my-lectureBtn my-1" id="reviewAdd" disabled>후기작성</button>
+						</div>
+          			</div>
+        		</div>
+      		</div>
+     	</div>
+	</section>	
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

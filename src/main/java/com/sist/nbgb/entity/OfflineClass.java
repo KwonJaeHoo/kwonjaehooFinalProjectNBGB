@@ -80,7 +80,7 @@ public class OfflineClass
 	
 	@CreatedDate
 	@Comment("반려날짜")
-	private LocalDateTime rejectionRedgate;
+	private LocalDateTime rejectionRegdate;
 	
 	@Column(columnDefinition = "NUMBER(3)")
 	@Comment("오프라인 강의 참여 가능 인원수")

@@ -4,7 +4,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
@@ -37,9 +40,11 @@ import com.sist.nbgb.dto.UserFileDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.OfflineService;
 import com.sist.nbgb.service.OnlineClassService;
+import com.sist.nbgb.service.OnlineReviewService;
 import com.sist.nbgb.service.SignupService;
 import com.sist.nbgb.service.UserService;
 
@@ -57,6 +62,7 @@ public class UserController
 	
 	private final SignupService signupService;
 	private final EmailService emailService;
+	private final OnlineReviewService onlineReviewService;
         
     @GetMapping("/mypage/{id}/info")
     public String mypageUserInfo(Model model, @PathVariable String id)
@@ -285,21 +291,30 @@ public class UserController
     }
     
     
-    @GetMapping("/mypage/{id}/lecture")
+    @GetMapping("/mypage/{id}/onlinelecturelist")
     public String mypageUserLecture(Model model, @PathVariable String id)
     {
     	if(id != null)
     	{
+    		User user = userService.findUserById(id);
     		List<OnlinePaymentClassListDTO> classes = onlineClassService.userLectureList(id);
-
+    		
+    		LocalDateTime now = LocalDateTime.now();
+    		
+    		Map<Integer, Integer> map = new HashMap<>();
+			for (OnlinePaymentClassListDTO reviewChk : classes) {
+				map.put(Integer.parseInt(String.valueOf(reviewChk.getOnlineClassId())),
+						onlineReviewService.exsitsOnlineReview(user, reviewChk.getOnlineClassId(), "ON"));
+			}
+    		
         	model.addAttribute("classes", classes);
+        	model.addAttribute("now", now);
+        	model.addAttribute("reviewChk", map);
     	}
     	
-    	return "mypage/mypageLecture";
+    	return "mypage/mypageOnlineLectureList";
     }
-    
-    
-    
+
     @GetMapping("/mypage/{id}/review")
     public String mypageUserReview(Model model, @PathVariable String id)
     {

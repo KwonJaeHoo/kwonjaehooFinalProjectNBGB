@@ -345,6 +345,10 @@ public class OnlineClassService {
 	    return JpaSort.unsafe(Sort.Direction.DESC, "approvedAt + o.onlineClassPeriod");
 	}
 	
+	public OnlineClass userLectureInfo(Long onlineClassId) {
+		return onlineClassRepository.findByOnlineClassId(onlineClassId);
+	}
+	
 }
 	
 

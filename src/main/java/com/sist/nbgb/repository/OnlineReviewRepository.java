@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.sist.nbgb.dto.OnlineReviewDTO;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewId;
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
 public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> {
@@ -41,4 +41,14 @@ public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> 
 	//후기 추천 갯수
 	@Query("select o.reviewLikeCnt from Review o where o.reviewId.reviewId = :reviewId")
 	int countReviewLike(@Param("reviewId") Long reviewId);
+	
+	//사용자 리뷰 조회
+	Review findByUserIdAndClassIdAndClassIden(User userId, Long classId, String classIden);
+	
+	//사용자 리뷰 작성 여부
+	int countByUserIdAndClassIdAndClassIden(@Param("userId") User userId, @Param("classId") Long classId, @Param("classIden") String classIden);
+	
+	//리뷰아이디 max 값
+	//@Query("select max(r.reviewId)+1 from Review as r")
+	//int findReviewIdMaxValue();
 }

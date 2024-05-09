@@ -59,4 +59,7 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 			+ "from OnlinePaymentApprove p, OnlineClass o "
 			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and o.onlineClassId = :onlineClassId")
 	OnlinePaymentClassListDTO userLectureInfo(@Param("partnerUserId")String partnerUserId , @Param("onlineClassId")Long onlineClassId);
+	
+	//리뷰작성 수강정보
+	OnlineClass findByOnlineClassId(Long onlineClassId);
 }

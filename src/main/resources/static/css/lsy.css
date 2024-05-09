@@ -429,6 +429,7 @@ margin: 50px auto 30px auto;
 }
 
 .my-lectureBtn{
+	width:6rem;
     padding:4px 8px;
     border:#89dd18 solid 3px;
     border-radius: 1ch;
@@ -444,9 +445,105 @@ margin: 50px auto 30px auto;
     	background-color: #BDBDBD;
         color:white;
         border:#BDBDBD solid 3px;
+        cursor: not-allowed;
+    	pointer-events: none;
    	}
    	.my-lectureBtn:focus{
 	outline:none;
 } 
 
 
+/*리뷰 작성(width=600px,height=530px)*/
+.review-section{
+	justify-content:center;
+}
+.review-title-area{
+	height:30%;
+	width:100%;
+	text-align:center;
+	justify-content:center;
+	margin:0 auto;
+	background-color:#89dd18;
+}
+.review-title{
+	color:white;;
+}
+
+.review-info-area{
+	height:40%;
+	width:100%;
+	text-align:center;
+	justify-content:center;
+	margin:0 auto;
+}
+	.review-info-area > div > img{
+		height:35%;
+		width:300px;
+	}	
+	.review-info-area .title{
+		color:gray !important;
+	}
+
+.review-input-area{
+	height:30%;
+	width:100%;
+	justify-content:center;
+	margin:0 auto;
+}
+	.review-input-area > .textarea {
+    width: 550px;
+    height: 20dvh;
+    text-align:center;
+    margin:0 auto;
+  }
+  	.review-input-area textarea {
+    width: 500px;
+    height: 9em;
+    text-align:start;
+    border: 1px lightgray solid;
+    resize: none !important;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    justify-content:center;
+	margin:0 auto;
+    padding: 10px 10px;
+  }
+
+.star_rating {
+  width: 100%; 
+  box-sizing: border-box; 
+  display: inline-flex; 
+  justify-content: center;
+  margin:10px auto;
+}
+.star_rating .star {
+  width: 25px; 
+  height: 25px; 
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FE2bww%2FbtsviSSBz4Q%2F5UYnwSWgTlFt6CEFZ1L3Q0%2Fimg.png') no-repeat; 
+  background-size: 100%; 
+  box-sizing: border-box;
+  border:none;
+}
+.star_rating .star.on {
+  width: 25px; 
+  height: 25px;
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('https://blog.kakaocdn.net/dn/b2d6gV/btsvbDoal87/XH5b17uLeEJcBP3RV3FyDk/img.png') no-repeat;
+  background-size: 100%; 
+  box-sizing: border-box; 
+}
+.star_rating .star:focus{
+	outline:none !important;
+}
+
+
+.review-button-area{
+	height:50%;
+	width:100%;
+	margin-top:5%;
+	justify-content:center;
+	margin:0 auto;
+}

@@ -13,9 +13,9 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class OnlineClassLogIdDTO {
-	private final String userId;
-	private final Long onlineClassId;
-	private final Long onlineFileId;
+	private String userId;
+	private Long onlineClassId;
+	private Long onlineFileId;
 	
 	public OnlineClassLogId toEntity() {
 		return OnlineClassLogId.builder()

@@ -194,14 +194,8 @@ public class OnlineClassPlayController
 		int percent = (int)Math.round(Double.valueOf(onlineLogCurr) /Double.valueOf(goal) * 100.0);
 		
 		if(onlineClassLogRepository.findByOnlineClassLogId(updateLogId.toEntity()).getStatus() == Status.N && percent < 95) {
-			//if(percent < 95) {
 				updateLog = new OnlineClassLogReqDTO(Long.valueOf(onlineLogCurr), Status.N);
 				onlineClassPlayService.logUpdate(updateLogId, updateLog);
-			//}else {
-			//	OnlineClassLogReqDTO updateLog = new OnlineClassLogReqDTO(Long.valueOf(onlineLogCurr), Status.Y);
-			//	onlineClassPlayService.logUpdate(updateLogId, updateLog);
-			//	logger.info("수강완료(95% 이상 수강)");
-			//}
 		}else {
 			updateLog = new OnlineClassLogReqDTO(Long.valueOf(onlineLogCurr), Status.Y);
 			onlineClassPlayService.logUpdate(updateLogId, updateLog);
