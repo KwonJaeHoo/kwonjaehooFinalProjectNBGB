@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.sist.nbgb.dto.OnlinePopDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,19 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class OnlinePayController {
 	//카카오페이 결제 내역 확인 팝업
-	@GetMapping("/online/pay")
-	public String pay(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
-//		long promSeq = HttpUtil.get(request, "promSeq", (long)0);
-//		PromBoard promBoard = null;
-//		
-//		logger.debug("promseq ?????????????????" + promSeq);
-//		if(promSeq > 0)
-//		{
-//			promBoard = boardService.promBoardView(promSeq);
-//			
-//		}
-//		
-//		model.addAttribute("promBoard", promBoard);
+	@PostMapping("/online/pay")
+	public String pay(ModelMap model, OnlinePopDTO dto) {
+		model.addAttribute("dto", dto);
 		return "onlineClass/pay/pay";
 	}
 	

@@ -26,7 +26,7 @@ public class OfflineReviewLikeDto
 	public static OfflineReviewLikeDto toDto(ReviewLike like)
 	{
 		return OfflineReviewLikeDto.builder()
-				.reviewId(like.getReviewId().getReviewId().getReviewId())
+				.reviewId(like.getReviewId().getReviewId())
 				.userId(like.getUserId().getUserId())
 				.build();
 	}

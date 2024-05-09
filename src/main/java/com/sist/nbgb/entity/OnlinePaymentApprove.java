@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -68,6 +70,7 @@ public class OnlinePaymentApprove
 	@Comment("결제날짜")
 	private LocalDateTime approvedAt;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "CHAR(1)")
 	@Comment("상태(시청전:N,시청후:Y)")
 	private Status status;

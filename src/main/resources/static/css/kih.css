@@ -310,7 +310,7 @@ td input:focus {
 }
 
 .btnSubmit {
-		border-style: soild;
+	border-style: soild;
 	background-color:#89dd18;
 	border-color:#89dd18;
 	outline:none;
@@ -328,3 +328,9 @@ td input:focus {
 	border-style: soild;
 }
 
+.beforeFile {
+	width:75px;
+	height:35px;
+	overflow:hidden;
+	border:0;
+}

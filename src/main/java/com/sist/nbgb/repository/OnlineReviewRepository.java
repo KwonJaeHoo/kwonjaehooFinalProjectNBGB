@@ -14,7 +14,7 @@ import com.sist.nbgb.entity.ReviewId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
-public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> {
+public interface OnlineReviewRepository extends JpaRepository<Review, Long> {
 	//후기 목록
 	List<Review> findByClassIdAndClassIdenAndReviewStatusOrderByReviewRegdateDesc(Long classId, String classIden, Status reviewStatus);	
 	
@@ -31,7 +31,7 @@ public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> 
 	Page<Review> findAllByClassIdAndClassIdenAndReviewStatus(Pageable pageable, Long classId, String classIden, Status reviewStatus);
 
 	//reviewId 가져오기
-	Review findFirstByReviewId_reviewId(Long reviewId);
+	Review findFirstByReviewId(Long reviewId);
 	
 	//추천 시 추천 수 증가
 	@Modifying

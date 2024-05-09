@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.util.HashMap;
+=======
+>>>>>>> c85882fb4dccfb129882f7997e656f03624e1d27
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,7 +39,6 @@ import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
-import com.sist.nbgb.dto.UserFileDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
@@ -70,15 +72,18 @@ public class UserController
     	if(id != null)
     	{
     		UserInfoDto userInfoDto = userService.findByUserId(id);
-    		
-    		UserFileDto userFileDto = userService.findByUserIdFile(id);
-    		
         	model.addAttribute("userInfoDto", userInfoDto);
         	
-        	if(userFileDto != null)
-        	{
-        		model.addAttribute("userFileDto", userFileDto);
-        	}
+    		String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+    	    String filename = userInfoDto.getUserId() + ".png"; // 기본 파일명
+    	    String filepath = path + "/" + filename;
+    		
+            File file = new File(filepath);
+            
+    		if(file.exists())
+    		{
+    			model.addAttribute("userFileDto", userInfoDto.getUserId());
+    		}
         	else
         	{
         		model.addAttribute("userFileDto", "userFileDtoIsNull");
@@ -95,7 +100,24 @@ public class UserController
     	{
     		UserInfoDto userInfoDto = userService.findByUserId(id);
         	model.addAttribute("userInfoDto", userInfoDto);
+        	
+    		String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+    	    String filename = userInfoDto.getUserId() + ".png"; // 기본 파일명
+    	    String filepath = path + "/" + filename;
+    		
+            File file = new File(filepath);
+            
+    		if(file.exists())
+    		{
+    			model.addAttribute("userFileDto", userInfoDto.getUserId());
+    		}
+        	else
+        	{
+        		model.addAttribute("userFileDto", "userFileDtoIsNull");
+        	}
     	}
+    	
+    	
     	
     	return "mypage/mypageModify";
     }
@@ -165,25 +187,17 @@ public class UserController
 	@ResponseBody
 	public ResponseEntity<Object> mypageUserInfoFile(@RequestPart(value="userId") @Valid UserIdCheckDto userIdCheckDto, @RequestPart(value="userImageFile") MultipartFile userImageFile) throws Exception
 	{
-    	UserFileDto userFileDto = userService.findByUserIdFile(userIdCheckDto.getUserId()); 
-    	
-    	if(userFileDto != null)
-    	{
-    		
-    	}
-    	else
-    	{
-    	
-    	}
-    	
-    	
-	    String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+    	String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
 	    String filename = userIdCheckDto.getUserId() + ".png"; // 기본 파일명
 	    String filepath = path + "/" + filename;
 		
         File file = new File(filepath);
-        file.delete();
         
+		if(file.exists())
+		{
+			file.delete();
+    	}
+
         try 
         {
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
@@ -196,8 +210,21 @@ public class UserController
         {
             throw new RuntimeException("오류가 발생했습니다.");
         }
-	}
+    }
     
+    @PostMapping("/mypage/info/userfiledelete")
+    @ResponseBody
+    public ResponseEntity<Object> mypageUserInfoFileDelete(@RequestBody UserIdCheckDto userIdCheckDto)
+    {
+    	String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+	    String filename = userIdCheckDto.getUserId() + ".png"; // 기본 파일명
+	    String filepath = path + "/" + filename;
+		
+        File file = new File(filepath);
+        file.delete();
+    	
+    	return ResponseEntity.ok(200);
+    }
     
     
     @GetMapping("/mypage/{id}/signout")
@@ -285,6 +312,8 @@ public class UserController
     		{
     			model.addAttribute("offlinePaymentCancelDto", offlinePaymentCancelDto);
     		}
+    		
+    		model.addAttribute("localDateTime", LocalDateTime.now());
     	}
     	
     	return "mypage/mypagePayment";
@@ -292,7 +321,11 @@ public class UserController
     
     
     @GetMapping("/mypage/{id}/onlinelecturelist")
+<<<<<<< HEAD
     public String mypageUserLecture(Model model, @PathVariable String id)
+=======
+    public String mypageUserOnlineLecture(Model model, @PathVariable String id)
+>>>>>>> c85882fb4dccfb129882f7997e656f03624e1d27
     {
     	if(id != null)
     	{
@@ -314,7 +347,54 @@ public class UserController
     	
     	return "mypage/mypageOnlineLectureList";
     }
+<<<<<<< HEAD
 
+=======
+    
+    @GetMapping("/mypage/{id}/offlinelecturelist")
+    public String mypageUserOfflineLecture(Model model, @PathVariable String id)
+    {
+    	if(id != null)
+    	{
+    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
+    				.stream()
+    				.map(UserReviewDto::new)
+    				.collect(Collectors.toList());
+    		
+//    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
+//    				.stream().map(OnlineClassTitleDto::new).collect(Collectors.toList());
+    				
+    		
+    	//	List<OfflineResponse> offlineClassListDto = offlineService.
+    		
+    		
+        	model.addAttribute("userReviewDto", userReviewDto);
+    	}
+    	
+    	return "mypage/mypageOfflineLectureList";
+    }
+    
+    @GetMapping("/mypage/{id}/onlinelikelist")
+    public String mypageUserOnlineLike(Model model, @PathVariable String id)
+    {
+    	if(id != null)
+    	{
+    	}
+    	
+    	return "mypage/mypageOnlineLikeList";
+    }
+    
+    @GetMapping("/mypage/{id}/offlinelikelist")
+    public String mypageUserOfflineLike(Model model, @PathVariable String id)
+    {
+    	if(id != null)
+    	{
+    	}
+    	
+    	return "mypage/mypageOfflineLikeList";
+    }
+    
+>>>>>>> c85882fb4dccfb129882f7997e656f03624e1d27
     @GetMapping("/mypage/{id}/review")
     public String mypageUserReview(Model model, @PathVariable String id)
     {

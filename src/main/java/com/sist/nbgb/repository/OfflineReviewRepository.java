@@ -15,7 +15,7 @@ import com.sist.nbgb.entity.ReviewId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
-public interface OfflineReviewRepository extends JpaRepository<Review, ReviewId>
+public interface OfflineReviewRepository extends JpaRepository<Review, Long>
 {
 	@Query("SELECT NVL(ROUND(AVG(NVL(reviewRating, 0)), 1), 0) FROM Review WHERE classId = :offlineClassId AND classIden = 'OFF'")
 	float offCountRating(@Param("offlineClassId") Long offlineClassId);
@@ -46,5 +46,5 @@ public interface OfflineReviewRepository extends JpaRepository<Review, ReviewId>
 	int updateReviewLikeCnt(@Param("reviewId") Long reviewId, @Param("likeCnt") Long likeCnt);
 	
 	//reviewId 가져오기
-	Review findFirstByReviewId_reviewId(Long reviewId);
+	Review findFirstByReviewId(Long reviewId);
 }

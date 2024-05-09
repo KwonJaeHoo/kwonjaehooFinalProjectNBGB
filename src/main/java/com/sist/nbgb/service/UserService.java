@@ -10,17 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
-import com.sist.nbgb.dto.OnlinePaymentApproveDto;
-import com.sist.nbgb.dto.UserFileDto;
-import com.sist.nbgb.dto.UserReviewDto;
 import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OfflinePaymentCancel;
 import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.OnlinePaymentCancel;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
-import com.sist.nbgb.entity.UserFile;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.repository.OfflinePaymentApproveRepository;
 import com.sist.nbgb.repository.OfflinePaymentCancelRepository;
@@ -90,30 +85,20 @@ public class UserService
 		return reviewRepository.findAllByUserId(user);
 	}
 	
-	public UserFileDto findByUserIdFile(String userId)
-	{
-		User user = new User();
-		user.setUserId(userId);
-		
-		List<UserFile> userFile = userFileRepository.findAllByUserId(user);
-		
-		if(userFile.isEmpty())
-		{
-			return null;
-		}
-		else
-		{
-			return UserFileDto.fileOut(userFile);				
-		}
-	}
-	
 	@Transactional
 	public Object changeUserPassword(String userId, String userPassword)
 	{
 		Optional<User> user = userRepository.findByUserId(userId);
 		
-		user.ifPresent(value -> value.setUserPassword(passwordEncoder.encode(userPassword)));	
-			
+		try 
+		{
+			user.ifPresent(value -> value.setUserPassword(passwordEncoder.encode(userPassword)));
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		
 		return 200;
 	}
 	
@@ -122,7 +107,15 @@ public class UserService
 	{
 		Optional<User> user = userRepository.findByUserId(userId);
 		
-		user.ifPresent(value -> value.setUserNickname(userNickname));
+		try 
+		{
+			user.ifPresent(value -> value.setUserNickname(userNickname));
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+
 		return 200;
 	}
 	
@@ -131,7 +124,15 @@ public class UserService
 	{
 		Optional<User> user = userRepository.findByUserId(userId);
 		
-		user.ifPresent(value -> value.setUserEmail(userEmail));
+		try 
+		{
+			user.ifPresent(value -> value.setUserEmail(userEmail));
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		
 		return 200;
 	}
 	
@@ -141,29 +142,32 @@ public class UserService
 	{
 		Optional<User> user = userRepository.findByUserId(userId);
 		
-		user.ifPresent(value -> value.setUserPhone(userPhone));
+		try 
+		{
+			user.ifPresent(value -> value.setUserPhone(userPhone));
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
-	@Transactional
-	public Object uploadUserFile(UserFileDto userFileDto)
-	{
-		
-		return 200;
-	}
-	
-	
-	@Transactional
-	public Object changeUserFile(UserFileDto userFileDto)
-	{
-		return 200;
-	}
+
 	
 	@Transactional
 	public Object signoutUser(String userId)
 	{
 		Optional<User> user = userRepository.findByUserId(userId);
-		user.ifPresent(value -> value.setAuthority(Role.ROLE_RESIGN));
+		
+		try 
+		{
+			user.ifPresent(value -> value.setAuthority(Role.ROLE_RESIGN));
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		
 		return 200;
 	}

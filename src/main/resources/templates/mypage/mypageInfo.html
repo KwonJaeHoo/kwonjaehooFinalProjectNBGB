@@ -32,7 +32,7 @@
           			
           			
           			<div th:if="${userFileDto != 'userFileDtoIsNull'}" class="info-picture">
-          				<img th:src="@{'/images/user/' + ${userFileDto.userFileName} + '.png'}">
+          				<img th:src="@{'/images/user/' + ${userFileDto} + '.png'}">
           			</div>
           			
           			<div>
