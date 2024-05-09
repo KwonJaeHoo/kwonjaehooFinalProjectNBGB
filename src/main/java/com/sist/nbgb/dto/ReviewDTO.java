@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ReviewDTO {
-	private final ReviewId reviewId;
+	private final Long reviewId;
 	private final String reviewContent;
 	private final String userId;
 	private final String userNickname;

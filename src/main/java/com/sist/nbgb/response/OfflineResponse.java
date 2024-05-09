@@ -57,6 +57,6 @@ public class OfflineResponse
 		this.offlineClassLimitPeople = classes.getOfflineClassLimitPeople();
 		this.offlineClassViews = classes.getOfflineClassViews();
 		this.rejection = classes.getRejection();
-		this.rejectionRedgate = classes.getRejectionRedgate();
+		this.rejectionRedgate = classes.getRejectionRegdate();
 	}
 }

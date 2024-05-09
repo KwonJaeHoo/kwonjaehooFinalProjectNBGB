@@ -33,7 +33,7 @@ public class OfflineReviewResponse
    
     public OfflineReviewResponse(Review review)
     {
-       this.reviewId = review.getReviewId().getReviewId();
+       this.reviewId = review.getReviewId();
       
        this.classId = review.getClassId();
       
