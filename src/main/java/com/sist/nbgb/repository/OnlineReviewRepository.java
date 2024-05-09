@@ -48,7 +48,4 @@ public interface OnlineReviewRepository extends JpaRepository<Review, ReviewId> 
 	//사용자 리뷰 작성 여부
 	int countByUserIdAndClassIdAndClassIden(@Param("userId") User userId, @Param("classId") Long classId, @Param("classIden") String classIden);
 	
-	//리뷰아이디 max 값
-	//@Query("select max(r.reviewId)+1 from Review as r")
-	//int findReviewIdMaxValue();
 }

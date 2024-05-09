@@ -27,8 +27,6 @@ public class OnlineReviewService {
 	//사용자 리뷰 작성
 	@Transactional
 	public Review uploadOnlineReview(UserReviewRequestDTO userReviewRequestDTO) {
-		//userReviewRequestDTO.setReviewId(ReviewId.builder()
-			//	.reviewId(Long.valueOf(onlineReviewRepository.findReviewIdMaxValue())).build());
 		return onlineReviewRepository.save(userReviewRequestDTO.toEntity());
 	}
 }
