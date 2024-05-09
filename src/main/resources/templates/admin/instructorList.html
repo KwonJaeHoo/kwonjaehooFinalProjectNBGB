@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+	<a class="MainBanner" aria-current="page" href="/admin/instructorList"><h1>강사 회원 관리</h1></a>
+	
+	<div class="container" style="max-width: 1000px">
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>강사 아이디</th>
+                <th>강사 예명(상호명)</th>
+                <th>강사 이름</th>
+                <th>강사 이메일</th>
+                <th>강사 연락처</th>
+                <th>강사 주 카테고리</th>
+                <th>강사 가입일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="instList : ${instructorList}">
+                <td><a th:text="${instList.instructorId}">강사 아이디</a></td>
+                <td><a th:text="${instList.instructorNickname}">강사 예명(상호명)</a></td>
+                <td><a th:text="${instList.instructorName}">강사 이름</a></td>
+                <td><a th:text="${instList.instructorEmail}">강사 이메일</a></td>
+                <td><a th:text="${instList.instructorPhone}">강사 연락처</a></td>
+                <td><a th:text="${instList.instructorCategory}">강사 주 카테고리</a></td>
+                <td><a th:text="${instList.instructorRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강사 가입일</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!--페이징 처리-->
+	<div class="row mt-5">
+        <div class="col">
+          <div class="block-27 smallpage" style="display:inline; text-align: center;">
+            <ul class="mb-2">
+	        <!-- Previous page button -->
+	        <li th:if="${page.hasPrevious}">
+	            <a href="@{/admin/instructorList(page=${page.number - 1})}">&lt;</a>
+	        </li>
+	        
+	        <!-- Page number buttons -->
+	        <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:if="${page.totalPages > 1}">
+	            <a th:href="@{/admin/instructorList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
+	        </li>
+	
+	        <!-- Next page button -->
+	        <li th:if="${page.hasNext}">
+	            <a href="@{/admin/instructorList(page=${page.number + 1})}">&gt;</a>
+	        </li>
+	    	</ul>
+	    </div>
+	    </div>
+	</div>
+    
+            
+  <div class="comment-form-wrap">                
+    </div>
+
+</div> <!-- /container -->
+
+<!-- 검색창 -->
+    <form class="search-box" action="/admin/instructorList" method="get">
+	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
+	    <button class="search-btn" type="submit">
+	        <i class="fa-solid fa-magnifying-glass"></i>
+	    </button>
+	</form>
+
+
+<script src="/js/reference.js"></script>
+
+
+<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

@@ -2,6 +2,8 @@ package com.sist.nbgb.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -78,4 +80,10 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	@Modifying
 	@Query("UPDATE OfflineClass o SET o.offlineClassViews = o.offlineClassViews + 1 where o.offlineClassId = :offlineClassId")
 	int updateViews(@Param("offlineClassId") Long offlineClassId);
+	
+	//페이징 처리(관리자용 오프라인 강의 리스트)
+	Page<OfflineClass> findAllByOrderByOfflineClassRegdateDesc(Pageable pageable);
+	
+	//검색(관리자용 오프라인 강의 리스트)
+	Page<OfflineClass> findByOfflineClassTitleContainingOrOfflineClassContentContaining(String offlineClassTitle, String offlineClassContent, Pageable pageable);
 }

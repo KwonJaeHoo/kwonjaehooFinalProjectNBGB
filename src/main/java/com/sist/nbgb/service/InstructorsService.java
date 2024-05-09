@@ -5,10 +5,13 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorInfoDto;
+import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.repository.InstructorsRepository;
@@ -33,7 +36,6 @@ public class InstructorsService
 	{
 		return InstructorInfoDto.infoInstructor(instructorsRepository.findAllByInstructorId(userId)); 
 	}
-	
 	
 	@Transactional
 	public Object changeInstructorPassword(String instructorId, String instructorPassword)
