@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.UserReviewRequestDTO;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.OnlineClassService;
 import com.sist.nbgb.service.OnlineReviewService;
@@ -53,7 +54,7 @@ public class ReviewController {
     	User user = userService.findUserById(principal.getName());
     	UserReviewRequestDTO reviewUpload = null;
     	if(user != null) {
-    		if(classIden == "ON") {
+    		if(classIden.equals("ON")) {
     			reviewUpload = UserReviewRequestDTO.builder()
     					.classId(classId)
     					.classIden(classIden)
@@ -74,7 +75,14 @@ public class ReviewController {
     @GetMapping("/user/userReviewView/{classId}/{classIden}")
     public String reviewView(Model model, Principal principal, @PathVariable(value="classId") Long classId, @PathVariable(value="classIden")String classIden) {
     	User user = userService.findUserById(principal.getName());
-    	
+    	if(user.getAuthority().equals(Role.ROLE_USER)) {
+	    	if(classIden.equals("ON")) {
+	    		OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
+	    		
+	    		model.addAttribute("userNickname", user.getUserNickname());
+	    		model.addAttribute("class", onlineClass);
+	    	}
+    	}
     	model.addAttribute("userNickname", user.getUserNickname());
     	return "mypage/review/userReviewView";
     }
