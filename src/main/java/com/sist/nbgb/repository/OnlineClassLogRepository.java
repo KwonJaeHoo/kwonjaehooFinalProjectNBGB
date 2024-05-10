@@ -11,8 +11,8 @@ import com.sist.nbgb.entity.OnlineClassLogId;
 import com.sist.nbgb.entity.User;
 
 public interface OnlineClassLogRepository extends JpaRepository<OnlineClassLog, OnlineClassLogId> {
-	//강의 선택 회차 로그 유무 조회
-	//List<OnlineClassLog> findByOnlineClassLogId_UserIdAndOnlineClassLogId_OnlineClassFileId_onlineClassId(@Param("userId") String userId, @Param("onlineClassId") Long onlineClassId);
+	//강의 사용자 로그 리스트 조회
+	List<OnlineClassLog> findByUserIdAndOnlineClassLogId_onlineClassFileId_onlineClassId(User userId, Long onlineClassId);
 	
 	//강의 선택 회차 첫번째 로그 저장
 	@SuppressWarnings("unchecked")
@@ -23,4 +23,5 @@ public interface OnlineClassLogRepository extends JpaRepository<OnlineClassLog, 
 	
 	//강의 선택 회차 로그 유무
 	boolean countByOnlineClassLogId(OnlineClassLogId onlineClassLogId);
+	
 }

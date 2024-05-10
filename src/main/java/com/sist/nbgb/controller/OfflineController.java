@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
+import com.sist.nbgb.dto.OfflinePopDto;
 import com.sist.nbgb.dto.OfflinePostDto;
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
 import com.sist.nbgb.dto.OfflineUpload;
@@ -35,6 +38,7 @@ import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.response.InstructorsResponse;
 import com.sist.nbgb.response.OfflineResponse;
 import com.sist.nbgb.response.OfflineReviewCommentResponse;
 import com.sist.nbgb.response.OfflineReviewResponse;
@@ -323,17 +327,16 @@ public class OfflineController
 	@PostMapping("/offlineClass/like")
 	public ResponseEntity<ClassLikeDTO> like(@RequestPart(value="likeDto") ClassLikeDTO classLikeDto)
 	{
-		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		
 		ClassLikeDTO likeDto = null;
 		
-		if(userId.trim().equals("") || userId == null || userId.equals("anonymousUser"))
-		{
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
+        {
 			likeDto = new ClassLikeDTO();
-			likeDto.setCode(7);
-		}
-		else
+			likeDto.setCode(9);
+        }
+		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
 		{
+			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 			classLikeDto.setUserId(userId);
 			
 			if(offlineService.duplicationLike(classLikeDto.getClassId(), classLikeDto.getUserId()) > 0)
@@ -346,7 +349,11 @@ public class OfflineController
 				likeDto = offlineService.offlineLike(classLikeDto);
 				likeDto.setCode(0);
 			}
-			
+		}
+		else
+		{
+			likeDto = new ClassLikeDTO();
+			likeDto.setCode(7);
 		}
 		
 		return ResponseEntity.ok(likeDto);
@@ -368,31 +375,41 @@ public class OfflineController
 	@ResponseBody
 	@PostMapping("/offlineClass/reviewLike")
 	public ResponseEntity<OfflineReviewLikeDto> reviewLike(@RequestParam("reviewId") Long reviewId)
-	{
-		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+	{		
+		OfflineReviewLikeDto reviewLikedto = new OfflineReviewLikeDto();
 		
-		OfflineReviewLikeDto reviewLikedto = null;
+		reviewLikedto.setReviewId(reviewId);
 		
-		if(userId.trim().equals("") || userId == null || userId.equals("anonymousUser"))
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
+        {
+			reviewLikedto.setCode(9);
+        }
+		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
 		{
-			reviewLikedto = new OfflineReviewLikeDto();
-			reviewLikedto.setCode(7);
-		}
-		else
-		{
+			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+			
 			reviewLikedto.setUserId(userId);
 			
-			if(offlineService.duplicationLike(reviewId, userId) > 0)
+			if(offlineReviewService.findReviewLikeMe(reviewLikedto.getReviewId(), reviewLikedto.getUserId()) > 0)
 			{
-				reviewLikedto = new OfflineReviewLikeDto();
 				reviewLikedto.setCode(8);
 			}
 			else 
 			{
-				reviewLikedto = offlineReviewService.reviewLike(reviewLikedto);
+				System.out.println("리뷰 아이디 *******" + reviewId);
+				System.out.println("리뷰 아이디 ++++ " + reviewLikedto.getReviewId());
+				
+				OfflineReviewLikeDto reviewLike = offlineReviewService.saveReviewLike(reviewLikedto);
 				reviewLikedto.setCode(0);
+				
+				int likeCnt = offlineReviewService.updateReviewLike(reviewLikedto.getReviewId());
+				
+				return ResponseEntity.ok(reviewLike);
 			}
-			
+		}
+		else
+		{
+			reviewLikedto.setCode(7);
 		}
 		
 		return ResponseEntity.ok(reviewLikedto);
@@ -401,9 +418,27 @@ public class OfflineController
 	//오프라인 게시물 등록
 	//페이지 불러오기
 	@GetMapping("/offlineClass/write")
-	public String offlineClassWrite()
+	public String offlineClassWrite(HttpServletRequest request, Model model) throws Exception
 	{
-		return "/offline/offlineClassWrite";
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
+        {
+			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+			
+			Optional<InstructorsResponse> user = offlineService.findByInstructorId(userId)
+					.map(InstructorsResponse::new);
+			
+			model.addAttribute("user", user.get());
+			
+			return "/offline/offlineClassWrite";
+        }
+		else
+		{
+			request.setAttribute("msg", "없는 회원정보입니다 확인해주세요");
+	        request.setAttribute("url", "/");
+	        return "/offline/alert";
+		}
+		
+		
 	}
 	
 	//에디터 파일 저장
@@ -447,7 +482,7 @@ public class OfflineController
         {
             throw new RuntimeException("오류가 발생했습니다.");
         } 
-	       
+		
        return ResponseEntity.ok(offDto);   
 
 	}
@@ -457,31 +492,26 @@ public class OfflineController
 	@GetMapping("/offlineClass/reserve/{offlineClassId}")
 	public String offlineClassReserve(Model model, @PathVariable Long offlineClassId)
 	{
-		String userid = SecurityContextHolder.getContext().getAuthentication().getName();
 		OfflineClass offlineClass = null;
 		Optional<UserResponse> user = null;
 		
-		System.out.println("아이디어케넘어와" + userid + "공백없나있나체크용");
-		
-		if(offlineClassId <= 0)
-		{
-			System.out.println("클래스 오류");
-			return "/offline/error";
-		}
-		else
-		{
-			offlineClass = offlineService.findByView(offlineClassId);
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
+        {
+			String userid = SecurityContextHolder.getContext().getAuthentication().getName();
 			
-			if(offlineClass == null)
+			if(offlineClassId <= 0)
 			{
-				System.out.println("클래스 없음");
+				System.out.println("클래스 오류");
 				return "/offline/error";
 			}
 			else
 			{
-				if(userid.trim().equals("") || userid == null || userid.equals("anonymousUser"))
+				offlineClass = offlineService.findByView(offlineClassId);
+				
+				if(offlineClass == null)
 				{
-					return "redirect:/login";
+					System.out.println("클래스 없음");
+					return "/offline/error";
 				}
 				else
 				{
@@ -494,23 +524,21 @@ public class OfflineController
 					}
 					else
 					{
-//						System.out.println(user.get().getUserStatus());
-//						
-//						if(user.get().getUserStatus().equals(Status.Y))
-//						{
-							model.addAttribute("user", user.get());
-							model.addAttribute("offlineClass", new OfflineResponse(offlineClass));
-							
-							return "/offline/offlineReserve";
-//						}
-//						else
-//						{
-//							System.out.println("상태 이상");
-//							return "/offline/error";
-//						}
+						model.addAttribute("user", user.get());
+						model.addAttribute("offlineClass", new OfflineResponse(offlineClass));
+						
+						return "/offline/offlineReserve";
 					}
 				}
 			}
+        }
+		else
+		{
+			model.addAttribute("offlineClassId", offlineClassId);
+			
+			return "/offline/userAlert";
 		}
+		
+		
 	}
 }

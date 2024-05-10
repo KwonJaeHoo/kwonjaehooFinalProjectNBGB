@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/pay.css">
+<meta charset="UTF-8">
+</head>
+<body>
+<section th:if="${payApprove != null}" class=" pt-4">
+	<div class="container d-flex justify-content-center">
+		<div class="row">
+			<div class="col-lg-2">
+				<h4 class="d-flex justify-content-center mb-3">결제가 완료되었습니다.</h4>
+				
+					<div id="page1" class="mb-2">
+
+			<div class="container" style="display: inline-block;">
+				<div class="d-flex justify-content-start mt-4">
+					<h4>결제 정보</h4> &nbsp;&nbsp; <p class="text-align-center pt-2"></p>
+				</div>
+				<table class="tbr mb-2" border="1">
+					<tr>
+						<td class="ttr" style="border-radius: 10px 0 0 0;">클래스명</td>
+						<td><input type="text" name="title" id="title" th:value="${payApprove.item_name}" readonly/></td>
+					</tr>
+					<tr>
+						<td class="ttr">예약자 이름</td>
+						<td><input type="text" name="title" id="title" th:value="${user.getUserName()}" readonly/></td>
+					</tr>
+					<tr>
+						<td class="ttr">결제금액</td>
+						<td><input type="text" placeholder=" 강사명" th:value="${pay.getTotalAmount()}" readonly></td>
+					</tr>
+					<tr>
+						<td class="ttr">사용포인트</td>
+						<td><input type="text" placeholder=" 강사명" th:value="${pay.getPoint()}" readonly></td>
+					</tr>
+					<tr>
+						<td class="ttr">잔여포인트</td>
+						<td><input type="text" placeholder=" 강사명" th:value="${updatePoint}" readonly></td>
+					</tr>
+					<tr>
+						<td class="ttr" style="border-radius:0 0 0 10px;">예약일</td>
+						<td>[[${pay.getBookingDate()}]]&nbsp;&nbsp;&nbsp; [[${pay.getBookingTime()}]] : 00</td>
+					</tr>
+			</table>
+			</div>
+	</div>
+			</div>
+		</div>
+	</div>
+</section>
+</body>
+</html>

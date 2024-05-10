@@ -134,30 +134,46 @@ a.find('i[class^="icon-chevron"]').on("click",function(){
 })
 
 l.on("click", "div", function() {
-    // 클릭한 날짜의 배경색을 변경
     var $clicked = $(this);
-    if (!$clicked.hasClass("selected")) { // 선택된 요소가 아닌 경우에만 처리
-        l.find("div.selected").removeClass("selected").css("background-color", ""); // 선택 클래스를 가진 모든 요소의 선택 클래스를 제거하고 배경색 초기화
-        $clicked.addClass("selected").css("background-color", o[n-1]); // 클릭한 요소에 선택 클래스를 추가하고 배경색 변경
+    var selectedDate = $clicked.text();
+    var selectedMonth = k[n-1];
+    var selectedYear = t;
+    
+    // 이전에 선택한 날짜의 글자색을 원래대로 돌리기
+    l.find("div.selected").css("color", ""); 
+    
+    // 오늘 날짜 이전의 날짜를 선택하지 못하도록 설정
+    var today = new Date();
+    var clickedDate = new Date(selectedYear, n-1, selectedDate);
+    if (clickedDate <= today) {
+        alert("해당 날짜는 예약 하실 수 없습니다.");
+        l.find("div.selected").removeClass("selected").css("background-color", "");
+        $("#resMonth").val("");
+        $("#resDate").val("");
+        $("#resYear").val("");
+        return; // 오늘 날짜 이전의 날짜를 클릭하면 아무 동작도 하지 않음
+    }
+    
+    if (!$clicked.hasClass("selected")) {
+        l.find("div.selected").removeClass("selected").css("background-color", "");
+        $clicked.addClass("selected").css("background-color", o[n-1]);
+        l.find(".selected").css("color", "#ffffff"); // 선택한 날짜의 글자색 변경
         l.find(".today").css("color", "#787878");
         l.find(".today").removeClass("today").css("background-color", "");
     }
     
-	var selectedDate = $(".calendar_content").find(".selected").text();
-	var selectedMonth = k[n-1];
-	var selectedYear = t;
-	$("#resMonth").val(selectedMonth);
-	$("#resDate").val(selectedDate);
-	$("#resYear").val(selectedYear);
-	
-	$(document).ready(function(){
-		$(".btntime").on("click", function(){
-			// 현재 클릭된 요소에 대해서만 클래스 조작
-			$(".btntime").removeClass("btntime-clicked");
-			$(this).addClass("btntime-clicked");
-		});
-	});
+    // 선택한 날짜 정보를 필드에 설정
+    $("#resMonth").val(selectedMonth);
+    $("#resDate").val(selectedDate);
+    $("#resYear").val(selectedYear);
+    
+    // 시간 버튼에 대한 이벤트 핸들러 등록
+    $(document).ready(function(){
+        $(".btntime").on("click", function(){
+            $(".btntime").removeClass("btntime-clicked");
+            $(this).addClass("btntime-clicked");
+        });
+    });
 });
-
 })
 

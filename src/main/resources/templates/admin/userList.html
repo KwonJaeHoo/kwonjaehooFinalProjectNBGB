@@ -12,36 +12,71 @@ $(document).ready(function() {
 	$(".roleuserAuthority").on("click", function() {
 		var userId = $(this).data("userId");
 		
-		if(confirm("이 회원을 정지시키겠습니까?") == true) {
-			$.ajax ({
-				url: "/admin/roleUser",
-				type: "POST",
-				data: {userId: userId, newStatus: "ROLE_STOP"},
-				success: function(response) {
-					location.reload();
+		if(confirm("이 회원을 정지시키겠습니까?") == true) 
+		{
+			
+			$.ajax
+			({
+		    	type:"POST",
+		    	url:"/admin/roleUser",
+		        data : JSON.stringify
+		        ({              
+		        	userId : userId
+		        }),
+		        datatype:"JSON",
+		        contentType:"application/json",
+		        beforeSend:function(xhr)
+		        {
+		        	xhr.setRequestHeader("AJAX", true);
+		        },
+		        success: function(data)
+		        {
+					alert("회원이 정지됐습니다.");
+					location.href = "/admin/userList";
 				},
-				error: function(xhr, status, error) {
+				error: function(xhr, status, error) 
+				{
+					alert("오류가 발생했습니다.");
 					console.error(error);
+					return;
 				}
-			});
+		    });
 		}
 	});
 	
-	$("#rolestop").on("click", function() {
+	$(".rolestop").on("click", function() 
+	{
 		var userId = $(this).data("userId");
 		
-		if(confirm("이 회원을 다시 복구하시겠습니까?") == true) {
-			$.ajax ({
-				url: "/admin/roleStop",
-				type: "POST",
-				data: {userId: userId, newStatus: "ROLE_USER"},
-				success: function(response) {
-					location.reload();
-				},
-				error: function(xhr, status, error) {
+		if(confirm("이 회원을 다시 복구하시겠습니까?") == true) 
+		{
+			$.ajax
+			({
+		    	type:"POST",
+		    	url: "/admin/roleStop",
+		        data : JSON.stringify
+		        ({              
+		        	userId : userId
+		        }),
+		        datatype:"JSON",
+		        contentType:"application/json",
+		        beforeSend:function(xhr)
+		        {
+		        	xhr.setRequestHeader("AJAX", true);
+		        },
+		        success: function(data)
+		        {
+		    		alert("회원이 복구됐습니다.");
+					location.href = "/admin/userList";
+				
+		        },
+				error: function(xhr, status, error) 
+				{
+					alert("오류가 발생했습니다.");
 					console.error(error);
+					return;
 				}
-			});
+		    });		
 		}
 	})
 });

@@ -13,11 +13,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class OnlineClassListDTO {
-	private final Long onlineClassId;
-	private final String onlineClassTitle;
-	private final String instructorNickname;
-	private final String onlineClassPrice;
-	private final String category;
+	private Long onlineClassId;
+	private String onlineClassTitle;
+	private String instructorNickname;
+	private String onlineClassPrice;
+	private String category;
 	
 	DecimalFormat df = new DecimalFormat("###,###");
 	

@@ -12,14 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Reference;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.ReferenceService;
@@ -93,10 +97,29 @@ public class AdminController {
 	}
 	
 	//일반회원 권한 정지
-	@PostMapping("/admin/roleUser")
-	public ResponseEntity<User> roleUser(@RequestParam("userId") String userId,
-										 @RequestParam("Authority") String Authority) {
-		return null;
+	@PostMapping("/roleUser")
+	@ResponseBody
+	public String changeUserRoleToStop(@RequestBody UserIdCheckDto userIdCheckDto) {
+		try {
+			adminService.changeUserRole(userIdCheckDto.getUserId(), Role.ROLE_STOP);
+			return "SUCCESS";
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "ERROR";
+		}
+	}
+	
+	//일반회원 권한 복구
+	@PostMapping("/roleStop")
+	@ResponseBody
+	public String changeUserRoleToUser(@RequestBody UserIdCheckDto userIdCheckDto) {
+		try {
+			adminService.changeUserRole(userIdCheckDto.getUserId(), Role.ROLE_USER);
+			return "SUCCESS";
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "ERROR";
+		}
 	}
 	
 	//강사회원 리스트 불러오기

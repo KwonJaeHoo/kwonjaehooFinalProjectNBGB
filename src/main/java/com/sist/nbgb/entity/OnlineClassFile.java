@@ -63,4 +63,16 @@ public class OnlineClassFile
 	@Column(length = 100)
 	@Comment("동영상 설명")
 	private String onlineFileContent;
+	
+	public void update(String orgname, String filename, String ext, Long size) {
+		this.onlineFileOrgName = orgname;
+		this.onlineFileName = filename;
+		this.onlineFileExt = ext;
+		this.onlineFileSize = size;
+		this.onlineFileRegdate = LocalDateTime.now();
+	}
+	
+	public void contentUpdate(String content) {
+		this.onlineFileContent = content;
+	}
 }

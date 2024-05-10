@@ -1,27 +1,16 @@
 package com.sist.nbgb.controller;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.List;
 
-import javax.validation.Valid;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.sist.nbgb.dto.ReferenceDTO;
-import com.sist.nbgb.entity.Reference;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.service.ReferenceService;
 import com.sist.nbgb.service.UserService;

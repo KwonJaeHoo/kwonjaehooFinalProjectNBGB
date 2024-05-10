@@ -1,6 +1,7 @@
 package com.sist.nbgb.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;
 
@@ -81,9 +83,21 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	@Query("UPDATE OfflineClass o SET o.offlineClassViews = o.offlineClassViews + 1 where o.offlineClassId = :offlineClassId")
 	int updateViews(@Param("offlineClassId") Long offlineClassId);
 	
+
 	//페이징 처리(관리자용 오프라인 강의 리스트)
 	Page<OfflineClass> findAllByOrderByOfflineClassRegdateDesc(Pageable pageable);
 	
 	//검색(관리자용 오프라인 강의 리스트)
 	Page<OfflineClass> findByOfflineClassTitleContainingOrOfflineClassContentContaining(String offlineClassTitle, String offlineClassContent, Pageable pageable);
+	//강사 마이페이지 
+	List<OfflineClass> findByInstructorIdOrderByOfflineClassIdDesc(Instructors instructorId);
+	
+	//마이페이지 페이징
+	Page<OfflineClass> findByInstructorId(Pageable pageable, Instructors instructorId);
+	
+	//마이페이지 페이징
+	Page<OfflineClass> findByInstructorIdAndOfflineClassApprove(Pageable pageable, Instructors instructorId, Status onlineClassApprove);
+	
+	Optional<OfflineClass> findByOfflineClassId(Long offlineClassId);
+
 }

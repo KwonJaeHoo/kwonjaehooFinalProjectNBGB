@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	document.getElementById("replyDiv").style.display = "none";
+	
+	var rating = '3';
+	if(rating != null){
+		$("#star" + rating).parent().children('button').removeClass('on');
+		$("#star" + rating).addClass('on').prevAll('button').addClass('on');
+	}
+	
+	$("#cancelBtn").on("click", function(){
+		window.self.close();
+	});
+	
+	
+	
+});
+function replyView() {
+  if(document.getElementById("replyDiv").style.display == "block") {
+  	document.getElementById("replyDiv").style.display = "none";
+  }else {
+	document.getElementById("replyDiv").style.display="block";
+  }
+}
+</script>
+</head>
+<body style="height:630px;">
+<section class="review-section">
+	<div class="row review-title-area py-3">
+		<h3 class="d-flex review-title">😊 작성한 후기 😊</h3>
+	</div>
+	<div class="row reviewV-info-area mt-2">
+		<input type="hidden" id="classId">
+		<div class="col-3 px-0"><img src="/images/bg_1.jpg"></div>
+		<div class="col-9">
+			<h5 class="reviewV-info-title">강의명강의명강의명강의명강의명강의명강의명강의명강의명강의명</h5>
+			<h6 class="mb-0">카테고리/닉네임</h6>
+		</div>
+	</div>
+	<div class="row review-view">
+		<div class="review-view-second">
+			<div class="col-7 text text-align-justify">작성자 : [[${userNickname}]]</div>
+			<div class="col-5 star_rating px-0">
+		  	  <span class="text mr-1">별점 : </span>
+			  <button class="star" id="star1" value="1" disabled> </button>
+			  <button class="star" id="star2" value="2" disabled> </button>
+			  <button class="star" id="star3" value="3" disabled> </button>
+			  <button class="star" id="star4" value="4" disabled> </button>
+			  <button class="star" id="star5" value="5" disabled> </button>
+			</div>
+		</div>
+		<div class="review-view-third col-12">2024/04/95 23:00</div>
+		<div class="textarea">
+			<textarea class="text" id="reviewContents" cols="60" rows="5" readonly>잘 들었습니다!!</textarea>
+		</div>
+		<div class="review-view-third col-12">
+			<button type="button" class="mr-2">수정</button>
+			<button type="button">삭제</button>
+		</div>
+	</div>
+	<div class="row review-reply-area mt-4">
+		<button type="button" onclick="replyView()" class="reply-title">💌 강사의 답변이 있습니다!</button>
+		<!--<div class="reply-title">💌 등록된 답변이 없습니다.</div>-->
+		<div class="textarea mt-3" id="replyDiv" >
+			<textarea class="text" id="reviewContents" cols="60" rows="4" readonly>감사합니다!</textarea>
+		</div>
+	</div>
+	<div class="row review-button-area mt-5">
+		<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">닫기</button>
+	</div>
+</section>
+</body>
+</html>

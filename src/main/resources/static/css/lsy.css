@@ -115,6 +115,16 @@ margin: 50px auto 30px auto;
 	width:100%;
 }
 
+.video-side{
+	background-color:red;
+	width: 10%;
+	height:15%;
+	position: sticky;
+	top:40%;
+	margin-left:10px;
+	background-color: #ffe3e3;
+}
+
 .video-container{
     position:sticky;
     top:8em;
@@ -187,7 +197,7 @@ margin: 50px auto 30px auto;
     font-size:2.5vh;
 }
 
-/*비디오 재생목록*/
+/*비디오 재생페이지*/
 .video-list-title{
     height:20dvh;
     padding:2%;
@@ -309,3 +319,367 @@ margin: 50px auto 30px auto;
 	    .title-con:hover{
 			color:#bfbfbf;
 	    }
+
+
+
+/*수강페이지 리스트*/
+.playBtn{
+    background-color: white;
+    border: none;
+}
+    .playBtn > img{
+        width:40px;
+        height:40px;
+    }
+    .playBtn > img:hover{
+        transform: scale(1.2);
+    }
+.playBtn:focus{
+	outline:none;
+} 
+.playThum{
+    height:5rem;
+    display:block;
+    background-size: cover;
+    width:90%;
+    justify-content: center;
+}
+
+.playThum-Btn{
+    display:inline;
+    position: absolute;
+    width:5%;
+    top: 30%;
+    left:35%;
+}
+.play-index{
+    width:80%;
+    height:15rem;
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem auto 0 auto;
+    filter: drop-shadow(0 0 17px rgba(195, 197, 192, 0.3));
+    position: relative;
+    .play-index-sub {
+        height: auto;
+        aspect-ratio: 416 / 395;
+        background: #fff;
+        position: relative;
+        width:80%;
+        height:15rem;
+    }
+}
+
+
+.play-index-pin{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+    .play-index-pin > img{
+        width:30px;
+        height:30px;
+    }
+
+.play-index-info{
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    width:80%;
+    height:80%;
+    margin:0 auto;
+}
+    .play-index-info > div{
+        margin-bottom:1rem;
+    }
+    .play-index-info > div > p{
+        margin-bottom: 0 !important;
+        font-weight: 400;
+        color: rgb(116, 116, 116);
+    }
+
+.play-index-title{
+    margin-bottom:0  !important;
+}
+
+.list-item > .text, .list-item > .text > a {
+    font-size: 17.5px;
+    font-weight: 600;
+    color:rgb(101, 101, 101);
+}
+.list-item > .text > a:hover {
+    color:#89dd18;
+}
+
+
+
+/*마이페이지 수강목록*/
+.mypage-lectureImg img{
+	width:180px;
+	height:100px;
+}
+
+.list-item-lecture{
+	height:8em !important; 
+}
+.item-lecture-title{
+    font-size: 17.5px;
+    font-weight: 600;
+    color:rgb(101, 101, 101);
+}
+
+.my-lectureBtn{
+	width:6rem;
+    padding:4px 8px;
+    border:#89dd18 solid 3px;
+    border-radius: 1ch;
+    background-color: #89dd18;
+    color:white;
+}
+    .my-lectureBtn:hover{
+        background-color: white;
+        color:#89dd18;
+        border:#89dd18 solid 3px;
+    }
+    .my-lectureBtn:disabled{
+    	background-color: #BDBDBD;
+        color:white;
+        border:#BDBDBD solid 3px;
+        cursor: not-allowed;
+    	pointer-events: none;
+   	}
+   	.my-lectureBtn:focus{
+	outline:none;
+}
+.my-lectureBtn-second{
+	border:#477500 solid 3px;
+    background-color: #477500;
+    color:white;
+}
+	.my-lectureBtn-second:hover{
+		background-color: white;
+        color:#477500;
+        border:#477500 solid 3px;
+	}
+ 
+
+
+/*리뷰 작성(width=600px,height=530px)*/
+.review-section{
+	justify-content:center;
+	height:100%;
+}
+.review-title-area{
+	height:13%;
+	width:100%;
+	text-align:center;
+	justify-content:center;
+	margin:0 auto;
+	background-color:#89dd18;;
+}
+.review-title{
+	color:white;;
+}
+
+.review-info-area{
+	height:40%;
+	width:100%;
+	display:inline-block;
+	text-align:center;
+	justify-content:center;
+	margin:0 auto;
+}
+	.review-info-area > div > .img{
+		height:170px;
+		width:300px;
+	}	
+	.review-info-area > .title, .reviewV-info-title{
+		color:#89dd18 !important;
+		white-space: nowrap;
+  		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+.review-input-area{
+	height:30%;
+	width:100%;
+	justify-content:center;
+	margin:0 auto;
+}
+	.review-input-area > .textarea {
+    width: 550px;
+    height: 20dvh;
+    text-align:center;
+    margin:0 auto;
+  }
+  	.review-input-area textarea {
+    width: 500px;
+    height: 9em;
+    text-align:start;
+    border: 1px lightgray solid;
+    resize: none !important;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    justify-content:center;
+	margin:0 auto;
+    padding: 10px 10px;
+  }
+
+.star_rating {
+  width: 100%; 
+  box-sizing: border-box; 
+  display: inline-flex; 
+  justify-content: center;
+  margin:10px auto;
+}
+.star_rating .star {
+  width: 25px; 
+  height: 25px; 
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FE2bww%2FbtsviSSBz4Q%2F5UYnwSWgTlFt6CEFZ1L3Q0%2Fimg.png') no-repeat; 
+  background-size: 100%; 
+  box-sizing: border-box;
+  border:none;
+}
+.star_rating .star.on {
+  width: 25px; 
+  height: 25px;
+  margin-right: 10px;
+  display: inline-block; 
+  background: url('https://blog.kakaocdn.net/dn/b2d6gV/btsvbDoal87/XH5b17uLeEJcBP3RV3FyDk/img.png') no-repeat;
+  background-size: 100%; 
+  box-sizing: border-box; 
+}
+.star_rating .star:focus{
+	outline:none !important;
+}
+
+.review-button-area{
+	height:8%;
+	width:100%;
+	margin-top:5%;
+	justify-content:center;
+	margin:0 auto;
+}
+.review-button-area > button{
+	height:40px;
+	width:80px;
+}
+
+/*리뷰 수정(width=600px,height=530px)*/
+.reviewV-info-area{
+	height:17%;
+	width: 550px;
+	display:flex;
+    align-items:center;
+	margin:0 auto;
+	padding:0 30px;
+}
+	.reviewV-info-area div img{
+		height:100%;
+		width:100%;
+	}	
+	.reviewV-info-area .title{
+		color:gray !important;
+		width:70%;
+	}
+	
+.review-view{
+	height:30%;
+	display:flex;
+	justify-content:center;
+	margin:2% auto;
+	width: 550px;
+}
+	.review-view > .textarea > .view, .review-reply-area > .textarea > .view {
+		border:none;
+	}
+  	.review-view textarea, .review-reply-area textarea {
+    width: 500px;
+    height: 9em;
+    text-align:start;
+    border:none;
+    resize: none !important;
+    overflow-y:hidden;
+    overflow-x:hidden;
+    justify-content:center;
+	margin:0 auto;
+    padding: 10px 10px;
+    cursor: grab;
+  }
+  .review-view textarea:focus, .review-reply-area textarea:focus{
+  	overflow-y:scroll;
+  	outline:none;
+  }
+
+
+.review-view-second{
+	display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width: 550px;
+	height:10%;
+	padding:0 3%;
+}
+.review-view-second > .text, .star_rating > .text{
+	padding-right: 0;
+	font-weight:500;
+	color:gray;
+}
+
+.review-view-third{
+	display:flex;
+	justify-content:right;
+	padding-right:5%;
+	color:lightgray;
+}
+.review-view-third button{
+	border:none;
+	border-radius:2rem;
+	background-color:transparent;
+	color:#89dd18;
+	padding:6px;
+}
+	.review-view-third button:focus{
+		outline:none;
+	}
+	.review-view-third button:hover{
+		background-color:#89dd18;
+		color:white;
+	}
+
+.review-reply-area{
+	display:flex;
+	justify-content:center;
+	margin:2% auto;
+	width: 550px;
+}
+.review-reply-area > .reply-title{
+	width:95%;
+	height:3rem;
+	padding:0.2rem;
+	padding-left:2rem;
+	margin-top:1rem;
+	border:3px solid #89dd18;
+	border-radius:2rem;
+	background-color:#89dd18;
+	 box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
+	color:white;
+	text-align:left;
+	font-size:18px;
+	font-weight:600;
+}
+	.review-reply-area > .reply-title:focus {
+		outline:none;
+	}
+	.review-reply-area > .reply-title:active {
+	  box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+	  position: relative;
+	  top:2px;
+	}
+
+.review-reply-area textarea {
+	height:6rem;
+}
+

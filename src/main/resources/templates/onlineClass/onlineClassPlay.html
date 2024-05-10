@@ -14,13 +14,16 @@ $(document).ready(function(){
     video.addEventListener('loadedmetadata', function(){
         var videoDuration = formatDate(video.duration);
         console.log("총 영상 길이 : " + video.duration);
-    });
+        /*video.addEventListener('startOffsetTime', () => {
+			if("[[${index}]]" != null ){
+		});*/
+	});
     
     //비디오 재생 시 5초 간격으로 재생 위치 출력. 정지 시 타이머 멈춤
     //페이지 들어갈 때 insert, 5초마다 update
     video.addEventListener('play', () => {
             console.log("비디오 재생");
-            var currentTime = Math.ceil(video.currentTime);
+            var currentTime = Math.floor(video.currentTime);
             var formData = new FormData();
 			formData.append("onlineClassId", onlineClassId);
 			formData.append("onlineFileId", onlineFileId);
@@ -42,33 +45,22 @@ $(document).ready(function(){
 			});
 
             var timer = setInterval(() => {
-	            console.log(video.currentTime);
-	            var currentTime = Math.ceil(video.currentTime);
-	            var formData = new FormData();
-				formData.append("onlineClassId", onlineClassId);
-				formData.append("onlineFileId", onlineFileId);
-				formData.append("onlineLogCurr", currentTime);
-				$.ajax({
-					url:"/onlinePlay",
-					method:"PUT",
-					data:formData,
-					processData : false,
-		            contentType : false,
-		            cache: false,
-		            enctype: 'multipart/form-data',  
-					success:function(){
-						console.log("총 영상 길이 : " + formatDate(video.duration) + ", 현재 재생 위치 : " + formatDate(video.currentTime));
-					},
-					error:function(){
-						console.log("Log update Fail");
-					}
-				});
+	            logUpload();
             },5000);
             video.addEventListener('pause', () => {
                     console.log("비디오 정지");
                     clearInterval(timer);
+                    logUpload();
             });
     });
+    
+	//영상 종료
+	video.addEventListener('ended', () => {
+		logUpload();	
+		if(confirm("다음 강의를 이어서 시청하시겠습니까?") == true){
+	    	location.href="/onlinePlay?classId=[[${onlineClass.onlineClassId}]]&fileId=[[${classFile.onlineClassFileId.onlineFileId}+1]]";
+	    }
+	});
         
 	function formatDate(seconds) {
 	  var secondsNumber = parseInt(seconds, 10)
@@ -87,6 +79,30 @@ $(document).ready(function(){
 	  }
 	  return `${hours}:${minutes}:${totalSeconds}`
 	}
+	
+	function logUpload(){
+		console.log(video.currentTime);
+        var currentTime = Math.floor(video.currentTime);
+        var formData = new FormData();
+		formData.append("onlineClassId", onlineClassId);
+		formData.append("onlineFileId", onlineFileId);
+		formData.append("onlineLogCurr", currentTime);
+		$.ajax({
+			url:"/onlinePlay",
+			method:"PUT",
+			data:formData,
+			processData : false,
+            contentType : false,
+            cache: false,
+            enctype: 'multipart/form-data',  
+			success:function(){
+				console.log("총 영상 길이 : " + formatDate(video.duration) + ", 현재 재생 위치 : " + formatDate(video.currentTime));
+			},
+			error:function(){
+				console.log("Log update Fail");
+			}
+		});
+	}
 });
 
 </script>
@@ -99,6 +115,13 @@ $(document).ready(function(){
 <!--사용자 네비게이션-->
 <!-- <section class="container">
 </section>-->
+  <div class="video-side">
+  	<ul>
+  		<li>홈</li>
+  		<li>마이페이지</li>
+  		<li>수강목록</li>
+  	</ul>
+  </div>
 <section class="container">
     <div class="video-section w-100 ">
 		<div class="video-button-area ftco-animate col-md-12">
@@ -109,7 +132,7 @@ $(document).ready(function(){
       <div class="video-container ftco-animate col-md-12">
         <div class="video-contents col-md-8">
           <div class="video-area">
-            <video id="video" controls playsinline muted ><!--autoplay-->
+            <video id="video" controls playsinline muted>
               <source th:src="|@{'/video/' + ${videoFileName} + '#t=' + ${index}}|"  type="video/mp4" />	<!--확장자명 뒤에 #t=숫자 / 입력하면 시작 위치 지정-->
             </video>
           </div>
@@ -117,31 +140,32 @@ $(document).ready(function(){
             <div class="comment-title">
               <h5 class="me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle-fill mb-1" viewBox="0 0 16 16">
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
-              </svg><th:block th:text='${classFile.onlineClassFileId.onlineFileId}' />강.</h5><h5 style="color:rgb(98, 98, 98);" th:text='${classFile.onlineFileOrgName}'></h5><!---->
+              </svg>[[${classFile.onlineClassFileId.onlineFileId}]]강.</h5>
+              <h5 style="color:rgb(98, 98, 98);">[[${classFile.onlineFileOrgName}]]</h5>
             </div>
-            <div class="comment-comments" th:text='${classFile.onlineFileContent}'></div>
+            <div class="comment-comments">[[${classFile.onlineFileContent}]]</div>
           </div>
         </div>
         <div class="video-contents col-md-4">
           <div class="video-list-title align-items-center">
             <h5><span class="icon-check" style="color:#89dd18;"></span> 강의명</h5>
-            <h6 class="mb-2" th:text='${onlineClass.onlineClassTitle}'></h6>
+            <h6 class="mb-2">[[${onlineClass.onlineClassTitle}]]</h6>
             <h5><span class="icon-check" style="color:#89dd18;"></span> 강사</h5>
-            <h6 th:text='${onlineClass.instructorNickname}'></h6>
+            <h6 >[[${onlineClass.instructorNickname}]]</h6>
           </div>
           <div class="video-list-area">
             <h6 class="mb-1"><b><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
             </svg>
               재생목록</b></h6>
-            <p class="ms-3" th:text='|총 강의 수 : ${classFile.onlineClassFileId.onlineFileId} / ${classCnt}|'></p>
+            <p class="ms-3">총 강의 수 : [[${classFile.onlineClassFileId.onlineFileId}]] / [[${classCnt}]]</p>
           </div>
           <div class="video-list scroll">
           
             <!--온라인 강의 재생목록-->
             <div class="video-item col-12" th:each='item:${classList}' th:style="${item.onlineClassFileId.onlineFileId == classFile.onlineClassFileId.onlineFileId} ? 'filter: brightness(80%);' : ''">
               <div class="col-4 video-img-area">
-                <a class="video-imgBtn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+                <a class="video-imgBtn" th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
                   <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
                 </svg></a>
                 <a class="video-img" th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}" > 
@@ -150,8 +174,8 @@ $(document).ready(function(){
               </div>
               <div class="col-8 video-title-area">
               <a th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}">
-                <p class="title-num" th:text='|${item.onlineClassFileId.onlineFileId}강|'></p>
-                <p class="title-con" th:text='${item.onlineFileOrgName}'></p>
+                <p class="title-num">[[${item.onlineClassFileId.onlineFileId}]]강</p>
+                <p class="title-con">[[${item.onlineFileOrgName}]]</p>
               </a>
               </div>
             </div>
@@ -161,7 +185,6 @@ $(document).ready(function(){
       </div>
     </div>
   </section>
-  <footer class="footer-section"></footer>	
 	<!--채팅/맨 위로 버튼-->
 	<button id="btn-chat" title="채팅">
 		<img src="/images/icon-chat.png" alt="chat">

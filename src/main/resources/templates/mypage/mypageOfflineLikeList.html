@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+	
+	<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">공방 찜 목록</h1>
+    	<p class="sub-title"></p>
+  	</div>
+
+	<section class="ftco-animate my-4" >
+    	<div class=" list-area">
+      		<p th:insert="import/mypageUserImport.html :: mypageUser-import"></p>
+   
+      		<div class="list-container">
+        		<div class="container list-section">
+          			<div class="row mb-4 list-title">
+            			<div class="col-2 text-center">번호</div>
+            			<div class="col-6 text-center">결제내용</div>
+            			<div class="col-2 text-center">결제일자</div>
+            			<div class="col-2 text-center">상태</div>
+          			</div>
+        		</div>
+        		<div class="container list-section">
+        			<div class="row list-item">
+            			<div class="col-2 text-center">1</div>
+            			<div class="col-6 list-item-title">게시글1</div>
+            			<div class="col-2 text-center">2024/03/04</div>
+            			<div class="col-2 text-center">결제완료</div>
+          			</div>
+        		</div>
+        
+        	<!--페이징-->
+        		<div class="row my-5 paging-area">
+            		<div class="block-27">
+	              		<ul>
+	                		<li><a href="#">&lt;</a></li>
+	                		<li class="active"><span>1</span></li>
+	                		<li><a href="#">2</a></li>
+	                		<li><a href="#">3</a></li>
+	                		<li><a href="#">4</a></li>
+	                		<li><a href="#">5</a></li>
+	                		<li><a href="#">&gt;</a></li>
+	              		</ul>
+            		</div>
+        		</div>
+      		</div>
+     	</div>
+	</section>
+     	
+     	
+     	
+     	
+     		
+	
+	
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

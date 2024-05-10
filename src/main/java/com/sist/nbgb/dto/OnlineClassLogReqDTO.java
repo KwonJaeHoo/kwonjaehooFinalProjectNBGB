@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 public class OnlineClassLogReqDTO {
-	private final Long onlineLogCurr;
-	private final LocalDateTime onlineLogDate;
-	private final Status status;
+	private Long onlineLogCurr;
+	private LocalDateTime onlineLogDate;
+	private Status status;
 	
 	public OnlineClassLogReqDTO(Long onlineLogCurr, Status status) {
 		this.onlineLogCurr = onlineLogCurr;

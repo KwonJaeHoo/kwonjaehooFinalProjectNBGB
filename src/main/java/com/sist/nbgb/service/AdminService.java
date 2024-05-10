@@ -8,6 +8,7 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
@@ -33,6 +34,15 @@ public class AdminService
 	public Page<User> findUserByKeyword(String keyword, Pageable pageable) {
 		return userRepository.findByUserIdContainingOrUserEmailContainingOrUserNameContainingOrUserPhoneContaining(keyword, keyword, keyword, keyword, pageable);
 	}
+	
+	//일반 회원 권한 변경
+	public void changeUserRole(String userId, Role newRole) throws Exception {
+		User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+		user.setAuthority(newRole);
+		userRepository.save(user);
+	}
+	
+	
 	
 	//페이징 처리(강사)
 	public Page<Instructors> findAllByOrderByInstructorRegdate(Pageable pageable) {

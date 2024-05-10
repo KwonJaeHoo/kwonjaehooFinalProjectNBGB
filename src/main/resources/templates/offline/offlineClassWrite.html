@@ -124,7 +124,7 @@ $(document).ready(function(){
 	    
 	    var offlinePostDto = {
 	    		offlineClassTitle:$("#offlineClassTitle").val(),
-	    		instructorId:'jisu',
+	    		instructorId:$("#instructorId").val(),
 	    		offlineClassLimitPeople:$("#offlineClassLimitPeople").val(),
 	    		offlineClassCategory:$("#offlineClassCategory").val(),
 	    		offlineClassPrice:$("#offlineClassPrice").val(),
@@ -136,7 +136,7 @@ $(document).ready(function(){
 	    
 	    $.ajax({
 	    	type:"POST",
-	    	url:"/offlineClass/wite/post",
+	    	url:"/offlineClass/write/post",
 	    	enctype:"multipart/form-data",
 	    	data:formData,
 	    	processData:false,
@@ -197,7 +197,8 @@ function fn_number(value)
 			</tr>
 			<tr>
 				<td class="tt">강사명</td>
-				<td><input id="instructorNickname" name="instructorNickname" type="text" placeholder=" 강사명" value=" 회원가입때한거예명" readonly></td>
+				<td><input id="instructorNickname" name="instructorNickname" type="text" placeholder=" 강사명" th:value="${user.instructorNickname}" readonly>
+				<input id="instructorId" name="instructorId" type="hidden" th:value="${user.instructorId}"></td>
 			</tr>
 			<tr>
 				<td class="tt">인원수</td>
