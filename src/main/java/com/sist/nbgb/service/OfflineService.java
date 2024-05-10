@@ -16,6 +16,7 @@ import com.sist.nbgb.dto.OfflinePaymentApproveDto;
 import com.sist.nbgb.dto.OfflinePopDto;
 import com.sist.nbgb.dto.OfflinePostDto;
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
+import com.sist.nbgb.dto.OfflineUpdateDto;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
@@ -263,5 +264,15 @@ public class OfflineService
 	public Long countPeople(String classId, String date, String time)
 	{
 		return approveRepository.countPeople(classId, date, time);
+	}
+	
+	//오프라인 클래스 수정
+	@Transactional
+	public Long offlineUpdate(final Long id, final OfflineUpdateDto params)
+	{
+		OfflineClass entity = offlineRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+		entity.update(params.getOfflineClassTitle(), params.getOfflineClassContent(), params.getOfflineClassCategory(), params.getOfflineClassLimitPeople(), params.getOfflineClassPrice(), params.getOfflineClassPlace());
+		
+		return id;
 	}
 }

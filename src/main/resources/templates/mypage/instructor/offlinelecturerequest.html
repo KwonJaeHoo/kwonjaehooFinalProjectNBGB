@@ -21,7 +21,7 @@
             			<div class="col-2 text-center">카테고리</div>
             			<div class="col-6 text-center">게시물 제목</div>
             			<div class="col-2 text-center">가격</div>
-            			<div class="col-2 text-center">신청인원</div>
+            			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
         		<div class="container list-section" th:each="item : ${listPaging}">
@@ -30,7 +30,8 @@
             			<div class="col-6 list-item-title"><a th:text="${item.offlineClassTitle}" th:onclick="|location.href='@{'/instructor/mypage/offlinelecturerequest/' + ${item.offlineClassId}}'|"></a></div>
             			<div class="col-2 text-center">[[${#numbers.formatInteger(item.offlineClassPrice, 1, 'COMMA')}]]원</div>
             			<div class="col-2 text-center">
-            			 [[${item.offlineClassApprove}]]&nbsp;
+            				<a th:if="${#strings.equals(#strings.toString(item.offlineClassApprove), 'B')}">판매중지</a>
+            				<a th:if="${#strings.equals(#strings.toString(item.offlineClassApprove), 'Y')}">게시중</a>
             			</div>
           			</div>
         		</div>

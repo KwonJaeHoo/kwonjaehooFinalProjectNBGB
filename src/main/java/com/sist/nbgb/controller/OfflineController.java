@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OfflinePopDto;
 import com.sist.nbgb.dto.OfflinePostDto;
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
+import com.sist.nbgb.dto.OfflineUpdateDto;
 import com.sist.nbgb.dto.OfflineUpload;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
@@ -540,5 +542,70 @@ public class OfflineController
 		}
 		
 		
+	}
+	
+	//오프라인 클래스 글 수정
+	@GetMapping("/offlineClass/update/{offlineClassId}")
+	public String offlineClassUpdate(@PathVariable Long offlineClassId, Model model, HttpServletRequest request)  throws Exception
+	{
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
+        {
+			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+			
+			Optional<InstructorsResponse> user = offlineService.findByInstructorId(userId)
+					.map(InstructorsResponse::new);
+			
+			OfflineClass offlineClass = offlineService.findByView(offlineClassId);
+			
+			model.addAttribute("user", user.get());
+			model.addAttribute("offlineClass", offlineClass);
+			
+			return "/offline/offlineClassUpdate";
+        }
+		else
+		{
+			request.setAttribute("msg", "없는 회원정보입니다 확인해주세요");
+	        request.setAttribute("url", "/");
+	        return "/offline/alert";
+		}
+	}
+	
+	//게시물 수정
+	@PatchMapping("/offlineClass/update/post/{offlineClassId}")
+	@ResponseBody
+	public ResponseEntity<Integer> offlineUpdatePost(@PathVariable final Long offlineClassId, @RequestPart(value="offlineUpdateDto") @Valid OfflineUpdateDto offlineUpdateDto, @RequestPart(value="offlineFile") MultipartFile offlineFile)
+	{
+		if(offlineService.offlineUpdate(offlineClassId, offlineUpdateDto) > 0)
+		{
+			if(offlineFile != null) 
+			{
+				String path = "C:/project/sts4/SFPN/src/main/resources/static/images/offlineThumbnail";
+				String fileName = offlineClassId + ".jpg";
+				String filepath = path + "/" + fileName;
+				
+				//기존 이미지 삭제
+				File file = new File(filepath);
+				
+				if (!file.delete()) {
+					return ResponseEntity.ok(-1); // 파일 삭제 실패
+				}
+				
+				file = new File(filepath);
+				
+				try {
+		            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
+		            bufferedOutputStream.write(offlineFile.getBytes());
+		            bufferedOutputStream.close();
+			        
+			    } catch (Exception e) {
+		            throw new RuntimeException("오류가 발생했습니다.");
+		        }
+			}
+			
+			 return ResponseEntity.ok(0);  
+		}
+		
+       return ResponseEntity.ok(1);   
+
 	}
 }

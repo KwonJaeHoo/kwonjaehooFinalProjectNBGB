@@ -91,4 +91,15 @@ public class OfflineClass
 	@Column(columnDefinition = "NUMBER(6)")
 	@Comment("오프라인 강의 조회수")
 	private Long offlineClassViews;
+	
+	public void update(String title, String content, String category, Long limit, Long price, String place)
+	{
+		this.offlineClassTitle = title;
+		this.offlineClassContent = content;
+		this.offlineClassCategory = category;
+		this.offlineClassLimitPeople = limit;
+		this.offlineClassPrice = price;
+		this.offlineClassPlace = place;
+		this.offlineClassApprove = Status.N;
+	}
 }
