@@ -414,6 +414,15 @@ margin: 50px auto 30px auto;
 
 
 /*마이페이지 수강목록*/
+.list-section-none{
+	padding:20% 0;
+	display:flex;
+	justify-content:center;
+}
+	.list-section-none h5{ 
+		color:gray;
+	}
+
 .mypage-lectureImg img{
 	width:180px;
 	height:100px;
@@ -670,10 +679,10 @@ margin: 50px auto 30px auto;
 	font-size:18px;
 	font-weight:600;
 }
-	.review-reply-area > .reply-title:focus {
+	.review-reply-area > .reply-title:focus{
 		outline:none;
 	}
-	.review-reply-area > .reply-title:active {
+	.review-reply-area > .reply-title:active{
 	  box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
 	  position: relative;
 	  top:2px;
@@ -683,3 +692,26 @@ margin: 50px auto 30px auto;
 	height:6rem;
 }
 
+.reviewReport {
+	display:flex;
+	justify-content:right;
+	text-align:center;
+	color:red;
+}
+	.reviewReport button{
+		background-color:transparent;
+		border:none;
+	}
+	.reviewReport button:focus{
+		outline:none;
+	}
+	.reviewReport button:active{
+		position: relative;
+		top:2px;
+	}
+	.reviewReport img{
+		width:20px;
+		height:20px;
+		display:flex;
+		justify-content:right;
+	}

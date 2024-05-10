@@ -466,6 +466,7 @@ public class OnlineClassService {
 	public OnlineClass userLectureInfo(Long onlineClassId) {
 		return onlineClassRepository.findByOnlineClassId(onlineClassId);
 	}
+	
 }
 	
 

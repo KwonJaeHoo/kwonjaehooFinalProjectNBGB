@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.OnlineClassListDTO;
+import com.sist.nbgb.dto.OnlineReviewDTO;
 import com.sist.nbgb.dto.UserReviewRequestDTO;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
@@ -78,9 +79,9 @@ public class ReviewController {
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
 	    	if(classIden.equals("ON")) {
 	    		OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
-	    		
-	    		model.addAttribute("userNickname", user.getUserNickname());
+	    		OnlineReviewDTO userReview = onlineReviewService.viewReview(user, classId, classIden);
 	    		model.addAttribute("class", onlineClass);
+	    		model.addAttribute("review", userReview);
 	    	}
     	}
     	model.addAttribute("userNickname", user.getUserNickname());

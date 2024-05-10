@@ -3,9 +3,9 @@ package com.sist.nbgb.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.dto.OnlineReviewDTO;
 import com.sist.nbgb.dto.UserReviewRequestDTO;
 import com.sist.nbgb.entity.Review;
-import com.sist.nbgb.entity.ReviewId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.repository.OnlineReviewRepository;
 
@@ -22,6 +22,13 @@ public class OnlineReviewService {
 	//사용자 리뷰 작성 여부 조회
 	public int exsitsOnlineReview(User userId, Long classId, String classIden) {
 		return onlineReviewRepository.countByUserIdAndClassIdAndClassIden(userId, classId, classIden);
+	}
+	
+	//사용자 리뷰 조회
+	public OnlineReviewDTO viewReview(User userId, Long classId, String classIden) {
+		Review review = onlineReviewRepository.findByUserIdAndClassIdAndClassIden(userId, classId, classIden);
+		OnlineReviewDTO returnReview = new OnlineReviewDTO(review);
+		return returnReview;
 	}
 	
 	//사용자 리뷰 작성

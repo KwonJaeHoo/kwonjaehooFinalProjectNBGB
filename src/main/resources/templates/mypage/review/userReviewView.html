@@ -7,7 +7,7 @@
 $(document).ready(function(){
 	document.getElementById("replyDiv").style.display = "none";
 	
-	var rating = '3';
+	var rating = '[[${review.reviewRating}]]';
 	if(rating != null){
 		$("#star" + rating).parent().children('button').removeClass('on');
 		$("#star" + rating).addClass('on').prevAll('button').addClass('on');
@@ -36,10 +36,10 @@ function replyView() {
 	</div>
 	<div class="row reviewV-info-area mt-2">
 		<input type="hidden" id="classId">
-		<div class="col-3 px-0"><img src="/images/bg_1.jpg"></div>
+		<div class="col-3 px-0"><img th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}"></div>
 		<div class="col-9">
-			<h5 class="reviewV-info-title">강의명강의명강의명강의명강의명강의명강의명강의명강의명강의명</h5>
-			<h6 class="mb-0">카테고리/닉네임</h6>
+			<h5 class="reviewV-info-title">[[${class.onlineClassTitle}]]</h5>
+			<h6 class="mb-0">[[${class.category}]]/[[${class.instructorNickname}]]</h6>
 		</div>
 	</div>
 	<div class="row review-view">
@@ -54,9 +54,9 @@ function replyView() {
 			  <button class="star" id="star5" value="5" disabled> </button>
 			</div>
 		</div>
-		<div class="review-view-third col-12">2024/04/95 23:00</div>
+		<div class="review-view-third col-12">[[${#temporals.format(review.reviewRegdate, 'yyyy/MM/dd HH:mm')}]]</div>
 		<div class="textarea">
-			<textarea class="text" id="reviewContents" cols="60" rows="5" readonly>잘 들었습니다!!</textarea>
+			<textarea class="text" id="reviewContents" cols="60" rows="5" readonly>[[${review.reviewContent}]]</textarea>
 		</div>
 		<div class="review-view-third col-12">
 			<button type="button" class="mr-2">수정</button>
@@ -67,6 +67,7 @@ function replyView() {
 		<button type="button" onclick="replyView()" class="reply-title">💌 강사의 답변이 있습니다!</button>
 		<!--<div class="reply-title">💌 등록된 답변이 없습니다.</div>-->
 		<div class="textarea mt-3" id="replyDiv" >
+			<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>
 			<textarea class="text" id="reviewContents" cols="60" rows="4" readonly>감사합니다!</textarea>
 		</div>
 	</div>

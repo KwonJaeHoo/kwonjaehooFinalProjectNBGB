@@ -34,8 +34,8 @@
             			<div class="col-2 text-center">수강/후기</div>
           			</div>
         		</div>
-        		<div class="container list-section">
-        			<div th:if="${classes} != null" th:each="class:${classes}" class="row list-item list-item-lecture mb-2">
+        		<div th:if="${classes} != null" class="container list-section">
+        			<div th:each="class:${classes}" class="row list-item list-item-lecture mb-2">
             			<div class="col-3 text-center mypage-lectureImg">
             				<a th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}"><img th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}" /></a>
             			</div>
@@ -52,6 +52,9 @@
             						class="my-lectureBtn my-lectureBtn-second my-1" id="reviewAdd" >후기조회</button>
 						</div>
           			</div>
+        		</div>
+        		<div th:if="${classes} == null" class="container list-section">
+        			<div class="list-section-none"><h5>수강 중인 강의가 존재하지 않습니다.</h5></div>
         		</div>
       		</div>
      	</div>
