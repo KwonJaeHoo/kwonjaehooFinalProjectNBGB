@@ -9,6 +9,7 @@ import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.sist.nbgb.entity.OfflinePaymentApprove;
+import com.sist.nbgb.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,6 +62,25 @@ public class OfflinePaymentApproveDto
 	//결제날짜
 	private LocalDateTime approvedAt;
 	
+	private String status;
+	
+	public OfflinePaymentApproveDto(OfflinePaymentApprove approve)
+	{
+		this.cid = approve.getCid();
+		this.tid = approve.getTid();
+		this.partnerOrderId = approve.getPartnerOrderId();
+		this.partnerUserId = approve.getPartnerUserId();
+		this.itemCode = approve.getItemCode();
+		this.itemName = approve.getItemName();
+		this.bookingDate = approve.getBookingDate();
+		this.bookingTime = approve.getBookingTime();
+		this.point = approve.getPoint();
+		this.totalAmount = approve.getTotalAmount();
+		this.taxFreeAmount = approve.getTaxFreeAmount();
+		this.approvedAt = approve.getApprovedAt();
+		this.status = approve.getStatus();
+	}
+	
 	public static OfflinePaymentApproveDto toDto(OfflinePaymentApprove approve)
 	{
 		return OfflinePaymentApproveDto.builder()
@@ -75,6 +95,7 @@ public class OfflinePaymentApproveDto
 				.point(approve.getPoint())
 				.taxFreeAmount(approve.getTaxFreeAmount())
 				.approvedAt(approve.getApprovedAt())
+				.status(approve.getStatus())
 				.build();
 	}
 }

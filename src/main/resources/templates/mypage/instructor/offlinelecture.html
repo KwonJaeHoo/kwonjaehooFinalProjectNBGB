@@ -44,7 +44,10 @@ function closePop() {
             			<div class="col-2 text-center">[[${#numbers.formatInteger(item.offlineClassPrice, 1, 'COMMA')}]]원</div>
             			<div class="col-2 text-center">
             			 [[${item.offlineClassApprove}]]&nbsp;
-            			 <button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="fn_reason(this.getAttribute('rejection'))" th:if="${item.offlineClassApprove == N}">사유</button>
+            			 <button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="" th:if="${#strings.equals(#strings.toString(item.offlineClassApprove), 'Y')}">판매중지</button>
+            			 <button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="" th:if="${#strings.equals(#strings.toString(item.offlineClassApprove), 'N')}">수정</button>
+            			 <button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="fn_reason(this.getAttribute('rejection'))" th:if="${#strings.equals(#strings.toString(item.offlineClassApprove), 'S')}">사유</button>
+            			 <a th:rejection="${item?.rejection}" th:onclick="fn_reason(this.getAttribute('rejection'))" th:if="${#strings.equals(#strings.toString(item.offlineClassApprove), 'B')}">판매중지</a>
             			</div>
           			</div>
         		</div>
