@@ -152,7 +152,7 @@ public class OnlineClassController {
 		
 		Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		log.info("이게멀까?@@!!!!!!!!!!!!!!!!!!!!!!! 권한:" + auth);
-		Optional<User> user = null;
+		User user1 = null;
 		
 		//페이징 안한 리뷰목록
 		List<OnlineReviewDTO> reviewList = onlineClassService.findOnReview(onlineClassId, "ON", Status.Y)
@@ -210,7 +210,12 @@ public class OnlineClassController {
 			}
 			
 			//강의 결제 관련
-			LocalDateTime approvedAt = onlineClassService.findApproveAt(str, userId);
+			LocalDateTime approvedAt = null;
+			
+			if (!onlineClassService.findApproveAt(str, userId).isEmpty()) {
+				approvedAt = onlineClassService.findApproveAt(str, userId).get(0);
+			}
+			
 			//강의 수강 기간
 			long period = onlineClass.getOnlineClassPeriod();
 			//강의 들을 수 있는 날짜
@@ -224,7 +229,10 @@ public class OnlineClassController {
 				}
 			}
 			
-			user = onlineClassService.findByUserId(userId);
+			Optional<User> user = onlineClassService.findByUserId(userId);
+			
+			user1 = user.get();
+			
 			
 		}
 		
@@ -238,7 +246,7 @@ public class OnlineClassController {
 		model.addAttribute("likeDto", new ClassLikeDTO());
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("auth", auth);
-		model.addAttribute("user", user.get());
+		model.addAttribute("user", user1);
 		
 		return "onlineClass/onlineClassView";
 	}

@@ -96,6 +96,9 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	Page<OfflineClass> findByInstructorId(Pageable pageable, Instructors instructorId);
 	
 	//마이페이지 페이징
+	@Query("SELECT a FROM OfflineClass a WHERE a.instructorId = (SELECT instructorId FROM Instructors WHERE instructorId = :instructorId) AND a.offlineClassApprove in ('Y', 'B') ORDER BY a.offlineClassId DESC")
+	List<OfflineClass> findInsList(@Param("instructorId") String instructorId);
+	
 	Page<OfflineClass> findByInstructorIdAndOfflineClassApprove(Pageable pageable, Instructors instructorId, Status onlineClassApprove);
 	
 	Optional<OfflineClass> findByOfflineClassId(Long offlineClassId);

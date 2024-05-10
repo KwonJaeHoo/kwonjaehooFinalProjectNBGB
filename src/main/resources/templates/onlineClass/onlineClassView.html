@@ -415,8 +415,8 @@ var formData = new FormData();
    
    <form name="payForm" id="payForm" method="post">
 			<input type="hidden" id="onlineClassPrice" name="onlineClassPrice" th:value="${onlineClass.onlineClassPrice}" />
-			<input type="hidden" id="userPoint" name="userPoint" th:value="${user.userPoint}" />
-			<input type="hidden" id="userId" name="userId" th:value="${user.userId}" />
+			<input th:if="${user != null}" type="hidden" id="userPoint" name="userPoint" th:value="${user.userPoint}" />
+			<input th:if="${user != null}" type="hidden" id="userId" name="userId" th:value="${user.userId}" />
 			<input type="hidden" id="onlineClassId" name="offlineClassId" th:value="${onlineClass.onlineClassId}" />
 			<input type="hidden" id="onlineClassTitle" name="onlineClassTitle" th:value="${onlineClass.onlineClassTitle}" />
 			<input type="hidden" id="onlineClassPeriod" name="onlineClassPeriod" th:value="${onlineClass.onlineClassPeriod}">

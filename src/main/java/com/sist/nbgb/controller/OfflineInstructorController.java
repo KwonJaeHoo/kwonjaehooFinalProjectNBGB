@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,9 +61,16 @@ public class OfflineInstructorController
 	@GetMapping("/instructor/mypage/{id}/offlinelecturerequest")
 	public String offlinelecturerequest(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
 	{	
-		Page<OfflineClass> paging = this.offlineInstructorService.offlinePayInstructor(page, id, Status.Y);
-		Page<OfflineResponse> toMap = paging.map(m -> new OfflineResponse(m));
-		List<OfflineResponse> listPaging = toMap.getContent();
+//		Page<OfflineClass> paging = this.offlineInstructorService.offlinePayInstructor(page, id, Status.Y);
+//		Page<OfflineResponse> toMap = paging.map(m -> new OfflineResponse(m));
+		List<OfflineResponse> listPaging = offlineInstructorService.offlinePayInstructor(page, id, null).stream()
+				.map(OfflineResponse::new)
+				.collect(Collectors.toList());
+		
+		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "OfflineClassId"));
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min(start + pageRequest.getPageSize(), listPaging.size());
+		Page<OfflineResponse> paging = new PageImpl<>(listPaging.subList(start, end), pageRequest, listPaging.size());
 		
 		model.addAttribute("paging", paging);
 		model.addAttribute("listPaging", listPaging);

@@ -49,13 +49,13 @@ public class OfflineInstructorService
 	}
 	
 	//마이페이지 페이징 - 결제
-	public Page<OfflineClass> offlinePayInstructor(int page, String id, Status onlineClassApprove)
+	public List<OfflineClass> offlinePayInstructor(int page, String id, Status onlineClassApprove)
 	{
-		Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "OfflineClassId"));
+//		Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "OfflineClassId"));
 		
-		Instructors instructorId = instrucRepostiory.findFirstByInstructorId(id);
+//		Instructors instructorId = instrucRepostiory.findFirstByInstructorId(id);
 		
-		return offlineRepository.findByInstructorIdAndOfflineClassApprove(pageable, instructorId, onlineClassApprove);
+		return offlineRepository.findInsList(id);
 	}
 	
 	//시간 리스트 가져오기
