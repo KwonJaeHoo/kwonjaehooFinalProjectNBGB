@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+	<a class="MainBanner" aria-current="page" href="/admin/offlineClassList"><h1>오프라인 강의 관리</h1></a>
+	
+	<div class="container" style="max-width: 1000px">
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>강의 글번호</th>
+                <th>강의 제목</th>
+                <th>강의 게시일</th>
+                <th>강사 아이디</th>
+                <th>강의 가격</th>
+                <th>강의 조회수</th>
+                <th>반려 날짜</th>
+                <th>반려 사유</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="offlineList: ${offlineClassList}">
+                <td><a th:text="${offlineList.offlineClassId}">강의 글번호</a></td>
+                <td><a th:text="${offlineList.offlineClassTitle}">강의 제목</a></td>
+                <td><a th:text="${offlineList.offlineClassRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강의 게시일</a></td>
+                <td><a th:text="${offlineList.instructorId.instructorId}">강사 아이디</a></td>
+                <td><a th:text="${offlineList.offlineClassPrice}">강의 가격</a></td>
+                <td><a th:text="${offlineList.offlineClassViews}">강의 조회수</a></td>
+                <td><a th:text="${offlineList.rejectionRegdate != null ? offlineList.rejectionRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')) : ''}">반려 날짜</a></td>
+                <td><a th:text="${offlineList.rejection}">반려 사유</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!--페이징 처리-->
+	<div class="row mt-5">
+        <div class="col">
+          <div class="block-27 smallpage" style="display:inline; text-align: center;">
+            <ul class="mb-2">
+	        <!-- Previous page button -->
+	        <li th:if="${page.hasPrevious}">
+	            <a href="@{/admin/offlineClassList(page=${page.number - 1})}">&lt;</a>
+	        </li>
+	        
+	        <!-- Page number buttons -->
+	        <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:if="${page.totalPages > 1}">
+	            <a th:href="@{/admin/offlineClassList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
+	        </li>
+	
+	        <!-- Next page button -->
+	        <li th:if="${page.hasNext}">
+	            <a href="@{/admin/offlineClassList(page=${page.number + 1})}">&gt;</a>
+	        </li>
+	    	</ul>
+	    </div>
+	    </div>
+	</div>
+    
+            
+  <div class="comment-form-wrap">                
+    </div>
+
+</div> <!-- /container -->
+
+<!-- 검색창 -->
+    <form class="search-box" action="/admin/offlineClassList" method="get">
+	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
+	    <button class="search-btn" type="submit">
+	        <i class="fa-solid fa-magnifying-glass"></i>
+	    </button>
+	</form>
+
+
+<script src="/js/reference.js"></script>
+
+
+<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

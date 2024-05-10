@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -38,8 +39,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewComment 
 {
-	@EmbeddedId
-	private ReviewId id;
+	@Id
+	@Column(name = "REVIEW_ID", nullable = false)
+	private Long id;
 	
 	@MapsId("reviewId")
 	@Comment("후기 글번호")

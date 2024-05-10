@@ -2,12 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="import/cssImport.html :: css-import"></div>
-<<<<<<< HEAD
 	<link rel="stylesheet" href="/css/signupCustom.css">
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script type="text/javascript">
-	function writeReview(classId) {
-	    var win = window.open('/user/userReview/'+classId, '/user/userReview/'+classId,
+	function writeReview(classId, classIden) {
+	    var win = window.open('/user/userReviewWrite/'+classId +'/' + classIden, '/user/userReviewWrite/'+classId +'/' + classIden,
+		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
+	}
+	function viewReview(classId, classIden) {
+	    var win = window.open('/user/userReviewView/'+classId +'/' + classIden, '/user/userReviewView/'+classId +'/' + classIden,
 		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
 	}
 	</script>
@@ -15,7 +18,7 @@
 <body>
 	<div th:insert="import/topImport.html :: top-import"></div>
 	<div class="col-md-12 ftco-animate text-center">
-    	<h1 class="mb-3 sub-title">수강목록</h1>
+    	<h1 class="mb-3 sub-title">내방 클래스 수강목록</h1>
     	<p class="sub-title"></p>
   	</div>
   	
@@ -28,7 +31,7 @@
           			<div class="row mb-4 list-title">
             			<div class="col-8 text-center">강의명</div>
             			<div class="col-2 text-center">종료일자</div>
-            			<div class="col-2 text-center">수강/리뷰</div>
+            			<div class="col-2 text-center">수강/후기</div>
           			</div>
         		</div>
         		<div class="container list-section">
@@ -44,8 +47,9 @@
             				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId})}'|" 
             						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1">수강하기</button>
             				<button type="button" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1" disabled>기간만료</button>
-            				<button type="button" th:if="${reviewChk[__${class.onlineClassId}__] == 0}" th:onclick="writeReview([[${class.onlineClassId}]])" class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
-            				<button type="button" th:if="${reviewChk[__${class.onlineClassId}__] != 0}"class="my-lectureBtn my-1" id="reviewAdd" disabled>후기작성</button>
+            				<button type="button" th:if="${reviewChk[__${class.onlineClassId}__] == 0}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON')" class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
+            				<button type="button" th:if="${reviewChk[__${class.onlineClassId}__] != 0}" th:onclick="viewReview([[${class.onlineClassId}]], 'ON')"
+            						class="my-lectureBtn my-lectureBtn-second my-1" id="reviewAdd" >후기조회</button>
 						</div>
           			</div>
         		</div>

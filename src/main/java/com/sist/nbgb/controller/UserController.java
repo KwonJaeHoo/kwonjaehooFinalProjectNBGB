@@ -346,19 +346,8 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
-    				.stream()
-    				.map(UserReviewDto::new)
-    				.collect(Collectors.toList());
+    		User user = userService.findUserById(id);
     		
-//    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
-//    				.stream().map(OnlineClassTitleDto::new).collect(Collectors.toList());
-    				
-    		
-    	//	List<OfflineResponse> offlineClassListDto = offlineService.
-    		
-    		
-        	model.addAttribute("userReviewDto", userReviewDto);
     	}
     	
     	return "mypage/mypageOfflineLectureList";

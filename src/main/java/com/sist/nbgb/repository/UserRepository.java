@@ -3,12 +3,16 @@ package com.sist.nbgb.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
 
+@Transactional
 @Repository
 public interface UserRepository extends JpaRepository<User, String>
 {
@@ -22,4 +26,10 @@ public interface UserRepository extends JpaRepository<User, String>
 
 	User findFirstByUserId(String userId);
 	List<User> findAllByUserId(String userId);
+	
+	//페이징(관리자용)
+	Page<User> findAllByOrderByUserRegdateDesc(Pageable pageable);
+	
+	//검색용(관리자용)
+	Page<User> findByUserIdContainingOrUserEmailContainingOrUserNameContainingOrUserPhoneContaining(String userId, String userEmail, String userName, String userPhone, Pageable pageable);
 }

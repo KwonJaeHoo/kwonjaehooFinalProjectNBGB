@@ -344,3 +344,79 @@ i[class^=icon-chevron]{
 /*오버레이 뒷배경*/
 .popup_overlay{position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);}
 /*popup*/
+
+
+.list-title{
+    align-items: center;
+    justify-content: center;
+    height:3rem;
+    border-bottom: 4px solid #88dd1879;
+    background-color: #88dd1879;
+    border-radius: 2rem;
+    font-weight: 600;
+    color: white;
+    width:100%;
+    margin:0 auto;
+}
+
+
+.list-title-calender{
+    align-items: center;
+    justify-content: center;
+    height:3rem;
+    border-bottom: 4px solid #88dd1879;
+    background-color: #88dd1879;
+    border-radius: 2rem;
+    font-weight: 600;
+    color: white;
+    width:100%;
+    margin:0 auto;
+}
+
+.kjs{
+  margin-left: auto;
+  margin-right: auto;
+  width: 480px;
+}
+
+.pay-list{
+	border-color:#88dd1879;
+    border-style: solid;
+    width: 480px;
+    border-radius: 1rem;
+    height:auto;
+    border-width:1px;
+    overflow:hidden;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto;
+}
+
+.pay-list-title{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 10px;
+    }
+    
+.pay-list-title p{
+        margin-bottom: 0px;
+    }
+    
+.pay-list-tb{
+	width:480px;
+	text-align:center;
+	margin-left:3%;
+}
+
+.pay-list-tb .name{
+	width:20%;
+}
+
+.pay-list-tb .phone{
+	width:30%;
+}
+
+.pay-list-tb .email{
+	width:50%;
+}

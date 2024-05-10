@@ -18,86 +18,53 @@
       		<div class="list-container">
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
-            			<div class="col-2 text-center">번호</div>
-            			<div class="col-6 text-center">결제내용</div>
-            			<div class="col-2 text-center">결제일자</div>
-            			<div class="col-2 text-center">상태</div>
+            			<div class="col-2 text-center">카테고리</div>
+            			<div class="col-6 text-center">게시물 제목</div>
+            			<div class="col-2 text-center">가격</div>
+            			<div class="col-2 text-center">신청인원</div>
           			</div>
         		</div>
-        		<div class="container list-section">
-        			<div class="row list-item">
-            			<div class="col-2 text-center">1</div>
-            			<div class="col-6 list-item-title">게시글1</div>
-            			<div class="col-2 text-center">2024/03/04</div>
-            			<div class="col-2 text-center">결제완료</div>
+        		<div class="container list-section" th:each="item : ${listPaging}">
+        			<div class="row list-item boder-bottom">
+            			<div class="col-2 text-center">[[${item.offlineClassCategory}]]</div>
+            			<div class="col-6 list-item-title"><a th:text="${item.offlineClassTitle}" th:onclick="|location.href='@{'/instructor/mypage/offlinelecturerequest/' + ${item.offlineClassId}}'|"></a></div>
+            			<div class="col-2 text-center">[[${#numbers.formatInteger(item.offlineClassPrice, 1, 'COMMA')}]]원</div>
+            			<div class="col-2 text-center">
+            			 [[${item.offlineClassApprove}]]&nbsp;
+            			</div>
           			</div>
         		</div>
         
         	<!--페이징-->
-        		<div class="row my-5 paging-area">
-            		<div class="block-27">
-	              		<ul>
-	                		<li><a href="#">&lt;</a></li>
-	                		<li class="active"><span>1</span></li>
-	                		<li><a href="#">2</a></li>
-	                		<li><a href="#">3</a></li>
-	                		<li><a href="#">4</a></li>
-	                		<li><a href="#">5</a></li>
-	                		<li><a href="#">&gt;</a></li>
-	              		</ul>
-            		</div>
-        		</div>
+        	<div th:if="${!paging.isEmpty()}">
+		    <div class="row my-5 paging-area">
+		        <div class="block-27">
+		            <ul class="mb-2">
+		                <!-- 이전 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == 0} ? 'disabled'">
+		                    <a th:if="${paging.number > 0}" th:href="@{|?page=${paging.number-1}#space|}">&lt;</a>
+		                </li>
+		
+		                <!-- 페이지 번호를 보여주는 링크 -->
+		                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+		                    th:if="${page >= paging.number-2 and page <= paging.number+2}"
+		                    th:classappend="${page == paging.number} ? 'active'">
+		                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
+		                </li>
+		
+		                <!-- 다음 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == paging.totalPages-1} ? 'disabled'">
+		                    <a th:if="${paging.number < paging.totalPages-1}" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
       		</div>
      	</div>
      	
      	
 	</section>
-
-
-
-
-
-
-
-
-
-
-		<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}">	
-			<div th:each="userReviewDto : ${userReviewDto}">
-			
-				<div th:if="${userReviewDto == null}"> 
-					<a>없어요</a>
-				</div>
-				<div th:if="${userReviewDto != null}">
-				
-					<div th:if="${userReviewDto.classIden == 'ON'}">
-					온라인</br>
-						강의번호 <a th:text="${userReviewDto.classId}"></a> </br>
-						별점 <a th:text="${userReviewDto.reviewRating}"></a></br>
-						아이디 <a th:text="${userReviewDto.userId.userId}"></a></br>
-						등록일자 <a th:text="${userReviewDto.reviewRegdate}"></a></br>
-						좋아요 수 <a th:text="${userReviewDto.reviewLikeCnt}"></a></br>
-						
-					</div>
-					</br>
-					<div th:if="${userReviewDto.classIden == 'OFF'}">
-					오프라인</br>
-						강의번호 <a th:text="${userReviewDto.classId}"></a> </br>
-						별점 <a th:text="${userReviewDto.reviewRating}"></a></br>
-						아이디 <a th:text="${userReviewDto.userId.userId}"></a></br>
-						등록일자 <a th:text="${userReviewDto.reviewRegdate}"></a></br>
-						좋아요 수 <a th:text="${userReviewDto.reviewLikeCnt}"></a></br>
-					</div>
-				</div>
-
-			</div>	
-		
-		</div>
-	
-			 
-						
-	
-
 <div th:insert="import/bottomImport.html :: bottom-import"></div>	
 <div th:replace="import/jsImport.html :: js-import"></div>
 </body>

@@ -29,7 +29,7 @@ public class OfflineReviewCommentResponse
    
     public OfflineReviewCommentResponse(ReviewComment comment)
     {
-       this.id = comment.getId().getReviewId();
+       this.id = comment.getId();
       
        this.reviewId = comment.getReviewId();
       

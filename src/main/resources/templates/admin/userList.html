@@ -6,9 +6,84 @@
 	<link rel="stylesheet" href="/css/referenceList.css">
 	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	$(".roleuserAuthority").on("click", function() {
+		var userId = $(this).data("userId");
+		
+		if(confirm("이 회원을 정지시키겠습니까?") == true) 
+		{
+			
+			$.ajax
+			({
+		    	type:"POST",
+		    	url:"/admin/roleUser",
+		        data : JSON.stringify
+		        ({              
+		        	userId : userId
+		        }),
+		        datatype:"JSON",
+		        contentType:"application/json",
+		        beforeSend:function(xhr)
+		        {
+		        	xhr.setRequestHeader("AJAX", true);
+		        },
+		        success: function(data)
+		        {
+					alert("회원이 정지됐습니다.");
+					location.href = "/admin/userList";
+				},
+				error: function(xhr, status, error) 
+				{
+					alert("오류가 발생했습니다.");
+					console.error(error);
+					return;
+				}
+		    });
+		}
+	});
+	
+	$(".rolestop").on("click", function() 
+	{
+		var userId = $(this).data("userId");
+		
+		if(confirm("이 회원을 다시 복구하시겠습니까?") == true) 
+		{
+			$.ajax
+			({
+		    	type:"POST",
+		    	url: "/admin/roleStop",
+		        data : JSON.stringify
+		        ({              
+		        	userId : userId
+		        }),
+		        datatype:"JSON",
+		        contentType:"application/json",
+		        beforeSend:function(xhr)
+		        {
+		        	xhr.setRequestHeader("AJAX", true);
+		        },
+		        success: function(data)
+		        {
+		    		alert("회원이 복구됐습니다.");
+					location.href = "/admin/userList";
+				
+		        },
+				error: function(xhr, status, error) 
+				{
+					alert("오류가 발생했습니다.");
+					console.error(error);
+					return;
+				}
+		    });		
+		}
+	})
+});
+</script>
 </head>
 <body>
-	<a class="MainBanner" aria-current="page" href="/admin/referenceList"><h1>문의 게시판</h1></a>
+	<a class="MainBanner" aria-current="page" href="/admin/userList"><h1>회원 관리</h1></a>
 	
 	<div class="container" style="max-width: 1000px">
 
@@ -26,19 +101,26 @@
                 <th>회원 전화번호</th>
                 <th>회원 포인트</th>
                 <th>회원 가입일</th>
+                <th>회원 상태(권한)</th>
+                <th>회원 권한 변환</th>
             </tr>
             </thead>
             <tbody>
-            <tr >
-                <td><a >회원 아이디</a></td>
-                <td><a >회원 닉네임</a></td>
-                <td><a >회원 이름</a></td>
-                <td><a >회원 생년월일</a></td>
-                <td><a >회원 이메일</a></td>
-                <td><a >성별</a></td>
-                <td><a >회원 전화번호</a></td>
-                <td><a >회원 포인트</a></td>
-                <td><a >회원 가입일</a></td>
+            <tr th:each="userList: ${userList}">
+                <td><a th:text="${userList.userId}">회원 아이디</a></td>
+                <td><a th:text="${userList.userNickname}">회원 닉네임</a></td>
+                <td><a th:text="${userList.userName}">회원 이름</a></td>
+                <td><a th:text="${userList.userBirth}">회원 생년월일</a></td>
+                <td><a th:text="${userList.userEmail}">회원 이메일</a></td>
+                <td><a th:text="${userList.userGender}">성별</a></td>
+                <td><a th:text="${userList.userPhone}">회원 전화번호</a></td>
+                <td><a th:text="${userList.userPoint}">회원 포인트</a></td>
+                <td><a th:text="${userList.userRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">회원 가입일</a></td>
+                <td><a th:text="${userList.Authority}">회원 상태(권한)</a></td>
+                <td><button class="box roleuserAuthority" th:data-user-id="${userList.userId}" 
+                			th:if="${#strings.equals(#strings.toString(userList.Authority), 'ROLE_USER' )}">회원 정지</button>
+                	<button class="box rolestop" th:data-user-id="${userList.userId}" 
+                			th:if="${#strings.equals(#strings.toString(userList.Authority), 'ROLE_STOP' )}">회원 복구</button></td>
             </tr>
             </tbody>
         </table>
@@ -51,17 +133,17 @@
             <ul class="mb-2">
 	        <!-- Previous page button -->
 	        <li th:if="${page.hasPrevious}">
-	            <a href="@{/reference/referenceList(page=${page.number - 1})}">&lt;</a>
+	            <a href="@{/admin/userList(page=${page.number - 1})}">&lt;</a>
 	        </li>
 	        
 	        <!-- Page number buttons -->
 	        <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:if="${page.totalPages > 1}">
-	            <a th:href="@{/reference/referenceList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
+	            <a th:href="@{/admin/userList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
 	        </li>
 	
 	        <!-- Next page button -->
 	        <li th:if="${page.hasNext}">
-	            <a href="@{/reference/referenceList(page=${page.number + 1})}">&gt;</a>
+	            <a href="@{/admin/userList(page=${page.number + 1})}">&gt;</a>
 	        </li>
 	    	</ul>
 	    </div>
@@ -75,7 +157,7 @@
 </div> <!-- /container -->
 
 <!-- 검색창 -->
-    <form class="search-box" action="/reference/referenceList" method="get">
+    <form class="search-box" action="/admin/userList" method="get">
 	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
 	    <button class="search-btn" type="submit">
 	        <i class="fa-solid fa-magnifying-glass"></i>
