@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sist.nbgb.dto.OnlineClassStatusChange;
+import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
@@ -24,11 +26,13 @@ import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Reference;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.ReferenceService;
 import com.sist.nbgb.service.UserService;
 
+import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -97,7 +101,7 @@ public class AdminController {
 	}
 	
 	//일반회원 권한 정지
-	@PostMapping("/roleUser")
+	@PostMapping("/roleStop")
 	@ResponseBody
 	public String changeUserRoleToStop(@RequestBody UserIdCheckDto userIdCheckDto) {
 		try {
@@ -110,7 +114,7 @@ public class AdminController {
 	}
 	
 	//일반회원 권한 복구
-	@PostMapping("/roleStop")
+	@PostMapping("/roleUser")
 	@ResponseBody
 	public String changeUserRoleToUser(@RequestBody UserIdCheckDto userIdCheckDto) {
 		try {
@@ -158,6 +162,27 @@ public class AdminController {
 		model.addAttribute("onlineClassList", page.getContent());
 		
 		return "admin/onlineClassList";
+	}
+	
+	//온라인 미승인 강의 승인하기
+	@PostMapping("/onlineApprove")
+	@ResponseBody
+	public String changeOnlineToApprove(@RequestBody OnlineClassStatusChange onlineClassStatusChange) 
+	{
+		try 
+		{
+			adminService.changeOnlineToApprove(onlineClassStatusChange.getOnlineClassId(), Status.Y);
+			return "SUCCESS";
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "ERROR";
+		}
+	}
+	
+	@GetMapping("/DenyPop")
+	public String onlineDenyPop(Model model) 
+	{
+		return "/admin/onlineClassDenyPop";
 	}
 	
 	//오프라인 강의 리스트 불러오기
