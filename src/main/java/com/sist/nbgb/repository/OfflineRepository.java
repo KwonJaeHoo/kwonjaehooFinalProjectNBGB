@@ -1,6 +1,7 @@
 package com.sist.nbgb.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -90,4 +91,6 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	
 	//마이페이지 페이징
 	Page<OfflineClass> findByInstructorIdAndOfflineClassApprove(Pageable pageable, Instructors instructorId, Status onlineClassApprove);
+	
+	Optional<OfflineClass> findByOfflineClassId(Long offlineClassId);
 }

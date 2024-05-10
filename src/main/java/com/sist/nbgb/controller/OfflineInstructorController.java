@@ -11,13 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sist.nbgb.dto.InstructorOfflineLecture;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.response.OfflineResponse;
 import com.sist.nbgb.response.UserResponse;
+import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.OfflineInstructorService;
 import com.sist.nbgb.service.OfflineService;
 
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OfflineInstructorController 
 {
+	private final InstructorsService instructorsService;
 	private final OfflineInstructorService offlineInstructorService;
 	private final OfflineService offlineService;
 	
@@ -92,5 +96,12 @@ public class OfflineInstructorController
 				.collect(Collectors.toList());
 		
 		return ResponseEntity.ok(list);
+	}
+	
+	@PostMapping("/instructor/mypage/offlinelecture/statuschange")
+	@ResponseBody
+	public ResponseEntity<Object> offlineLectureStatusChange(@RequestBody InstructorOfflineLecture instructorOfflineLecture)
+	{
+		return ResponseEntity.ok(instructorsService.instructorOfflineLectureStatusChage(instructorOfflineLecture.getOfflineClassId()));
 	}
 }

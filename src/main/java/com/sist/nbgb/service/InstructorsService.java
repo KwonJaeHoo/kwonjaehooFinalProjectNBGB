@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorInfoDto;
 import com.sist.nbgb.entity.Instructors;
+import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.InstructorsRepository;
+import com.sist.nbgb.repository.OfflineRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class InstructorsService 
 {
 	private final InstructorsRepository instructorsRepository;
+	private final OfflineRepository offlineRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	public InstructorIdCheckDto findByInstructorId(InstructorIdCheckDto instructorIdCheckDto)
@@ -40,8 +45,14 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorPassword(passwordEncoder.encode(instructorPassword)));	
-			
+		try 
+		{
+			instructors.ifPresent(value -> value.setInstructorPassword(passwordEncoder.encode(instructorPassword)));	
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
@@ -50,8 +61,14 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorNickname(instructorNickname));	
-			
+		try 
+		{
+			instructors.ifPresent(value -> value.setInstructorNickname(instructorNickname));			
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
@@ -60,8 +77,14 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorEmail(instructorEmail));	
-			
+		try 
+		{
+			instructors.ifPresent(value -> value.setInstructorEmail(instructorEmail));	
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
@@ -70,8 +93,14 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorPhone(instructorPhone));	
-			
+		try 
+		{
+			instructors.ifPresent(value -> value.setInstructorPhone(instructorPhone));	
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
@@ -80,9 +109,15 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorBank(instructorBank));
-		instructors.ifPresent(value -> value.setInstructorAccount(instructorAccount));
-			
+		try 
+		{
+			instructors.ifPresent(value -> value.setInstructorBank(instructorBank));
+			instructors.ifPresent(value -> value.setInstructorAccount(instructorAccount));
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
@@ -91,14 +126,30 @@ public class InstructorsService
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
-		instructors.ifPresent(value -> value.setInstructorCategory(instructorCategory));
-			
+		try 
+		{
+			instructors.ifPresent(value -> value.setInstructorCategory(instructorCategory));	
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 	
 	@Transactional
-	public Object changeUserFile()
+	public Object instructorOfflineLectureStatusChage(Long offlineClassId)
 	{
+		Optional<OfflineClass> offlineClass = offlineRepository.findByOfflineClassId(offlineClassId);
+		
+		try 
+		{
+			offlineClass.ifPresent(value -> value.setOfflineClassApprove(Status.B));	
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 		return 200;
 	}
 }
