@@ -1,5 +1,6 @@
 package com.sist.nbgb.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -10,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.sist.nbgb.entity.Review;
-import com.sist.nbgb.entity.ReviewId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
@@ -46,6 +46,8 @@ public interface OnlineReviewRepository extends JpaRepository<Review, Long> {
 	Review findByUserIdAndClassIdAndClassIden(User userId, Long classId, String classIden);
 	
 	//사용자 리뷰 작성 여부
-	int countByUserIdAndClassIdAndClassIden(@Param("userId") User userId, @Param("classId") Long classId, @Param("classIden") String classIden);
+	int countByUserIdAndClassIdAndClassIden(@Param("userId") User userId, @Param("classId") Long classId, 
+								@Param("classIden") String classIden);
+	/*AndReviewRegdate			 , @Param("reviewRegdate") LocalDateTime reviewRegdate */
 	
 }

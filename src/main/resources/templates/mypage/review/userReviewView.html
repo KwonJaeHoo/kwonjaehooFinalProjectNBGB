@@ -5,8 +5,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	document.getElementById("replyDiv").style.display = "none";
-	
 	var rating = '[[${review.reviewRating}]]';
 	if(rating != null){
 		$("#star" + rating).parent().children('button').removeClass('on');
@@ -59,17 +57,21 @@ function replyView() {
 			<textarea class="text" id="reviewContents" cols="60" rows="5" readonly>[[${review.reviewContent}]]</textarea>
 		</div>
 		<div class="review-view-third col-12">
+			<!--강사 전용 신고버튼!! 아래 주석 해제하고 수정삭제 버튼 지우기-->
+			<!--<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>-->
 			<button type="button" class="mr-2">수정</button>
 			<button type="button">삭제</button>
 		</div>
 	</div>
 	<div class="row review-reply-area mt-4">
-		<button type="button" onclick="replyView()" class="reply-title">💌 강사의 답변이 있습니다!</button>
-		<!--<div class="reply-title">💌 등록된 답변이 없습니다.</div>-->
-		<div class="textarea mt-3" id="replyDiv" >
-			<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>
-			<textarea class="text" id="reviewContents" cols="60" rows="4" readonly>감사합니다!</textarea>
-		</div>
+		<th:block th:if="${comment != null}">
+			<button type="button" onclick="replyView()" class="reply-title">💌 강사의 답변이 있습니다!</button>
+			<div class="textarea mt-3" id="replyDiv" >
+				<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>
+				<textarea class="text" id="reviewContents" cols="60" rows="4" readonly>감사합니다!</textarea>
+			</div>
+		</th:block>
+		<div th:if="${comment == null}"class="reply-title">💬 등록된 답변이 없습니다.</div>
 	</div>
 	<div class="row review-button-area mt-5">
 		<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">닫기</button>

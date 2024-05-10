@@ -32,7 +32,7 @@
 			formData.append("classId", $("#classId").val());
 			formData.append("reviewContents", $("#reviewContents").val());
 			$.ajax({
-				url:"/user/userOnlineReview/upload",
+				url:"/user/userOnlineReview/upload/[[${classIden}]]",
 				method:"POST",
 				data:formData,
 				processData : false,

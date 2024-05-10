@@ -38,7 +38,7 @@ import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.UserReviewDto;
+import com.sist.nbgb.dto.UserReviewDTO;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.OfflineService;
@@ -332,7 +332,7 @@ public class UserController
 				map.put(Integer.parseInt(String.valueOf(reviewChk.getOnlineClassId())),
 						onlineReviewService.exsitsOnlineReview(user, reviewChk.getOnlineClassId(), "ON"));
 			}
-    		
+    		/*재결재 시 리뷰 작성 여부 체크 다시*/
         	model.addAttribute("classes", classes);
         	model.addAttribute("now", now);
         	model.addAttribute("reviewChk", map);
@@ -378,9 +378,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
+    		List<UserReviewDTO> userReviewDto = userService.userReviewFindAll(id)
     				.stream()
-    				.map(UserReviewDto::new)
+    				.map(UserReviewDTO::new)
     				.collect(Collectors.toList());
     		
 //    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
@@ -401,9 +401,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
+    		List<UserReviewDTO> userReviewDto = userService.userReviewFindAll(id)
     				.stream()
-    				.map(UserReviewDto::new)
+    				.map(UserReviewDTO::new)
     				.collect(Collectors.toList());
     		
 //    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()

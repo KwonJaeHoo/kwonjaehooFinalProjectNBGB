@@ -14,29 +14,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-
 @EqualsAndHashCode
 @Builder
-public class UserReviewDto
+public class UserReviewDTO
 {
 	private final Long classId;
-	
 	private final String classIden;
-	
+	private final Long reviewId;
 	private final Long reviewRating;
-
 	private final String reviewContent;
-	
 	private final User userId;
-	
 	private final LocalDateTime reviewRegdate;
-	
 	private final Long reviewLikeCnt;
 	
-	public UserReviewDto(Review review)
+	public UserReviewDTO(Review review)
 	{
 		this.classId = review.getClassId();
 		this.classIden = review.getClassIden();
+		this.reviewId = review.getReviewId();
 		this.reviewRating = review.getReviewRating();
 		this.reviewContent = review.getReviewContent();
 		this.userId = review.getUserId();

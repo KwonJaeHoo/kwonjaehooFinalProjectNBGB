@@ -58,7 +58,7 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	@Query(value = "select distinct p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, "
 			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
 			+ "from OnlinePaymentApprove p, OnlineClass o "
-			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and p.status in ('N', 'Y') ")
+			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and p.status in ('N', 'Y', 'R') ")
 	List<OnlinePaymentClassListDTO> userLectureList(@Param("partnerUserId")String partnerUserId , Sort sort);
 	
 	//수강정보 및 결제정보

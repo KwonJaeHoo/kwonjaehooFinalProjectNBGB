@@ -692,6 +692,10 @@ margin: 50px auto 30px auto;
 	height:6rem;
 }
 
+#replyDiv{
+	display:none;
+}
+
 .reviewReport {
 	display:flex;
 	justify-content:right;

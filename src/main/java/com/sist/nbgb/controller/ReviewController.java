@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.OnlineClassListDTO;
+import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.OnlineReviewDTO;
 import com.sist.nbgb.dto.UserReviewRequestDTO;
 import com.sist.nbgb.entity.User;
@@ -44,6 +45,7 @@ public class ReviewController {
     	}else {
     		
     	}
+    	model.addAttribute(classIden, classIden);
     	return "mypage/review/userReviewWrite";
     }
     
@@ -79,9 +81,11 @@ public class ReviewController {
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
 	    	if(classIden.equals("ON")) {
 	    		OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
-	    		OnlineReviewDTO userReview = onlineReviewService.viewReview(user, classId, classIden);
+	    		OnlineReviewDTO review = onlineReviewService.viewReview(user, classId, classIden);
+	    		//OnlineReviewCommentDTO comment = onlineReviewService.viewReviewComment(userReview);
 	    		model.addAttribute("class", onlineClass);
-	    		model.addAttribute("review", userReview);
+	    		model.addAttribute("review", review);
+	    		//model.addAttribute("comment", comment);
 	    	}
     	}
     	model.addAttribute("userNickname", user.getUserNickname());
