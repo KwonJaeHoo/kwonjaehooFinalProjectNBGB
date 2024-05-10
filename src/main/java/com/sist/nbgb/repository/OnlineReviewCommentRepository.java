@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.ReviewId;
 
-public interface OnlineReviewCommentRepository extends JpaRepository<ReviewComment, ReviewId>{
+public interface OnlineReviewCommentRepository extends JpaRepository<ReviewComment, Long>{
 	ReviewComment findByReviewId_reviewId(Long reivewId);
 	
 	//후기 댓글 목록

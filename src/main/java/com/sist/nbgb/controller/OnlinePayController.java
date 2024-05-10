@@ -1,5 +1,7 @@
 package com.sist.nbgb.controller;
 
+import java.time.LocalDateTime;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,6 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 public class OnlinePayController {
+	static final String cid = "TC0ONETIME";
+	static final String admin_Key = "b5da1907f4cf9df4cafd9ebb58dfcf1e";
+	
 	private final OnlineClassService onlineService;
 	
 	//카카오페이 결제 내역 확인 팝업
@@ -37,7 +42,6 @@ public class OnlinePayController {
 	}
 	
 	//결제 요청
-	/*
 	@PostMapping("/online/payReady")
 	@ResponseBody
 	public ResponseEntity<OfflineReadyResponse> payReady(@RequestPart(value="onlinePayBeforeDto") OnlinePopDTO payDto, Model model)
@@ -47,7 +51,16 @@ public class OnlinePayController {
 		System.out.println("controller : " + payDto.getOnlineClassTitle());
 		System.out.println("controller : " + payDto.getTotalAmount());
 		
-		OnlinePaymentApproveDto approveDto = approveDto.toDto(payDto);
+		OnlinePaymentApproveDto approveDto = OnlinePaymentApproveDto.builder()
+				.cid(cid)
+				//.partnerOrderId
+				.partnerUserId(payDto.getUserId())
+				.itemCode(payDto.getOnlineClassId())
+				.itemName(payDto.getOnlineClassTitle())
+				.point(Long.valueOf(payDto.getUserPoint()))
+				.taxFreeAmount(Long.valueOf(payDto.getTotalAmount()))
+				.approvedAt(LocalDateTime.now())
+				.build();
 		
 		OfflineReadyResponse readyResponse = onlineService.payReady(approveDto);
 		
@@ -66,8 +79,8 @@ public class OnlinePayController {
 			readyResponse.setCode(1);
 		}
 		
-        return ResponseEntity<OfflineReadyResponse>;//ResponseEntity.ok(readyResponse);
-	}*/
+        return ResponseEntity.ok(readyResponse);
+	}
 		
 	//카카오페이 결제 승인 시 response
 	@GetMapping("/online/payResult")
