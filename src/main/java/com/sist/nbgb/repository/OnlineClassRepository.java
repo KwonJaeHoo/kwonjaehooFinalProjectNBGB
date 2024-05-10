@@ -3,6 +3,8 @@ package com.sist.nbgb.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -46,6 +48,12 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	//찜 목록 추가 시 classId, classIden 가져오기
 	OnlineClass findFirstByonlineClassId(Long onlineClassId);
 	
+	//페이징 처리(관리자용 온라인 강의 리스트)
+	Page<OnlineClass> findAllByOrderByOnlineClassRegdateDesc(Pageable pageable);
+	
+	//검색(관리자용 온라인 강의 리스트)
+	Page<OnlineClass> findByOnlineClassTitleContainingOrOnlineClassContentContaining(String onlineClassTitle, String onlineClassContent, Pageable pageable);
+
 	//마이페이지 수강목록
 	@Query(value = "select distinct p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, "
 			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
@@ -62,4 +70,5 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	
 	//리뷰작성 수강정보
 	OnlineClass findByOnlineClassId(Long onlineClassId);
+
 }

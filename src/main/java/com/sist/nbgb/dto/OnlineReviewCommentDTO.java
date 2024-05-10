@@ -20,7 +20,7 @@ public class OnlineReviewCommentDTO {
 	private Status reviewCommentStatus;
    
 public OnlineReviewCommentDTO(ReviewComment comment) {
-	this.id = comment.getId().getReviewId();
+	this.id = comment.getId();
     this.reviewId = comment.getReviewId();
     this.reviewCommentContent = comment.getReviewCommentContent();
     this.instructorId = comment.getInstructorId();
