@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class UserReviewDTO
+public class UserReviewDto
 {
 	private final Long classId;
 	private final String classIden;
@@ -27,7 +27,7 @@ public class UserReviewDTO
 	private final LocalDateTime reviewRegdate;
 	private final Long reviewLikeCnt;
 	
-	public UserReviewDTO(Review review)
+	public UserReviewDto(Review review)
 	{
 		this.classId = review.getClassId();
 		this.classIden = review.getClassIden();

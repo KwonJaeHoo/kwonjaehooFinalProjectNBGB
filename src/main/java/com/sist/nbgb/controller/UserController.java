@@ -38,7 +38,7 @@ import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.UserReviewDTO;
+import com.sist.nbgb.dto.UserReviewDto;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.OfflineService;
@@ -378,9 +378,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDTO> userReviewDto = userService.userReviewFindAll(id)
+    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
     				.stream()
-    				.map(UserReviewDTO::new)
+    				.map(UserReviewDto::new)
     				.collect(Collectors.toList());
     		
 //    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
@@ -401,9 +401,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDTO> userReviewDto = userService.userReviewFindAll(id)
+    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
     				.stream()
-    				.map(UserReviewDTO::new)
+    				.map(UserReviewDto::new)
     				.collect(Collectors.toList());
     		
 //    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
