@@ -32,7 +32,7 @@
 			formData.append("classId", $("#classId").val());
 			formData.append("reviewContents", $("#reviewContents").val());
 			$.ajax({
-				url:"/user/userReview/upload",
+				url:"/user/userOnlineReview/upload",
 				method:"POST",
 				data:formData,
 				processData : false,
@@ -42,10 +42,13 @@
 				success:function(){
 					alert("후기가 성공적으로 등록되었습니다.");
 					window.self.close();
+					opener.parent.location.reload();
 				},
 				error:function(){
 					alert("후기 등록 중 오류가 발생했습니다.");
 					console.log("Update Fail");
+					window.self.close();
+					opener.parent.location.reload();
 				}
 			});
     	});
@@ -55,13 +58,13 @@
 <body style="height:630px;">
 <section class="review-section">
 	<div class="row review-title-area py-3 mb-4">
-		<h3 class="d-flexmb-3 review-title">😊 수강 후기 작성 😊</h3>
+		<h3 class="d-flex mb-2 review-title">😊 수강 후기 작성 😊</h3>
 	</div>
 	<div class="row review-info-area mt-2">
 		<input type="hidden" id="classId" th:value="${class.onlineClassId}">
-		<div><img th:src="@{'/images/onlineThumbnail/'+${class.onlineClassId}+'.jpg'}"><div>
-		<div><h5 class="mt-3 title">[[${class.onlineClassTitle}]]</h5><div>
-		<p class="mb-0">[[${class.category} + ' | ' + ${class.instructorNickname}]]</p>
+		<div><img class="img" th:src="@{'/images/onlineThumbnail/'+${class.onlineClassId}+'.jpg'}"></div>
+		<div><h5 class="mt-3 title">[[${class.onlineClassTitle}]]</h5>
+		<h6 class="mb-0">[[${class.category} + ' | ' + ${class.instructorNickname}]]</h6></div>
 	</div>
 	<div class="row review-input-area">
 		<div class=" star_rating">
@@ -72,7 +75,7 @@
 		  <button class="star" value="5"> </button>
 		</div>
 		<div class="textarea">
-			<textarea class="text" id="reviewContents" cols="60" rows="7" th:placeholder="|${userNickname}님! 후기 내용을 작성해주세요.|"></textarea> <!--cols="60" rows="5"-->
+			<textarea class="text" id="reviewContents" cols="60" rows="7" th:placeholder="|${userNickname}님! 후기 내용을 작성해주세요.|"></textarea>
 		</div>
 	</div>
 	<div class="row review-button-area mt-4">

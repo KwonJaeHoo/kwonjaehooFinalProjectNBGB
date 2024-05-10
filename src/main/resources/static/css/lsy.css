@@ -450,20 +450,32 @@ margin: 50px auto 30px auto;
    	}
    	.my-lectureBtn:focus{
 	outline:none;
-} 
+}
+.my-lectureBtn-second{
+	border:#477500 solid 3px;
+    background-color: #477500;
+    color:white;
+}
+	.my-lectureBtn-second:hover{
+		background-color: white;
+        color:#477500;
+        border:#477500 solid 3px;
+	}
+ 
 
 
 /*리뷰 작성(width=600px,height=530px)*/
 .review-section{
 	justify-content:center;
+	height:100%;
 }
 .review-title-area{
-	height:30%;
+	height:13%;
 	width:100%;
 	text-align:center;
 	justify-content:center;
 	margin:0 auto;
-	background-color:#89dd18;
+	background-color:#89dd18;;
 }
 .review-title{
 	color:white;;
@@ -472,16 +484,20 @@ margin: 50px auto 30px auto;
 .review-info-area{
 	height:40%;
 	width:100%;
+	display:inline-block;
 	text-align:center;
 	justify-content:center;
 	margin:0 auto;
 }
-	.review-info-area > div > img{
-		height:35%;
+	.review-info-area > div > .img{
+		height:170px;
 		width:300px;
 	}	
-	.review-info-area .title{
-		color:gray !important;
+	.review-info-area > .title, .reviewV-info-title{
+		color:#89dd18 !important;
+		white-space: nowrap;
+  		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 .review-input-area{
@@ -539,11 +555,131 @@ margin: 50px auto 30px auto;
 	outline:none !important;
 }
 
-
 .review-button-area{
-	height:50%;
+	height:8%;
 	width:100%;
 	margin-top:5%;
 	justify-content:center;
 	margin:0 auto;
 }
+.review-button-area > button{
+	height:40px;
+	width:80px;
+}
+
+/*리뷰 수정(width=600px,height=530px)*/
+.reviewV-info-area{
+	height:17%;
+	width: 550px;
+	display:flex;
+    align-items:center;
+	margin:0 auto;
+	padding:0 30px;
+}
+	.reviewV-info-area div img{
+		height:100%;
+		width:100%;
+	}	
+	.reviewV-info-area .title{
+		color:gray !important;
+		width:70%;
+	}
+	
+.review-view{
+	height:30%;
+	display:flex;
+	justify-content:center;
+	margin:2% auto;
+	width: 550px;
+}
+	.review-view > .textarea > .view, .review-reply-area > .textarea > .view {
+		border:none;
+	}
+  	.review-view textarea, .review-reply-area textarea {
+    width: 500px;
+    height: 9em;
+    text-align:start;
+    border:none;
+    resize: none !important;
+    overflow-y:hidden;
+    overflow-x:hidden;
+    justify-content:center;
+	margin:0 auto;
+    padding: 10px 10px;
+    cursor: grab;
+  }
+  .review-view textarea:focus, .review-reply-area textarea:focus{
+  	overflow-y:scroll;
+  	outline:none;
+  }
+
+
+.review-view-second{
+	display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width: 550px;
+	height:10%;
+	padding:0 3%;
+}
+.review-view-second > .text, .star_rating > .text{
+	padding-right: 0;
+	font-weight:500;
+	color:gray;
+}
+
+.review-view-third{
+	display:flex;
+	justify-content:right;
+	padding-right:5%;
+	color:lightgray;
+}
+.review-view-third button{
+	border:none;
+	border-radius:2rem;
+	background-color:transparent;
+	color:#89dd18;
+	padding:6px;
+}
+	.review-view-third button:focus{
+		outline:none;
+	}
+	.review-view-third button:hover{
+		background-color:#89dd18;
+		color:white;
+	}
+
+.review-reply-area{
+	display:flex;
+	justify-content:center;
+	margin:2% auto;
+	width: 550px;
+}
+.review-reply-area > .reply-title{
+	width:95%;
+	height:3rem;
+	padding:0.2rem;
+	padding-left:2rem;
+	margin-top:1rem;
+	border:3px solid #89dd18;
+	border-radius:2rem;
+	background-color:#89dd18;
+	 box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
+	color:white;
+	text-align:left;
+	font-size:18px;
+	font-weight:600;
+}
+	.review-reply-area > .reply-title:focus {
+		outline:none;
+	}
+	.review-reply-area > .reply-title:active {
+	  box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+	  position: relative;
+	  top:2px;
+	}
+
+.review-reply-area textarea {
+	height:6rem;
+}
+
