@@ -156,10 +156,6 @@ public class UserService
 	}
 	
 	
-	
-	
-	
-	
 	public List<OnlinePaymentApprove> userOnlineApproveFindAll(String userId)
 	{
 		return onlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
@@ -267,11 +263,39 @@ public class UserService
 		}
 	}
 	
+	@Transactional
+	public Object onlineClassLikeDelete(ClassLikeDTO classLikekDto)
+	{
+		try 
+		{
+			classLikeRepository.deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(classLikekDto.getClassId(), classLikekDto.getClassIden(), classLikekDto.getUserId());
+		} 
+		catch (Exception e) 
+		{
+			throw new RuntimeException(e);
+		}
+		return 200;
+	}
+	
 	public void offlineClassTitle(List<ClassLikeDTO> classLikeDto)
 	{
 		for(int i = 0; i < classLikeDto.size(); i++)
 		{
 			classLikeDto.get(i).setOfflineClassTitle(offlineClassRepository.findOfflineClassTitleByOfflineClassId(classLikeDto.get(i).getClassId()));
 		}
+	}
+	
+	@Transactional
+	public Object offlineClassLikeDelete(ClassLikeDTO classLikekDto)
+	{
+		try 
+		{
+			classLikeRepository.deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(classLikekDto.getClassId(), classLikekDto.getClassIden(), classLikekDto.getUserId());
+		} 
+		catch (Exception e) 
+		{
+			throw new RuntimeException(e);
+		}
+		return 200;
 	}
 }

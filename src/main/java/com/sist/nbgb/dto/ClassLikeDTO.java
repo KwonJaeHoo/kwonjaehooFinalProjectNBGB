@@ -31,6 +31,8 @@ public class ClassLikeDTO {
 				.build();
 	}
 
+	
+	
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
@@ -54,5 +56,10 @@ public class ClassLikeDTO {
 		this.classId = classLike.getClassId().getClassId();
 		this.classIden = classLike.getClassId().getClassIden();
 		this.userId = classLike.getUserId().getUserId();
+	}
+	
+	public void setClassIden(String classIden)
+	{
+		this.classIden = classIden;
 	}
 }

@@ -456,6 +456,14 @@ public class UserController
     	return "mypage/mypageOnlineLikeList";
     }
     
+    @PostMapping("/mypage/online/likecancel")
+    @ResponseBody
+    public ResponseEntity<Object> onlineLikeCancel(@RequestBody ClassLikeDTO classLikeDto)
+    {
+    	classLikeDto.setClassIden("on");
+    	return ResponseEntity.ok(userService.onlineClassLikeDelete(classLikeDto));
+    }
+    
     @GetMapping("/mypage/{id}/offlinelikelist")
     public String mypageUserOfflineLike(Model model, @PathVariable String id)
     {
@@ -483,6 +491,14 @@ public class UserController
     	}
     	
     	return "mypage/mypageOfflineLikeList";
+    }
+    
+    @PostMapping("/mypage/offline/likecancel")
+    @ResponseBody
+    public ResponseEntity<Object> offlineLikeCancel(@RequestBody ClassLikeDTO classLikeDto)
+    {
+    	classLikeDto.setClassIden("OFF");
+    	return ResponseEntity.ok(userService.offlineClassLikeDelete(classLikeDto));
     }
     
     @GetMapping("/mypage/{id}/reference")

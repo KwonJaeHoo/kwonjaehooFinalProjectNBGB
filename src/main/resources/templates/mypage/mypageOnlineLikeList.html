@@ -70,7 +70,7 @@ function onlineLikeCancel(onlineClassId, onlineUserId)
 		$.ajax
 		({
 			type:"POST",
-			url:"/user/mypage/",
+			url:"/user/mypage/online/likecancel",
 			data : JSON.stringify
 			({
 				classId : classId,

@@ -77,7 +77,7 @@ function offlineLikeCancel(offlineClassId, offlineUserId)
 		$.ajax
 		({
 			type:"POST",
-			url:"/user/mypage/",
+			url:"/user/mypage/offline/likecancel",
 			data : JSON.stringify
 			({
 				classId : classId,
