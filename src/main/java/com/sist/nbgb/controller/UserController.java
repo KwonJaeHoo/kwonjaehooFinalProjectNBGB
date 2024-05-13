@@ -397,10 +397,10 @@ public class UserController
     		
     		LocalDateTime now = LocalDateTime.now();
     		
-    		Map<Integer, Boolean> map = new HashMap<>();
+    		Map<String, String> map = new HashMap<>();
 			for (OnlinePaymentClassListDTO reviewChk : classes) {
-				map.put(Integer.parseInt(String.valueOf(reviewChk.getPartnerOrderId())),
-						reviewService.exsitsReview(reviewChk.getPartnerOrderId()));
+				map.put(String.valueOf(reviewChk.getPartnerOrderId()),
+						String.valueOf(reviewService.exsitsReview(reviewChk.getPartnerOrderId())));
 			}
         	model.addAttribute("classes", classes);
         	model.addAttribute("now", now);
@@ -419,10 +419,10 @@ public class UserController
     		List<OfflineClassPaymentListDTO> classes = reviewService.userOfflineLectureList(id);
     		LocalDateTime now = LocalDateTime.now();
     		
-    		Map<String, Boolean> map = new HashMap<>();
+    		Map<String, String> map = new HashMap<>();
 			for (OfflineClassPaymentListDTO reviewChk : classes) {
 				map.put(String.valueOf(reviewChk.getPartnerOrderId()),
-						reviewService.exsitsReview(reviewChk.getPartnerOrderId()));
+						String.valueOf(reviewService.exsitsReview(reviewChk.getPartnerOrderId())));
 			}
     		
     		model.addAttribute("classes", classes);

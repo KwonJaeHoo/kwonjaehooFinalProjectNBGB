@@ -50,9 +50,9 @@
             				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId})}'|" 
             						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1">수강하기</button>
             				<button type="button" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}" class="my-lectureBtn my-1" disabled>기간만료</button>
-            				<button type="button" th:if="${reviewChk[__${class.partnerOrderId}__] == false}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
+            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == '0'}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
             						class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
-            				<button type="button" th:if="${reviewChk[__${class.partnerOrderId}__] != false}" th:onclick="viewReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
+            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] != '0'}" th:onclick="viewReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
             						class="my-lectureBtn my-lectureBtn-second my-1" >후기조회</button>
 						</div>
           			</div>

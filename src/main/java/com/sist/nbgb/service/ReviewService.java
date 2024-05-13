@@ -60,8 +60,8 @@ public class ReviewService {
 	}
 	
 	//사용자 후기 작성 여부 조회
-	public boolean exsitsReview(String partnerOrderId) {
-		return reviewRepository.existsByPartnerOrderId(partnerOrderId);
+	public int exsitsReview(String partnerOrderId) {
+		return reviewRepository.countByPartnerOrderId(partnerOrderId);
 	}  
 	
 	//사용자 후기 조회

@@ -16,5 +16,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>
 	Review findByPartnerOrderId(String partnerOrderId);
 	
 	//사용자 리뷰 작성 여부
-	boolean existsByPartnerOrderId(@Param("partnerOrderId") String partnerOrderId);
+	int countByPartnerOrderId(@Param("partnerOrderId") String partnerOrderId);
+	
 }
