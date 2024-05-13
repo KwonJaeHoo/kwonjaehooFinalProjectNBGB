@@ -150,7 +150,8 @@ public class OnlineClassController {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		log.info("로그인을 했나요?????????????????????????????? :" + userId);
 		
-		Collection<? extends GrantedAuthority> auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		Collection<? extends GrantedAuthority> auth = null;
+		auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		log.info("이게멀까?@@!!!!!!!!!!!!!!!!!!!!!!! 권한:" + auth);
 		User user1 = null;
 		

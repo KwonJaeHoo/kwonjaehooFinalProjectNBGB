@@ -414,15 +414,16 @@ var formData = new FormData();
    <!--채팅/맨 위로 버튼-->
    
    <form name="payForm" id="payForm" method="post">
-			<input type="hidden" id="onlineClassPrice" name="onlineClassPrice" th:value="${onlineClass.onlineClassPrice}" />
-			<input th:if="${user != null}" type="hidden" id="userPoint" name="userPoint" th:value="${user.userPoint}" />
-			<input th:if="${user != null}" type="hidden" id="userId" name="userId" th:value="${user.userId}" />
-			<input type="hidden" id="onlineClassId" name="offlineClassId" th:value="${onlineClass.onlineClassId}" />
-			<input type="hidden" id="onlineClassTitle" name="onlineClassTitle" th:value="${onlineClass.onlineClassTitle}" />
-			<input type="hidden" id="onlineClassPeriod" name="onlineClassPeriod" th:value="${onlineClass.onlineClassPeriod}">
-			<input type="hidden" id="totalAmount" name="totalAmount" th:value="${onlineClass.onlineClassPrice}">
-		  </form>
-   <div th:replace="import/jsImport.html :: js-import"></div>
+		<input type="hidden" id="onlineClassPrice" name="onlineClassPrice" th:value="${onlineClass.onlineClassPrice}" />
+		<input th:if="${user != null}" type="hidden" id="userPoint" name="userPoint" th:value="${user.userPoint}" />
+		<input th:if="${user != null}" type="hidden" id="userId" name="userId" th:value="${user.userId}" />
+		<input type="hidden" id="onlineClassId" name="onlineClassId" th:value="${onlineClass.onlineClassId}" />
+		<input type="hidden" id="onlineClassTitle" name="onlineClassTitle" th:value="${onlineClass.onlineClassTitle}" />
+		<input type="hidden" id="onlineClassPeriod" name="onlineClassPeriod" th:value="${onlineClass.onlineClassPeriod}">
+		<input type="hidden" id="totalAmount" name="totalAmount" th:value="${onlineClass.onlineClassPrice}">
+  </form>
+  <input type="hidden" id="auth" th:value="${auth}"/>
+  <div th:replace="import/jsImport.html :: js-import"></div>
   <script src="/js/carousel.js"></script>
   <script src="/js/onlineView.js"></script>
   <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
@@ -459,15 +460,23 @@ var formData = new FormData();
 function fnPay() {    
 	//var win = window.open('/online/pay', '/online/pay',
   	//'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
-
-	var payPop = document.payForm;
-	var url = '/online/pay';
 	
-	window.open('','pay','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
-
-	payPop.action = url;
-	payPop.target = 'pay';
-	payPop.submit();
+	if($("#userId").val() != null) {
+		var payPop = document.payForm;
+		var url = '/online/pay';
+		
+		window.open('','pay','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
+	
+		payPop.action = url;
+		payPop.target = 'pay';
+		payPop.submit();
+	} else if($("#auth").val() == "[ROLE_ANONYMOUS]") {
+		alert("온라인 클래스는 회원만 신청할 수 있습니다. 로그인하세요.");
+	} else if($("#auth").val() == "[ROLE_INSTRUCTOR]") {
+		alert("강사 회원은 수강할 수 없습니다. 일반 회원으로 로그인하세요.");
+	} else {
+		alert("오류");
+	}
 }
 	
 $(document).ready(function(){

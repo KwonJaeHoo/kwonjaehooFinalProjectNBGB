@@ -40,6 +40,18 @@ $(document).ready(function(){
       });
 	
 	$("#btnPay").on("click", function(){		
+		var tmpDto = {
+	    		userId:$("#userId").val(),
+			    userPoint:$("#userPoint").val(),
+			    onlineClassId:$("#onlineClassId").val(),
+			    onlineClassTitle:$("#onlineClassTitle").val(),
+			    onlineClassPeriod:$("#onlineClassPeriod").val(),
+			    usedPoint:$("#usePoint").val(),
+			    totalAmount:$("#totalAmount").val(),
+			    price:$("#onlineClassPrice").val()
+	    }
+		localStorage.setItem("tmpDto", JSON.stringify(tmpDto));
+		
 		var formData = new FormData();
 	    
 	    var onlinePayBeforeDto = {
@@ -48,7 +60,7 @@ $(document).ready(function(){
 			    onlineClassId:$("#onlineClassId").val(),
 			    onlineClassTitle:$("#onlineClassTitle").val(),
 			    onlineClassPeriod:$("#onlineClassPeriod").val(),
-			    usedPoint:$("#usedPoint").val(),
+			    usedPoint:$("#usePoint").val(),
 			    totalAmount:$("#totalAmount").val()
 	    }
 	    
@@ -82,12 +94,11 @@ $(document).ready(function(){
 					 $(".tid").val(tId);
 					 $(".pcUrl").val(pcUrl);
 					 $(".orderId").val(orderId);
+					 $(".userPoint").val($("#usePoint").val());
 					 
 					 console.log("log2 : " + $(".pcUrl").val());
-					 
-					 var win = window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=650,left=100,top=100');
-					 
-					 setTimeout(function(){top.window.opener = top;top.window.open('','_parent','');top.window.close();});
+
+					 var win = window.open('', 'kakaoPopUp', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
 					 
 					 document.kakaoForm.action="/online/payPopUp"
 					 document.kakaoForm.submit();
@@ -101,9 +112,15 @@ $(document).ready(function(){
 				}
 			},
 			error:function(xhr, status, error){
-				alert("오류가 발생했습니다.");
+				alert("완전 오류가 발생했습니다.");
 			}
 		});
+	});
+	
+	window.addEventListener('message', function(event) {
+	    if (event.data === 'refreshPage') {
+	        window.opener.location.reload();
+	    }
 	});
 	
 }); //ready
@@ -142,7 +159,7 @@ $(document).ready(function(){
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">사용 포인트</td>
-						<td><input type="text" id="usePoint" name="usePoint" style="width:70px;background-color:aliceblue;">P</td>
+						<td><input type="text" id="usePoint" name="usePoint" value="0" style="width:70px;background-color:aliceblue;">P</td>
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">결제 금액</td>
@@ -158,32 +175,22 @@ $(document).ready(function(){
 					<input type="hidden" id="onlineClassPrice" name="onlineClassPrice" th:value="${dto.onlineClassPrice}" />
 					<input type="hidden" id="userPoint" name="userPoint" th:value="${dto.userPoint}" />
 					<input type="hidden" id="userId" name="userId" th:value="${dto.userId}" />
-					<input type="hidden" id="onlineClassId" name="offlineClassId" th:value="${dto.onlineClassId}" />
+					<input type="hidden" id="onlineClassId" name="onlineClassId" th:value="${dto.onlineClassId}" />
 					<input type="hidden" id="onlineClassTitle" name="onlineClassTitle" th:value="${dto.onlineClassTitle}" />
-					<input type="hidden" id="usedPoint" name="usedPoint" value="0">
-					<input type="hidden" id="onlineClassPeriod" name="onlineClassPeriod" th:value="${dto.onlineClassPeriod}">
-					<input type="hidden" id="totalAmount" name="totalAmount" th:value="${dto.onlineClassPrice}">
+					<input type="hidden" id="onlineClassPeriod" name="onlineClassPeriod" th:value="${dto.onlineClassPeriod}" />
+					<input type="hidden" id="totalAmount" name="totalAmount" th:value="${dto.onlineClassPrice}" />
 				</form>
 				<button id="btnPay" type="submit" class="payBox" style="float:right;"><span class="icon-comment" style="color:#FFFFFF;"></span> 결제하기</button>
 			</div>
 		</div>
 	</div>
+	<form name="kakaoForm" id="kakaoForm" method="POST" target="kakaoPopUp">
+		<input type="hidden" class="tid" name="tid" id="tid" value=""/>
+		<input type="hidden" class="pcUrl" name="pcUrl" id="pcUrl" value=""/>
+		<input type="hidden" class="orderId" id="orderId" name="orderId" value="" />
+		<input type="hidden" class="userPoint" id="usedPoint" name="usedPoint" value="" />
+	</form>
 </section>
 
-<script th:inline="javascript"> //임시~!
-function fnPay() {
-	//var win = window.open('/online/payResult', '/online/payResult',
-  	//'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');
-	window.location.href="http://localhost:8008/online/payResult"; //얘는임시
-	window.opener.parent.location.reload();
-}
-
-$(document).ready(function(){
-	$("#btnPay").click(function(){
-		fnPay();
-	});
-});
-
-</script>
 </body>
 </html>
