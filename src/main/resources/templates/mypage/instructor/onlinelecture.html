@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script th:inline="javascript">
+function fn_reason(rejection){
+	document.getElementById("popup_layer").style.display = "block";
+	$('#paragraph').text(rejection);
+}
+
+//팝업 닫기
+function closePop() {
+    document.getElementById("popup_layer").style.display = "none";
+}
+
+function onlineLectureStatusChange(onlineClassId)
+{
+	if(confirm("판매중지를 하시겠어요?"))
+	{
+		var id = onlineClassId;
+		$.ajax
+		({
+			type:"POST",
+			url:"/instructor/mypage/onlinelecture/statuschange",
+			data:{
+				onlineClassId:onlineClassId
+			},
+			datatype:"JSON",
+			async:false,
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				alert("판매중지가 되었어요.");
+				history.go(0);
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				return;
+			}
+		});
+	}
+}
+</script>
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+
+<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">내방 목록</h1>
+    	<p class="sub-title" style="color:gray;"></p>
+  	</div>
+
+	<section class="ftco-animate my-4" >
+     	
+     	<div th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}" class=" list-area">
+			<p th:insert="import/mypageInstructorImport.html :: mypageInstructor-import"></p>
+
+      		<div class="list-container">
+        		<div class="container list-section">
+          			<div class="row mb-4 list-title">
+            			<div class="col-2 text-center">카테고리</div>
+            			<div class="col-5 text-center">게시물 제목</div>
+            			<div class="col-2 text-center">가격</div>
+
+            			<div class="col-3 text-center">상태</div>
+          			</div>
+        		</div>
+        		<div class="container list-section" th:each="item : ${listPaging}">
+        			<div class="row list-item boder-bottom">
+            			<div class="col-2 text-center">[[${item.category}]]</div>
+            			<div class="col-5 text-center"><a th:text="${item.onlineClassTitle}" th:onclick="|location.href='@{'/online/' + ${item.onlineClassId}}'|"></a></div>
+            			<div class="col-2 text-center">[[${#numbers.formatInteger(item.onlineClassPrice, 1, 'COMMA')}]]원</div>
+            			
+            			<div class="col-1 text-center" th:switch="${#strings.toString(item.onlineClassApprove)}">
+            				<a th:case="Y">게시중</a>
+            				<a th:case="N">미승인</a>
+            				<a th:case="S">반려</a>
+            			</div>
+            			<div class="col-2 text-center">
+            			
+            				<button class="btnReserve" th:onlineClassId="${item.onlineClassId}" th:onclick="onlineLectureStatusChange(this.getAttribute('onlineClassId'))" th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'Y')}">판매중지</button>
+            			 	<button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="|location.href='@{'/online/update/' + ${item.onlineClassId}}'|" th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'N')}">수정</button>
+            			 
+            			 	<div th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'S')}">
+            			 	<button class="btnReserve" th:onclick="|location.href='@{'/online/update/' + ${item.onlineClassId}}'|" id="" name="" >수정</button>
+            			 	<button class="btnReserve" id="" name="" th:rejection="${item?.rejection}" th:onclick="fn_reason(this.getAttribute('rejection'))">사유</button></div>
+            			 
+            			 	<a th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'B')}">판매중지</a>
+            			</div>
+          			</div>
+        		</div>
+        
+        	<!--페이징
+        		<div class="row my-5 paging-area">
+            		<div class="block-27">
+	              		<ul>
+	                		<li><a href="#">&lt;</a></li>
+	                		<li class="active"><span>1</span></li>
+	                		<li><a href="#">2</a></li>
+	                		<li><a href="#">3</a></li>
+	                		<li><a href="#">4</a></li>
+	                		<li><a href="#">5</a></li>
+	                		<li><a href="#">&gt;</a></li>
+	              		</ul>
+            		</div>
+        		</div>-->
+        		
+        	<div th:if="${!paging.isEmpty()}">
+		    <div class="row my-5 paging-area">
+		        <div class="block-27">
+		            <ul class="mb-2">
+		                <!-- 이전 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == 0} ? 'disabled'">
+		                    <a th:if="${paging.number > 0}" th:href="@{|?page=${paging.number-1}#space|}">&lt;</a>
+		                </li>
+		
+		                <!-- 페이지 번호를 보여주는 링크 -->
+		                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+		                    th:if="${page >= paging.number-2 and page <= paging.number+2}"
+		                    th:classappend="${page == paging.number} ? 'active'">
+		                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
+		                </li>
+		
+		                <!-- 다음 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == paging.totalPages-1} ? 'disabled'">
+		                    <a th:if="${paging.number < paging.totalPages-1}" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+      		</div>
+     	</div>
+     	
+        	
+				
+			<div class="popup_layer" id="popup_layer" style="display: none;">
+			  <div class="popup_box">
+			      <div style="height: 10px; width: 375px; float: top; padding-top: 10px;">
+			        <a href="javascript:closePop();">&nbsp;&nbsp;
+				        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-x-lg" viewBox="0 0 16 16">
+						  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+						</svg>
+					</a>
+			      </div>
+			      <!--팝업 컨텐츠 영역-->
+			      <div class="popup_cont">
+			          <h5> 반려사유</h5>
+			          <p id="paragraph">		
+			          </p>
+			
+			      </div>
+			  </div>
+			</div>	
+	</section>		
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

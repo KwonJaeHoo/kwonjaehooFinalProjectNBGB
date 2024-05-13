@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.InstructorOfflineLecture;
+import com.sist.nbgb.dto.OnlineClassView;
+import com.sist.nbgb.dto.OnlineInsDto;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.response.OfflineResponse;
+import com.sist.nbgb.response.OfflineReviewResponse;
 import com.sist.nbgb.response.UserResponse;
 import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.OfflineInstructorService;
@@ -56,6 +59,24 @@ public class OfflineInstructorController
 		model.addAttribute("N", N);
 		
 		return "/mypage/instructor/offlinelecture";
+	}
+	
+	@GetMapping("/instructor/mypage/{id}/onlinelecture")
+	public String onlinelecture(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
+	{
+		List<OnlineInsDto> listPaging = offlineInstructorService.findByInstuctorId(id).stream()
+				.map(OnlineInsDto::new)
+				.collect(Collectors.toList());
+		
+		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "OnlineClassId"));
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min(start + pageRequest.getPageSize(), listPaging.size());
+		Page<OnlineInsDto> paging = new PageImpl<>(listPaging.subList(start, end), pageRequest, listPaging.size());
+		
+		model.addAttribute("paging", paging);
+		model.addAttribute("listPaging", listPaging);
+		
+		return "/mypage/instructor/onlinelecture";
 	}
 	
 	@GetMapping("/instructor/mypage/{id}/offlinelecturerequest")
@@ -114,4 +135,32 @@ public class OfflineInstructorController
 	{
 		return ResponseEntity.ok(instructorsService.instructorOfflineLectureStatusChage(instructorOfflineLecture.getOfflineClassId()));
 	}
+	
+	@PostMapping("/instructor/mypage/onlinelecture/statuschange")
+	@ResponseBody
+	public ResponseEntity<Object> onlineLectureStatusChange(@RequestParam("onlineClassId") Long onlineClassId)
+	{
+		return ResponseEntity.ok(offlineInstructorService.instructorOnlineLectureStatusChage(onlineClassId));
+	}
+	
+	@GetMapping("/instructor/mypage/{id}/review")
+	public String review(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
+	{	
+//		Page<OfflineClass> paging = this.offlineInstructorService.offlinePayInstructor(page, id, Status.Y);
+//		Page<OfflineResponse> toMap = paging.map(m -> new OfflineResponse(m));
+		List<OfflineReviewResponse> listPaging = offlineInstructorService.insReview(id).stream()
+				.map(OfflineReviewResponse::new)
+				.collect(Collectors.toList());
+		
+		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "ReviewId"));
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min(start + pageRequest.getPageSize(), listPaging.size());
+		Page<OfflineReviewResponse> paging = new PageImpl<>(listPaging.subList(start, end), pageRequest, listPaging.size());
+		
+		model.addAttribute("paging", paging);
+		model.addAttribute("listPaging", listPaging);
+		
+		return "/mypage/instructor/instructorReview";
+	}
+	
 }

@@ -177,14 +177,5 @@ public class InstructorController
     	
     	return "mypage/mypageLecture";
     }
-    
-    @GetMapping("/mypage/{id}/review")
-    public String mypageInstructorReview(Model model, @PathVariable String id)
-    {
-    	model.addAttribute("id", id);
-    	
-    	return "mypage/mypageReview";
-    }
-    
-    
+        
 }
