@@ -5,6 +5,21 @@
 <div th:replace="import/cssImport.html :: css-import"></div>
 <link rel="stylesheet" href="/css/pay.css">
 <meta charset="UTF-8">
+<script th:inline="javascript"> //임시~!
+$(document).ready(function(){
+	
+	var tmpDto = JSON.parse(localStorage.getItem("tmpDto"));
+
+	$("#td2").val(tmpDto.onlineClassPeriod+"일 "+tmpDto.price+"원");
+	$("#td3").val(tmpDto.price+"원");
+	$("#td4").val(tmpDto.usedPoint+"P");
+	
+	$("#btnClose").click(function(){
+		window.close(); 
+	});
+});
+
+</script>
 </head>
 <body>
 <section class=" pt-4">
@@ -19,11 +34,11 @@
 						<td  class="ttt pl-3" style="border-radius: 10px 10px 0 0;">상품정보</td>
 					</tr>
 					<tr>
-						<td class="pl-3"style="font-size:15px">[내방 클래스]  어색한 자리에서 냉랭한 분위기를 전환시키고 싶다면? - 배워서 바로 써먹는 마술</td>
+						<td class="pl-3"style="font-size:15px">[내방 클래스]  [[${payApprove.item_name}]]</td>
 						
 					</tr>
 					<tr>
-						<td class="pl-3"> 30일 55,555원</td>
+						<td class="pl-3"><input type="text" id="td2" readonly></td>
 					</tr>
 				</table>
 				
@@ -33,19 +48,19 @@
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">상품 금액</td>
-						<td>11,000원</td>
+						<td><input type="text" id="td3" readonly></td>
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">보유 포인트</td>
-						<td>1,000원</td>
+						<td><input type="text" placeholder=" 보유 포인트" th:value="${updatePoint+'P'}" readonly></td>
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">사용 포인트</td>
-						<td>1,000원</td>
+						<td><input type="text" id="td4" placeholder=" 사용 포인트" readonly></td>
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">결제 금액</td>
-						<td>10,000원</td>
+						<td><input type="text" placeholder=" 결제 금액" th:value="${pay.getTotalAmount()+'원'}" readonly></td>
 					</tr>
 				</table>
 				<div id="btnClose" class="d-flex justify-content-center"><button class="payBox mt-4">닫기</button></div>
@@ -59,14 +74,6 @@
 </section>
 
 <div th:replace="import/jsImport.html :: js-import"></div>
-<script th:inline="javascript"> //임시~!
-$(document).ready(function(){
-	$("#btnClose").click(function(){
-		window.close();
-	});
-});
-
-</script>
 
 </body>
 </html>

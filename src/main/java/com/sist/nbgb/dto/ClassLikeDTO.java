@@ -33,5 +33,12 @@ public class ClassLikeDTO {
 
 	public void setCode(int code) {
 		this.code = code;
-	}	
+	}
+	
+	public ClassLikeDTO(ClassLike classLike)
+	{
+		this.classId = classLike.getClassId().getClassId();
+		this.classIden = classLike.getClassId().getClassIden();
+		this.userId = classLike.getUserId().getUserId();
+	}
 }

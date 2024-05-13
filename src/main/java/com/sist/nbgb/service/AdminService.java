@@ -9,6 +9,7 @@ import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
@@ -63,6 +64,16 @@ public class AdminService
 	public Page<OnlineClass> findOnlineClassByKeyword(String keyword, Pageable pageable) {
 		return onlineClassRepository.findByOnlineClassTitleContainingOrOnlineClassContentContaining(keyword, keyword, pageable);
 	}
+	
+	//온라인 미승인 강의 승인하기
+	public void changeOnlineToApprove(Long onlineClassId, Status newStatus) throws Exception {
+		OnlineClass onlineClass = onlineClassRepository.findByOnlineClassId(onlineClassId);
+		onlineClass.setOnlineClassApprove(newStatus);
+		onlineClassRepository.save(onlineClass);
+	}
+	
+	
+	
 	
 	//페이징 처리(오프라인 강의 리스트)
 	public Page<OfflineClass> findByOfflineClassRegdate(Pageable pageable) {

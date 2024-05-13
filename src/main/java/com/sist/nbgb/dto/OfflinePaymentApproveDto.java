@@ -2,12 +2,6 @@ package com.sist.nbgb.dto;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
-import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-
 import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.enums.Status;
 
@@ -62,7 +56,7 @@ public class OfflinePaymentApproveDto
 	//결제날짜
 	private LocalDateTime approvedAt;
 	
-	private String status;
+	private Status status;
 	
 	public OfflinePaymentApproveDto(OfflinePaymentApprove approve)
 	{

@@ -6,49 +6,6 @@
 	<link rel="stylesheet" href="/css/referenceList.css">
 	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-	
-<script>
-$(document).ready(function() {
-	$(".onlineClassApprove").on("click", function() {
-		var onlineClassId = $(this).attr("data-onlineClass-id");
-		
-		if(confirm("이 강의를 승인하시겠어요?") == true)
-		{	
-			$.ajax ({
-				type:"POST",
-				url:"/admin/onlineApprove",
-				data: JSON.stringify
-				({
-					onlineClassId: onlineClassId
-				}),
-				datatype:"JSON",
-				contentType: "application/json",
-				beforeSend: function(xhr)
-				{
-					xhr.setRequestHeader("AJAX", true);
-				},
-				success: function(data)
-				{
-					alert("강의가 승인되었습니다.");
-					location.href = "/admin/onlineClassList";
-				},
-				error: function(xhr, status, error)
-				{
-					alert("오류가 발생했습니다.");
-					console.error(error);
-					return;
-				}
-			});
-		}
-	});
-	
-	$(".onlineClassDeny").on("click", function(e) {
-		e.preventDefault();
-		
-		window.open("/admin/onlineClassDenyPop.html", "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
-	});
-});
-</script>
 </head>
 <body>
 	<a class="MainBanner" aria-current="page" href="/admin/onlineClassList"><h1>온라인 강의 관리</h1></a>

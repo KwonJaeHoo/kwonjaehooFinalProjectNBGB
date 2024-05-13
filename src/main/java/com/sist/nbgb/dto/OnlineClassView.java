@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 
 import com.sist.nbgb.entity.OnlineClass;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 public class OnlineClassView {
 	private final Long onlineClassId;
 	private final String onlineClassTitle;

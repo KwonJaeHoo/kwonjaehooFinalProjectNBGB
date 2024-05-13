@@ -3,7 +3,7 @@ package com.sist.nbgb.enums;
 public enum Status 
 {
 	Y, N, S, B,
-	U, C, J
+	U, C, J, R
 }
 
 /* 
@@ -16,6 +16,8 @@ public enum Status
  * C : -
  * J : -
  * 
+ * R : - 재결제
+ * 
  * 기존 상태
  * Y : 가능 / 시청완료
  * N : 불가능 / 시청중
@@ -24,4 +26,5 @@ public enum Status
  * U : 게시
  * C : 신고된글 / 처리완료
  * J : 접수
+ * 
  */

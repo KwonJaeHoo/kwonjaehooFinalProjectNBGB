@@ -45,4 +45,5 @@ public interface OfflinePaymentApproveRepository extends JpaRepository<OfflinePa
 	
 	List<OfflinePaymentApprove> findByBookingDateAndBookingTimeAndItemCode(String bookingDate, String bookingTime, String itemCode);
 	
+	Optional<OfflinePaymentApprove> findByPartnerOrderId(String partnerOrderId);
 }

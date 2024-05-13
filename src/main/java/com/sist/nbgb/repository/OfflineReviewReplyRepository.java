@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.sist.nbgb.entity.ReviewComment;
-import com.sist.nbgb.entity.ReviewId;
 
 public interface OfflineReviewReplyRepository extends JpaRepository<ReviewComment, Long> {
 	 @Query("SELECT a FROM ReviewComment a WHERE a.id.reviewId IN (SELECT r.reviewId FROM Review r WHERE r.classId = :offlineClassId AND r.classIden = 'OFF')")

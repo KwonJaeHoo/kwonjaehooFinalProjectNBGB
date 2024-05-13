@@ -32,9 +32,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
+import com.sist.nbgb.dto.OfflineApproveResponse;
+import com.sist.nbgb.dto.OfflinePayBeforeDto;
+import com.sist.nbgb.dto.OfflinePayDto;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.OfflinePaymentApproveDto;
 import com.sist.nbgb.dto.OfflineReadyResponse;
+import com.sist.nbgb.dto.OnlinePayDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewLikeDTO;
@@ -42,16 +46,19 @@ import com.sist.nbgb.dto.OnlineUpdateDTO;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
+import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OnlineCategory;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
 import com.sist.nbgb.entity.OnlineClassFileId;
+import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.ClassLikeRepository;
 import com.sist.nbgb.repository.InstructorsRepository;
+import com.sist.nbgb.repository.OfflineUserRepository;
 import com.sist.nbgb.repository.OnlineCategoryRepository;
 import com.sist.nbgb.repository.OnlineClassFileRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
@@ -60,6 +67,7 @@ import com.sist.nbgb.repository.OnlineReviewCommentRepository;
 import com.sist.nbgb.repository.OnlineReviewRepository;
 import com.sist.nbgb.repository.ReviewLikeRepository;
 import com.sist.nbgb.repository.UserRepository;
+import com.sist.nbgb.response.UUIDUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +87,7 @@ public class OnlineClassService {
 	private final InstructorsRepository instRepository;
 	private final OnlineClassFileRepository fileRepository;
 	private final FFmpegManager ffmpegManager;
+	private final OfflineUserRepository offUserRepository;
 	
     @Value("${online.video.file.dir}")
     private String fileDir;
@@ -483,14 +492,17 @@ public class OnlineClassService {
 		parameters.add("cid", cid);
         parameters.add("partner_order_id", onPayDto.getPartnerOrderId());
         parameters.add("partner_user_id", onPayDto.getPartnerUserId());
+        log.info("그게 뭔데 요청이다 "+ onPayDto.getPartnerUserId());
+        parameters.add("item_code", onPayDto.getItemCode());
         parameters.add("item_name", onPayDto.getItemName());
         parameters.add("quantity", "1");
         parameters.add("total_amount", String.valueOf(onPayDto.getTotalAmount()));
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:8008/onlineClass/paysuccess"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8008/onlineClass/paycancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8008/onlineClass/payfail");
+        parameters.add("approval_url", "http://localhost:8008/online/paySuccess"); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:8008/online/payCancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:8008/online/payFail");
+        parameters.add("point", String.valueOf(onPayDto.getPoint()));
         
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, httpHeaders);
         
@@ -511,6 +523,94 @@ public class OnlineClassService {
 		}
         
         return payReady;
+	}
+	
+	//결제 완료
+	public OfflineApproveResponse ApproveResponse(OnlinePayDto payDto, String pgToken) 
+	 {
+		 OfflineApproveResponse payApprove = null;
+		 
+		 RestTemplate restTemplate = new RestTemplate();
+		 
+		 HttpHeaders httpHeaders = new HttpHeaders();
+			
+		 String auth = "KakaoAK " + admin_Key;
+		
+		 httpHeaders.set("Authorization", auth);
+		 httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		 
+		 MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+		 
+		 System.out.println("service : " + payDto.getOrderId());
+		 
+		 //Optional<OnlinePaymentApprove> approveDto = onlinePaymentApproveRepository.findAllByPartnerOrderId(payDto.getOrderId());
+			
+		 parameters.add("cid", cid);
+		 parameters.add("tid", payDto.getTid());
+         parameters.add("partner_order_id", payDto.getOrderId());
+         log.info("응답이다"+ payDto.getPartnerUserId());
+         parameters.add("partner_user_id", payDto.getPartnerUserId());
+         //parameters.add("partner_user_id", approveDto.get().getPartnerUserId());
+         parameters.add("pg_token", pgToken);
+       
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, httpHeaders);
+       
+        payApprove = restTemplate.postForObject(
+        		"https://kapi.kakao.com/v1/payment/approve",
+        		requestEntity, 
+        		OfflineApproveResponse.class);
+        
+        return payApprove;
+	 }
+	
+	//결제 찾기
+	public Optional<OnlinePaymentApprove> findAllByPartnerOrderId(String orderId) {
+		return onlinePaymentApproveRepository.findAllByPartnerOrderId(orderId);
+	}
+	
+	//기존 결제 내역 찾기
+	public List<OnlinePaymentApprove> findPay(String itemCode, String partnerUserId) {
+		return onlinePaymentApproveRepository.findPay(itemCode, partnerUserId);
+	}
+	
+	//결제 저장
+	@Transactional
+	public OnlinePaymentApproveDto payUpload(OfflineApproveResponse payDto, String point) {
+		log.info("payDto.getApproved_at():"+payDto.getApproved_at());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+		LocalDateTime dateTime = LocalDateTime.parse(payDto.getApproved_at(), formatter);
+		log.info("dateTime:"+dateTime);
+		Status stat = Status.N;
+		if(!findPay(payDto.getItem_code(), payDto.getPartner_user_id()).isEmpty()) {
+			stat = Status.R; //재수강
+		}
+		
+		OnlinePaymentApprove onlinePaymentApprove = OnlinePaymentApprove.builder()
+				.cid(payDto.getCid())
+				.tid(payDto.getTid())
+				.partnerOrderId(payDto.getPartner_order_id())
+				.partnerUserId(payDto.getPartner_user_id())
+				.itemCode(payDto.getItem_code())
+				.itemName(payDto.getItem_name())
+				.point(Long.parseLong(point))
+				.totalAmount(Long.valueOf(payDto.getAmount().getTotal()))
+				.taxFreeAmount(Long.valueOf(0))
+				.approvedAt(dateTime)
+				.status(stat)
+				.build();
+		
+		log.info("저장이 될까요????????????????");
+		onlinePaymentApproveRepository.save(onlinePaymentApprove);
+		log.info("됐어요~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`");
+		OnlinePaymentApproveDto approveDto = new OnlinePaymentApproveDto();
+		
+	    return approveDto;
+	}
+	
+	@Transactional
+	public int updatePoint(String userId, Long point)
+	{
+		return offUserRepository.updatePoint(userId, point);
 	}
 }
 	
