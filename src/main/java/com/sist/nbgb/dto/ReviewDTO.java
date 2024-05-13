@@ -17,6 +17,7 @@ public class ReviewDTO {
 	private Long reviewRating;
 	private String reviewContent;
 	private User userId;
+	private String userNickname;
 	private LocalDateTime reviewRegdate;
 	private Status reviewStatus;
 	private String partnerOrderId;
@@ -28,6 +29,7 @@ public class ReviewDTO {
 		this.reviewRating = review.getReviewRating();
 		this.reviewContent = review.getReviewContent();
 		this.userId = review.getUserId();
+		this.userNickname = review.getUserId().getUserNickname();
 		this.reviewRegdate = review.getReviewRegdate();
 		this.reviewStatus = review.getReviewStatus();
 		this.partnerOrderId = review.getPartnerOrderId();
