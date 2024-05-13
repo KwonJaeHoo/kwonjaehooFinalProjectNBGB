@@ -8,5 +8,5 @@ import com.sist.nbgb.entity.OnlinePaymentCancel;
 
 public interface OnlinePaymentCancelRepository extends JpaRepository<OnlinePaymentCancel, String>
 {
-	List<OnlinePaymentCancel> findAllByPartnerUserId(String userId);
+	List<OnlinePaymentCancel> findAllByPartnerUserIdOrderByCanceledAtDesc(String userId);
 }

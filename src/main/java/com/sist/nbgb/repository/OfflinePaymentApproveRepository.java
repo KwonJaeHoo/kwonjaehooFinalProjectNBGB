@@ -13,7 +13,7 @@ import com.sist.nbgb.entity.OfflinePaymentApprove;
 
 public interface OfflinePaymentApproveRepository extends JpaRepository<OfflinePaymentApprove, String>
 {
-	List<OfflinePaymentApprove> findAllByPartnerUserId(String userId);
+	List<OfflinePaymentApprove> findAllByPartnerUserIdOrderByApprovedAtDesc(String userId);
 	
 	int deleteByPartnerOrderId(String orderId);
 	

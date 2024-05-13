@@ -18,7 +18,7 @@ public interface OnlinePaymentApproveRepository extends JpaRepository<OnlinePaym
 	@Query("select u.approvedAt from OnlinePaymentApprove u where u.itemCode = :itemCode and u.partnerUserId = :partnerUserId and (u.status = 'Y' OR u.status = 'N' OR u.status = 'R') order by u.approvedAt DESC")
 	List<LocalDateTime> findApproveAt(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId, Pageable pageable);
 	
-	List<OnlinePaymentApprove> findAllByPartnerUserId(String partnerUserId);
+	List<OnlinePaymentApprove> findAllByPartnerUserIdOrderByApprovedAtDesc(String partnerUserId);
 	
 	int deleteByPartnerOrderId(String orderId);
 	

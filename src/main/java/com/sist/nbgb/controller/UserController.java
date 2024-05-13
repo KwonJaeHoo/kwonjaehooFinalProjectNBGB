@@ -44,16 +44,12 @@ import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
-import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
-import com.sist.nbgb.response.OfflineResponse;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.KakaoService;
-import com.sist.nbgb.service.OfflineService;
-import com.sist.nbgb.service.OnlineClassService;
 import com.sist.nbgb.service.SignupService;
 import com.sist.nbgb.service.UserService;
 
@@ -439,10 +435,24 @@ public class UserController
     {
     	if(id != null)
     	{	//classLikeOnline
-    		List<ClassLikeDTO> classLike = userService.classLike(id)
+    		List<ClassLikeDTO> classLikeDto = userService.classLike(id, "on")
     				.stream().map(ClassLikeDTO :: new).collect(Collectors.toList());
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
+    		
+        	if(classLikeDto.isEmpty())
+    		{
+    			model.addAttribute("classLikeDto", "classLikeDtoIsNull");
+    		}
+    		else
+    		{
+        		userService.onlineClassTitle(classLikeDto);
+    			model.addAttribute("classLikeDto", classLikeDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
+    		}
     	}
-    	
     	return "mypage/mypageOnlineLikeList";
     }
     
@@ -452,59 +462,36 @@ public class UserController
     	if(id != null)
     	{
     		//classLikeOffline
-    		List<ClassLikeDTO> classLike = userService.classLike(id)
+    		List<ClassLikeDTO> classLikeDto = userService.classLike(id, "OFF")
     				.stream().map(ClassLikeDTO :: new).collect(Collectors.toList());
+    		
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
+    		
+        	if(classLikeDto.isEmpty())
+    		{
+    			model.addAttribute("classLikeDto", "classLikeDtoIsNull");
+    		}
+    		else
+    		{
+    			userService.offlineClassTitle(classLikeDto);
+    			model.addAttribute("classLikeDto", classLikeDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
+    		}
     	}
     	
     	return "mypage/mypageOfflineLikeList";
     }
-    
-    
-    
-    
-    @GetMapping("/mypage/{id}/review")
-    public String mypageUserReview(Model model, @PathVariable String id)
-    {
-    	if(id != null)
-    	{
-    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
-    				.stream()
-    				.map(UserReviewDto::new)
-    				.collect(Collectors.toList());
-    		
-//    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
-//    				.stream().map(OnlineClassTitleDto::new).collect(Collectors.toList());
-    				
-    		
-    	//	List<OfflineResponse> offlineClassListDto = offlineService.
-    		
-    		
-        	model.addAttribute("userReviewDto", userReviewDto);
-    	}
-    	
-    	return "mypage/mypageReview";
-    }
-    
-    
-    
     
     @GetMapping("/mypage/{id}/reference")
     public String mypageUserReference(Model model, @PathVariable String id)
     {
     	if(id != null)
     	{
-    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
-    				.stream()
-    				.map(UserReviewDto::new)
-    				.collect(Collectors.toList());
-    		
-//    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
-//    				.stream().map(OnlineClassTitleDto::new).collect(Collectors.toList());
-    				
-    		
-    	//	List<OfflineResponse> offlineClassListDto = offlineService.
-    		
-    		
+    		List<UserReviewDto> userReviewDto = null;
+
         	model.addAttribute("userReviewDto", userReviewDto);
     	}
     	
