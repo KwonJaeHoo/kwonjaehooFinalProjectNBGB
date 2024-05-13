@@ -214,7 +214,7 @@
 	        <div>
 	        <div class="d-flex justify-content-between" style="margin-bottom: 8px;">
 	            <div class="d-flex justify-content-start">
-	              <img src="/images/person_1.jpg" class="mr-2" style="border-radius: 50% !important;width: 30px;height: 30px;float:left;">
+	              <img src="/images/person_1.jpg" th:src="@{'/images/instructor/' + ${offlineClass.instructorId.instructorId} + '.png'}" class="mr-2" style="border-radius: 50% !important;width: 30px;height: 30px;float:left;">
 		          <h6 style="padding-top: 5px;" th:text="${offlineClass.instructorNickname}"></h6>
 	            </div>
 	            <div class="d-flex justify-content-end">
@@ -295,7 +295,10 @@
                 <li class="comment">
                 
                   <div class="vcard bio">
-                    <img src="/images/person_2.jpg" alt="/image placeholder">
+                    <img th:if="${review.img == 'Y'}" th:src="@{'/images/user/' + ${review.userId.userId} + '.png'}" width="50" height="50" alt="/image placeholder">
+                  	<svg th:unless="${review.img == 'Y'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill" viewBox="0 0 16 16">
+					  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+					</svg>
                   </div>
                   [[${review.userId.userNickname}]]
                   <div class="comment-body">
@@ -361,7 +364,7 @@
                      <ul class="children2">
                        <li class="comment commentbox_inst" >
                          <div class="vcard bio pl-2 pt-2">
-                           <img src="/images/person_1.jpg" alt="/image placeholder">
+                           <img th:src="@{'/images/instructor/' + ${offlineClass.instructorId.instructorId} + '.png'}" width="50" height="50" alt="/image placeholder">
                          </div>
                          <div class="comment-body">
                            <div class="d-flex justify-content-start">

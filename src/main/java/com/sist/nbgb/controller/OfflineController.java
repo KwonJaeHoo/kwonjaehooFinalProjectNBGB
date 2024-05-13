@@ -35,6 +35,7 @@ import com.sist.nbgb.dto.OfflinePostDto;
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
 import com.sist.nbgb.dto.OfflineUpdateDto;
 import com.sist.nbgb.dto.OfflineUpload;
+import com.sist.nbgb.dto.OnlineReviewDTO;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
@@ -288,6 +289,13 @@ public class OfflineController
 						Page<Review> paging = this.offlineReviewService.reviewListPage(page, offlineClassId, "OFF", Status.Y);
 						Page<OfflineReviewResponse> toMap = paging.map(m -> new OfflineReviewResponse(m));
 						List<OfflineReviewResponse> listPaging = toMap.getContent();
+						
+						//후기 작성자 이미지 조회
+						for (OfflineReviewResponse reviews : listPaging) {
+							if(offlineReviewService.getImg(reviews.getUserId().getUserId()) == "Y") {
+								reviews.setImg("Y");
+							}
+						}
 						
 						rating = offlineReviewService.offCountRating(offlineClassId);
 						count = offlineReviewService.offCount(offlineClassId);

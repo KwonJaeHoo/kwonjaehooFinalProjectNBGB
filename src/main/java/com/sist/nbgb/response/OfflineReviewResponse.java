@@ -31,6 +31,8 @@ public class OfflineReviewResponse
    
     private Long reviewLikeCnt;
    
+    private String img;
+    
     public OfflineReviewResponse(Review review)
     {
        this.reviewId = review.getReviewId();
@@ -53,4 +55,13 @@ public class OfflineReviewResponse
       
        this.reviewLikeCnt = review.getReviewLikeCnt();
     }
+    
+	public OfflineReviewResponse(String img) {
+		this.img = "N";
+	}
+	
+
+	public void setImg(String img) {
+		this.img = img;
+	}
 }

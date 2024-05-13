@@ -43,6 +43,7 @@ import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.dto.OnlineUpdateDTO;
+import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
@@ -88,6 +89,8 @@ public class OnlineClassService {
 	private final OnlineClassFileRepository fileRepository;
 	private final FFmpegManager ffmpegManager;
 	private final OfflineUserRepository offUserRepository;
+	
+	private final UserService userService;
 	
     @Value("${online.video.file.dir}")
     private String fileDir;
@@ -213,6 +216,25 @@ public class OnlineClassService {
 	public Page<Review> getList(int page, Long classId, String classIden, Status reviewStatus){
 		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
 		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
+	}
+	
+	//후기 작성자 회원 이미지 여부
+	public String getImg(String userId) {
+		String img = "N";
+		UserInfoDto userInfoDto = userService.findByUserId(userId);
+    	
+		String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+	    String filename = userInfoDto.getUserId() + ".png"; // 기본 파일명
+	    String filepath = path + "/" + filename;
+		
+        File file = new File(filepath);
+        
+        if(file.exists())
+		{
+        	img = "Y";
+		}
+        
+        return img;
 	}
 	
 	//별점 평균
@@ -573,6 +595,12 @@ public class OnlineClassService {
 		return onlinePaymentApproveRepository.findPay(itemCode, partnerUserId);
 	}
 	
+	//재결제시 기존 결제 상태 R로 업데이트
+	@Transactional
+	public int updatePayStatus(String itemCode, String partnerUserId) {
+		return onlinePaymentApproveRepository.updatePayStatus(itemCode, partnerUserId);
+	}
+	
 	//결제 저장
 	@Transactional
 	public OnlinePaymentApproveDto payUpload(OfflineApproveResponse payDto, String point) {
@@ -580,9 +608,12 @@ public class OnlineClassService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 		LocalDateTime dateTime = LocalDateTime.parse(payDto.getApproved_at(), formatter);
 		log.info("dateTime:"+dateTime);
-		Status stat = Status.N;
+
+		//재수강
 		if(!findPay(payDto.getItem_code(), payDto.getPartner_user_id()).isEmpty()) {
-			stat = Status.R; //재수강
+			if(updatePayStatus(payDto.getItem_code(), payDto.getPartner_user_id()) > 0){
+				log.info("결제상태 재결제로 업데이트");
+			}
 		}
 		
 		OnlinePaymentApprove onlinePaymentApprove = OnlinePaymentApprove.builder()
@@ -596,7 +627,7 @@ public class OnlineClassService {
 				.totalAmount(Long.valueOf(payDto.getAmount().getTotal()))
 				.taxFreeAmount(Long.valueOf(0))
 				.approvedAt(dateTime)
-				.status(stat)
+				.status(Status.N)
 				.build();
 		
 		log.info("저장이 될까요????????????????");

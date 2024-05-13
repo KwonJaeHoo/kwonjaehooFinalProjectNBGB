@@ -1,5 +1,6 @@
 package com.sist.nbgb.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
 import com.sist.nbgb.dto.OnlineReviewLikeDTO;
+import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.ReviewLike;
@@ -36,6 +38,8 @@ public class OfflineReviewService
 	private final ReviewLikeRepository likeRepository;
 	
 	private final UserRepository userRepository;
+	
+	private final UserService userService;
 	
 	public float offCountRating(Long offlineClassId)
 	{
@@ -88,5 +92,24 @@ public class OfflineReviewService
 		likeRepository.insertReviewLike(likeDto.getReviewId(), user.getUserId());
 		
 		return likeDto;
+	}
+	
+	//후기 작성자 이미지
+	public String getImg(String userId) {
+		String img = "N";
+		UserInfoDto userInfoDto = userService.findByUserId(userId);
+    	
+		String path = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\images\\user";
+	    String filename = userInfoDto.getUserId() + ".png"; // 기본 파일명
+	    String filepath = path + "/" + filename;
+		
+        File file = new File(filepath);
+        
+        if(file.exists())
+		{
+        	img = "Y";
+		}
+        
+        return img;
 	}
 }

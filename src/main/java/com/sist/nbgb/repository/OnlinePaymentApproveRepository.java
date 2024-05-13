@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -24,8 +25,14 @@ public interface OnlinePaymentApproveRepository extends JpaRepository<OnlinePaym
 	Optional<OnlinePaymentApprove> findAllByPartnerOrderId(String orderId);
 	
 	//강의번호, 유저 아이디로 결제 이력 찾기(재결제 확인용)
-	@Query("select u from OnlinePaymentApprove u where u.itemCode = :itemCode and u.partnerUserId = :partnerUserId and (u.status = 'Y' OR u.status = 'R') order by u.approvedAt DESC")
+	@Query("select u from OnlinePaymentApprove u where u.itemCode = :itemCode and u.partnerUserId = :partnerUserId and (u.status = 'Y' OR u.status = 'N') order by u.approvedAt DESC")
 	List<OnlinePaymentApprove> findPay(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId);
+	
+	//재결제시 기존 결제상태 R로 업데이트
+	@Modifying
+	@Query("update OnlinePaymentApprove u set u.status = 'R' where u.itemCode = :itemCode and u.partnerUserId = :partnerUserId and u.status in ('Y', 'N')")
+	int updatePayStatus(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId);
+		
 	
 	Optional<OnlinePaymentApprove> findByPartnerOrderId(String partnerOrderId);
 }
