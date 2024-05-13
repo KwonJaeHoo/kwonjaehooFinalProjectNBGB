@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.KakaoPaymentCancelDto;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
@@ -18,15 +19,16 @@ import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OfflinePaymentCancel;
 import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.OnlinePaymentCancel;
-import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.repository.ClassLikeRepository;
 import com.sist.nbgb.repository.OfflinePaymentApproveRepository;
 import com.sist.nbgb.repository.OfflinePaymentCancelRepository;
+import com.sist.nbgb.repository.OfflineRepository;
+import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 import com.sist.nbgb.repository.OnlinePaymentCancelRepository;
-import com.sist.nbgb.repository.ReviewRepository;
 import com.sist.nbgb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -35,11 +37,14 @@ import lombok.RequiredArgsConstructor;
 public class UserService 
 {
 	private final UserRepository userRepository;
-	private final ReviewRepository reviewRepository;
 	private final OnlinePaymentApproveRepository onlinePaymentApproveRepository;
 	private final OfflinePaymentApproveRepository offlinePaymentApproveRepository;
 	private final OnlinePaymentCancelRepository onlinePaymentCancelRepository;
 	private final OfflinePaymentCancelRepository offlinePaymentCancelRepository;
+	private final ClassLikeRepository classLikeRepository;
+	private final OnlineClassRepository onlineClassRepository;
+	private final OfflineRepository offlineClassRepository;
+	
 	private final PasswordEncoder passwordEncoder;
 	
 	
@@ -151,28 +156,24 @@ public class UserService
 	}
 	
 	
-	
-	
-	
-	
 	public List<OnlinePaymentApprove> userOnlineApproveFindAll(String userId)
 	{
-		return onlinePaymentApproveRepository.findAllByPartnerUserId(userId);
+		return onlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
 	}
 	
 	public List<OfflinePaymentApprove> userOfflineApproveFindAll(String userId)
 	{
-		return offlinePaymentApproveRepository.findAllByPartnerUserId(userId);
+		return offlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
 	}
 	
 	public List<OnlinePaymentCancel> userOnlineCancelFindAll(String userId)
 	{
-		return onlinePaymentCancelRepository.findAllByPartnerUserId(userId);
+		return onlinePaymentCancelRepository.findAllByPartnerUserIdOrderByCanceledAtDesc(userId);
 	}
 	
 	public List<OfflinePaymentCancel> userOfflineCancelFindAll(String userId)
 	{
-		return offlinePaymentCancelRepository.findAllByPartnerUserId(userId);
+		return offlinePaymentCancelRepository.findAllByPartnerUserIdOrderByCanceledAtDesc(userId);
 	}
 
 	public KakaoPaymentCancelDto userOnlineApproveFind(String partnerOrderId)
@@ -249,19 +250,52 @@ public class UserService
 		return offlinePaymentCancelDto.offlineCancel(offlinePaymentCancelRepository.save(offlinePaymentCancel));  
 	}
 	
-	public List<ClassLike> classLike(String userId)
+	public List<ClassLike> classLike(String userId, String classIden)
 	{
-		return null;
+		return classLikeRepository.findAllByClassId_userIdAndClassId_classIdenOrderByClassId_classIdDesc(userId, classIden);
 	}
 	
-
-	
-	public List<Review> userReviewFindAll(String userId)
+	public void onlineClassTitle(List<ClassLikeDTO> classLikeDto)
 	{
-		User user = new User();
-		user.setUserId(userId);
-		return reviewRepository.findAllByUserId(user);
+		for(int i = 0; i < classLikeDto.size(); i++)
+		{
+			classLikeDto.get(i).setOnlineClassTitle(onlineClassRepository.findOnlineClassTitleByOnlineClassId(classLikeDto.get(i).getClassId())); 
+		}
 	}
 	
-
+	@Transactional
+	public Object onlineClassLikeDelete(ClassLikeDTO classLikekDto)
+	{
+		try 
+		{
+			classLikeRepository.deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(classLikekDto.getClassId(), classLikekDto.getClassIden(), classLikekDto.getUserId());
+		} 
+		catch (Exception e) 
+		{
+			throw new RuntimeException(e);
+		}
+		return 200;
+	}
+	
+	public void offlineClassTitle(List<ClassLikeDTO> classLikeDto)
+	{
+		for(int i = 0; i < classLikeDto.size(); i++)
+		{
+			classLikeDto.get(i).setOfflineClassTitle(offlineClassRepository.findOfflineClassTitleByOfflineClassId(classLikeDto.get(i).getClassId()));
+		}
+	}
+	
+	@Transactional
+	public Object offlineClassLikeDelete(ClassLikeDTO classLikekDto)
+	{
+		try 
+		{
+			classLikeRepository.deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(classLikekDto.getClassId(), classLikekDto.getClassIden(), classLikekDto.getUserId());
+		} 
+		catch (Exception e) 
+		{
+			throw new RuntimeException(e);
+		}
+		return 200;
+	}
 }

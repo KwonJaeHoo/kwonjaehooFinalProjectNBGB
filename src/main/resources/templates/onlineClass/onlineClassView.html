@@ -173,7 +173,7 @@ var formData = new FormData();
             </div>
             <div class="d-flex justify-content-between mt-2">
                <div class="d-flex justify-content-start">
-                  <img src="/images/person_1.jpg" class="mr-2" style="border-radius: 50% !important;width: 40px;height: 40px;float:left;">
+                  <img src="/images/person_1.jpg" th:src="@{'/images/instructor/' + ${onlineClass.instructorId} + '.png'}" class="mr-2" style="border-radius: 50% !important;width: 40px;height: 40px;float:left;">
                   <h6 class="mt-2 mb-4" th:text="${onlineClass.instructorNickname}">
                   </h6>
                </div>
@@ -222,7 +222,10 @@ var formData = new FormData();
               <ul class="comment-list">
                 <li class="comment" th:each="rvList:${rev}">
                   <div class="vcard bio">
-                    <img src="/images/person_2.jpg" alt="/image placeholder">
+                    <img th:if="${rvList.img == 'Y'}" th:src="@{'/images/user/' + ${rvList.userId.userId} + '.png'}" width="50" height="50" alt="/image placeholder">
+                  	<svg th:unless="${rvList.img == 'Y'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill" viewBox="0 0 16 16">
+					  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+					</svg>
                   </div>
                   <div class="comment-body">
                    <div class="d-flex justify-content-between">
@@ -289,7 +292,7 @@ var formData = new FormData();
 	                  <ul class="children2">
 	                    <li class="comment commentbox_inst mb-1 pt-1" >
 	                      <div class="vcard bio pl-2 pt-2">
-	                        <img src="/images/person_1.jpg" alt="/image placeholder">
+	                        <img th:src="@{'/images/instructor/' + ${onlineClass.instructorId} + '.png'}" width="50" height="50" alt="/image placeholder">
 	                      </div>
 	                      <div class="comment-body">
 	                        <div class="d-flex justify-content-start">

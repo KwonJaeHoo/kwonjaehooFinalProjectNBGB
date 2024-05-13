@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/signupCustom.css">
 </head>
 <body>
 	<div th:insert="import/topImport.html :: top-import"></div>
@@ -18,18 +19,23 @@
       		<div class="list-container">
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
-            			<div class="col-2 text-center">번호</div>
-            			<div class="col-6 text-center">결제내용</div>
-            			<div class="col-2 text-center">결제일자</div>
-            			<div class="col-2 text-center">상태</div>
+            			<div class="col-3 text-center">번호</div>
+            			<div class="col-3 text-center">제목</div>
+            			<div class="col-2 text-center"></div>
+            			<div class="col-3 text-center">취소</div>
           			</div>
         		</div>
-        		<div class="container list-section">
-        			<div class="row list-item">
-            			<div class="col-2 text-center">1</div>
-            			<div class="col-6 list-item-title">게시글1</div>
-            			<div class="col-2 text-center">2024/03/04</div>
-            			<div class="col-2 text-center">결제완료</div>
+        		<div th:each="classLikeDto : ${classLikeDto}"class="container list-section">
+        			<div th:if="${classLikeDto != 'classLikeDtoIsNull'}" class="row list-item">
+            			<div class="col-3 text-center" th:text="${classLikeDto.classId}"></div>
+            			<div class="col-3 text-center"><a th:text="${classLikeDto.onlineClassTitle}" th:href="@{/online/{onlineClassId} (onlineClassId=${classLikeDto.classId})}"></a></div>
+            			<div class="col-2 text-center"></div>
+            			<div class="col-3 text-center">
+            				<button class="log-btn log-btn-first" type="button" th:onlineClassId="${classLikeDto.classId}" th:onlineUserId="${classLikeDto.userId}" th:onclick="onlineLikeCancel(this.getAttribute('onlineClassId'), this.getAttribute('onlineUserId'))">찜 취소</button>
+            			</div>
+          			</div>
+          			<div th:if="${classLikeDto == 'classLikeDtoIsNull'}" class="row list-item">
+          				<div class="col-2 text-center"><a>내방 찜 내역이 없어요.</a></div>
           			</div>
         		</div>
         
@@ -50,17 +56,52 @@
       		</div>
      	</div>
 	</section>
-     	
-     	
-     	
-     	
-     		
-	
-	
 <div th:insert="import/bottomImport.html :: bottom-import"></div>	
 <div th:replace="import/jsImport.html :: js-import"></div>
 </body>
 <script type="text/javascript">
-
+function onlineLikeCancel(onlineClassId, onlineUserId)
+{
+	var classId = onlineClassId;
+	var userId = onlineUserId;
+	
+	if(confirm("찜을 취소 하시겠어요?"))
+	{
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/online/likecancel",
+			data : JSON.stringify
+			({
+				classId : classId,
+				userId : userId
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{
+					alert("취소가 완료되었어요.");
+					history.go(0);
+					return;
+				}
+				else if(data == 400)
+				{
+					alert("오류가 발생했습니다. 다시 시도해주세요.");
+					return;
+				}
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+			}
+	   	});	
+	}
+}
 </script>
 </html>

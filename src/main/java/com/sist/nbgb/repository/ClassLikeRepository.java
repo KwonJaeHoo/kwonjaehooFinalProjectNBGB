@@ -1,5 +1,7 @@
 package com.sist.nbgb.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sist.nbgb.entity.ClassId;
@@ -16,4 +18,6 @@ public interface ClassLikeRepository extends JpaRepository<ClassLike, ClassId>{
 	
 	//좋아요 삭제
 	int deleteByClassId_classIdAndClassId_classIdenAndClassId_userId(Long classId, String classIden, String userId);
+	
+	List<ClassLike> findAllByClassId_userIdAndClassId_classIdenOrderByClassId_classIdDesc(String userId, String classIden);
 }

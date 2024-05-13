@@ -167,15 +167,5 @@ public class InstructorController
         {
             throw new RuntimeException("오류가 발생했습니다.");
         }
-	}
-    
-    
-    @GetMapping("/mypage/{id}/lecture")
-    public String mypageInstructorLecture(Model model, @PathVariable String id)
-    {
-    	model.addAttribute("id", id);
-    	
-    	return "mypage/mypageLecture";
-    }
-        
+	}    
 }

@@ -23,6 +23,7 @@ public class OnlineReviewDTO {
 	private Status reviewStatus;
 	private Long reviewLikeCnt;
 	private String partnerOrderId;
+	private String img;
 	
 	public OnlineReviewDTO(Review review) {
 		this.reviewId = review.getReviewId();
@@ -36,6 +37,15 @@ public class OnlineReviewDTO {
 		this.reviewStatus = review.getReviewStatus();
 		this.reviewLikeCnt = review.getReviewLikeCnt();
 		this.partnerOrderId = review.getPartnerOrderId();
+	}
+	
+	public OnlineReviewDTO(String img) {
+		this.img = "N";
+	}
+	
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 	
 	

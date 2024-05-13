@@ -166,6 +166,13 @@ public class OnlineClassController {
 		Page<OnlineReviewDTO> toMap = paging.map(m -> new OnlineReviewDTO(m));
 		List<OnlineReviewDTO> rev = toMap.getContent();
 		
+		for (OnlineReviewDTO reviews : rev) {
+			if(onlineClassService.getImg(reviews.getUserId().getUserId()) == "Y") {
+				reviews.setImg("Y");
+				log.info("이미지 있대!");
+			}
+		}
+		
 		model.addAttribute("paging", paging);
 		model.addAttribute("rev", rev);
 		
