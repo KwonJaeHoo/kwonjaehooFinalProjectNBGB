@@ -13,6 +13,11 @@
 	    var win = window.open('/user/userReviewView/'+classId +'/' + classIden + '/' + partnerOrderId, '/user/userReviewView/'+classId +'/' + classIden + '/' + partnerOrderId,
 		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
 	}
+	$(document).ready(function(){
+		$("#beforeView").on('click', function(){
+			alert("강의 수강 전에는 후기를 작성할 수 업습니다.");
+		});
+	});
 	</script>
 </head>
 <body>
@@ -50,10 +55,11 @@
             				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId})}'|" 
             						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1">수강하기</button>
             				<button type="button" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}" class="my-lectureBtn my-1" disabled>기간만료</button>
-            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == '0'}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
+            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'write'}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
             						class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
-            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] != '0'}" th:onclick="viewReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
+            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'view'}" th:onclick="viewReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
             						class="my-lectureBtn my-lectureBtn-second my-1" >후기조회</button>
+            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'null'}" id="beforeView" class="my-lectureBtn my-lectureBtn-second my-1" >수강 전</button>
 						</div>
           			</div>
         		</div>

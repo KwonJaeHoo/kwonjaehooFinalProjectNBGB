@@ -49,12 +49,10 @@ public class OnlineClassPlayController
 	private final UserRepository userRepository;
 	private final OnlineClassLogRepository onlineClassLogRepository;
 
-	//재생페이지랑 재생 목록 페이지에서 결제여부 및 수강 기간 체크하기!!
 	//온라인 강의 재생 목록
 	@GetMapping("/onlinePlayList")
 	public String onlinePlayList(Model model, Principal principal,
 			@RequestParam(value="classId", required=false, defaultValue="22") Long onlineClassId) throws IOException{
-		//사용자 결제 정보랑 온라인 클래스 기간 가져와서 만료일자 표시해주기********************
 		
 		User user = userRepository.findFirstByUserId(principal.getName());
 		if(user.getAuthority().equals(Role.ROLE_USER)) {
@@ -87,7 +85,6 @@ public class OnlineClassPlayController
 	public String onlinePlay(Model model, Principal principal,
 							@RequestParam(value="classId", required=false, defaultValue="22") Long onlineClassId,
 							@RequestParam(value="fileId", required=false, defaultValue="1") Long onlineFileId) throws IOException{
-		//사용자 결제 정보랑 온라인 클래스 기간 가져와서 만료일자 표시해주기********************
 		logger.info("[OnlineClassPlayController] onlinePlay method");
 		logger.info("강의 번호 : " + onlineClassId + ", 강의 회차 : " + onlineFileId);
 		//회원조회

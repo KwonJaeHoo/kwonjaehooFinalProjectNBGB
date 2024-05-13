@@ -392,15 +392,20 @@ public class UserController
     {
     	if(id != null)
     	{
-    		User user = userService.findUserById(id);
     		List<OnlinePaymentClassListDTO> classes = reviewService.userOnlineLectureList(id);
     		
     		LocalDateTime now = LocalDateTime.now();
     		
+    		//후기 미작성 및 결제상태 = Y(수강중) or R(재결제)인 경우 후기 작성 가능
     		Map<String, String> map = new HashMap<>();
 			for (OnlinePaymentClassListDTO reviewChk : classes) {
-				map.put(String.valueOf(reviewChk.getPartnerOrderId()),
-						String.valueOf(reviewService.exsitsReview(reviewChk.getPartnerOrderId())));
+				if(reviewChk.getStatus() == Status.N){
+					map.put(String.valueOf(reviewChk.getPartnerOrderId()), "null");
+				}else if(reviewService.exsitsReview(reviewChk.getPartnerOrderId()) == 0 && (reviewChk.getStatus() == Status.Y || reviewChk.getStatus() == Status.R)) {
+					map.put(String.valueOf(reviewChk.getPartnerOrderId()), "write");
+				}else if(reviewService.exsitsReview(reviewChk.getPartnerOrderId()) != 0) {
+					map.put(String.valueOf(reviewChk.getPartnerOrderId()), "view");
+				}
 			}
         	model.addAttribute("classes", classes);
         	model.addAttribute("now", now);
@@ -415,7 +420,6 @@ public class UserController
     {
     	if(id != null)
     	{
-    		User user = userService.findUserById(id);
     		List<OfflineClassPaymentListDTO> classes = reviewService.userOfflineLectureList(id);
     		LocalDateTime now = LocalDateTime.now();
     		

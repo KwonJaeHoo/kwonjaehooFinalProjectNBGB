@@ -56,14 +56,14 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	Page<OnlineClass> findByOnlineClassTitleContainingOrOnlineClassContentContaining(String onlineClassTitle, String onlineClassContent, Pageable pageable);
 
 	//마이페이지 온라인 수강목록
-	@Query(value = "select distinct p.partnerOrderId as partnerOrderId, p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, "
+	@Query(value = "select distinct p.partnerOrderId as partnerOrderId, p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, p.status as status,"
 			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
 			+ "from OnlinePaymentApprove p, OnlineClass o "
 			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and p.status in ('N', 'Y', 'R') ")
 	List<OnlinePaymentClassListDTO> userOnlineLectureList(@Param("partnerUserId")String partnerUserId , Sort sort);
 	
 	//수강정보 및 결제정보
-	@Query(value = "select p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, "
+	@Query(value = "select p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, p.status as status, "
 			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
 			+ "from OnlinePaymentApprove p, OnlineClass o "
 			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and o.onlineClassId = :onlineClassId and p.status in ('N', 'Y') ")

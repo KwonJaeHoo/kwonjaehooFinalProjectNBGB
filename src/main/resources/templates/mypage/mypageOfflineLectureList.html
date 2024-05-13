@@ -42,7 +42,7 @@
             			<div class="col-5 list-item-title">
             				<a class="item-lecture-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}">[[${class.offlineClassTitle}]]</a>
             			</div>
-        			<div class="col-2 text-center"><br/></div>
+        			<div class="col-2 text-center" th:text="|${#temporals.createDate(class.bookingDate, 'yyyyMMdd')} ${class.bookingTime}:00|" ><br/></div>
             			<div class="col-2 text-center">
             				<!--<button type="button" class="my-lectureBtn my-1" id="reviewAdd" disabled>수강 전</button>-->
             				<button type="button" class="my-lectureBtn my-1" id="reviewAdd" th:onclick="writeReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기작성</button>
