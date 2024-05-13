@@ -596,8 +596,8 @@ public class OnlineClassService {
 		LocalDateTime dateTime = LocalDateTime.parse(payDto.getApproved_at(), formatter);
 		log.info("dateTime:"+dateTime);
 		Status stat = Status.N;
-		if(findPay(payDto.getItem_code(), payDto.getPartner_user_id()) != null) {
-			stat = Status.B; //재수강
+		if(!findPay(payDto.getItem_code(), payDto.getPartner_user_id()).isEmpty()) {
+			stat = Status.R; //재수강
 		}
 		
 		OnlinePaymentApprove onlinePaymentApprove = OnlinePaymentApprove.builder()

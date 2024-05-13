@@ -20,21 +20,30 @@
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
             			<div class="col-3 text-center">결제내용</div>
-            			<div class="col-3 text-center">결제일자</div>
-            			<div class="col-2 text-center">시청여부</div>
+            			<div class="col-2 text-center">결제일자</div>
+            			<div class="col-1 text-center">결제금액</div>
+            			<div class="col-1 text-center">포인트</div>
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
         		<div th:each="onlinePaymentApproveDto : ${onlinePaymentApproveDto}"class="container list-section">
         			<div th:if="${onlinePaymentApproveDto != 'onlinePaymentApproveDtoIsNull'}" class="row list-item">
             			<div class="col-3 list-item-title"><a th:text="${onlinePaymentApproveDto.itemName}" th:href="@{/online/{onlineClassId} (onlineClassId=${onlinePaymentApproveDto.itemCode})}"></a> </div>
-            			<div class="col-3 text-center" th:text="${#temporals.format(onlinePaymentApproveDto.approvedAt, 'yyyy-MM-dd HH:mm')}"></div>
-            			<div class="col-2 text-center" th:text="${onlinePaymentApproveDto.status}"></div>
+            			<div class="col-2 text-center" th:text="${#temporals.format(onlinePaymentApproveDto.approvedAt, 'yyyy-MM-dd HH:mm')}"></div>
+            			
+            			<div class="col-1 text-center" th:text="${onlinePaymentApproveDto.totalAmount}"></div>
+            			<div class="col-1 text-center" th:text="${onlinePaymentApproveDto.point}"></div>
 
 						<div class="col-2 text-center" th:if="${(#temporals.format(localDateTime, 'yyyy-MM-dd') < #temporals.format(onlinePaymentApproveDto.approvedAt.plusDays(3), 'yyyy-MM-dd')) and #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'N') }">
-   							<button class="log-btn log-btn-first" type="button" id="" name="" onclick="dd()">결제취소</button>
+   							<button class="log-btn log-btn-first" type="button" id="" name="" th:onlinePartnerOrderId="${onlinePaymentApproveDto.partnerOrderId}" th:onclick="onlinePaymentCancel(this.getAttribute('onlinePartnerOrderId'))">결제취소</button>
 						</div>
-						<div class="col-2 text-center" th:if="${(#temporals.format(localDateTime, 'yyyy-MM-dd') >= #temporals.format(onlinePaymentApproveDto.approvedAt.plusDays(3), 'yyyy-MM-dd')) or #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'Y') }">결제완료</div>
+						
+						<div class="col-2 text-center" th:if="${(#temporals.format(localDateTime, 'yyyy-MM-dd') >= #temporals.format(onlinePaymentApproveDto.approvedAt.plusDays(3), 'yyyy-MM-dd')) and #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'Y') }">결제완료</div>
+						
+						<div class="col-2 text-center" th:if="${#strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'R') }">재 결제</div>
+						
+						<div class="col-2 text-center" th:if="${#strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'C') }">결제 취소</div>
+						
         			</div>
         			
         			<div th:if="${onlinePaymentApproveDto == 'onlinePaymentApproveDtoIsNull'}" class="row list-item">
@@ -61,7 +70,8 @@
           			<div class="row mb-4 list-title">
             			<div class="col-3 text-center">결제내용</div>
             			<div class="col-2 text-center">취소일자</div>
-            			<div class="col-2 text-center"></div>
+            			<div class="col-1 text-center">결제금액</div>
+            			<div class="col-1 text-center">포인트</div>
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
@@ -69,8 +79,11 @@
         			<div th:if="${onlinePaymentCancelDto != 'onlinePaymentCancelDtoIsNull'}" class="row list-item">
 						<div class="col-3 list-item-title"><a th:text="${onlinePaymentCancelDto.itemName}" th:href="@{/online/{onlineClassId} (onlineClassId=${onlinePaymentCancelDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(onlinePaymentCancelDto.canceledAt, 'yyyy-MM-dd HH:mm')}"></div>
-            			<div class="col-2 text-center"></div>
-            			<div class="col-2 text-center">결제취소</div>
+            			
+						<div class="col-1 text-center" th:text="${onlinePaymentCancelDto.cancelTotalAmount}"></div>
+            			<div class="col-1 text-center" th:text="${onlinePaymentCancelDto.point}"></div>
+						
+						<div class="col-2 text-center">결제취소</div>
           			</div>
           			<div th:if="${onlinePaymentCancelDto == 'onlinePaymentCancelDtoIsNull'}" class="row list-item">
           				<div class="col-2 text-center"><a>내방 취소내역이 없어요.</a></div>
@@ -96,7 +109,9 @@
           			<div class="row mb-4 list-title">
             			<div class="col-3 text-center">결제내용</div>
             			<div class="col-2 text-center">결제일자</div>
-            			<div class="col-3 text-center">예약날짜</div>
+            			<div class="col-2 text-center">예약날짜</div>
+            			            			<div class="col-1 text-center">결제금액</div>
+            			<div class="col-1 text-center">포인트</div>
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
@@ -104,10 +119,17 @@
         			<div th:if="${offlinePaymentApproveDto != 'offlinePaymentApproveDtoIsNull'}" class="row list-item">
             			<div class="col-3 list-item-title"><a th:text="${offlinePaymentApproveDto.itemName}" th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${offlinePaymentApproveDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(offlinePaymentApproveDto.approvedAt, 'yyyy-MM-dd HH:mm')}"></div>
-            			<div class="col-3 text-center" th:text="${#temporals.createDate(offlinePaymentApproveDto.bookingDate, 'yyyyMMdd')} + ' / '  + ${offlinePaymentApproveDto.bookingTime} + ':00'"></div>
+            			<div class="col-2 text-center" th:text="${#temporals.createDate(offlinePaymentApproveDto.bookingDate, 'yyyyMMdd')} + ' / '  + ${offlinePaymentApproveDto.bookingTime} + ':00'"></div>
 						
-						<div class="col-2 text-center" th:if="${#temporals.format(localDateTime, 'yyyy-MM-dd')} < ${#temporals.format(#temporals.createDate(offlinePaymentApproveDto.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd')}"><button class="log-btn log-btn-first" type="button" id="" name="" onclick=dd() >결제취소</button></div>
+						<div class="col-1 text-center" th:text="${offlinePaymentApproveDto.totalAmount}"></div>
+            			<div class="col-1 text-center" th:text="${offlinePaymentApproveDto.point}"></div>
+						
+						
+						<div class="col-2 text-center" th:if="${(#temporals.format(localDateTime, 'yyyy-MM-dd') < #temporals.format(#temporals.createDate(offlinePaymentApproveDto.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd')) and #strings.equals(#strings.toString(offlinePaymentApproveDto.status), 'Y')}">
+							<button class="log-btn log-btn-first" type="button" id="" name="" th:offlinePartnerOrderId="${offlinePaymentApproveDto.partnerOrderId}" th:onclick="offlinePaymentCancel(this.getAttribute('offlinePartnerOrderId'))" >결제취소</button></div>
 						<div class="col-2 text-center" th:if="${#temporals.format(localDateTime, 'yyyy-MM-dd')} >= ${#temporals.format(#temporals.createDate(offlinePaymentApproveDto.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd')}">결제완료</div>
+						
+						<div class="col-2 text-center" th:if="${#strings.equals(#strings.toString(offlinePaymentApproveDto.status), 'C') }">결제 취소</div>
         			</div>
         			<div th:if="${offlinePaymentApproveDto == 'offlinePaymentApproveDtoIsNull'}" class="row list-item">
           				<div class="col-2 text-center"><a>공방 결제내역이 없어요.</a></div>
@@ -133,7 +155,9 @@
           			<div class="row mb-4 list-title">
             			<div class="col-3 text-center">결제내용</div>
             			<div class="col-2 text-center">취소일자</div>
-            			<div class="col-3 text-center">예약날짜</div>
+            			<div class="col-2 text-center">예약날짜</div>
+            			<div class="col-1 text-center">결제금액</div>
+            			<div class="col-1 text-center">포인트</div>
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
@@ -141,7 +165,9 @@
         			<div th:if="${offlinePaymentCancelDto != 'offlinePaymentCancelDtoIsNull'}" class="row list-item">
 						<div class="col-3 list-item-title"><a th:text="${offlinePaymentCancelDto.itemName}" th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${offlinePaymentCancelDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(offlinePaymentCancelDto.canceledAt, 'yyyy-MM-dd HH:mm')}"></div>
-            			<div class="col-3 text-center" th:text="${#temporals.createDate(offlinePaymentCancelDto.bookingDate, 'yyyyMMdd')} + ' / '  + ${offlinePaymentCancelDto.bookingTime} + ':00'"></div>
+            			<div class="col-2 text-center" th:text="${#temporals.createDate(offlinePaymentCancelDto.bookingDate, 'yyyyMMdd')} + ' / '  + ${offlinePaymentCancelDto.bookingTime} + ':00'"></div>
+            			<div class="col-1 text-center" th:text="${offlinePaymentCancelDto.cancelTotalAmount}"></div>
+            			<div class="col-1 text-center" th:text="${offlinePaymentCancelDto.point}"></div>
             			<div class="col-2 text-center">결제취소</div>
           			</div>
           			<div th:if="${offlinePaymentCancelDto == 'offlinePaymentCancelDtoIsNull'}" class="row list-item">
@@ -177,5 +203,89 @@ $(document).ready(function()
 {
 	
 });
+
+function onlinePaymentCancel(onlinePartnerOrderId)
+{
+	var partnerOrderId = onlinePartnerOrderId;
+	
+	if(confirm("결제 취소를 진행 하시겠어요?"))
+	{
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/payment/onlinecancel",
+			data : JSON.stringify
+			({
+				partnerOrderId : partnerOrderId
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{
+					alert("취소가 완료되었어요.");
+					history.go(0);
+					return;
+				}
+				else if(data == 400)
+				{
+					alert("오류가 발생했습니다. 다시 시도해주세요.");
+					return;
+				}
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+			}
+	   	});	
+	}
+}
+
+function offlinePaymentCancel(offlinePartnerOrderId)
+{
+	var partnerOrderId = offlinePartnerOrderId;
+	
+	if(confirm("결제 취소를 진행 하시겠어요?"))
+	{
+		$.ajax
+		({
+			type:"POST",
+			url:"/user/mypage/payment/offlinecancel",
+			data : JSON.stringify
+			({
+				partnerOrderId : partnerOrderId
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{
+					alert("취소가 완료되었어요.");
+					history.go(0);
+					return;
+				}
+				else if(data == 400)
+				{
+					alert("오류가 발생했습니다. 다시 시도해주세요.");
+					return;
+				}
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+			}
+	   	});	
+	}
+}
 </script>
 </html>

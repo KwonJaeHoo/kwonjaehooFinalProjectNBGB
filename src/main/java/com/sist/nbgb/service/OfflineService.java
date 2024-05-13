@@ -3,9 +3,7 @@ package com.sist.nbgb.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,17 +11,13 @@ import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OfflineApproveResponse;
 import com.sist.nbgb.dto.OfflinePayBeforeDto;
 import com.sist.nbgb.dto.OfflinePaymentApproveDto;
-import com.sist.nbgb.dto.OfflinePopDto;
 import com.sist.nbgb.dto.OfflinePostDto;
-import com.sist.nbgb.dto.OfflineReviewLikeDto;
 import com.sist.nbgb.dto.OfflineUpdateDto;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OfflinePaymentApprove;
-import com.sist.nbgb.entity.ReviewId;
-import com.sist.nbgb.entity.ReviewLike;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.InstructorsRepository;
@@ -213,7 +207,7 @@ public class OfflineService
 				.bookingTime(payDto.getResTime())
 				.point(Long.parseLong(payDto.getUsedPoint()))
 				.totalAmount(Long.parseLong(payDto.getTotalAmount()))
-				.status("S")
+				.status(Status.S)
 				.build();
 
 		 // 저장 후에 offlineClassId 값을 가져옵니다.

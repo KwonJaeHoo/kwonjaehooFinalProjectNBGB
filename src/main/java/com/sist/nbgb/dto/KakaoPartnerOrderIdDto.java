@@ -1,7 +1,5 @@
 package com.sist.nbgb.dto;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,11 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginDto 
+public class KakaoPartnerOrderIdDto 
 {
-	@NotNull
-	private String id;
-	
-	@NotNull
-	private String password;
+	private String partnerOrderId;
 }

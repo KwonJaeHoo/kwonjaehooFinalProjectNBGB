@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.EmailChangeDto;
 import com.sist.nbgb.dto.EmailCheckDto;
+import com.sist.nbgb.dto.KakaoPartnerOrderIdDto;
+import com.sist.nbgb.dto.KakaoPaymentCancelDto;
 import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.dto.NicknameChangeDto;
 import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
@@ -39,8 +43,13 @@ import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
+import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.kakao.KakaoPayCancel;
+import com.sist.nbgb.response.OfflineResponse;
 import com.sist.nbgb.service.EmailService;
+import com.sist.nbgb.service.KakaoService;
 import com.sist.nbgb.service.OfflineService;
 import com.sist.nbgb.service.OnlineClassService;
 import com.sist.nbgb.service.OnlineReviewService;
@@ -62,6 +71,8 @@ public class UserController
 	private final SignupService signupService;
 	private final EmailService emailService;
 	private final OnlineReviewService onlineReviewService;
+	
+	private final KakaoService kakaoService;
         
     @GetMapping("/mypage/{id}/info")
     public String mypageUserInfo(Model model, @PathVariable String id)
@@ -251,24 +262,33 @@ public class UserController
     	{
     		List<OnlinePaymentApproveDto> onlinePaymentApproveDto = userService.userOnlineApproveFindAll(id)
     				.stream().map(OnlinePaymentApproveDto::new).collect(Collectors.toList());
+    
     		
-    		System.out.println(onlinePaymentApproveDto);
-    		System.out.println(onlinePaymentApproveDto.size());
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
     		
     		List<OfflinePaymentApproveDto1> offlinePaymentApproveDto = userService.userOfflineApproveFindAll(id)
     				.stream().map(OfflinePaymentApproveDto1::new).collect(Collectors.toList());
     		
-    		System.out.println(offlinePaymentApproveDto);
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
     		
     		List<OnlinePaymentCancelDto> onlinePaymentCancelDto = userService.userOnlineCancelFindAll(id)
     				.stream().map(OnlinePaymentCancelDto::new).collect(Collectors.toList());
-    		
-    		System.out.println(onlinePaymentCancelDto);
+    	
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
     		
     		List<OfflinePaymentCancelDto> offlinePaymentCancelDto = userService.userOfflineCancelFindAll(id)
     				.stream().map(OfflinePaymentCancelDto::new).collect(Collectors.toList());
-        	
-    		System.out.println(offlinePaymentCancelDto);
+    		
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
+    		
     		
     		//onlineApprove
     		if(onlinePaymentApproveDto.isEmpty())
@@ -278,6 +298,8 @@ public class UserController
     		else
     		{
     			model.addAttribute("onlinePaymentApproveDto", onlinePaymentApproveDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
     		}
     		
     		//offlineApprove
@@ -288,6 +310,8 @@ public class UserController
     		else
     		{
     			model.addAttribute("offlinePaymentApproveDto", offlinePaymentApproveDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
     		}
     		
     		//onlineCancel
@@ -298,6 +322,8 @@ public class UserController
     		else
     		{
     			model.addAttribute("onlinePaymentCancelDto", onlinePaymentCancelDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
     		}
     		
     		//offlineCancel
@@ -308,6 +334,8 @@ public class UserController
     		else
     		{
     			model.addAttribute("offlinePaymentCancelDto", offlinePaymentCancelDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
     		}
     		
     		model.addAttribute("localDateTime", LocalDateTime.now());
@@ -316,6 +344,51 @@ public class UserController
     	return "mypage/mypagePayment";
     }
     
+    @PostMapping("/mypage/payment/onlinecancel")
+    @ResponseBody
+    public ResponseEntity<Object>mypageUserPaymentOnlineCancel(@RequestBody KakaoPartnerOrderIdDto kakaoPartnerOrderIdDto)
+    {    	
+    	KakaoPaymentCancelDto kakaoPaymentCancelDto = userService.userOnlineApproveFind(kakaoPartnerOrderIdDto.getPartnerOrderId());
+    	
+    	if(!kakaoPaymentCancelDto.getStatus().equals(Status.N))
+    	{
+    		return ResponseEntity.ok(400);
+    	}
+    	   	
+    	KakaoPayCancel kakaoPayCancel = kakaoService.kakaoPayCancel(kakaoPaymentCancelDto);
+    	
+    	if(kakaoPayCancel != null)
+    	{
+    		OnlinePaymentCancelDto onlinePaymentCancelDto = new OnlinePaymentCancelDto();
+    		onlinePaymentCancelDto = userService.userOnlineCancelInsert(onlinePaymentCancelDto.onlineResult(kakaoPayCancel, kakaoPaymentCancelDto));
+    		return ResponseEntity.ok(200);
+    	}
+    	
+    	return ResponseEntity.ok(400);
+    }
+    
+    @PostMapping("/mypage/payment/offlinecancel")
+    @ResponseBody
+    public ResponseEntity<Object>mypageUserPaymentOfflineCancel(@RequestBody KakaoPartnerOrderIdDto kakaoPartnerOrderIdDto)
+    {
+    	KakaoPaymentCancelDto kakaoPaymentCancelDto = userService.userOfflineApproveFind(kakaoPartnerOrderIdDto.getPartnerOrderId());
+    	
+    	if(!kakaoPaymentCancelDto.getStatus().equals(Status.Y))
+    	{
+    		return ResponseEntity.ok(400);
+    	}
+    	
+    	KakaoPayCancel kakaoPayCancel = kakaoService.kakaoPayCancel(kakaoPaymentCancelDto);
+    	
+    	if(kakaoPayCancel != null)
+    	{
+    		OfflinePaymentCancelDto offlinePaymentCancelDto = new OfflinePaymentCancelDto();
+    		offlinePaymentCancelDto = userService.userOfflineCancelInsert(offlinePaymentCancelDto.offlineResult(kakaoPayCancel, kakaoPaymentCancelDto));
+    		return ResponseEntity.ok(200);
+    	}
+    	
+    	return ResponseEntity.ok(400);
+    }
     
     @GetMapping("/mypage/{id}/onlinelecturelist")
     public String mypageUserOnlineLecture(Model model, @PathVariable String id)
@@ -353,11 +426,15 @@ public class UserController
     	return "mypage/mypageOfflineLectureList";
     }
     
+    
+    
     @GetMapping("/mypage/{id}/onlinelikelist")
     public String mypageUserOnlineLike(Model model, @PathVariable String id)
     {
     	if(id != null)
-    	{
+    	{	//classLikeOnline
+    		List<ClassLikeDTO> classLike = userService.classLike(id)
+    				.stream().map(ClassLikeDTO :: new).collect(Collectors.toList());
     	}
     	
     	return "mypage/mypageOnlineLikeList";
@@ -368,10 +445,16 @@ public class UserController
     {
     	if(id != null)
     	{
+    		//classLikeOffline
+    		List<ClassLikeDTO> classLike = userService.classLike(id)
+    				.stream().map(ClassLikeDTO :: new).collect(Collectors.toList());
     	}
     	
     	return "mypage/mypageOfflineLikeList";
     }
+    
+    
+    
     
     @GetMapping("/mypage/{id}/review")
     public String mypageUserReview(Model model, @PathVariable String id)
@@ -395,6 +478,9 @@ public class UserController
     	
     	return "mypage/mypageReview";
     }
+    
+    
+    
     
     @GetMapping("/mypage/{id}/reference")
     public String mypageUserReference(Model model, @PathVariable String id)

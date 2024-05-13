@@ -3,6 +3,8 @@ package com.sist.nbgb.entity;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,8 +18,10 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name="NBGB_OFFLINE_PAYMENT_APPROVE")
 @AllArgsConstructor
@@ -75,7 +79,8 @@ public class OfflinePaymentApprove
 	@Comment("결제날짜")
 	private LocalDateTime approvedAt;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "CHAR(1)")
 	@Comment("상태(결제취소:N,결제:Y,데이터부족:S)")
-	private String status;
+	private Status status;
 }
