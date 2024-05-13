@@ -47,4 +47,14 @@ public interface OfflineReviewRepository extends JpaRepository<Review, Long>
 	
 	//reviewId 가져오기
 	Review findFirstByReviewId(Long reviewId);
+	
+	//강사 후기 리스트
+		@Query("SELECT m "
+				+ "FROM Review m "
+				+ "WHERE (classId IN (select offlineClassId from OfflineClass where instructorId = (SELECT instructorId FROM Instructors where instructorId = :id)) "
+				+ "AND class_iden = 'OFF') "
+				+ "OR (classId IN (select onlineClassId from OnlineClass where instructor_id = (SELECT instructorId FROM Instructors where instructorId = :id)) "
+				+ "AND class_iden = 'ON') "
+				+ "ORDER BY reviewRegdate DESC")
+		List<Review> insReviewList(@Param("id") String instructorId);
 }

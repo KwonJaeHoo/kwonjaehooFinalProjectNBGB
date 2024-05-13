@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+</head>
+<body>
+	<div th:insert="import/topImport.html :: top-import"></div>
+
+<div class="col-md-12 ftco-animate text-center">
+    	<h1 class="mb-3 sub-title">작성한 후기</h1>
+    	<p class="sub-title"></p>
+  	</div>
+
+	<section class="ftco-animate my-4" >
+     	
+     	<div class=" list-area">
+			<p th:insert="import/mypageInstructorImport.html :: mypageInstructor-import"></p>
+      		<div class="list-container">
+        		<div class="container list-section">
+          			<div class="row mb-4 list-title">
+            			<div class="col-2 text-center">수강생 닉네임</div>
+            			<div class="col-6 text-center">리뷰 내용</div>
+            			<div class="col-2 text-center">등록일자</div>
+            			<div class="col-2 text-center">상태</div>
+          			</div>
+        		</div>
+        		<div class="container list-section" th:each="item : ${listPaging}">
+        			<div class="row list-item boder-bottom">
+            			<div class="col-2 text-center">[[${item.userNickname}]]</div>
+            			<div class="col-6 list-item-title"><a th:text="${item.reviewContent}" ></a></div>
+            			<div class="col-2 text-center" th:text="${#temporals.format(item.reviewRegdate, 'yyyy-MM-dd HH:mm')}"></div>
+            			<div class="col-2 text-center">
+            			</div>
+          			</div>
+        		</div>
+        
+        	<!--페이징-->
+        <div th:if="${!paging.isEmpty()}">
+		    <div class="row my-5 paging-area">
+		        <div class="block-27">
+		            <ul class="mb-2">
+		                <!-- 이전 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == 0} ? 'disabled'">
+		                    <a th:if="${paging.number > 0}" th:href="@{|?page=${paging.number-1}#space|}">&lt;</a>
+		                </li>
+		
+		                <!-- 페이지 번호를 보여주는 링크 -->
+		                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+		                    th:if="${page >= paging.number-2 and page <= paging.number+2}"
+		                    th:classappend="${page == paging.number} ? 'active'">
+		                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
+		                </li>
+		
+		                <!-- 다음 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == paging.totalPages-1} ? 'disabled'">
+		                    <a th:if="${paging.number < paging.totalPages-1}" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+      		</div>
+     	</div>
+     	
+     	
+	</section>
+
+	
+			 
+						
+	
+
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>
