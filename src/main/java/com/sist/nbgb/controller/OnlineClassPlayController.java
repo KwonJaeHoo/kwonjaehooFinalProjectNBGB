@@ -48,24 +48,6 @@ public class OnlineClassPlayController
 	private final OnlineClassPlayService onlineClassPlayService;
 	private final UserRepository userRepository;
 	private final OnlineClassLogRepository onlineClassLogRepository;
-	
-    @GetMapping("/sample1")
-    public String sample1()
-    {
-    	return "mypage/sample1";
-    }
-    
-    @GetMapping("/sample2")
-    public String sample2()
-    {
-    	return "mypage/sample2";
-    }
-    
-    @GetMapping("/sample3")
-    public String sample3()
-    {
-    	return "mypage/sample3";
-    }
 
 	//재생페이지랑 재생 목록 페이지에서 결제여부 및 수강 기간 체크하기!!
 	//온라인 강의 재생 목록

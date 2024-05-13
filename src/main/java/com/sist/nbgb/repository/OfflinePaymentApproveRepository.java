@@ -44,4 +44,5 @@ public interface OfflinePaymentApproveRepository extends JpaRepository<OfflinePa
 	ArrayList<String> timeList(@Param("offlineClassId") String offlineClassId, @Param("date") String date);
 	
 	List<OfflinePaymentApprove> findByBookingDateAndBookingTimeAndItemCode(String bookingDate, String bookingTime, String itemCode);
+	
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;
@@ -102,5 +104,12 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	Page<OfflineClass> findByInstructorIdAndOfflineClassApprove(Pageable pageable, Instructors instructorId, Status onlineClassApprove);
 	
 	Optional<OfflineClass> findByOfflineClassId(Long offlineClassId);
-
+	
+	//마이페이지 오프라인 수강목록
+	@Query(value = "select distinct p.partnerOrderId as partnerOrderId, p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.bookingDate as bookingDate, "
+			+ "p.bookingTime as bookingTime, p.approvedAt as approvedAt, o.offlineClassId as offlineClassId, o.offlineClassTitle as offlineClassTitle, o.instructorId as instructorId "
+			+ "from OfflinePaymentApprove p, OfflineClass o "
+			+ "where p.itemCode = o.offlineClassId and p.partnerUserId = :partnerUserId and p.status in ('Y') ")
+	List<OfflineClassPaymentListDTO> userOfflineLectureList(@Param("partnerUserId")String partnerUserId, Sort sort);
+	
 }

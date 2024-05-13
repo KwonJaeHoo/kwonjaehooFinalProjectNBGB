@@ -19,8 +19,6 @@ $(document).ready(function(){
 		});*/
 	});
     
-    //비디오 재생 시 5초 간격으로 재생 위치 출력. 정지 시 타이머 멈춤
-    //페이지 들어갈 때 insert, 5초마다 update
     video.addEventListener('play', () => {
             console.log("비디오 재생");
             var currentTime = Math.floor(video.currentTime);

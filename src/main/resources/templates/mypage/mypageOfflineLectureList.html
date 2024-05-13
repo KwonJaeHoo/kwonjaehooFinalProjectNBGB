@@ -5,10 +5,14 @@
 	<link rel="stylesheet" href="/css/signupCustom.css">
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script type="text/javascript">
-	/*function writeReview(classId) {
-	    var win = window.open('/user/userOfflineReview/'+classId, '/user/userOfflineReview/'+classId,
+	function writeReview(classId, classIden, partnerOrderId) {
+	    var win = window.open('/user/userReviewWrite/'+classId +'/' + classIden + '/' + partnerOrderId, '/user/userReviewWrite/'+classId +'/' + classIden+ '/' + partnerOrderId,
 		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
-	}*/
+	}
+	function viewReview(classId, classIden, partnerOrderId) {
+	    var win = window.open('/user/userReviewView/'+classId +'/' + classIden + '/' + partnerOrderId, '/user/userReviewView/'+classId +'/' + classIden + '/' + partnerOrderId,
+		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
+	}
 	</script>
 </head>
 <body>
@@ -27,25 +31,27 @@
           			<div class="row mb-4 list-title">
             			<div class="col-8 text-center">강의명</div>
             			<div class="col-2 text-center">참여일자</div>
-            			<div class="col-2 text-center">후기작성</div>
+            			<div class="col-2 text-center">후기</div>
           			</div>
         		</div>
-        		<div class="container list-section">
-          			<div class="row list-item list-item-lecture mb-2">
+        		<div th:if="${classes} != null" class="container list-section">
+        			<div th:each="class:${classes}" class="row list-item list-item-lecture mb-2">
             			<div class="col-3 text-center mypage-lectureImg">
-            				<a ><img src="images/bg_1" /></a>
+            				<a ><img src="images/bg_1" th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${class.offlineClassId}}'|" /></a>
             			</div>
             			<div class="col-5 list-item-title">
-            				<a class="item-lecture-title"></a>
+            				<a class="item-lecture-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}">[[${class.offlineClassTitle}]]</a>
             			</div>
         			<div class="col-2 text-center"><br/></div>
             			<div class="col-2 text-center">
-            				<button type="button" class="my-lectureBtn my-1">수강하기</button>
-            				<!--<button type="button" class="my-lectureBtn my-1" disabled>기간만료</button>-->
-            				<button type="button" class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
-            				<!--<button type="button" class="my-lectureBtn my-1" id="reviewAdd" disabled>작성완료</button>-->
+            				<!--<button type="button" class="my-lectureBtn my-1" id="reviewAdd" disabled>수강 전</button>-->
+            				<button type="button" class="my-lectureBtn my-1" id="reviewAdd" th:onclick="writeReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기작성</button>
+            				<button type="button" class="my-lectureBtn my-1" th:onclick="viewReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기조회</button>
 						</div>
           			</div>
+        		</div>
+        		<div th:if="${classes} == null" class="container list-section">
+        			<div class="list-section-none"><h5>수강 중인 강의가 존재하지 않습니다.</h5></div>
         		</div>
       		</div>
      	</div>

@@ -30,6 +30,7 @@ import com.sist.nbgb.dto.EmailChangeDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.dto.NicknameChangeDto;
+import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OfflinePaymentApproveDto1;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
@@ -38,12 +39,10 @@ import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.UserReviewDTO;
+import com.sist.nbgb.dto.UserReviewDto;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.service.EmailService;
-import com.sist.nbgb.service.OfflineService;
-import com.sist.nbgb.service.OnlineClassService;
-import com.sist.nbgb.service.OnlineReviewService;
+import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.SignupService;
 import com.sist.nbgb.service.UserService;
 
@@ -55,13 +54,11 @@ import lombok.RequiredArgsConstructor;
 public class UserController
 {
 	private final UserService userService;
-	private final OnlineClassService onlineClassService;
-	private final OfflineService offlineService;
 	private final PasswordEncoder passwordEncoder;
 	
 	private final SignupService signupService;
 	private final EmailService emailService;
-	private final OnlineReviewService onlineReviewService;
+	private final ReviewService reviewService;
         
     @GetMapping("/mypage/{id}/info")
     public String mypageUserInfo(Model model, @PathVariable String id)
@@ -323,16 +320,15 @@ public class UserController
     	if(id != null)
     	{
     		User user = userService.findUserById(id);
-    		List<OnlinePaymentClassListDTO> classes = onlineClassService.userLectureList(id);
+    		List<OnlinePaymentClassListDTO> classes = reviewService.userOnlineLectureList(id);
     		
     		LocalDateTime now = LocalDateTime.now();
     		
-    		Map<Integer, Integer> map = new HashMap<>();
+    		Map<Integer, Boolean> map = new HashMap<>();
 			for (OnlinePaymentClassListDTO reviewChk : classes) {
-				map.put(Integer.parseInt(String.valueOf(reviewChk.getOnlineClassId())),
-						onlineReviewService.exsitsOnlineReview(user, reviewChk.getOnlineClassId(), "ON"));
+				map.put(Integer.parseInt(String.valueOf(reviewChk.getPartnerOrderId())),
+						reviewService.exsitsReview(reviewChk.getPartnerOrderId()));
 			}
-    		/*재결재 시 리뷰 작성 여부 체크 다시*/
         	model.addAttribute("classes", classes);
         	model.addAttribute("now", now);
         	model.addAttribute("reviewChk", map);
@@ -347,7 +343,17 @@ public class UserController
     	if(id != null)
     	{
     		User user = userService.findUserById(id);
+    		List<OfflineClassPaymentListDTO> classes = reviewService.userOfflineLectureList(id);
+    		LocalDateTime now = LocalDateTime.now();
     		
+    		Map<String, Boolean> map = new HashMap<>();
+			for (OfflineClassPaymentListDTO reviewChk : classes) {
+				map.put(String.valueOf(reviewChk.getPartnerOrderId()),
+						reviewService.exsitsReview(reviewChk.getPartnerOrderId()));
+			}
+    		
+    		model.addAttribute("classes", classes);
+    		model.addAttribute("now", now);
     	}
     	
     	return "mypage/mypageOfflineLectureList";
@@ -378,9 +384,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDTO> userReviewDto = userService.userReviewFindAll(id)
+    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
     				.stream()
-    				.map(UserReviewDTO::new)
+    				.map(UserReviewDto::new)
     				.collect(Collectors.toList());
     		
 //    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()
@@ -401,9 +407,9 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDTO> userReviewDto = userService.userReviewFindAll(id)
+    		List<UserReviewDto> userReviewDto = userService.userReviewFindAll(id)
     				.stream()
-    				.map(UserReviewDTO::new)
+    				.map(UserReviewDto::new)
     				.collect(Collectors.toList());
     		
 //    		List<OnlineClassTitleDto> onlineClassTitleDto = onlineClassService.mypageTitle()

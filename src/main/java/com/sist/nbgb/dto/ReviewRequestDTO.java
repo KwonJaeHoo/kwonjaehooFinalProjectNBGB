@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @AllArgsConstructor
-public class UserReviewRequestDTO {
+public class ReviewRequestDTO {
 	private Long classId;
 	private String classIden;
 	private String reviewContent;
@@ -25,6 +25,7 @@ public class UserReviewRequestDTO {
 	private LocalDateTime reviewRegdate;
     private Status reviewStatus;
 	private User userId;
+	private String partnerOrderId;
 
 	public Review toEntity() {
 		return Review.builder()
@@ -36,6 +37,7 @@ public class UserReviewRequestDTO {
 				.reviewRegdate(reviewRegdate)
 				.reviewStatus(reviewStatus)
 				.userId(userId)
+				.partnerOrderId(partnerOrderId)
 				.build();
 	}
 

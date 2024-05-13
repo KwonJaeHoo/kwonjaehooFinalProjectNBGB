@@ -5,48 +5,51 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-    	var rating = '';
+		var rating = '[[${review.reviewRating}]]';
+		if(rating != null){
+			$("#star" + rating).parent().children('button').removeClass('on');
+			$("#star" + rating).addClass('on').prevAll('button').addClass('on');
+		}
 	   	$('.star_rating > .star').click(function() {
 		  $(this).parent().children('button').removeClass('on');
 		  $(this).addClass('on').prevAll('button').addClass('on');
 		  rating =  $(this).val();
-		});
-
+s		});
+		
     	$("#cancelBtn").on("click", function(){
-    		if(confirm("후기 작성을 취소하시겠습니까?")){
+    		if(confirm("후기 수정을 취소하시겠습니까?")){
     			window.self.close();
     		}
     	});
     	
-    	$("#submitBtn").on("click", function(){
+    	$("#updateBtn").on("click", function(){
     		if(rating == ''){
     			alert("해당 클래스를 별점으로 평가해주세요!");
     			return;
     		}
 			if($.trim($("#reviewContents").val()).length <= 0){
-				alert("후기를 작성해주세요!");
+				alert("수정할 내용을 입력해 주세요!");
 				return;
 			}
 			var formData = new FormData();
 			formData.append("rating", rating);
-			formData.append("classId", '[[${classId}]]');
+			formData.append("reviewId", '[[${review.reviewId}]]');
 			formData.append("reviewContents", $("#reviewContents").val());
-			formData.append("partnerOrderId", '[[${partnerOrderId}]]');
 			$.ajax({
-				url:"/user/userReview/[[${classIden}]]",
-				method:"POST",
+				url:"/user/userReview",
+				method:"PUT",
 				data:formData,
 				processData : false,
 	            contentType : false,
 	            cache: false,
 	            enctype: 'multipart/form-data',  
 				success:function(){
-					alert("후기가 성공적으로 등록되었습니다.");
+					alert("후기가 수정되었습니다.");
 					window.self.close();
 					opener.parent.location.reload();
 				},
 				error:function(){
-					alert("후기 등록 중 오류가 발생했습니다.");
+					alert("후기 수정 중 오류가 발생했습니다.");
 					console.log("Update Fail");
 					window.self.close();
 					opener.parent.location.reload();
@@ -59,34 +62,30 @@
 <body style="height:630px;">
 <section class="review-section">
 	<div class="row review-title-area py-3 mb-4">
-		<h3 class="d-flex mb-2 review-title">😊 수강 후기 작성 😊</h3>
+		<h3 class="d-flex mb-2 review-title">😊 수강 후기 수정 😊</h3>
 	</div>
 	<div class="row review-info-area mt-2">
-		<th:block th:if="${classIden} == 'ON'">
-			<div><img class="img" th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}"></div>
-			<div><h5 class="mt-3 title">[[${class.onlineClassTitle}]]</h5>
-		</th:block>
-		<th:block th:if="${classIden} == 'OFF'">
-			<div><img class="img" th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}"></div>
-			<div><h5 class="mt-3 title">[[${class.offlineClassTitle}]]</h5>
-		</th:block>
+		<div><img class="img" th:src="@{'/images/onlineThumbnail/'+${class.onlineClassId}+'.jpg'}"></div>
+		<div><h5 class="mt-3 title">[[${class.onlineClassTitle}]]</h5>
 		<h6 class="mb-0">[[${class.category} + ' | ' + ${class.instructorNickname}]]</h6></div>
-		</div>
+	</div>
 	<div class="row review-input-area">
 		<div class=" star_rating">
-		  <button class="star" value="1"> </button>
-		  <button class="star" value="2"> </button>
-		  <button class="star" value="3"> </button>
-		  <button class="star" value="4"> </button>
-		  <button class="star" value="5"> </button>
+		  <span class="text mr-1">별점 : </span>
+			  <button class="star" id="star1" value="1" > </button>
+			  <button class="star" id="star2" value="2" > </button>
+			  <button class="star" id="star3" value="3" > </button>
+			  <button class="star" id="star4" value="4" > </button>
+			  <button class="star" id="star5" value="5" > </button>
 		</div>
 		<div class="textarea">
-			<textarea class="text" id="reviewContents" cols="60" rows="7" th:placeholder="|${userNickname}님! 후기 내용을 작성해주세요.|"></textarea>
+			<textarea class="text" id="reviewContents" cols="60" rows="7" th:placeholder="|${userNickname}님! 후기 내용을 작성해주세요.|">[[${review.reviewContent}]]</textarea>
+			<div class="review-view-third col-12 mr-0">[[${#temporals.format(review.reviewRegdate, 'yyyy/MM/dd HH:mm')}]]</div>
 		</div>
 	</div>
 	<div class="row review-button-area mt-4">
 		<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">취소</button>
-		<button type="button" class="my-lectureBtn mx-1" id="submitBtn">등록</button>
+		<button type="button" class="my-lectureBtn mx-1" id="updateBtn">수정</button>
 	</div>
 </section>
 </body>

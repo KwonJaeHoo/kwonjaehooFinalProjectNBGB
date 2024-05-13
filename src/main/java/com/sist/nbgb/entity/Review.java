@@ -75,4 +75,13 @@ public class Review
 	@Comment("좋아요 수")
 	private Long reviewLikeCnt;
 	
+	@Column(length = 32)
+	@Comment("가맹점 주문번호")
+	private String partnerOrderId;
+	
+	public void update(String reviewContent, Long reviewRating, LocalDateTime reviewRegdate) {
+		this.reviewContent = reviewContent;
+		this.reviewRating = reviewRating;
+		this.reviewRegdate = reviewRegdate;
+	}
 }

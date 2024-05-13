@@ -22,6 +22,7 @@ public class OnlineReviewDTO {
 	private LocalDateTime reviewRegdate;
 	private Status reviewStatus;
 	private Long reviewLikeCnt;
+	private String partnerOrderId;
 	
 	public OnlineReviewDTO(Review review) {
 		this.reviewId = review.getReviewId();
@@ -34,6 +35,7 @@ public class OnlineReviewDTO {
 		this.reviewRegdate = review.getReviewRegdate();
 		this.reviewStatus = review.getReviewStatus();
 		this.reviewLikeCnt = review.getReviewLikeCnt();
+		this.partnerOrderId = review.getPartnerOrderId();
 	}
 	
 	

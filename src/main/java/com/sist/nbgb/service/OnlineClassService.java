@@ -466,21 +466,6 @@ public class OnlineClassService {
 		return userRepository.findByUserId(userId);
 	}
 
-	/*마이페이지 수강목록*/
-	@Transactional
-	public List<OnlinePaymentClassListDTO> userLectureList(String partnerUserId){
-		Sort sort = sortByDate();
-		return onlineClassRepository.userLectureList(partnerUserId, sort);
-	}
-	
-	private Sort sortByDate() {
-	    return JpaSort.unsafe(Sort.Direction.DESC, "approvedAt + o.onlineClassPeriod");
-	}
-	
-	public OnlineClass userLectureInfo(Long onlineClassId) {
-		return onlineClassRepository.findByOnlineClassId(onlineClassId);
-	}
-	
 	/*pay*/
 	//결제 QR
 	public OfflineReadyResponse payReady(OnlinePaymentApproveDto onPayDto) {
