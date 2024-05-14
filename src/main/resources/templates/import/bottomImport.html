@@ -21,7 +21,7 @@
 						</ul>
 					</div>
 					
-					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="ftco-footer-widget mb-4">
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="ftco-footer-widget mb-4 ml-4">
 						<h2 class="ftco-heading-2">[[ ${session.SPRING_SECURITY_CONTEXT.Authentication.Name} ]] 님 환영해요.</h2>
 						<ul class="list-unstyled">
 
@@ -57,18 +57,10 @@
 				</div>
 				<div class="col-md" style="flex-grow: 0.75">
 					<div class="ftco-footer-widget mb-4">
-						<h2 class="ftco-heading-2">내방공방 소개</h2>
-						<ul class="list-unstyled">
-							<li><a href="#">소개</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-md" style="flex-grow: 0.75">
-					<div class="ftco-footer-widget mb-4">
 						<h2 class="ftco-heading-2">고객센터</h2>
 						<div class="block-23 mb-3">
 							<ul class="list-unstyled">
-								<li><a href="/reference/FAQ">자주 묻는 질문</a></li>
+								<li style="margin-bottom:0.3em;"><a href="/reference/FAQ" style="margin-bottom:0;">자주 묻는 질문</a></li>
 								<li><a href="/reference/referenceWrite">문의하기</a></li>
 							</ul>
 						</div>
@@ -78,7 +70,7 @@
 			<div class="row">
 				<div class="col-md-12 text-center">
 
-					<p class="mb-0">
+					<p class="mb-0 mt-1">
 						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						Copyright &copy;
 						<script>

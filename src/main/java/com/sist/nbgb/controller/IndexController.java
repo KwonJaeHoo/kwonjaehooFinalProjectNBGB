@@ -57,6 +57,18 @@ public class IndexController
 				.map(ReviewDTO::new)
 				.collect(Collectors.toList());
 		
+		for(ReviewDTO reviews : reviewDTO) {
+			if(indexService.getImg(reviews.getUserId().getUserId()) == "Y") {
+				reviews.setImg("Y");
+			}
+			
+			if(reviews.getClassIden().equals("ON")) {
+				reviews.setClassName(indexService.findOnTitle(reviews.getClassId()));
+			} else if (reviews.getClassIden().equals("OFF")) {
+				reviews.setClassName(indexService.findOffTitle(reviews.getClassId()));
+			}
+		}
+		
 		model.addAttribute("reviewDTO", reviewDTO);
 		
 		//후기 개수 체크

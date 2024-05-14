@@ -21,6 +21,8 @@ public class ReviewDTO {
 	private LocalDateTime reviewRegdate;
 	private Status reviewStatus;
 	private String partnerOrderId;
+	private String img;
+	private String className;
 	
 	public ReviewDTO(Review review) {
 		this.reviewId = review.getReviewId();
@@ -33,5 +35,13 @@ public class ReviewDTO {
 		this.reviewRegdate = review.getReviewRegdate();
 		this.reviewStatus = review.getReviewStatus();
 		this.partnerOrderId = review.getPartnerOrderId();
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
+	}
+	
+	public void setClassName(String className) {
+		this.className = className;
 	}
 }
