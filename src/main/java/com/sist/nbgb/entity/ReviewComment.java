@@ -41,13 +41,7 @@ public class ReviewComment
 {
 	@Id
 	@Column(name = "REVIEW_ID", nullable = false)
-	private Long id;
-	
-	@MapsId("reviewId")
-	@Comment("후기 글번호")
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "REVIEW_ID")
-	private Review reviewId;
+	private Long reviewId;
 	
 	@Lob
 	@Comment("후기 댓글 내용")

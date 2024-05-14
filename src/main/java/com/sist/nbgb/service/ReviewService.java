@@ -75,10 +75,10 @@ public class ReviewService {
 	
 	//사용자 후기 답변 조회
 	public boolean exsitsComment(Long reviewId) {
-		return onlineReviewCommentRepository.existsByReviewId_reviewId(reviewId);
+		return onlineReviewCommentRepository.existsByReviewId(reviewId);
 	}
 	public OnlineReviewCommentDTO viewReviewComment(Long reviewId) {
-		ReviewComment comment = onlineReviewCommentRepository.findByReviewId_reviewId(reviewId);
+		ReviewComment comment = onlineReviewCommentRepository.findByReviewId(reviewId);
 		OnlineReviewCommentDTO returnComment = new OnlineReviewCommentDTO(comment);
 		return returnComment;
 	

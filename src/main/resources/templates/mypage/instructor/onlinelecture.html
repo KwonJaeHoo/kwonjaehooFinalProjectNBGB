@@ -70,7 +70,7 @@ function onlineLectureStatusChange(onlineClassId)
             			<div class="col-3 text-center">상태</div>
           			</div>
         		</div>
-        		<div class="container list-section" th:each="item : ${listPaging}">
+        		<div class="container list-section" th:each="item : ${paging}">
         			<div class="row list-item boder-bottom">
             			<div class="col-2 text-center">[[${item.category}]]</div>
             			<div class="col-5 text-center"><a th:text="${item.onlineClassTitle}" th:onclick="|location.href='@{'/online/' + ${item.onlineClassId}}'|"></a></div>

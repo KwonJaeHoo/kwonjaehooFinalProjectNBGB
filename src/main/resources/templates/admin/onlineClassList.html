@@ -43,9 +43,12 @@ $(document).ready(function() {
 	});
 	
 	$(".onlineClassDeny").on("click", function(e) {
-		e.preventDefault();
-		
-		window.open("/admin/onlineClassDenyPop.html", "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
+	    e.preventDefault();
+	    
+	    var onlineClassId = $(this).attr("data-onlineClass-id");
+	    var popupUrl = "/admin/onlineClassDenyPop?onlineClassId=" + onlineClassId;
+	    
+	    window.open(popupUrl, "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
 	});
 });
 </script>

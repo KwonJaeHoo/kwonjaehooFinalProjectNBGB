@@ -87,7 +87,8 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	
 
 	//페이징 처리(관리자용 오프라인 강의 리스트)
-	Page<OfflineClass> findAllByOrderByOfflineClassRegdateDesc(Pageable pageable);
+	@Query("SELECT oc FROM OfflineClass oc ORDER BY CASE WHEN oc.offlineClassApprove = 'N' THEN 1 ELSE 2 END, oc.offlineClassRegdate DESC")
+    Page<OfflineClass> findAllByApproveStatusAndOrderByRegdateDesc(Pageable pageable);
 	
 	//검색(관리자용 오프라인 강의 리스트)
 	Page<OfflineClass> findByOfflineClassTitleContainingOrOfflineClassContentContaining(String offlineClassTitle, String offlineClassContent, Pageable pageable);
@@ -113,5 +114,8 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	List<OfflineClassPaymentListDTO> userOfflineLectureList(@Param("partnerUserId")String partnerUserId, Sort sort);
 	
 	OfflineClass findOfflineClassTitleByOfflineClassId(Long offlineClassId);
+	
+	OfflineClass findAllByOfflineClassId(Long offlineClassId);
+
 	
 }

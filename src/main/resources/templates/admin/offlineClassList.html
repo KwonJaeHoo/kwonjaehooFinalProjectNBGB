@@ -6,6 +6,52 @@
 	<link rel="stylesheet" href="/css/referenceList.css">
 	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+<script>
+$(document).ready(function() {
+	$(".offlineClassApprove").on("click", function() {
+		var offlineClassId = $(this).attr("data-offlineClass-id");
+		
+		if(confirm("이 강의를 승인하시겠어요?") == true)
+		{	
+			$.ajax ({
+				type:"POST",
+				url:"/admin/offlineApprove",
+				data: JSON.stringify
+				({
+					offlineClassId: offlineClassId
+				}),
+				datatype:"JSON",
+				contentType: "application/json",
+				beforeSend: function(xhr)
+				{
+					xhr.setRequestHeader("AJAX", true);
+				},
+				success: function(data)
+				{
+					alert("강의가 승인되었습니다.");
+					location.href = "/admin/offlineClassList";
+				},
+				error: function(xhr, status, error)
+				{
+					alert("오류가 발생했습니다.");
+					console.error(error);
+					return;
+				}
+			});
+		}
+	});
+	
+	$(".offlineClassDeny").on("click", function(e) {
+		e.preventDefault();
+		
+		var offlineClassId = $(this).attr("data-offlineClass-id");
+	    var popupUrl = "/admin/offlineClassDenyPop?offlineClassId=" + offlineClassId;
+	    
+	    window.open(popupUrl, "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
+	});
+});
+</script>
 </head>
 <body>
 	<a class="MainBanner" aria-current="page" href="/admin/offlineClassList"><h1>오프라인 강의 관리</h1></a>
@@ -23,6 +69,8 @@
                 <th>강사 아이디</th>
                 <th>강의 가격</th>
                 <th>강의 조회수</th>
+                <th>강의 상태</th>
+                <th>강의 승인/반려</th>
                 <th>반려 날짜</th>
                 <th>반려 사유</th>
             </tr>
@@ -35,6 +83,11 @@
                 <td><a th:text="${offlineList.instructorId.instructorId}">강사 아이디</a></td>
                 <td><a th:text="${offlineList.offlineClassPrice}">강의 가격</a></td>
                 <td><a th:text="${offlineList.offlineClassViews}">강의 조회수</a></td>
+                <td><a th:text="${offlineList.offlineClassApprove}">강의 상태</a></td>
+                <td><button class="box offlineClassApprove" th:data-offlineClass-id="${offlineList.offlineClassId}" 
+                			th:if="${#strings.equals(#strings.toString(offlineList.offlineClassApprove), 'N')}">강의 승인</button>
+                	<button class="box offlineClassDeny" th:data-offlineClass-id="${offlineList.offlineClassId}"
+                			th:if="${#strings.equals(#strings.toString(offlineList.offlineClassApprove), 'N')}">강의 반려</button></td>
                 <td><a th:text="${offlineList.rejectionRegdate != null ? offlineList.rejectionRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')) : ''}">반려 날짜</a></td>
                 <td><a th:text="${offlineList.rejection}">반려 사유</a></td>
             </tr>
