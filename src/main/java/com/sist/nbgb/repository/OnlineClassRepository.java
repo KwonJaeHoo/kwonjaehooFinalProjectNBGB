@@ -50,7 +50,8 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	OnlineClass findFirstByonlineClassId(Long onlineClassId);
 	
 	//페이징 처리(관리자용 온라인 강의 리스트)
-	Page<OnlineClass> findAllByOrderByOnlineClassRegdateDesc(Pageable pageable);
+	@Query("SELECT oc FROM OnlineClass oc ORDER BY CASE WHEN oc.onlineClassApprove = 'N' THEN 1 ELSE 2 END, oc.onlineClassRegdate DESC")
+    Page<OnlineClass> findAllByApproveStatusAndOrderByRegdateDesc(Pageable pageable);
 	
 	//검색(관리자용 온라인 강의 리스트)
 	Page<OnlineClass> findByOnlineClassTitleContainingOrOnlineClassContentContaining(String onlineClassTitle, String onlineClassContent, Pageable pageable);

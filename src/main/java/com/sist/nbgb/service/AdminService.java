@@ -1,5 +1,8 @@
 package com.sist.nbgb.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,9 +58,11 @@ public class AdminService
 		return instructorsRepository.findByInstructorIdContainingOrInstructorEmailContainingOrInstructorNicknameContainingOrInstructorPhoneContaining(keyword, keyword, keyword, keyword, pageable);
 	}
 	
+	
+	
 	//페이징 처리(온라인 강의 리스트)
-	public Page<OnlineClass> findByOnlineClassRegdate(Pageable pageable) {
-		return onlineClassRepository.findAllByOrderByOnlineClassRegdateDesc(pageable);
+	public Page<OnlineClass> findAllByApproveStatusAndOrderByRegdateDesc(Pageable pageable) {
+		return onlineClassRepository.findAllByApproveStatusAndOrderByRegdateDesc(pageable);
 	}
 	
 	//검색 기능(온라인 강의 리스트)
@@ -72,16 +77,51 @@ public class AdminService
 		onlineClassRepository.save(onlineClass);
 	}
 	
+	//온라인 클래스 리스트
+	public OnlineClass findById(Long onlineClassId) {
+		return onlineClassRepository.findByOnlineClassId(onlineClassId);
+	}
+	
+	public void denyOnlineClass(Long onlineClassId, String rejection) {
+        OnlineClass onlineClass = onlineClassRepository.findById(onlineClassId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 강의가 존재하지 않습니다. id=" + onlineClassId));
+        onlineClass.setRejection(rejection);
+        onlineClass.setOnlineClassApprove(Status.S);
+        onlineClass.setRejectionRegdate(LocalDateTime.now());
+        onlineClassRepository.save(onlineClass);
+    }
+	
 	
 	
 	
 	//페이징 처리(오프라인 강의 리스트)
-	public Page<OfflineClass> findByOfflineClassRegdate(Pageable pageable) {
-		return offlineRepository.findAllByOrderByOfflineClassRegdateDesc(pageable);
+	public Page<OfflineClass> findOfflineByApproveStatusAndOrderByRegdateDesc(Pageable pageable) {
+		return offlineRepository.findAllByApproveStatusAndOrderByRegdateDesc(pageable);
 	}
 	
 	//검색 기능(오프라인 강의 리스트)
 	public Page<OfflineClass> findOfflineClassByKeyword(String keyword, Pageable pageable) {
 		return offlineRepository.findByOfflineClassTitleContainingOrOfflineClassContentContaining(keyword, keyword, pageable);
 	}
+	
+	//오프라인 미승인 강의 승인하기
+	public void changeOfflineToApprove(Long offlineClassId, Status newStatus) throws Exception {
+		OfflineClass offlineClass = offlineRepository.findAllByOfflineClassId(offlineClassId);
+		offlineClass.setOfflineClassApprove(newStatus);
+		offlineRepository.save(offlineClass);
+	}
+	
+	//오프라인 클래스 리스트
+	public OfflineClass findAllByOfflineClassId(Long offlineClassId) {
+		return offlineRepository.findAllByOfflineClassId(offlineClassId);
+	}
+	
+	public void denyOfflineClass(Long offlineClassId, String rejection) {
+        OfflineClass offlineClass = offlineRepository.findById(offlineClassId)
+            .orElse(null);
+        offlineClass.setRejection(rejection);
+        offlineClass.setOfflineClassApprove(Status.S);
+        offlineClass.setRejectionRegdate(LocalDateTime.now());
+        offlineRepository.save(offlineClass);
+    }
 }

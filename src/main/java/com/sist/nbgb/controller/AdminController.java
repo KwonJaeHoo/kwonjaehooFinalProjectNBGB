@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sist.nbgb.dto.OfflineClassDenyDTO;
+import com.sist.nbgb.dto.OfflineClassStatusChange;
+import com.sist.nbgb.dto.OnlineClassDenyDTO;
 import com.sist.nbgb.dto.OnlineClassStatusChange;
 import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.dto.UserIdCheckDto;
@@ -155,7 +159,7 @@ public class AdminController {
 		if(searchKeyword != null && !searchKeyword.isEmpty()) {
 			page = adminService.findOnlineClassByKeyword(searchKeyword, pageable);
 		} else {
-			page = adminService.findByOnlineClassRegdate(pageable);
+			page = adminService.findAllByApproveStatusAndOrderByRegdateDesc(pageable);
 		}
 		
 		model.addAttribute("page", page);
@@ -179,11 +183,25 @@ public class AdminController {
 		}
 	}
 	
-	@GetMapping("/DenyPop")
-	public String onlineDenyPop(Model model) 
-	{
-		return "/admin/onlineClassDenyPop";
+	//온라인 미승인 강의 반려하기
+	@GetMapping("/onlineClassDenyPop")
+	public String onlineClassDeny(Model model) {
+	    
+	    return "/admin/onlineClassDenyPop";
 	}
+	
+	@PostMapping("/onlineClassDeny")
+	@ResponseBody
+    public String denyOnlineClass(@RequestBody OnlineClassDenyDTO onlineClassDenyDto) {
+        try
+        {
+        	adminService.denyOnlineClass(onlineClassDenyDto.getOnlineClassId(), onlineClassDenyDto.getRejection());
+        	return "SUCCESS";
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	return "ERROR";
+        }
+    }
 	
 	//오프라인 강의 리스트 불러오기
 	@GetMapping("/offlineClassList")
@@ -195,7 +213,7 @@ public class AdminController {
 		if(searchKeyword != null && !searchKeyword.isEmpty()) {
 			page = adminService.findOfflineClassByKeyword(searchKeyword, pageable);
 		} else {
-			page = adminService.findByOfflineClassRegdate(pageable);
+			page = adminService.findOfflineByApproveStatusAndOrderByRegdateDesc(pageable);
 		}
 		
 		model.addAttribute("page", page);
@@ -204,36 +222,39 @@ public class AdminController {
 		return "admin/offlineClassList";
 	}
 	
+	//오프라인 미승인 강의 승인하기
+	@PostMapping("/offlineApprove")
+	@ResponseBody
+	public String changeOfflineToApprove(@RequestBody OfflineClassStatusChange offlineClassStatusChange) 
+	{
+		try 
+		{
+			adminService.changeOnlineToApprove(offlineClassStatusChange.getOfflineClassId(), Status.Y);
+			return "SUCCESS";
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "ERROR";
+		}
+	}
+	
+	//오프라인 미승인 강의 반려하기
+	@GetMapping("/offlineClassDenyPop")
+	public String offlineClassDeny(Model model) {
+	    
+	    return "/admin/offlineClassDenyPop";
+	}
+	
+	@PostMapping("/offlineClassDeny")
+	@ResponseBody
+    public String denyOfflineClass(@RequestBody OfflineClassDenyDTO offlineClassDenyDto) {
+        try
+        {
+        	adminService.denyOfflineClass(offlineClassDenyDto.getOfflineClassId(), offlineClassDenyDto.getRejection());
+        	return "SUCCESS";
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	return "ERROR";
+        }
+    }
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
