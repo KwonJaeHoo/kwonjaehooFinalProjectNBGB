@@ -45,7 +45,10 @@
             				<a th:href="@{'/offlineClass/' + ${class.offlineClassId}}"><img src="images/bg_1" th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${class.offlineClassId}}'|" th:style="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')} ? 'filter: grayscale(100%);' : ''" /></a>
             			</div>
             			<div class="col-5 list-item-title">
-            				<a class="item-lecture-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}" th:style="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')} ? 'text-decoration:line-through;pointer-events : none;' : ''">[[${class.offlineClassTitle}]]</a>
+            				<a class="item-lecture-title deco-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}" th:if="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')}"	>
+            				[[${class.offlineClassTitle}]]</a>
+            				<a class="item-lecture-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}" th:unless="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')}" 	>
+            				[[${class.offlineClassTitle}]]</a>
             			</div>
         			<div class="col-2 text-center" th:text="|${#temporals.createDate(class.bookingDate, 'yyyyMMdd')} ${class.bookingTime}:00|" ><br/></div>
             			<div class="col-2 text-center">

@@ -421,11 +421,20 @@ margin: 50px auto 30px auto;
 .list-item-lecture{
 	height:8em !important; 
 }
+
 .item-lecture-title{
     font-size: 17.5px;
     font-weight: 600;
     color:rgb(101, 101, 101);
 }
+.deco-title{
+	text-decoration:line-through !important;
+}
+.deco-title:hover{
+	text-decoration:line-through !important;
+	color:lightgray !important;
+}
+
 
 .my-lectureBtn{
 	width:6rem;
