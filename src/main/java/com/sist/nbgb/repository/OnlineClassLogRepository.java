@@ -24,4 +24,6 @@ public interface OnlineClassLogRepository extends JpaRepository<OnlineClassLog, 
 	//강의 선택 회차 로그 유무
 	boolean countByOnlineClassLogId(OnlineClassLogId onlineClassLogId);
 	
+	//최신 로그 조회
+	OnlineClassLog findFirstByUserIdAndOnlineClassLogId_onlineClassFileId_onlineClassId(User userId, Long onlineClassId);
 }

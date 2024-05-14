@@ -13,6 +13,11 @@
 	    var win = window.open('/user/userReviewView/'+classId +'/' + classIden + '/' + partnerOrderId, '/user/userReviewView/'+classId +'/' + classIden + '/' + partnerOrderId,
 		  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
 	}
+	$(document).ready(function(){
+		$("#beforeBtn").on('click', function(){
+			alert("클래스 수강 다음 날부터 후기 작성이 가능합니다.");
+		});
+	});
 	</script>
 </head>
 <body>
@@ -31,22 +36,25 @@
           			<div class="row mb-4 list-title">
             			<div class="col-8 text-center">강의명</div>
             			<div class="col-2 text-center">참여일자</div>
-            			<div class="col-2 text-center">후기</div>
+            			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
         		<div th:if="${classes} != null" class="container list-section">
         			<div th:each="class:${classes}" class="row list-item list-item-lecture mb-2">
             			<div class="col-3 text-center mypage-lectureImg">
-            				<a ><img src="images/bg_1" th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${class.offlineClassId}}'|" /></a>
+            				<a th:href="@{'/offlineClass/' + ${class.offlineClassId}}"><img src="images/bg_1" th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${class.offlineClassId}}'|" th:style="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')} ? 'filter: grayscale(100%);' : ''" /></a>
             			</div>
             			<div class="col-5 list-item-title">
-            				<a class="item-lecture-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}">[[${class.offlineClassTitle}]]</a>
+            				<a class="item-lecture-title" th:href="@{'/offlineClass/' + ${class.offlineClassId}}" th:style="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')} ? 'text-decoration:line-through;pointer-events : none;' : ''">[[${class.offlineClassTitle}]]</a>
             			</div>
         			<div class="col-2 text-center" th:text="|${#temporals.createDate(class.bookingDate, 'yyyyMMdd')} ${class.bookingTime}:00|" ><br/></div>
             			<div class="col-2 text-center">
-            				<!--<button type="button" class="my-lectureBtn my-1" id="reviewAdd" disabled>수강 전</button>-->
-            				<button type="button" class="my-lectureBtn my-1" id="reviewAdd" th:onclick="writeReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기작성</button>
-            				<button type="button" class="my-lectureBtn my-1" th:onclick="viewReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기조회</button>
+            				<button type="button" class="my-lectureBtn my-lectureBtn-third my-1" id="beforeBtn" 
+            						th:if="|${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') > #temporals.format(now, 'yyyy-MM-dd')}|" >수강 전</button>
+            				<button type="button" class="my-lectureBtn my-1" id="reviewAdd" th:if="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')} and ${reviewChk['__${class.partnerOrderId}__'] == '0'}"
+            							th:onclick="writeReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기작성</button>
+            				<button type="button" class="my-lectureBtn my-lectureBtn-second my-1" th:if="${#temporals.format(#temporals.createDate(class.bookingDate, 'yyyyMMdd'), 'yyyy-MM-dd') < #temporals.format(now, 'yyyy-MM-dd')} and ${reviewChk['__${class.partnerOrderId}__'] != '0'}" 
+            							th:onclick="viewReview([[${class.offlineClassId}]], 'OFF', [[${class.partnerOrderId}]])">후기조회</button>
 						</div>
           			</div>
         		</div>

@@ -115,16 +115,6 @@ margin: 50px auto 30px auto;
 	width:100%;
 }
 
-.video-side{
-	background-color:red;
-	width: 10%;
-	height:15%;
-	position: sticky;
-	top:40%;
-	margin-left:10px;
-	background-color: #ffe3e3;
-}
-
 .video-container{
     position:sticky;
     top:8em;
@@ -161,7 +151,7 @@ margin: 50px auto 30px auto;
     background-color:#89dd18;
     border:none;
     color:white;
-    height:6dvh;
+    height:7.5dvh;
 }
 
 /*비디오 재생화면*/
@@ -470,7 +460,16 @@ margin: 50px auto 30px auto;
         color:#477500;
         border:#477500 solid 3px;
 	}
- 
+.my-lectureBtn-third{
+	border:#CEF279 solid 3px;
+    background-color: #CEF279;
+    color:white;
+}
+	.my-lectureBtn-third:hover{
+		background-color: white;
+        color:#CEF279;
+        border:#CEF279 solid 3px;
+	}
 
 
 /*리뷰 작성(width=600px,height=530px)*/
@@ -586,8 +585,8 @@ margin: 50px auto 30px auto;
 	padding:0 30px;
 }
 	.reviewV-info-area div img{
-		height:100%;
-		width:100%;
+		height:90px;
+		width:120px;
 	}	
 	.reviewV-info-area .title{
 		color:gray !important;

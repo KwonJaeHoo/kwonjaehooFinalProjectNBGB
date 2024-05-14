@@ -76,5 +76,5 @@ public class OnlinePaymentApprove
 	@Column(columnDefinition = "CHAR(1)")
 	@Comment("상태(시청전:N,시청후:Y)")
 	private Status status;
-	
+
 }

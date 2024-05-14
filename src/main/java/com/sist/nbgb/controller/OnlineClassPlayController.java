@@ -24,6 +24,7 @@ import com.sist.nbgb.dto.OnlineClassLogDTO;
 import com.sist.nbgb.dto.OnlineClassLogIdDTO;
 import com.sist.nbgb.dto.OnlineClassLogReqDTO;
 import com.sist.nbgb.dto.OnlineClassView;
+import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
@@ -120,20 +121,19 @@ public class OnlineClassPlayController
 	}
 	
 	//온라인 강의 로그 추가(수강시작)
-	//해당 강의 회차에 데이터가 없을 시에만 insert
-	//결제데이터 상태 N -----------------> Y로 전환**********************
 	@ResponseBody
 	@PostMapping("/onlinePlay")
-	public ResponseEntity<OnlineClassLogDTO> onlinePlayLog(Principal principal, @RequestParam(value="onlineClassId", required=false) String onlineClassId,
+	public ResponseEntity<OnlineClassLogIdDTO> onlinePlayLog(Principal principal, @RequestParam(value="onlineClassId", required=false) String onlineClassId,
 			@RequestParam(value="onlineFileId", required=false) String onlineFileId, @RequestParam(value="onlineLogCurr", required=false) String onlineLogCurr) throws IOException{
 		
 		logger.info("[OnlineClassPlayController] onlinePlayLog");
 		
 		User user = userRepository.findFirstByUserId(principal.getName());
-
+		
 		OnlineClassFile classFile = onlineClassPlayService.selectClass(Long.valueOf(onlineClassId), Long.valueOf(onlineFileId));
 		OnlineClassLogIdDTO firstLogId = OnlineClassLogIdDTO.builder()
 				.userId(user.getUserId()).onlineClassId(Long.valueOf(onlineClassId)).onlineFileId(Long.valueOf(onlineFileId)).build();
+			
 		OnlineClassLogDTO firstLog = null;
 		if(onlineClassLogRepository.findByOnlineClassLogId(firstLogId.toEntity()) == null) {
 			firstLog = OnlineClassLogDTO.builder()
@@ -144,12 +144,19 @@ public class OnlineClassPlayController
 					.status(Status.N)
 					.build();
 			onlineClassPlayService.firstLogSave(firstLog);
+			onlineClassPlayService.userPayInfoUpdate(onlineClassId, user.getUserId());
+		}else {
+			OnlinePaymentApproveDto payInfo = new OnlinePaymentApproveDto(onlineClassPlayService.userPayInfo(onlineClassId, user.getUserId()));
+			OnlineClassLog logInfo = onlineClassPlayService.userLogInfo(user, Long.valueOf(onlineClassId));
+			if(payInfo.getApprovedAt().isAfter(logInfo.getOnlineLogDate())) {
+				onlineClassPlayService.userPayInfoUpdate(onlineClassId, user.getUserId());
+			}
 		}
 		
 		logger.info("======강의 로그 : 아이디 = " + user.getUserId() + ", 강의번호 = " + onlineClassId + ", 강의회차 = " + onlineFileId);
 		logger.info("======강의 로그 상세 : 영상 총 길이 = " + classFile.getOnlineClassFileId().getOnlineFileLength() + ", 현재 시간 = " + LocalDateTime.now());
 		
-		return ResponseEntity.ok().body(firstLog);
+		return ResponseEntity.ok().body(firstLogId);
 	}
 	
 	//온라인 강의 로그 업데이트
@@ -159,7 +166,7 @@ public class OnlineClassPlayController
 			@RequestParam(value="onlineFileId", required=false) String onlineFileId, @RequestParam(value="onlineLogCurr", required=false) String onlineLogCurr){
 		
 		logger.info("[OnlineClassPlayController] onlineUpdateLog");
-		
+
 		//회원조회
 		User user = userRepository.findFirstByUserId(principal.getName());
 				
@@ -171,7 +178,6 @@ public class OnlineClassPlayController
 		OnlineClassLogReqDTO updateLog = null;
 		long goal = classFile.getOnlineClassFileId().getOnlineFileLength();
 		int percent = (int)Math.round(Double.valueOf(onlineLogCurr) /Double.valueOf(goal) * 100.0);
-		
 		if(onlineClassLogRepository.findByOnlineClassLogId(updateLogId.toEntity()).getStatus() == Status.N && percent < 95) {
 				updateLog = new OnlineClassLogReqDTO(Long.valueOf(onlineLogCurr), Status.N);
 				onlineClassPlayService.logUpdate(updateLogId, updateLog);

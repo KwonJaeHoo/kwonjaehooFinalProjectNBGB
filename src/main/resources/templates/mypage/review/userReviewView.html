@@ -10,6 +10,7 @@ $(document).ready(function(){
 		$("#star" + rating).parent().children('button').removeClass('on');
 		$("#star" + rating).addClass('on').prevAll('button').addClass('on');
 	}
+	var classIden = '[[${classIden}]]';
 	
 	$("#cancelBtn").on("click", function(){
 		window.self.close();
@@ -21,7 +22,7 @@ $(document).ready(function(){
 		}else{
 			if(confirm("후기 내용을 수정하시겠습니까?")){
 				window.self.close();
-				var win = window.open('/user/userReviewUpdate/'+ '[[${class.onlineClassId}]]' +'/' + 'ON' + '/' + '[[${partnerOrderId}]]', '/user/userReviewUpdate/'+ '[[${class.onlineClassId}]]' +'/' + 'ON' + '/' + '[[${partnerOrderId}]]',
+				var win = window.open('/user/userReviewUpdate/'+ '[[${classId}]]' +'/' + classIden + '/' + '[[${partnerOrderId}]]', '[[${classId}]]' +'/' + classIden + '/' + '[[${partnerOrderId}]]',
 		  		'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
 			}
 		}
@@ -73,10 +74,11 @@ function replyView() {
 		<h3 class="d-flex review-title">😊 작성한 후기 😊</h3>
 	</div>
 	<div class="row reviewV-info-area mt-2">
-		<input type="hidden" id="classId">
-		<div class="col-3 px-0"><img th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}"></div>
+		<div th:if="${classIden} == 'ON'" class="col-3 px-0"><img th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}"></div>
+		<div th:if="${classIden} == 'OFF'" class="col-3 px-0"><img th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}"></div>
 		<div class="col-9">
-			<h5 class="reviewV-info-title">[[${class.onlineClassTitle}]]</h5>
+			<h5 class="reviewV-info-title" th:if="${classIden} == 'ON'" >[[${class.onlineClassTitle}]]</h5>
+			<h5 class="reviewV-info-title" th:if="${classIden} == 'OFF'" >[[${class.offlineClassTitle}]]</h5>
 			<h6 class="mb-0">[[${class.category}]]/[[${class.instructorNickname}]]</h6>
 		</div>
 	</div>

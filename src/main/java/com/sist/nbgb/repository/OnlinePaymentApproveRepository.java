@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.nbgb.entity.OnlinePaymentApprove;
 
@@ -32,7 +33,14 @@ public interface OnlinePaymentApproveRepository extends JpaRepository<OnlinePaym
 	@Modifying
 	@Query("update OnlinePaymentApprove u set u.status = 'R' where u.itemCode = :itemCode and u.partnerUserId = :partnerUserId and u.status in ('Y', 'N')")
 	int updatePayStatus(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId);
-		
 	
+	//재결제시 기존 결제상태 R로 업데이트
+	@Transactional
+	@Modifying
+	@Query("update OnlinePaymentApprove u set u.status = 'Y' where u.partnerOrderId = :partnerOrderId")
+	int updatePayLogStatus(@Param("partnerOrderId") String partnerOrderId);
+		
 	Optional<OnlinePaymentApprove> findByPartnerOrderId(String partnerOrderId);
+	
+	OnlinePaymentApprove findFirstByItemCodeAndPartnerUserId(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId);
 }

@@ -15,7 +15,7 @@
 	}
 	$(document).ready(function(){
 		$("#beforeView").on('click', function(){
-			alert("강의 수강 전에는 후기를 작성할 수 업습니다.");
+			alert("강의 수강 전에는 후기를 작성할 수 없습니다.");
 		});
 	});
 	</script>
@@ -36,7 +36,7 @@
           			<div class="row mb-4 list-title">
             			<div class="col-8 text-center">강의명</div>
             			<div class="col-2 text-center">종료일자</div>
-            			<div class="col-2 text-center">수강/후기</div>
+            			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
         		<div th:if="${classes} != null" class="container list-section">
@@ -53,13 +53,12 @@
         			<div class="col-2 text-center" th:text="|${#temporals.format(class.approvedAt.plusDays(class.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|"><br/></div>
             			<div class="col-2 text-center">
             				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId})}'|" 
-            						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}"class="my-lectureBtn my-1">수강하기</button>
+            						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}" class="my-lectureBtn my-1">수강하기</button>
             				<button type="button" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}" class="my-lectureBtn my-1" disabled>기간만료</button>
             				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'write'}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
             						class="my-lectureBtn my-1" id="reviewAdd">후기작성</button>
             				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'view'}" th:onclick="viewReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"
             						class="my-lectureBtn my-lectureBtn-second my-1" >후기조회</button>
-            				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'null'}" id="beforeView" class="my-lectureBtn my-lectureBtn-second my-1" >수강 전</button>
 						</div>
           			</div>
         		</div>

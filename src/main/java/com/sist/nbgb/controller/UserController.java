@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -44,12 +44,11 @@ import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
-import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
 import com.sist.nbgb.service.EmailService;
-import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.KakaoService;
+import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.SignupService;
 import com.sist.nbgb.service.UserService;
 
@@ -427,6 +426,7 @@ public class UserController
     		
     		model.addAttribute("classes", classes);
     		model.addAttribute("now", now);
+    		model.addAttribute("reviewChk", map);
     	}
     	
     	return "mypage/mypageOfflineLectureList";

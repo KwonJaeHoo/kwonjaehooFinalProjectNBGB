@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OfflineClassView;
 import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
-import com.sist.nbgb.dto.OnlineReviewDTO;
 import com.sist.nbgb.dto.ReviewDTO;
-import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.dto.ReviewRequestDTO;
+import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
@@ -40,7 +40,7 @@ public class ReviewController {
 	
 	/*수강 후기 작성 페이지*/
     @GetMapping("/user/userReviewWrite/{classId}/{classIden}/{partnerOrderId}")
-    public String reviewWrite(Model model, Principal principal, @PathVariable Long classId, @PathVariable(value="classIden") String classIden, @PathVariable(value="partnerOrderId") String partnerOrderId){
+    public String reviewWrite(Model model, Principal principal, @PathVariable(value="classId") Long classId, @PathVariable(value="classIden") String classIden, @PathVariable(value="partnerOrderId") String partnerOrderId){
     	User user = userService.findUserById(principal.getName());
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
@@ -67,22 +67,22 @@ public class ReviewController {
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
     			OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
-    			OnlineReviewCommentDTO comment = null;
-    			
     			model.addAttribute("class", onlineClass);
-    			model.addAttribute("comment", comment);
-    		}
-    	//	else {
-    	//		OfflineClassView offlineClass = new  OfflineClassView(reviewService.offlineInfo(classId));
-    	//		model.addAttribute("class", offlineClass);
-    	//	}
-    		
-    		if(partnerOrderId != null) {
-    			ReviewDTO review = reviewService.viewReview(partnerOrderId);
-    			model.addAttribute("review", review);
+    			model.addAttribute("classId", onlineClass.getOnlineClassId());
+    		}else {
+    			OfflineClassView offlineClass = new OfflineClassView(reviewService.offlineInfo(classId));
+    			model.addAttribute("class", offlineClass);
+    			model.addAttribute("classId", offlineClass.getOfflineClassId());
     		}
     		
+			ReviewDTO review = reviewService.viewReview(partnerOrderId);
+			model.addAttribute("review", review);
+			if(reviewService.exsitsComment(review.getReviewId())) {
+				OnlineReviewCommentDTO comment = reviewService.viewReviewComment(review.getReviewId());
+				model.addAttribute("comment", comment);
+			}
     	}
+    	model.addAttribute("classIden", classIden);
     	model.addAttribute("userNickname", user.getUserNickname());
     	model.addAttribute("partnerOrderId", partnerOrderId);
     	return "mypage/review/userReviewView";
@@ -95,17 +95,17 @@ public class ReviewController {
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
     			OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
-    			
-    			model.addAttribute("userNickname", user.getUserNickname());
     			model.addAttribute("class", onlineClass);
+    			model.addAttribute("classId", onlineClass.getOnlineClassId());
     		}else {
-    			
+    			OfflineClassView offlineClass = new OfflineClassView(reviewService.offlineInfo(classId));
+    			model.addAttribute("class", offlineClass);
+    			model.addAttribute("classId", offlineClass.getOfflineClassId());
     		}
     		
-    		if(partnerOrderId != null) {
-    			ReviewDTO review = reviewService.viewReview(partnerOrderId);
-    			model.addAttribute("review", review);
-    		}
+			ReviewDTO review = reviewService.viewReview(partnerOrderId);
+			model.addAttribute("review", review);
+    		model.addAttribute("userNickname", user.getUserNickname());
     	}
     	
     	model.addAttribute("classIden", classIden);
@@ -175,9 +175,7 @@ public class ReviewController {
 			if(reviewService.exsitsReview(Long.valueOf(reviewId))) {
 				updateReview = new ReviewUpdateDTO(reviewContents, Long.valueOf(rating));
 				reviewService.updateReview(Long.valueOf(reviewId), updateReview);
-    		}else {
-    			
-    		}
+			}
     	}
     	
     	return ResponseEntity.ok().body(updateReview);

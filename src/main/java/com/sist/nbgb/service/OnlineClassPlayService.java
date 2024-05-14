@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service;
 import com.sist.nbgb.dto.OnlineClassLogDTO;
 import com.sist.nbgb.dto.OnlineClassLogIdDTO;
 import com.sist.nbgb.dto.OnlineClassLogReqDTO;
+import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.entity.OnlineClassFile;
 import com.sist.nbgb.entity.OnlineClassLog;
+import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OnlineClassFileRepository;
 import com.sist.nbgb.repository.OnlineClassLogRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
+import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class OnlineClassPlayService {
 	private final OnlineClassLogRepository onlineClassLogRepository;
 	private final OnlineClassFileRepository onlineClassFileRepository;
 	private final OnlineClassRepository onlineClassRepository;
+	private final OnlinePaymentApproveRepository onlinePaymentApproveRepositoy;
 	
 	//강의 자료 조회
 	public OnlineClassFile selectClass(Long onlineClassId, Long onlineFileId) {
@@ -50,6 +55,24 @@ public class OnlineClassPlayService {
 		return onlineClassLogRepository.findByUserIdAndOnlineClassLogId_onlineClassFileId_onlineClassId(user, onlineClassId);
 	}
 	
+	//최신 결제 정보 조회
+	public OnlinePaymentApprove userPayInfo(String itemCode, String partnerUserId) {
+		return onlinePaymentApproveRepositoy.findFirstByItemCodeAndPartnerUserId(itemCode, partnerUserId);
+	}
+	
+	//결제 상태 변경(취소 불가)
+	@Transactional
+	public OnlinePaymentApprove userPayInfoUpdate(String itemCode, String partnerUserId) {
+		OnlinePaymentApprove payInfo = onlinePaymentApproveRepositoy.findFirstByItemCodeAndPartnerUserId(itemCode, partnerUserId);
+		onlinePaymentApproveRepositoy.updatePayLogStatus(payInfo.getPartnerOrderId());
+		return payInfo;
+	}
+	
+	//최신 로그 조회
+	public OnlineClassLog userLogInfo(User userId, Long onlineClassId) {
+		return onlineClassLogRepository.findFirstByUserIdAndOnlineClassLogId_onlineClassFileId_onlineClassId(userId, onlineClassId);
+	}
+	
 	//로그 저장
 	public OnlineClassLog firstLogSave(OnlineClassLogDTO onlineClassLogDTO) {
 		return onlineClassLogRepository.save(onlineClassLogDTO.toEntity());
@@ -67,6 +90,4 @@ public class OnlineClassPlayService {
 	public boolean logCheck(OnlineClassLogIdDTO onlineClassLogIdDTO) {
 		return onlineClassLogRepository.countByOnlineClassLogId(onlineClassLogIdDTO.toEntity());
 	}
-	
-	
 }
