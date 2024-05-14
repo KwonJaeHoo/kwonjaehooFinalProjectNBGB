@@ -19,28 +19,29 @@
       		<div class="list-container">
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
-            			<div class="col-3 text-center">번호</div>
-            			<div class="col-3 text-center">제목</div>
-            			<div class="col-2 text-center"></div>
-            			<div class="col-3 text-center">취소</div>
+            			<div class="col-9 text-center">클래스명</div>
+            			<div class="col-3 text-center">상태</div>
           			</div>
         		</div>
-        		<div th:each="classLikeDto : ${classLikeDto}"class="container list-section">
+        		<div th:each="classLikeDto : ${classLikeDto}"class="container list-section mb-5 mt-2" th:if="${classLikeDto != 'classLikeDtoIsNull'}">
         			<div th:if="${classLikeDto != 'classLikeDtoIsNull'}" class="row list-item">
-            			<div class="col-3 text-center" th:text="${classLikeDto.classId}"></div>
-            			<div class="col-3 text-center"><a th:text="${classLikeDto.offlineClassTitle}" th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${classLikeDto.classId})}"></a></div>
-            			<div class="col-2 text-center"></div>
+            			<div class="col-4 text-center">
+            				<a th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${classLikeDto.classId})}"><img th:src="@{'/images/offlineThumbnail/' + ${classLikeDto.classId} + '.jpg'}" style="width:180px;height:100px;"/></a>
+            			</div>
+            			<div class="col-5">
+            				<a class="item-lecture-title" th:text="${classLikeDto.offlineClassTitle}" th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${classLikeDto.classId})}"></a>
+            			</div>
             			<div class="col-3 text-center">
-            				<button class="log-btn log-btn-first" type="button" th:offlineClassId="${classLikeDto.classId}" th:offlineUserId="${classLikeDto.userId}" th:onclick="offlineLikeCancel(this.getAttribute('offlineClassId'), this.getAttribute('offlineUserId'))">찜 취소</button>
+            				<a type="button" th:offlineClassId="${classLikeDto.classId}" th:offlineUserId="${classLikeDto.userId}" th:onclick="offlineLikeCancel(this.getAttribute('offlineClassId'), this.getAttribute('offlineUserId'))"><img src="/images/icon-heart.png" style="width:25px;height:25px;"></a>
             			</div>
           			</div>
-          			<div th:if="${classLikeDto == 'classLikeDtoIsNull'}" class="row list-item">
-          				<div class="col-2 text-center"><a>공방 찜 내역이 없어요.</a></div>
-          			</div>
         		</div>
+	  		    <div th:if="${classLikeDto == 'classLikeDtoIsNull'}" class="container list-section">
+	        		<div class="list-section-none"><h5>공방 찜 내역이 없어요.</h5></div>
+	        	</div>
         
         	<!--페이징-->
-        		<div class="row my-5 paging-area">
+        		<div class="row my-5 paging-area" th:if="${classLikeDto != 'classLikeDtoIsNull'}">
             		<div class="block-27">
 	              		<ul>
 	                		<li><a href="#">&lt;</a></li>
@@ -54,6 +55,7 @@
             		</div>
         		</div>
       		</div>
+
      	</div>
 	</section>
      	

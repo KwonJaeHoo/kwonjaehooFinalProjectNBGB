@@ -16,29 +16,29 @@
       		<p th:insert="import/mypageUserImport.html :: mypageUser-import"></p>
       		
       		<div class="list-container">
-        		<div class="container info-section row">
+        		<div class="container info-section justify-content-center mt-3">
         		
-          			<div>			
+          			<div class="justify-content-center w-100">			
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">현재 비밀번호</p></div>
           						<input type="password" id="nowUserPassword" name="nowUserPassword"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>
          				</div>
-          				<p class="input-msg" id="userMsg1"></p>
+          				<p class="input-msg text-center" id="userMsg1"></p>
           				
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호</p></div>
           						<input type="password" id="newUserPassword" name="newUserPassword"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>
          				</div>
-          				<p class="input-msg" id="userMsg2"></p>
+          				<p class="input-msg text-center" id="userMsg2"></p>
           				
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호 확인</p></div>
           						<input type="password" id="newUserPasswordCheck" name="newUserPasswordCheck"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>
          				</div>
-          				<p class="input-msg" id="userMsg3"></p>
+          				<p class="input-msg text-center" id="userMsg3"></p>
           				
 						<div class="col-3 log-btn-area"><button type="button" id="userPasswordBtn" name="userPasswordBtn" class="log-btn log-btn-first">비밀번호 변경</button></div>					
           			
@@ -51,7 +51,7 @@
           					<div class="col-3 log-btn-area"></div>
           							
          				</div>
-         				<p class="input-msg" id="userMsg4"></p>
+         				<p class="input-msg text-center" id="userMsg4"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="userNicknameBtn" name="userNicknameBtn" class="log-btn log-btn-first">닉네임 변경</button></div>
           			</div>
           			
@@ -63,7 +63,7 @@
           					<div class="col-3 log-btn-area"></div>
 
          				</div>
-         				<p class="input-msg" id="userMsg5"></p>
+         				<p class="input-msg text-center" id="userMsg5"></p>
          				
          				<div class="col-3 log-btn-area"><button type="button" id="userEmailBtn" name="userEmailBtn" class="log-btn log-btn-first">인증번호 발송</button></div>		
          				
@@ -73,7 +73,7 @@
           							<input type="text" id="userEmailCheck" name="userEmailCheck"  class="input col-9" size="32"/>
           						<div class="col-3 log-btn-area"></div>
          					</div>
-         					<p class="input-msg" id="userMsg6"></p>
+         					<p class="input-msg text-center" id="userMsg6"></p>
          					
          					<div class="col-3 log-btn-area"><button type="button" id="userEmailCheckBtn" name="userEmailCheckBtn" class="log-btn log-btn-first">인증번호 확인</button></div>
          						      			
@@ -90,7 +90,7 @@
           					<div class="col-3 log-btn-area"></div>
           							
          				</div>
-         				<p class="input-msg" id="userMsg7"></p>
+         				<p class="input-msg text-center" id="userMsg7"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="userPhoneBtn" name="userPhoneBtn" class="log-btn log-btn-first">전화번호 변경</button></div>
           			</div>
           			
@@ -101,9 +101,9 @@
           						<input type="file" id="userImageFile" name="userImageFile"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>	
          				</div>
-         				<p class="input-msg" id="userMsg8"></p>
+         				<p class="input-msg text-center" id="userMsg8"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="userImageFileBtn" name="userImageFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>
-         				<p class="input-msg" id="userMsg9"></p>
+         				<p class="input-msg text-center" id="userMsg9"></p>
          				
          				<div th:if="${userFileDto != 'userFileDtoIsNull'}" class="col-3 log-btn-area"><button type="button" id="userImageFileDeleteBtn" name="userImageFileDeleteBtn" class="log-btn log-btn-first">이미지 삭제</button></div> 	          			
           			</div>
@@ -123,29 +123,29 @@
 			<p th:insert="import/mypageInstructorImport.html :: mypageInstructor-import"></p>
       		
       		<div class="list-container">
-        		<div class="container info-section row">
-          			
-          			<div>			
+        		<div class="container info-section row justify-content-center">
+        		
+          			<div class="w-80">			
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">현재 비밀번호</p></div>
           						<input type="password" id="nowInstructorPassword" name="nowInstructorPassword"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>
          				</div>
-          				<p class="input-msg" id="instructorMsg1"></p>
+          				<p class="input-msg text-center" id="instructorMsg1"></p>
           				
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호</p></div>
           						<input type="password" id="newInstructorPassword" name="newInstructorPassword"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>
          				</div>
-          				<p class="input-msg" id="instructorMsg2"></p>
+          				<p class="input-msg text-center" id="instructorMsg2"></p>
           				
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">새 비밀번호 확인</p></div>
           						<input type="password" id="newInstructorPasswordCheck" name="newInstructorPasswordCheck"  class="input col-9" size="32"/>
           					<div class="col-3 log-btn-area"></div>
          				</div>
-          				<p class="input-msg" id="instructorMsg3"></p>
+          				<p class="input-msg text-center" id="instructorMsg3"></p>
           				
 						<div class="col-3 log-btn-area"><button type="button" id="instructorPasswordBtn" name="instructorPasswordBtn" class="log-btn log-btn-first">비밀번호 변경</button></div>					
           			
@@ -159,7 +159,7 @@
           					<div class="col-3 log-btn-area"></div>
           							
          				</div>
-         				<p class="input-msg" id="instructorMsg4"></p>
+         				<p class="input-msg text-center" id="instructorMsg4"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="instructorNicknameBtn" name="instructorNicknameBtn" class="log-btn log-btn-first">닉네임 변경</button></div>
           			</div>
           			
@@ -171,7 +171,7 @@
           					<div class="col-3 log-btn-area"></div>
 
          				</div>
-         				<p class="input-msg" id="instructorMsg5"></p>
+         				<p class="input-msg text-center" id="instructorMsg5"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="instructorEmailBtn" name="instructorEmailBtn" class="log-btn log-btn-first">인증번호 발송</button></div>		
          				
          				
@@ -181,7 +181,7 @@
           							<input type="text" id="instructorEmailCheck" name="instructorEmailCheck" class="input col-9" size="32"/>
           						<div class="col-3 log-btn-area"></div>
          					</div>
-         					<p class="input-msg" id="instructorMsg6"></p>
+         					<p class="input-msg text-center" id="instructorMsg6"></p>
          					
          					<div class="col-3 log-btn-area"><button type="button" id="instructorEmailCheckBtn" name="instructorEmailCheckBtn" class="log-btn log-btn-first">인증번호 확인</button></div>
          						      			
@@ -198,7 +198,7 @@
           					<div class="col-3 log-btn-area"></div>
           							
          				</div>
-         				<p class="input-msg" id="instructorMsg7"></p>
+         				<p class="input-msg text-center" id="instructorMsg7"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="instructorPhoneBtn" name="instructorPhoneBtn" class="log-btn log-btn-first">전화번호 변경</button></div>
           			</div>
           			
@@ -209,7 +209,7 @@
           					<div class="col-3 log-btn-area"></div>
           							
          				</div>
-         				<p class="input-msg" id="instructorMsg8"></p>
+         				<p class="input-msg text-center" id="instructorMsg8"></p>
          				
          				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">계좌 번호</p></div>
@@ -217,7 +217,7 @@
           					<div class="col-3 log-btn-area"></div>
           							
          				</div>
-         				<p class="input-msg" id="instructorMsg9"></p>
+         				<p class="input-msg text-center" id="instructorMsg9"></p>
          				
          				<div class="col-3 log-btn-area"><button type="button" id="instructorBankAccountBtn" name="instructorBankAccountBtn" class="log-btn log-btn-first">계좌 변경</button></div>
           			</div>
@@ -240,7 +240,7 @@
 					            </select>
 					       <div class="col-3"></div>
 						</div>
-						<p class="input-msg" id="instructorMsg10"></p>
+						<p class="input-msg text-center" id="instructorMsg10"></p>
           			
 						<div class="col-3 log-btn-area"><button type="button" id="instructorCategoryBtn" name="instructorCategoryBtn" class="log-btn log-btn-first">강의 종목 변경</button></div>
           			</div>
@@ -251,7 +251,7 @@
           							<input type="file" id="instructorImageFile" name="instructorImageFile"  class="input col-9" size="32" />
           					<div class="col-3 log-btn-area"></div>	
          				</div>
-         				<p class="input-msg" id="instructorMsg11"></p>
+         				<p class="input-msg text-center" id="instructorMsg11"></p>
          				<div class="col-3 log-btn-area"><button type="button" id="instructorImageFileBtn" name="instructorImageFileBtn" class="log-btn log-btn-first">이미지 변경</button></div>	          			
           			</div>
         		</div>

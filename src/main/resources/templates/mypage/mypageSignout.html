@@ -16,20 +16,17 @@
       		<p th:insert="import/mypageUserImport.html :: mypageUser-import"></p>
       		
       		<div class="list-container">
-        		<div class="container info-section row">
-          			<div class="info-detail">
-						<p>정말 회원탈퇴를 진행하시겠어요? 작성하신 후기 내역은 삭제되지 않아요.</p>
-						<p>회원탈퇴를 진행하기 위해서 비밀번호를 입력해주세요.</p>
+        		<div class="container info-section">
+          			<div class="row text-center align-items-center pt-4">
+						<p class="col-12">정말 회원탈퇴를 진행하시겠어요? 작성하신 후기 내역은 삭제되지 않아요.</p>
+						<p class="col-12">회원탈퇴를 진행하기 위해서 비밀번호를 입력해주세요.</p>
           			</div>
-					<div>
-						<div class="input-area justify-content-center col-md-12">
-          					<div class="col-3 input-name"><p class="input-name-detail">비밀번호</p></div>
-          						<input type="password" id="userPassword" name="userPassword"  class="input col-9" size="32"/>
-          					<div class="col-3 log-btn-area"></div>
-         				</div>
-          				<p class="input-msg" id="userMsg1"></p>
-						<div class="col-3 log-btn-area"><button type="button" id="userResignBtn" name="userResignBtn" class="log-btn log-btn-first">회원탈퇴</button></div>					
-					</div>
+					<div class="input-area justify-content-center row mt-3">
+      					<div class="col-2 input-name"><p class="input-name-detail">비밀번호</p></div>
+      					<div class="col-5"><input type="password" id="userPassword" name="userPassword"  class="input" style="width:100%" /></div>
+      					<div class="col-3"><button type="button" id="userResignBtn" name="userResignBtn" class="log-btn log-btn-first" style="width:50%">회원탈퇴</button></div>
+     				</div>
+	      			<p class="input-msg col-md-12 text-center" id="userMsg1"></p>
           			<div style="display: none;"><input id="userId" name="userId" th:value="${userInfoDto.userId}"/></div> 
         		</div>
       		</div>
@@ -86,7 +83,7 @@ $(document).ready(function()
 					if($('#userPassword').val()!='')
 					{
 						$('#userPassword').css({'border':'1px solid red'});
-						document.getElementById("userMsg1").innerHTML = "비밀번호가 일치하지 않아요.";
+						document.getElementById("userMsg1").innerHTML = "비밀번호가 일치하지 않습니다.";
 						userPasswordCheck = false; 
 						return;                 
 					}	

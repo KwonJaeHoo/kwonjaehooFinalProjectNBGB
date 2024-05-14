@@ -16,15 +16,27 @@
 
 		   	<div class="list-container">
         		<div class="container info-section row">
-          			<div class="info-detail">
-          				아이디<p th:text="${userInfoDto.userId}"></p>
-			            이름 <p th:text="${userInfoDto.userName}"></p>
-			            닉네임 <p th:text="${userInfoDto.userNickname}"></p>
-			            이메일 <p th:text="${userInfoDto.userEmail}"></p>
-			            연락처 <p th:text="${userInfoDto.userPhone}"></p>
-			            생년월일 <p th:text="${userInfoDto.userBirth}"></p>
-			            성별 <p th:text="${userInfoDto.userGender}"></p>
-			            포인트 <p th:text="${userInfoDto.userPoint}"></p>
+          			<div class="info-detail row">
+          				<div class="col-4 text-right mr-1">
+          					<p><b>아이디</b></p>
+          					<p><b>이름</b></p>
+          					<p><b>닉네임</b></p>
+          					<p><b>이메일</b></p>
+          					<p><b>연락처</b></p>
+          					<p><b>생년월일</b></p>
+          					<p><b>성별</b></p>
+          					<p><b>포인트</b></p>
+          				</div>
+          				<div class="col-7">
+          				<p th:text="${userInfoDto.userId}"></p>
+			             <p th:text="${userInfoDto.userName}"></p>
+			             <p th:text="${userInfoDto.userNickname}"></p>
+			             <p th:text="${userInfoDto.userEmail}"></p>
+			             <p th:text="${userInfoDto.userPhone}"></p>
+			             <p th:text="${userInfoDto.userBirth}"></p>
+			             <p th:text="${userInfoDto.userGender}"></p>
+			             <p th:text="${userInfoDto.userPoint}"></p>
+          				</div>
           			</div>
           			<div th:if="${userFileDto == 'userFileDtoIsNull'}" class="info-picture">
             			<img src="/images/user/emptyImage.png">
@@ -35,12 +47,10 @@
           				<img th:src="@{'/images/user/' + ${userFileDto} + '.png'}">
           			</div>
           			
-          			<div>
-          				<a th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">회원정보 수정</a>
-        			</div>
-        			<div>
-        				<a th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">회원탈퇴</a>
-        			</div>
+          			<div class="col-12 text-center mt-0">
+          				<button type="button" class="mypage-btn" th:onclick="|location.href='@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">회원정보 수정</button>
+        				<button type="button" class="mypage-btn" th:onclick="|location.href='@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">회원탈퇴</button>
+          			</div>
         		</div>
       		</div>
     	</div>
@@ -50,22 +60,35 @@
 
 			<div class="list-container">
         		<div class="container info-section row">
-          			<div class="info-detail">
-          				아이디<p th:text="${instructorDto.instructorId}"></p>
-			            이름 <p th:text="${instructorDto.instructorName}"></p>
-			            닉네임 <p th:text="${instructorDto.instructorNickname}"></p>
-			            이메일 <p th:text="${instructorDto.instructorEmail}"></p>
-			            연락처 <p th:text="${instructorDto.instructorPhone}"></p>
-			            계좌 <p th:text="${instructorDto.instructorBank}"></p>
-			            계좌번호 <p th:text="${instructorDto.instructorAccount}"></p>
-			            주 카테고리<p th:text="${instructorDto.instructorCategory}"></p>
+        			<div class="info-detail row">
+          				<div class="col-4 text-right mr-1">
+          					<p><b>아이디</b></p>
+          					<p><b>이름</b></p>
+          					<p><b>닉네임</b></p>
+          					<p><b>이메일</b></p>
+          					<p><b>연락처</b></p>
+          					<p><b>계좌</b></p>
+          					<p><b>계좌번호</b></p>
+          					<p><b>주 카테고리</b></p>
+          				</div>
+          				<div class="col-7">
+          				 <p th:text="${instructorDto.instructorId}"></p>
+			             <p th:text="${instructorDto.instructorName}"></p>
+			             <p th:text="${instructorDto.instructorNickname}"></p>
+			             <p th:text="${instructorDto.instructorEmail}"></p>
+			             <p th:text="${instructorDto.instructorPhone}"></p>
+			             <p th:text="${instructorDto.instructorBank}"></p>
+			             <p th:text="${instructorDto.instructorAccount}"></p>
+			             <p th:text="${instructorDto.instructorCategory}"></p>
+          				</div>
           			</div>
+        		
           			<div class="info-picture">
           				<img th:src="@{'/images/instructor/' + ${instructorDto.instructorId} + '.png'}">
           			</div>
-          			<div>
-          				<a th:href="@{/instructor/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">회원정보 수정</a>
-        			</div>
+          			<div class="col-12 text-center mt-0">
+          				<button type="button" class="mypage-btn" th:onclick="|location.href='@{/instructor/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">회원정보 수정</button>
+          			</div>
         		</div>
       		</div>
       		

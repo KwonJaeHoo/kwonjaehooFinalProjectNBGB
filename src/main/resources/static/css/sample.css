@@ -134,16 +134,39 @@
     }
 
 .info-detail{
-    width: 65% !important;
+    width: 60% !important;
+    padding-bottom:0 !important;
+    padding-left: 3rem !important;
+    margin-top: 2rem;
 }
 .info-picture{
-    width:35% !important;
-    padding:1rem;
+    width:40% !important;
+    padding-left:1rem;
+    padding-right:15rem;
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
 }
     .info-picture > img {
-        width:100%;
+        width:90%;
         height:250px;
     }
+
+
+.mypage-btn{
+	border:none;
+	padding:0.6rem 0.9rem;
+	border-radius:1rem;
+	background-color:#89dd18;
+	border:white 3px solid;
+	color:white;
+	margin:0 0.4rem;
+}
+	.mypage-btn:focus{
+		outline:none;
+	}
+	.mypage-btn:hover{
+		background-color:white;
+		color:#89dd18;
+		border:#89dd18 3px solid;
+	}
