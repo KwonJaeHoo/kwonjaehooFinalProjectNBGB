@@ -5,6 +5,10 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,7 @@ import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.KakaoPaymentCancelDto;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
+import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.ClassLike;
@@ -19,6 +24,9 @@ import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OfflinePaymentCancel;
 import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.OnlinePaymentCancel;
+import com.sist.nbgb.entity.Reference;
+import com.sist.nbgb.entity.ReferenceAnswer;
+import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
@@ -29,6 +37,8 @@ import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 import com.sist.nbgb.repository.OnlinePaymentCancelRepository;
+//import com.sist.nbgb.repository.ReferenceAnswerRepository;
+import com.sist.nbgb.repository.ReferenceRepository;
 import com.sist.nbgb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +54,9 @@ public class UserService
 	private final ClassLikeRepository classLikeRepository;
 	private final OnlineClassRepository onlineClassRepository;
 	private final OfflineRepository offlineClassRepository;
+	
+	private final ReferenceRepository referenceRepository;
+	//private final ReferenceAnswerRepository referenceAnswerRepository;
 	
 	private final PasswordEncoder passwordEncoder;
 	
@@ -161,20 +174,48 @@ public class UserService
 		return onlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
 	}
 	
+	//OnlinePaymentApprove paging
+//	public Page<OnlinePaymentApprove> getList(int page, Long classId, String classIden, Status reviewStatus)
+//	{
+//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
+//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
+//	}
+	
 	public List<OfflinePaymentApprove> userOfflineApproveFindAll(String userId)
 	{
 		return offlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
 	}
+	
+	//OnlinePaymentApprove paging
+//	public Page<OfflinePaymentApprove> getList(int page, Long classId, String classIden, Status reviewStatus)
+//	{
+//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
+//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
+//	}
 	
 	public List<OnlinePaymentCancel> userOnlineCancelFindAll(String userId)
 	{
 		return onlinePaymentCancelRepository.findAllByPartnerUserIdOrderByCanceledAtDesc(userId);
 	}
 	
+	//OnlinePaymentCancel paging
+//	public Page<OnlinePaymentCancel> getList(int page, Long classId, String classIden, Status reviewStatus)
+//	{
+//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
+//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
+//	}
+	
 	public List<OfflinePaymentCancel> userOfflineCancelFindAll(String userId)
 	{
 		return offlinePaymentCancelRepository.findAllByPartnerUserIdOrderByCanceledAtDesc(userId);
 	}
+	
+	//OfflinePaymentCancel paging
+//	public Page<OfflinePaymentCancel> getList(int page, Long classId, String classIden, Status reviewStatus)
+//	{
+//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
+//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
+//	}
 
 	public KakaoPaymentCancelDto userOnlineApproveFind(String partnerOrderId)
 	{
@@ -298,4 +339,17 @@ public class UserService
 		}
 		return 200;
 	}
+	
+	public List<Reference> userReferenceList(String userId)
+	{
+		return referenceRepository.findAllByUserId_userIdOrderByRefIdDesc(userId);
+	}
+	
+//	public void referenceAnswerList(List<ReferenceDto2> referenceDto)
+//	{
+//		for(int i = 0; i < referenceDto.size(); i++)
+//		{
+//			referenceDto.get(i).setReferenceAnswer(referenceAnswerRepository.findByReference_referenceId(referenceDto.get(i).getRe));
+//		}
+//	}
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +42,8 @@ import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
+import com.sist.nbgb.dto.ReferenceDTO;
+import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.dto.UserReviewDto;
@@ -248,7 +251,7 @@ public class UserController
     
 
     @GetMapping("/mypage/{id}/payment")
-    public String mypageUserPayment(Model model, @PathVariable String id)
+    public String mypageUserPayment(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
     {
     	if(id != null)
     	{
@@ -256,7 +259,7 @@ public class UserController
     				.stream().map(OnlinePaymentApproveDto::new).collect(Collectors.toList());
     
     		
-//    		Page<>  = ;
+//    		Page<OnlinePaymentApproveDto> = userService.getOnlineApprovePaging(page, ;
 //    		Page<>  = .map( -> new ());
 //    		List<>  = .getContent();
     		
@@ -510,9 +513,26 @@ public class UserController
     {
     	if(id != null)
     	{
-    		List<UserReviewDto> userReviewDto = null;
+    		List<ReferenceDto2> userReferenceDto = userService.userReferenceList(id)
+    				.stream().map(ReferenceDto2::new).collect(Collectors.toList());
+    		
+//    		Page<>  = ;
+//    		Page<>  = .map( -> new ());
+//    		List<>  = .getContent();
 
-        	model.addAttribute("userReviewDto", userReviewDto);
+        	if(userReferenceDto.isEmpty())
+    		{
+    			model.addAttribute("userReferenceDto", "userReferenceDtoIsNull");
+    		}
+    		else
+    		{
+    			//userService.referenceAnswerList(userReferenceDto);
+            	model.addAttribute("userReferenceDto", userReferenceDto);
+//    			model.addAttribute("", );
+//    			model.addAttribute("", );
+    		}
+    		
+
     	}
     	
     	return "mypage/mypageReference";

@@ -18,18 +18,20 @@
       		<div class="list-container">
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
-            			<div class="col-2 text-center">번호</div>
-            			<div class="col-6 text-center">결제내용</div>
-            			<div class="col-2 text-center">결제일자</div>
-            			<div class="col-2 text-center">상태</div>
+            			<div class="col-3 text-center">번호</div>
+            			<div class="col-3 text-center">제목</div>
+            			<div class="col-2 text-center"></div>
+            			<div class="col-3 text-center">취소</div>
           			</div>
         		</div>
-        		<div class="container list-section">
-        			<div class="row list-item">
-            			<div class="col-2 text-center">1</div>
-            			<div class="col-6 list-item-title">게시글1</div>
-            			<div class="col-2 text-center">2024/03/04</div>
-            			<div class="col-2 text-center">결제완료</div>
+        		<div th:each="userReferenceDto : ${userReferenceDto}"class="container list-section">
+        			<div th:if="${userReferenceDto != 'userReferenceDtoIsNull'}" class="row list-item">
+            			<div class="col-3 text-center" th:text="${userReferenceDto.refId}"></div>
+            			<div class="col-3 text-center"><a></a></div>
+            			<div class="col-2 text-center"></div>
+          			</div>
+          			<div th:if="${userReferenceDto == 'userReferenceDtoIsNull'}" class="row list-item">
+          				<div class="col-2 text-center"><a>작성한 문의 내역이 없어요.</a></div>
           			</div>
         		</div>
         

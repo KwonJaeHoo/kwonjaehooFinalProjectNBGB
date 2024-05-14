@@ -28,15 +28,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-public class ReferenceAnswer implements Serializable 
+public class ReferenceAnswer
 {
-	private static final long serialVersionUID = 1L;
-
 	@Id
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="refId")
 	@Comment("문의 게시물 번호")   
-	private Reference reference;
+	private Long refId;
 	
 	@Lob
 	@Comment("문의 답변 내용")

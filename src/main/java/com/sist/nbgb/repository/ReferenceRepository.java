@@ -27,4 +27,6 @@ public interface ReferenceRepository extends JpaRepository<Reference, Long> {
 		       "WHERE a.userId = b.userId " +
 		       "AND a.refId = :refId ")
 	List<Reference> findByView(@Param("refId") Long refId);
+    
+    List<Reference> findAllByUserId_userIdOrderByRefIdDesc(String userId);
 }
