@@ -20,7 +20,7 @@ function kakaoPayResult(pgToken)
 </script>
 </head>
 <body>
-<iframe width="100%" height="650" th:src="${payDto.pcUrl}" frameborder="0" allowfullscreen=""></iframe>
+<iframe width="100%" height="550" th:src="${payDto.pcUrl}" frameborder="0" allowfullscreen=""></iframe>
 <form name="kakaoForm" id="kakaoForm" method="POST">
 	<input type="hidden" name="tid" id="tid" th:value="${payDto.tid}"/>
 	<input type="hidden" name="pcUrl" id="pcUrl" th:value="${payDto.pcUrl}"/>

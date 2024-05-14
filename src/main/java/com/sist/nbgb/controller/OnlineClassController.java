@@ -169,7 +169,6 @@ public class OnlineClassController {
 		for (OnlineReviewDTO reviews : rev) {
 			if(onlineClassService.getImg(reviews.getUserId().getUserId()) == "Y") {
 				reviews.setImg("Y");
-				log.info("이미지 있대!");
 			}
 		}
 		
