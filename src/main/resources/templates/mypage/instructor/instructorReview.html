@@ -2,6 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="import/cssImport.html :: css-import"></div>
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	<script type="text/javascript">
+function fn_popUp(reviewId)
+{
+	var id = $("#id").val();
+	
+	var win = window.open('/instructor/mypage/'+ id + '/review/' + reviewId, '/instructor/mypage/'+ id + '/review/' + reviewId,'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
+}
+	</script>
 </head>
 <body>
 	<div th:insert="import/topImport.html :: top-import"></div>
@@ -18,19 +27,33 @@
       		<div class="list-container">
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
-            			<div class="col-2 text-center">수강생 닉네임</div>
-            			<div class="col-6 text-center">리뷰 내용</div>
             			<div class="col-2 text-center">등록일자</div>
-            			<div class="col-2 text-center">상태</div>
+            			<div class="col-5 text-center">리뷰 내용</div>
+            			<div class="col-2 text-center">수강생 닉네임</div>
+            			<div class="col-3 text-center">강의제목</div>
+            			<input type="hidden" name="id" id="id" th:value="${session.SPRING_SECURITY_CONTEXT.Authentication.Name}" >
           			</div>
         		</div>
-        		<div class="container list-section" th:each="item : ${listPaging}">
-        			<div class="row list-item boder-bottom">
-            			<div class="col-2 text-center">[[${item.userNickname}]]</div>
-            			<div class="col-6 list-item-title"><a th:text="${item.reviewContent}" ></a></div>
+        		<div class="container list-section" th:each="item : ${paging}">
+        			<div class="row list-item boder-bottom" th:if="${item.classIden == 'ON'}">
             			<div class="col-2 text-center" th:text="${#temporals.format(item.reviewRegdate, 'yyyy-MM-dd HH:mm')}"></div>
-            			<div class="col-2 text-center">
+            			<div class="col-5 list-item-title"><a th:reviewId="${item.reviewId}" th:onclick="fn_popUp(this.getAttribute('reviewId'))" th:text="${item.reviewContent}" ></a></div>
+            			<div class="col-2 text-center">[[${item.userNickname}]]</div>
+            			<div class="col-3 list-item-title" >
+            				<div th:each="online : ${onList}">
+		            			 <div th:if="${item.classId == online.onlineClassId}">[[${online.onlineClassTitle}]]</div>
+	          				</div>
             			</div>
+          			</div>
+          			<div class="row list-item boder-bottom" th:if="${item.classIden == 'OFF'}">
+	            			<div class="col-2 text-center" th:text="${#temporals.format(item.reviewRegdate, 'yyyy-MM-dd HH:mm')}"></div>
+	            			<div class="col-5 list-item-title"><a th:reviewId="${item.reviewId}" th:onclick="fn_popUp(this.getAttribute('reviewId'))" th:text="${item.reviewContent}" ></a></div>
+		          			<div class="col-2 text-center">[[${item.userNickname}]]</div>
+	            			<div class="col-3 list-item-title">
+		            			<div th:each="offline : ${offList}">
+		            			 <div th:if="${item.classId == offline.offlineClassId}">[[${offline.offlineClassTitle}]]</div>
+		          				</div>
+            				</div>
           			</div>
         		</div>
         

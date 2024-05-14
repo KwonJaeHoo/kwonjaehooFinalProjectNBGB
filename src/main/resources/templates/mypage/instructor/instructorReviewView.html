@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var rating = '[[${review.reviewRating}]]';
+	if(rating != null){
+		$("#star" + rating).parent().children('button').removeClass('on');
+		$("#star" + rating).addClass('on').prevAll('button').addClass('on');
+	}
+	
+	$("#cancelBtn").on("click", function(){
+		window.self.close();
+	});
+	
+	$("#submitBtn").on("click", function(){
+		if($.trim($("#reviewContents").val()).length <= 0)
+		{
+			$("#reviewContents").val("");
+			$("#reviewContents").focus();
+			alert("내용을 입력하세요.");
+			return;
+		}
+		
+		var reviewCommentDto = {
+				reviewId:$("#reviewId").val(),
+				reviewCommentContent:$("#commentContents").val(),
+				instructorId:$("#instructorId").val()
+		}
+		
+		var formdata = new FormData();
+		
+		formdata.append('reviewCommentDto', new Blob([JSON.stringify(reviewCommentDto)], {type: "application/json"}));
+		
+		$.ajax({
+			type:"POST",
+	    	url:"/instructor/mypage/review/post",
+	    	enctype:"multipart/form-data",
+	    	data:formdata,
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+	    	beforeSend:function(xhr){
+	    		xhr.setRequestHeader("AJAX", "true");
+	    	},
+	    	success:function(response){
+	    		if(response == 0)
+	    		{
+	    			alert("등록되었습니다!");
+	    			location.reload(true);
+	    		}
+	    		else if(response == 1)
+	    		{
+	    			alert("오류가 발생했습니다. 잠시후 다시 시도하세요.");
+	    		}
+	    		else if(response == 2)
+	    		{
+	    			alert("이미 답변한 후기입니다.");
+	    		}
+	    	},
+	    	error:function(xhr, status, error){
+	    		alert("오류가 발생했습니다.");
+	    	}
+		});
+	});
+	
+	$("#updateBtn").on("click", function(){
+		if($.trim($("#reviewContent").val()).length <= 0)
+		{
+			$("#reviewContent").val("");
+			$("#reviewContent").focus();
+			alert("내용을 입력하세요.");
+			return;
+		}
+		
+		var reviewCommentDto = {
+				reviewId:$("#reviewId").val(),
+				reviewCommentContent:$("#reviewContent").val()
+		}
+		
+		var formdata = new FormData();
+		
+		formdata.append('reviewCommentDto', new Blob([JSON.stringify(reviewCommentDto)], {type: "application/json"}));
+		
+		$.ajax({
+			type:"POST",
+	    	url:"/instructor/mypage/review/update",
+	    	enctype:"multipart/form-data",
+	    	data:formdata,
+	    	processData:false,
+	    	contentType:false,
+	    	cache:false,
+	    	beforeSend:function(xhr){
+	    		xhr.setRequestHeader("AJAX", "true");
+	    	},
+	    	success:function(response){
+	    		if(response == 0)
+	    		{
+	    			alert("수정되었습니다!");
+	    			location.reload(true);
+	    		}
+	    		else if(response == 1)
+	    		{
+	    			alert("오류가 발생했습니다. 잠시후 다시 시도하세요.");
+	    		}
+	    		else if(response == 2)
+	    		{
+	    			alert("답변이 없는 후기입니다.");
+	    		}
+	    	},
+	    	error:function(xhr, status, error){
+	    		alert("오류가 발생했습니다.");
+	    	}
+		});
+	});
+	
+});
+function replyView() {
+  if(document.getElementById("replyDiv").style.display == "block") {
+  	document.getElementById("replyDiv").style.display = "none";
+  	document.getElementById("replyBtn").style.display="block";
+  }else {
+	document.getElementById("replyDiv").style.display="block";
+	document.getElementById("replyBtn").style.display = "none";
+  }
+}
+
+function fn_update(){
+	if(document.getElementById("update").style.display == "block") {
+		$("#reviewContent").attr("readonly",true);
+		
+	  	document.getElementById("update").style.display = "none";
+	  }else {
+		$("#reviewContent").removeAttr("readonly"); 
+		$("#reviewContent").focus();  
+		document.getElementById("update").style.display="block";
+	  }
+}
+</script>
+</head>
+<body style="height:630px;">
+<section class="review-section">
+	<div class="row review-title-area py-3">
+		<h3 class="d-flex review-title">😊 작성한 후기 😊</h3>
+	</div>
+	<div class="row reviewV-info-area mt-2" style="display: flex; justify-content: center;">
+		<th:block th:if="${review.classIden} == 'ON'">
+			<div style="text-align: center;">
+			<img style="width:200px; height:170px;" th:src="@{'/images/onlineThumbnail/' + ${class.onlineClassId} + '.jpg'}">
+			<h5 class="reviewV-info-title">[[${class.onlineClassTitle}]]</h5>
+			<h6 class="mb-0">[[${class.onlineCategoryId.onlineCategoryContent}]]/[[${class.instructorId.instructorNickname}]]</h6>
+			</div>
+		</th:block>
+		<th:block th:if="${review.classIden} == 'OFF'">
+			<div style="text-align: center;">
+			<img style="width:200px; height:170px;" th:src="@{'/images/offlineThumbnail/' + ${class.offlineClassId} + '.jpg'}">
+			<h5 class="reviewV-info-title">[[${class.offlineClassTitle}]]</h5>
+			<h6 class="mb-0">[[${class.offlineClassCategory}]]/[[${class.instructorId.instructorNickname}]]</h6>
+			</div>
+		</th:block>
+	</div>
+	<div class="row review-view" style="margin-top: 150px;">
+		<div class="review-view-second">
+			<div class="col-7 text text-align-justify">작성자 : [[${review.userId.userNickname}]]</div>
+			<div class="col-5 star_rating px-0">
+		  	  <span class="text mr-1">별점 : </span>
+			  <button class="star" id="star1" value="1" disabled> </button>
+			  <button class="star" id="star2" value="2" disabled> </button>
+			  <button class="star" id="star3" value="3" disabled> </button>
+			  <button class="star" id="star4" value="4" disabled> </button>
+			  <button class="star" id="star5" value="5" disabled> </button>
+			</div>
+		</div>
+		<div class="review-view-third col-12">[[${#temporals.format(review.reviewRegdate, 'yyyy/MM/dd HH:mm')}]]</div>
+		<div class="textarea">
+			<textarea class="text" id="reviewContents" cols="60" rows="5" readonly>[[${review.reviewContent}]]</textarea>
+		</div>
+	</div>
+	<div class="row review-reply-area mt-4">
+		<th:block th:if="${comment} != null">
+			<button type="button" onclick="replyView()" class="reply-title" id="replyBtn">💌 작성한 답변이 있습니다!</button>
+			<div class="textarea mt-3" id="replyDiv" style="display:none;">
+				<div class="review-view-third mb-2" style="padding-right: 0px;"><a onclick="fn_update()">수정</a></div>
+				<div class="review-view-third col-12 pr-0">[[${#temporals.format(comment.reviewCommentRegdate, 'yyyy/MM/dd HH:mm')}]]</div>
+				<textarea class="text" id="reviewContent" cols="60" rows="4" readonly>[[${comment.reviewCommentContent}]]</textarea>
+				<div class="row review-button-area mt-4">
+					<div id="update" style="display:none;">
+						<button type="button" class="my-lectureBtn mx-1" onclick="replyView()">취소</button>
+						<button type="button" class="my-lectureBtn mx-1" id="updateBtn">수정</button>
+					</div>
+				</div>
+			</div>
+		</th:block>
+		<div th:if="${comment} == null"class="reply-title" onclick="replyView()" id="replyBtn">💬 답변을 작성할래요!</div>
+		<div id="replyDiv" style="display:none;">
+			<div class="row review-input-area">
+				<div class="textarea">
+					<textarea class="text" id="commentContents" cols="60" rows="7" th:placeholder="|${class.instructorId.instructorNickname}님! 답변 내용을 작성해주세요.|"></textarea>
+					<input type="hidden" id="reviewId" th:value="${review.reviewId}" />
+					<input type="hidden" name="instructorId" id="instructorId" th:value="${session.SPRING_SECURITY_CONTEXT.Authentication.Name}" >
+				</div>
+				<div class="row review-button-area mt-4">
+				<button type="button" class="my-lectureBtn mx-1" onclick="replyView()">취소</button>
+				<button type="button" class="my-lectureBtn mx-1" id="submitBtn">등록</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="row review-button-area mt-5">
+		<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">닫기</button>
+	</div>
+</section>
+</body>
+</html>

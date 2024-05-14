@@ -24,7 +24,7 @@
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
-        		<div class="container list-section" th:each="item : ${listPaging}">
+        		<div class="container list-section" th:each="item : ${paging}">
         			<div class="row list-item boder-bottom">
             			<div class="col-2 text-center">[[${item.offlineClassCategory}]]</div>
             			<div class="col-6 list-item-title"><a th:text="${item.offlineClassTitle}" th:onclick="|location.href='@{'/instructor/mypage/offlinelecturerequest/' + ${item.offlineClassId}}'|"></a></div>

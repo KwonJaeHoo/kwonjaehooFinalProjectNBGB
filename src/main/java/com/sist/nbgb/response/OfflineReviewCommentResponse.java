@@ -12,9 +12,7 @@ import lombok.Getter;
 @Getter
 public class OfflineReviewCommentResponse 
 {
-	private long id;
-	   
-	private Review reviewId;
+	private Long reviewId;
 	   
     private String reviewCommentContent;
     
@@ -28,9 +26,7 @@ public class OfflineReviewCommentResponse
    
    
     public OfflineReviewCommentResponse(ReviewComment comment)
-    {
-       this.id = comment.getId();
-      
+    {      
        this.reviewId = comment.getReviewId();
       
        this.reviewCommentContent = comment.getReviewCommentContent();

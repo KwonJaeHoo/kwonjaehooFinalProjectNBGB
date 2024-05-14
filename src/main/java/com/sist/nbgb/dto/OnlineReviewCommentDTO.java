@@ -11,8 +11,7 @@ import lombok.Getter;
 
 @Getter
 public class OnlineReviewCommentDTO {
-	private long id;
-	private Review reviewId;
+	private long reviewId;
 	private String reviewCommentContent;
 	private Instructors instructorId;
 	private String instructorNickname;
@@ -20,7 +19,6 @@ public class OnlineReviewCommentDTO {
 	private Status reviewCommentStatus;
    
 public OnlineReviewCommentDTO(ReviewComment comment) {
-	this.id = comment.getId();
     this.reviewId = comment.getReviewId();
     this.reviewCommentContent = comment.getReviewCommentContent();
     this.instructorId = comment.getInstructorId();
