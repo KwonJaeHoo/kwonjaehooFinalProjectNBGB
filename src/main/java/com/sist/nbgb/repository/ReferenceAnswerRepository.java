@@ -6,5 +6,5 @@ import com.sist.nbgb.entity.ReferenceAnswer;
 
 public interface ReferenceAnswerRepository extends JpaRepository<ReferenceAnswer, Long>
 {
-	//ReferenceAnswer findByReference_referenceId(Reference reference);
+	ReferenceAnswer findByRefId(Long reference);
 }

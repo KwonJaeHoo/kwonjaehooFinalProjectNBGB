@@ -4,7 +4,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,10 @@ import java.util.stream.Collectors;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -42,13 +45,12 @@ import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.PhoneChangeDto;
-import com.sist.nbgb.dto.ReferenceDTO;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.dto.UserReviewDto;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
+import com.sist.nbgb.response.OfflineResponse;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.KakaoService;
 import com.sist.nbgb.service.ReviewService;
@@ -251,86 +253,89 @@ public class UserController
     
 
     @GetMapping("/mypage/{id}/payment")
-    public String mypageUserPayment(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
+    public String mypageUserPayment(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page,
+    		@RequestParam(value="page2", defaultValue="0") int page2,
+    		@RequestParam(value="page3", defaultValue="0") int page3,
+    		@RequestParam(value="page4", defaultValue="0") int page4)
     {
     	if(id != null)
     	{
+    		//온라인 결제 내역
     		List<OnlinePaymentApproveDto> onlinePaymentApproveDto = userService.userOnlineApproveFindAll(id)
     				.stream().map(OnlinePaymentApproveDto::new).collect(Collectors.toList());
     
+    		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "approvedAt"));
+    		int start = (int) pageRequest.getOffset();
+    		int end = Math.min(start + pageRequest.getPageSize(), onlinePaymentApproveDto.size());
+    		Page<OnlinePaymentApproveDto> onlinePaymentpaging = new PageImpl<>(onlinePaymentApproveDto.subList(start, end), pageRequest, onlinePaymentApproveDto.size());
     		
-//    		Page<OnlinePaymentApproveDto> = userService.getOnlineApprovePaging(page, ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
-    		
+    		//오프라인 결제 내역
     		List<OfflinePaymentApproveDto1> offlinePaymentApproveDto = userService.userOfflineApproveFindAll(id)
     				.stream().map(OfflinePaymentApproveDto1::new).collect(Collectors.toList());
     		
-//    		Page<>  = ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
+    		PageRequest pageRequest2 = PageRequest.of(page2, 5, Sort.by(Sort.Direction.DESC, "approvedAt"));
+    		int start2 = (int) pageRequest2.getOffset();
+    		int end2 = Math.min(start2 + pageRequest2.getPageSize(), offlinePaymentApproveDto.size());
+    		Page<OfflinePaymentApproveDto1> offlinePaymentpaging = new PageImpl<>(offlinePaymentApproveDto.subList(start2, end2), pageRequest2, offlinePaymentApproveDto.size());
     		
+    		//온라인 결제취소 내역
     		List<OnlinePaymentCancelDto> onlinePaymentCancelDto = userService.userOnlineCancelFindAll(id)
     				.stream().map(OnlinePaymentCancelDto::new).collect(Collectors.toList());
     	
-//    		Page<>  = ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
+    		PageRequest pageRequest3 = PageRequest.of(page3, 5, Sort.by(Sort.Direction.DESC, "cancelAt"));
+    		int start3 = (int) pageRequest3.getOffset();
+    		int end3 = Math.min(start3 + pageRequest3.getPageSize(), onlinePaymentCancelDto.size());
+    		Page<OnlinePaymentCancelDto> onlinePaymentCancelpaging = new PageImpl<>(onlinePaymentCancelDto.subList(start3, end3), pageRequest3, onlinePaymentCancelDto.size());
     		
+    		//오프라인 결제취소 내역
     		List<OfflinePaymentCancelDto> offlinePaymentCancelDto = userService.userOfflineCancelFindAll(id)
     				.stream().map(OfflinePaymentCancelDto::new).collect(Collectors.toList());
     		
-//    		Page<>  = ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
+    		PageRequest pageRequest4 = PageRequest.of(page4, 5, Sort.by(Sort.Direction.DESC, "cancelAt"));
+    		int start4 = (int) pageRequest4.getOffset();
+    		int end4 = Math.min(start4 + pageRequest4.getPageSize(), offlinePaymentCancelDto.size());
+    		Page<OfflinePaymentCancelDto> offlinePaymentCancelpaging = new PageImpl<>(offlinePaymentCancelDto.subList(start4, end4), pageRequest4, offlinePaymentCancelDto.size());
+    		
     		
     		
     		//onlineApprove
     		if(onlinePaymentApproveDto.isEmpty())
     		{
-    			model.addAttribute("onlinePaymentApproveDto", "onlinePaymentApproveDtoIsNull");
+    			model.addAttribute("onlinePaymentpaging", "onlinePaymentApproveDtoIsNull");
     		}
     		else
     		{
-    			model.addAttribute("onlinePaymentApproveDto", onlinePaymentApproveDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			model.addAttribute("onlinePaymentpaging", onlinePaymentpaging);
     		}
     		
     		//offlineApprove
     		if(offlinePaymentApproveDto.isEmpty())
     		{
-    			model.addAttribute("offlinePaymentApproveDto", "offlinePaymentApproveDtoIsNull");
+    			model.addAttribute("offlinePaymentpaging", "offlinePaymentApproveDtoIsNull");
     		}
     		else
     		{
-    			model.addAttribute("offlinePaymentApproveDto", offlinePaymentApproveDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			model.addAttribute("offlinePaymentpaging", offlinePaymentpaging);
     		}
     		
     		//onlineCancel
     		if(onlinePaymentCancelDto.isEmpty())
     		{
-    			model.addAttribute("onlinePaymentCancelDto", "onlinePaymentCancelDtoIsNull");
+    			model.addAttribute("onlinePaymentCancelpaging", "onlinePaymentCancelDtoIsNull");
     		}
     		else
     		{
-    			model.addAttribute("onlinePaymentCancelDto", onlinePaymentCancelDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			model.addAttribute("onlinePaymentCancelpaging", onlinePaymentCancelpaging);
     		}
     		
     		//offlineCancel
     		if(offlinePaymentCancelDto.isEmpty())
     		{
-    			model.addAttribute("offlinePaymentCancelDto", "offlinePaymentCancelDtoIsNull");
+    			model.addAttribute("offlinePaymentCancelpaging", "offlinePaymentCancelDtoIsNull");
     		}
     		else
     		{
-    			model.addAttribute("offlinePaymentCancelDto", offlinePaymentCancelDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			model.addAttribute("offlinePaymentCancelpaging", offlinePaymentCancelpaging);
     		}
     		
     		model.addAttribute("localDateTime", LocalDateTime.now());
@@ -438,26 +443,27 @@ public class UserController
     
     
     @GetMapping("/mypage/{id}/onlinelikelist")
-    public String mypageUserOnlineLike(Model model, @PathVariable String id)
+    public String mypageUserOnlineLike(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
     {
     	if(id != null)
     	{	//classLikeOnline
     		List<ClassLikeDTO> classLikeDto = userService.classLike(id, "on")
     				.stream().map(ClassLikeDTO :: new).collect(Collectors.toList());
-//    		Page<>  = ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
+    		
+    		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "classId"));
+    		int start = (int) pageRequest.getOffset();
+    		int end = Math.min(start + pageRequest.getPageSize(), classLikeDto.size());
+    		Page<ClassLikeDTO> paging = new PageImpl<>(classLikeDto.subList(start, end), pageRequest, classLikeDto.size());
+    		
     		
         	if(classLikeDto.isEmpty())
     		{
-    			model.addAttribute("classLikeDto", "classLikeDtoIsNull");
+    			model.addAttribute("paging", "classLikeDtoIsNull");
     		}
     		else
     		{
         		userService.onlineClassTitle(classLikeDto);
-    			model.addAttribute("classLikeDto", classLikeDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			model.addAttribute("paging", paging);
     		}
     	}
     	return "mypage/mypageOnlineLikeList";
@@ -472,7 +478,7 @@ public class UserController
     }
     
     @GetMapping("/mypage/{id}/offlinelikelist")
-    public String mypageUserOfflineLike(Model model, @PathVariable String id)
+    public String mypageUserOfflineLike(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
     {
     	if(id != null)
     	{
@@ -480,20 +486,19 @@ public class UserController
     		List<ClassLikeDTO> classLikeDto = userService.classLike(id, "OFF")
     				.stream().map(ClassLikeDTO :: new).collect(Collectors.toList());
     		
-//    		Page<>  = ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
-    		
+    		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "classId"));
+    		int start = (int) pageRequest.getOffset();
+    		int end = Math.min(start + pageRequest.getPageSize(), classLikeDto.size());
+    		Page<ClassLikeDTO> paging = new PageImpl<>(classLikeDto.subList(start, end), pageRequest, classLikeDto.size());
+    	
         	if(classLikeDto.isEmpty())
     		{
-    			model.addAttribute("classLikeDto", "classLikeDtoIsNull");
+    			model.addAttribute("paging", "classLikeDtoIsNull");
     		}
     		else
     		{
     			userService.offlineClassTitle(classLikeDto);
-    			model.addAttribute("classLikeDto", classLikeDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			model.addAttribute("paging", paging);
     		}
     	}
     	
@@ -509,30 +514,28 @@ public class UserController
     }
     
     @GetMapping("/mypage/{id}/reference")
-    public String mypageUserReference(Model model, @PathVariable String id)
+    public String mypageUserReference(Model model, @PathVariable String id, @RequestParam(value="page", defaultValue="0") int page)
     {
     	if(id != null)
     	{
     		List<ReferenceDto2> userReferenceDto = userService.userReferenceList(id)
     				.stream().map(ReferenceDto2::new).collect(Collectors.toList());
     		
-//    		Page<>  = ;
-//    		Page<>  = .map( -> new ());
-//    		List<>  = .getContent();
-
+    		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "refId"));
+    		int start = (int) pageRequest.getOffset();
+    		int end = Math.min(start + pageRequest.getPageSize(), userReferenceDto.size());
+    		Page<ReferenceDto2> paging = new PageImpl<>(userReferenceDto.subList(start, end), pageRequest, userReferenceDto.size());
+    		
+    		
         	if(userReferenceDto.isEmpty())
     		{
     			model.addAttribute("userReferenceDto", "userReferenceDtoIsNull");
     		}
     		else
     		{
-    			//userService.referenceAnswerList(userReferenceDto);
-            	model.addAttribute("userReferenceDto", userReferenceDto);
-//    			model.addAttribute("", );
-//    			model.addAttribute("", );
+    			userService.referenceAnswerList(userReferenceDto);
+    			model.addAttribute("paging", paging);
     		}
-    		
-
     	}
     	
     	return "mypage/mypageReference";

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/signupCustom.css">
 </head>
 <body>
 	<div th:insert="import/topImport.html :: top-import"></div>
@@ -18,17 +19,23 @@
       		<div class="list-container">
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
-            			<div class="col-3 text-center">번호</div>
-            			<div class="col-3 text-center">제목</div>
-            			<div class="col-2 text-center"></div>
-            			<div class="col-3 text-center">취소</div>
+            			<div class="col-1 text-center">번호</div>
+            			<div class="col-3 text-center">제목(제목 클릭 시 작성내용)</div>
+            			<div class="col-3 text-center">작성시간</div>
+            			<div class="col-3 text-center">상태</div>
           			</div>
         		</div>
         		<div th:each="userReferenceDto : ${userReferenceDto}"class="container list-section">
         			<div th:if="${userReferenceDto != 'userReferenceDtoIsNull'}" class="row list-item">
-            			<div class="col-3 text-center" th:text="${userReferenceDto.refId}"></div>
-            			<div class="col-3 text-center"><a></a></div>
-            			<div class="col-2 text-center"></div>
+            			<div class="col-1 text-center" th:text="${userReferenceDto.refId.refId}"></div>
+            			<div class="col-3 text-center"><a style="cursor:pointer" th:text="${userReferenceDto.refTitle}" th:reference="${userReferenceDto.refContent}" th:onclick="referenceView(this.getAttribute('reference'))"></a></div>
+            			<div class="col-3 text-center" th:text="${#temporals.format(userReferenceDto.refRegdate, 'yyyy-MM-dd HH:mm')}"></div>
+            			<div class="col-3 text-center" th:if="${userReferenceDto.referenceAnswer == null}">
+            			<a>답변 전</a>
+            			</div>
+            			<div class="col-3 text-center" th:if="${userReferenceDto.referenceAnswer != null}">
+            			<button class="log-btn log-btn-first" type="button" th:answer="${userReferenceDto.referenceAnswer.refAnswerContent}" th:onclick="answerView(this.getAttribute('answer'))">답변 보기</button>
+            			</div>
           			</div>
           			<div th:if="${userReferenceDto == 'userReferenceDtoIsNull'}" class="row list-item">
           				<div class="col-2 text-center"><a>작성한 문의 내역이 없어요.</a></div>
@@ -51,6 +58,42 @@
         		</div>
       		</div>
      	</div>
+     	
+     	
+     	<div class="popup_layer" id="popup_layer_reference" style="display: none;">
+			<div class="popup_box">
+				<div style="height: 10px; width: 375px; float: top; padding-top: 10px;">
+			    	<a href="javascript:closeReferencePop();">&nbsp;&nbsp;
+				    	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-x-lg" viewBox="0 0 16 16">
+							<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+						</svg>
+					</a>
+			   	</div>
+			      <!--팝업 컨텐츠 영역-->
+			    <div class="popup_cont">
+			    	<h5>문의 내용</h5>
+			        	<p id="paragraph_reference"></p>
+			
+			   	</div>
+			</div>
+		</div>	
+		
+		<div class="popup_layer" id="popup_layer_answer" style="display: none;">
+			<div class="popup_box">
+				<div style="height: 10px; width: 375px; float: top; padding-top: 10px;">
+			    	<a href="javascript:closeAnswerPop();">&nbsp;&nbsp;
+				    	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-x-lg" viewBox="0 0 16 16">
+							<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+						</svg>
+					</a>
+				</div>
+			      <!--팝업 컨텐츠 영역-->
+			    <div class="popup_cont">
+			    	<h5> 답변내용 </h5>
+			        	<p id="paragraph_answer"></p>
+			    </div>
+			</div>
+		</div>	
 	</section>
 	
 <div th:insert="import/bottomImport.html :: bottom-import"></div>	
@@ -58,5 +101,27 @@
 </body>
 <script type="text/javascript">
 
+function referenceView(reference)
+{
+	document.getElementById("popup_layer_reference").style.display = "block";
+	$('#paragraph_reference').text(reference);
+}
+
+function closeReferencePop() 
+{
+    document.getElementById("popup_layer_reference").style.display = "none";
+}
+
+
+function answerView(answer)
+{
+	document.getElementById("popup_layer_answer").style.display = "block";
+	$('#paragraph_answer').text(answer);
+}
+
+function closeAnswerPop() 
+{
+    document.getElementById("popup_layer_answer").style.display = "none";
+}
 </script>
 </html>

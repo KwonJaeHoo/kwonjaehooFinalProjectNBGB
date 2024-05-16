@@ -103,4 +103,37 @@ public class LoginController
 			}
 		}	
 	}
+	
+	//admin
+//	@ResponseBody
+//	@PostMapping("/login/instructor")
+//	public ResponseEntity<Object> loginAdmin(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
+//	{
+//		UserDetails userDetails = customInstructorsDetailsService.loadUserByUsername(loginDto.getId());
+//
+//		if(userDetails == null)
+//		{
+//            return  ResponseEntity.ok(401);
+//		}
+//		else
+//		{
+//			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
+//			{
+//				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
+//				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+//				securityContext.setAuthentication(authentication);
+//				HttpSession session = httpServletRequest.getSession(true);
+//				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+//				
+//				return ResponseEntity.ok(200);
+//	        }
+//			else
+//			{
+//				return  ResponseEntity.ok(401);
+//			}
+//		}	
+//	}
+	
+	
+	
 }
