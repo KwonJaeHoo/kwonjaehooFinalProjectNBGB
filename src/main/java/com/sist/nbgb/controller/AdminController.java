@@ -276,13 +276,10 @@ public class AdminController {
 	
 	//후기 신고 목록
 	@GetMapping("/reviewReportList")
-	public String reviewReportList(Model model, @PageableDefault(size = 5) Pageable pageable
-			/*@RequestParam(value="page", defaultValue="0")int page*/) {
+	public String reviewReportList(Model model, @PageableDefault(size = 5) Pageable pageable) {
 
 		Page<ReviewReport> reportList = reviewService.reviewReportList(pageable.getPageNumber());
 		model.addAttribute("reportList", reportList);
-		model.addAttribute("reportList", reportList);
-		model.addAttribute("maxPage", 5);
 		
 		return "admin/reviewReportList";
 	}

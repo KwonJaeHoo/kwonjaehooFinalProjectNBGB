@@ -19,7 +19,16 @@ $(document).ready(function() {
 <div class="container">
     <hr class="my-4">
     <div>
-    	<radio></radio>
+    	<label for="order" class="mr-2">
+    		<input type="radio" value="order" checked="checked">전체</input>
+    	</label>
+    	<label for="order" class="mr-2">
+    		<input type="radio" value="order">접수</input>
+    	</label>
+    	<label for="order" class="mr-2">
+    		<input type="radio" value="order">처리완료</input>
+    	</label>
+    	
     </div>
     <div>
         <table class="table report-table">
@@ -32,7 +41,7 @@ $(document).ready(function() {
               <th width="10%">처리 상태</th>
             </tr>
             <tr th:each="report, loop:${reportList}"><!--10개씩-->
-              <td width="2%">번호</td>
+              <td width="2%">[[${reportList.getTotalElements - (reportList.number * reportList.size) - loop.index}]]</td>
               <td width="15%">[[${report.reportReason}]]</td>
               <td width="40%">[[${report.reviewId.reviewContent}]]</td>
               <td width="15%">[[${#temporals.format(report.reportDate,'yyyy-MM-dd HH:mm')}]]</td>
@@ -44,10 +53,10 @@ $(document).ready(function() {
     </div>
 
 	<div class="row mt-5 justify-cotent-center" th:if="${!reportList.isEmpty()}">
-		<div class="block-27 ad-paging-area smallpage">
+		<div class="block-27 ad-paging-area">
           	<ul class="mb-2 ad-paging-ul">
 	            <!--이전-->
-		        <li th:classappend="${reportList.hasPrevious ? 'ad-pagingBtn' : ''}" class="mx-1">
+		        <li th:classappend="${!reportList.hasPrevious ? 'ad-pagingBtn' : ''}" class="mx-1">
 		            <a th:href="@{|?page=${reportList.number-1}|}">&lt;</a>
 		        </li>
 		        
@@ -64,7 +73,6 @@ $(document).ready(function() {
     		</ul>
 	    </div>
 	</div>
-    <!--@{/(page=${reportList.number + 1})}"	 -->
 </div>
 <script src="/js/reference.js"></script>
 <div th:insert="import/bottomImport.html :: bottom-import"></div>
