@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.nbgb.dto.ReferenceDTO;
 import com.sist.nbgb.entity.Reference;
-import com.sist.nbgb.entity.User;
 import com.sist.nbgb.repository.ReferenceRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -51,13 +52,16 @@ public class ReferenceService {
 	
 	
 	//페이징 처리
-	public Page<Reference> findByrefRegdate(Pageable pageable) {
-		return referenceRepository.findAllByOrderByRefRegdateDesc(pageable);
+	public List<Reference> findByrefRegdate(int page, Long refId) 
+	{
+		Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "refId"));
+		
+		return referenceRepository.findAllByOrderByRefRegdateDesc(pageable, refId);
 	}
 	
 	//검색 기능
-	public Page<Reference> findByKeyword(String keyword, Pageable pageable) {
-	    return referenceRepository.findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(keyword, keyword, keyword, pageable);
+	public List<Reference> findByKeyword(String keyword, Long refId) {
+	    return referenceRepository.findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(keyword, keyword, keyword, refId);
 	}
 
     public void saveReference(ReferenceDTO refDTO) {

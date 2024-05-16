@@ -133,7 +133,7 @@ $(document).ready(function() {
             <ul class="mb-2">
 	        <!-- Previous page button -->
 	        <li th:if="${page.hasPrevious}">
-	            <a href="@{/admin/userList(page=${page.number - 1})}">&lt;</a>
+	            <a th:href="@{/admin/userList(page=${page.number - 1})}">&lt;</a>
 	        </li>
 	        
 	        <!-- Page number buttons -->
@@ -143,7 +143,7 @@ $(document).ready(function() {
 	
 	        <!-- Next page button -->
 	        <li th:if="${page.hasNext}">
-	            <a href="@{/admin/userList(page=${page.number + 1})}">&gt;</a>
+	            <a th:href="@{/admin/userList(page=${page.number + 1})}">&gt;</a>
 	        </li>
 	    	</ul>
 	    </div>
