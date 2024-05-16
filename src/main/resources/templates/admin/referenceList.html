@@ -98,7 +98,6 @@
 
 <!-- 검색창 -->
     <form class="search-box" th:action="@{/admin/referenceList}" method="get">
-    	<input type="hidden" name="searchPage" th:value="${searchKeyword}" />
 	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
 	    <button class="search-btn" type="submit">
 	        <i class="fa-solid fa-magnifying-glass"></i>
