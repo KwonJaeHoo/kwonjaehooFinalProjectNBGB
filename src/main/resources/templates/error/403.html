@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<style type="text/css">
+	.p{line-height: normal;}
+	</style>
+</head>
+<body>
+	<!--사용자 네비게이션-->
+		<!--메뉴 네비게이션-->
+	<div th:insert="import/topImport.html :: top-import"></div>
+    	<!--메뉴 네비게이션-->
+    <!--사용자 네비게이션-->
+
+
+<section class="ftco-section" style="padding: 1em 0;">
+
+      <div class="container" style="text-align: center;">
+		<img src="/images/offlineThumbnail/rain-7833614_1280.jpg" style="height:50%; width:50%;"/><br/><br/>
+		<h3 style="color:black">잘못된 접근이예요.</h3>
+      </div>
+    </section>
+	
+	
+	<!--채팅/맨 위로 버튼-->
+		<!--footer-->
+			<!-- loader -->
+	<div th:insert="import/bottomImport.html :: bottom-import"></div>
+			<!-- loader -->
+		<!--footer-->
+	<!--채팅/맨 위로 버튼-->
+	
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

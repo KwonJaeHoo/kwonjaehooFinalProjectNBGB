@@ -132,6 +132,15 @@ $(document).ready(function()
 					document.getElementById("userMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
 					return;
 				}
+				else if(data == 403)
+				{
+					$('#userId').css({'border':'1px solid red'});
+					$('#userId').val("");
+					$('#userPassword').css({'border':'1px solid red'});					
+					$('#userPassword').val("");
+					document.getElementById("userMsg2").innerHTML = "정지된 사용자예요.";
+					return;
+				}
 			},
 			error:function(xhr, status, error)
 			{

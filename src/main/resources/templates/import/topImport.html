@@ -7,10 +7,7 @@
 				<div class="row align-items-center">
 					<div class="col-lg-9 d-none d-lg-block" style="flex: 0 0 70%; max-width: 70%">
 						<a class="nav-logo" href="/"><img src="/images/logo.png" width="100px"></a>
-					<!-- 
-						<a href="#" class="medium mr-3"><span class="icon-user-secret"></span>관리자 페이지</a>
-					 -->
-					 
+
 					</div>
 					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities == null}" class="col-lg-3 text-right">
 						<a href="/login" class="medium mr-3"><span class="icon-unlock"></span> 로그인</a>
@@ -24,7 +21,12 @@
 							th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}"
 							th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
+																		
+						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_ADMIN]'}"
 						
+							th:href="@{/admin/adminMain}" class="medium mr-3"><span class="icon-user-circle-o"></span> 관리</a> 	
+							
+							
 						<a href="/logout" class="medium mr-3"><span class="icon-input"></span> 로그아웃</a>
 					</div>
 					

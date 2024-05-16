@@ -20,20 +20,22 @@
         		<div class="container list-section">
           			<div class="row mb-4 list-title">
             			<div class="col-1 text-center">번호</div>
-            			<div class="col-3 text-center">제목(제목 클릭 시 작성내용)</div>
-            			<div class="col-3 text-center">작성시간</div>
-            			<div class="col-3 text-center">상태</div>
+            			<div class="col-3 text-center">제목</div>
+            			<div class="col-2 text-center">작성 내용</div>
+            			<div class="col-2 text-center">작성시간</div>
+            			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
         		<div th:each="userReferenceDto : ${paging}"class="container list-section">
         			<div th:if="${userReferenceDto != 'userReferenceDtoIsNull'}" class="row list-item">
             			<div class="col-1 text-center" th:text="${userReferenceDto.refId.refId}"></div>
-            			<div class="col-3 text-center"><a style="cursor:pointer" th:text="${userReferenceDto.refTitle}" th:reference="${userReferenceDto.refContent}" th:onclick="referenceView(this.getAttribute('reference'))"></a></div>
-            			<div class="col-3 text-center" th:text="${#temporals.format(userReferenceDto.refRegdate, 'yyyy-MM-dd HH:mm')}"></div>
-            			<div class="col-3 text-center" th:if="${userReferenceDto.referenceAnswer == null}">
+            			<div class="col-3 text-center" th:text="${userReferenceDto.refTitle}"></div>
+            			<div class="col-2 text-center"><button class="log-btn log-btn-first" th:reference="${userReferenceDto.refContent}" th:onclick="referenceView(this.getAttribute('reference'))">내용보기</button></div>
+            			<div class="col-2 text-center" th:text="${#temporals.format(userReferenceDto.refRegdate, 'yyyy-MM-dd HH:mm')}"></div>
+            			<div class="col-2 text-center" th:if="${userReferenceDto.referenceAnswer == null}">
             			<a>답변 전</a>
             			</div>
-            			<div class="col-3 text-center" th:if="${userReferenceDto.referenceAnswer != null}">
+            			<div class="col-2 text-center" th:if="${userReferenceDto.referenceAnswer != null}">
             			<button class="log-btn log-btn-first" type="button" th:answer="${userReferenceDto.referenceAnswer.refAnswerContent}" th:onclick="answerView(this.getAttribute('answer'))">답변 보기</button>
             			</div>
           			</div>
