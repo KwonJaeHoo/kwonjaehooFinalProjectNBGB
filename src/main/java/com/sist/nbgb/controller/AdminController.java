@@ -62,20 +62,18 @@ public class AdminController {
 	//문의 게시판 페이지 불러오기(최신순 조회)
 	@GetMapping("/referenceList")
 	public String referenceList(Model model,
-			@PathVariable Long refId,
 			@RequestParam(value = "searchKeyword", required = false) String searchKeyword,
 			@RequestParam(value = "page", defaultValue="0") int page)
-		{
-		
+	{			
 		List<ReferenceDto2> listPaging;
 	    if(searchKeyword != null && !searchKeyword.isEmpty())
 	    {
-	        listPaging = referenceService.findByKeyword(searchKeyword, refId)
+	        listPaging = referenceService.findByKeyword(searchKeyword)
 	        		.stream().map(ReferenceDto2::new).collect(Collectors.toList());
 	    }
 	    else
 	    {
-	        listPaging = referenceService.findByrefRegdate(page, refId)
+	        listPaging = referenceService.findByrefRegdate()
 	        		.stream().map(ReferenceDto2::new).collect(Collectors.toList());
 	    }
 	    
@@ -84,14 +82,14 @@ public class AdminController {
 	    	adminService.referenceAnswerFind(listPaging);
 	    }
     
-	    //PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "OfflineClassId"));
-		//int start = (int) pageRequest.getOffset();
-		//int end = Math.min(start + pageRequest.getPageSize(), page.size());
-		//Page<ReferenceDto2> paging = new PageImpl<>(page.subList(start, end), pageRequest, page.size());
+	    PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "refId"));
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min(start + pageRequest.getPageSize(), listPaging.size());
+		Page<ReferenceDto2> paging = new PageImpl<>(listPaging.subList(start, end), pageRequest, listPaging.size());
 
 	    
-	    model.addAttribute("page", page);
-//		model.addAttribute("referenceList", page.getContent());
+	    model.addAttribute("searchKeyword", searchKeyword);
+		model.addAttribute("paging", paging);
 		return "admin/referenceList";
 	}
 	
