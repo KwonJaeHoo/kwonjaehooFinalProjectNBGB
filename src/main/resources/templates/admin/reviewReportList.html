@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+<script>
+$(document).ready(function() {
+	
+});
+</script>
+</head>
+<body>
+	<a class="MainBanner" aria-current="page" href="/admin/reviewReportList"><h1>후기 신고 관리</h1></a>
+	
+<div class="container">
+    <hr class="my-4">
+    <div>
+    	<radio></radio>
+    </div>
+    <div>
+        <table class="table report-table">
+            <tr>
+              <th width="2%">번호</th>
+              <th width="15%">신고 사유</th>
+              <th width="40%">후기글 내용</th>
+              <th width="15%">접수일자</th>
+              <th width="18%">신고회원</th>
+              <th width="10%">처리 상태</th>
+            </tr>
+            <tr th:each="report, loop:${reportList}"><!--10개씩-->
+              <td width="2%">번호</td>
+              <td width="15%">[[${report.reportReason}]]</td>
+              <td width="40%">[[${report.reviewId.reviewContent}]]</td>
+              <td width="15%">[[${#temporals.format(report.reportDate,'yyyy-MM-dd HH:mm')}]]</td>
+              <td width="18%">[[${report.userId.userId}]]</td>
+              <td width="10%">[[${#strings.equals(report.reportStatus,'J')} ? '접수' : '처리완료']]</td>
+            </tr>
+           </tbody>
+        </table>
+    </div>
+
+	<div class="row mt-5 justify-cotent-center" th:if="${!reportList.isEmpty()}">
+		<div class="block-27 ad-paging-area smallpage">
+          	<ul class="mb-2 ad-paging-ul">
+	            <!--이전-->
+		        <li th:classappend="${reportList.hasPrevious ? 'ad-pagingBtn' : ''}" class="mx-1">
+		            <a th:href="@{|?page=${reportList.number-1}|}">&lt;</a>
+		        </li>
+		        
+		        <li th:each="page : ${#numbers.sequence(0, reportList.totalPages - 1)}"
+		       		th:if="${page >= reportList.number-5 and page <= reportList.number+5}"
+		        	th:classappend="${page == reportList.number} ? 'active'" class="mx-1">
+		            <a th:href="@{|?page=${page}|}" th:value="${reportList.number}">[[|${page+1}|]]</a>
+		        </li>
+		        
+		 		<!--다음-->
+		        <li th:classappend="${!reportList.hasNext ? 'ad-pagingBtn' : ''}" class="mx-1">
+		            <a th:href="@{|?page=${reportList.number+1}|}" >&gt;</a>
+		        </li>
+    		</ul>
+	    </div>
+	</div>
+    <!--@{/(page=${reportList.number + 1})}"	 -->
+</div>
+<script src="/js/reference.js"></script>
+<div th:insert="import/bottomImport.html :: bottom-import"></div>
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

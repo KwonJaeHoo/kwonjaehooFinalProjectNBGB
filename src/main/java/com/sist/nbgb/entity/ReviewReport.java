@@ -62,4 +62,6 @@ public class ReviewReport
 	@Comment("신고 처리상태")
 	@Enumerated(EnumType.STRING)
 	private Status reportStatus;
+	
+	
 }

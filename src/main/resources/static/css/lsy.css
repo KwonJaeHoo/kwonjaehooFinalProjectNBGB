@@ -731,3 +731,22 @@ margin: 50px auto 30px auto;
 		display:flex;
 		justify-content:right;
 	}
+
+	
+/*관리자페이지*/
+.report-table tr td{
+	padding: 15px !important;
+}
+.ad-paging-area{
+	display:flex;
+	margin:0 auto;
+}
+.ad-paging-ul{
+	display: flex;
+    vertical-align: middle;
+    width:100%;
+}
+.ad-pagingBtn{
+	display:none;
+	pointer-events:none;
+}

@@ -2,6 +2,9 @@ package com.sist.nbgb.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
@@ -16,9 +19,11 @@ import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
+import com.sist.nbgb.entity.ReviewReport;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
+import com.sist.nbgb.repository.ReviewReportRepository;
 import com.sist.nbgb.repository.ReviewRepository;
 import com.sist.nbgb.repository.UserRepository;
 
@@ -35,6 +40,7 @@ public class ReviewService {
 	private final ReviewRepository reviewRepository;
 	private final OfflineRepository offlineRepository;
 	private final UserRepository userRepository;
+	private final ReviewReportRepository reviewReportRepository;
 	
 	/*마이페이지 온라인 수강목록*/
 	@Transactional
@@ -115,5 +121,14 @@ public class ReviewService {
 	public int returnPoint(String userId, Long point)
 	{
 		return userRepository.returnPoint(userId, point);
+	}
+	
+	/*후기 신고 관리자*/
+	//관리자 - 신고 리스트 	
+	public Page<ReviewReport> reviewReportList(int page){
+		//List<Sort.Order> sorts = new ArrayList<>();
+		//sorts.add(Sort.Order.desc(""))
+		Pageable pageable = PageRequest.of(page, 10, Sort.by("reportDate").descending());
+		return reviewReportRepository.findAll(pageable);
 	}
 }
