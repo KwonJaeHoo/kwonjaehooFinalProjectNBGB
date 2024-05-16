@@ -52,16 +52,14 @@ public class ReferenceService {
 	
 	
 	//페이징 처리
-	public List<Reference> findByrefRegdate(int page, Long refId) 
-	{
-		Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "refId"));
-		
-		return referenceRepository.findAllByOrderByRefRegdateDesc(pageable, refId);
+	public List<Reference> findByrefRegdate() 
+	{	
+		return referenceRepository.findAllByOrderByRefRegdateDesc();
 	}
 	
 	//검색 기능
-	public List<Reference> findByKeyword(String keyword, Long refId) {
-	    return referenceRepository.findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(keyword, keyword, keyword, refId);
+	public List<Reference> findByKeyword(String keyword) {
+	    return referenceRepository.findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(keyword, keyword, keyword);
 	}
 
     public void saveReference(ReferenceDTO refDTO) {

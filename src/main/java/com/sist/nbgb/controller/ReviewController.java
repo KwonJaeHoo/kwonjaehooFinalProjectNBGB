@@ -3,6 +3,8 @@ package com.sist.nbgb.controller;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OfflineClassView;
 import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
@@ -34,6 +35,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewController {
     
+	private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+	
 	private final UserService userService;
 	private final OnlineClassService onlineClassService;
 	private final ReviewService reviewService;
@@ -41,6 +44,8 @@ public class ReviewController {
 	/*수강 후기 작성 페이지*/
     @GetMapping("/user/userReviewWrite/{classId}/{classIden}/{partnerOrderId}")
     public String reviewWrite(Model model, Principal principal, @PathVariable(value="classId") Long classId, @PathVariable(value="classIden") String classIden, @PathVariable(value="partnerOrderId") String partnerOrderId){
+    	
+    	logger.info("[ReviewController] reviewWrite");
     	User user = userService.findUserById(principal.getName());
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
@@ -62,8 +67,12 @@ public class ReviewController {
     
     /*수강 후기 조회 페이지*/
     @GetMapping("/user/userReviewView/{classId}/{classIden}/{partnerOrderId}")
-    public String reviewView(Model model, Principal principal, @PathVariable(value="classId") Long classId, @PathVariable(value="classIden")String classIden, @PathVariable(value="partnerOrderId") String partnerOrderId) {
+    public String reviewView(Model model, Principal principal, @PathVariable(value="classId") Long classId, @PathVariable(value="classIden")String classIden,
+    							@PathVariable(value="partnerOrderId") String partnerOrderId) {
+    	
+    	logger.info("[ReviewController] reviewView");
     	User user = userService.findUserById(principal.getName());
+    	
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
     			OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
@@ -91,7 +100,10 @@ public class ReviewController {
     /*수강 후기 수정 페이지*/
     @GetMapping("/user/userReviewUpdate/{classId}/{classIden}/{partnerOrderId}")
     public String reviewUpdate(Model model, Principal principal, @PathVariable Long classId, @PathVariable(value="classIden") String classIden, @PathVariable(value="partnerOrderId") String partnerOrderId){
+    	
+    	logger.info("[ReviewController] reviewUpdate");
     	User user = userService.findUserById(principal.getName());
+    	
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
     			OnlineClassListDTO onlineClass = new OnlineClassListDTO(onlineClassService.findById(classId));
@@ -102,7 +114,6 @@ public class ReviewController {
     			model.addAttribute("class", offlineClass);
     			model.addAttribute("classId", offlineClass.getOfflineClassId());
     		}
-    		
 			ReviewDTO review = reviewService.viewReview(partnerOrderId);
 			model.addAttribute("review", review);
     		model.addAttribute("userNickname", user.getUserNickname());
@@ -118,7 +129,10 @@ public class ReviewController {
     @PostMapping("/user/userReview/{classIden}")
     public ResponseEntity<ReviewRequestDTO> reviewUpload(Principal principal, @PathVariable(value="classIden") String classIden,  @RequestParam(value="partnerOrderId") String partnerOrderId, 
     		@RequestParam(value="rating") String rating, @RequestParam(value="reviewContents") String reviewContents, @RequestParam(value="classId") Long classId){
+    	
+    	logger.info("[ReviewController] reviewUpload");
     	User user = userService.findUserById(principal.getName());
+    	
     	ReviewRequestDTO reviewUpload = null;
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
     		if(classIden.equals("ON")) {
@@ -134,6 +148,7 @@ public class ReviewController {
     					.partnerOrderId(partnerOrderId)
     					.build();
     			reviewService.uploadOnlineReview(reviewUpload);
+    			reviewService.payPoint(user.getUserId(), (long)200);
     		}else {
     			reviewUpload = ReviewRequestDTO.builder()
     					.classId(classId)
@@ -147,6 +162,7 @@ public class ReviewController {
     					.partnerOrderId(partnerOrderId)
     					.build();
     			reviewService.uploadOnlineReview(reviewUpload);
+    			reviewService.payPoint(user.getUserId(), (long)200);
     		}
     	}
     	return ResponseEntity.ok().body(reviewUpload);
@@ -154,14 +170,18 @@ public class ReviewController {
     
     @ResponseBody
     @DeleteMapping("/user/userReview")
-    public ResponseEntity<Void> reviewUpdate(Principal principal, @RequestParam(value="reviewId") Long reviewId){
+    public ResponseEntity<Void> reviewDelete(Principal principal,  @RequestParam(value="classIden") String classIden,
+    		@RequestParam(value="classId") Long classId, @RequestParam(value="reviewId") Long reviewId){
+    	
+    	logger.info("[ReviewController] reviewDelete");
     	User user = userService.findUserById(principal.getName());
+    	
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
 			if(reviewService.exsitsReview(reviewId)) {
 				reviewService.deleteReview(reviewId);
+				reviewService.returnPoint(user.getUserId(), (long)200);
 			}
     	}
-    	
     	return ResponseEntity.ok().build();
     }
     
@@ -169,7 +189,10 @@ public class ReviewController {
     @PutMapping("/user/userReview")
     public ResponseEntity<ReviewUpdateDTO> reviewUpdate(Principal principal, @RequestParam(value="reviewId") String reviewId, 
     		@RequestParam(value="rating") String rating, @RequestParam(value="reviewContents") String reviewContents){
+    	
+    	logger.info("[ReviewController] reviewUpdate");
     	User user = userService.findUserById(principal.getName());
+    	
     	ReviewUpdateDTO updateReview = null;
     	if(user.getAuthority().equals(Role.ROLE_USER)) {
 			if(reviewService.exsitsReview(Long.valueOf(reviewId))) {
@@ -177,9 +200,7 @@ public class ReviewController {
 				reviewService.updateReview(Long.valueOf(reviewId), updateReview);
 			}
     	}
-    	
     	return ResponseEntity.ok().body(updateReview);
     }
     
-    /*오프라인 리뷰 작성*/
 }

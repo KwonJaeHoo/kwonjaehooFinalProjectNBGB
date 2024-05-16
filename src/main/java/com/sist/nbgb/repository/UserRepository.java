@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,4 +35,16 @@ public interface UserRepository extends JpaRepository<User, String>
 	
 	//검색용(관리자용)
 	Page<User> findByUserIdContainingOrUserEmailContainingOrUserNameContainingOrUserPhoneContaining(String userId, String userEmail, String userName, String userPhone, Pageable pageable);
+	
+	@Modifying
+	@Query("UPDATE User "
+			+ "SET userPoint = userPoint + :point "
+			+ "WHERE userId = :userId")
+	int payPoint(@Param("userId") String userId, @Param("point") Long point);
+	
+	@Modifying
+	@Query("UPDATE User "
+			+ "SET userPoint = userPoint - :point "
+			+ "WHERE userId = :userId")
+	int returnPoint(@Param("userId") String userId, @Param("point") Long point);
 }

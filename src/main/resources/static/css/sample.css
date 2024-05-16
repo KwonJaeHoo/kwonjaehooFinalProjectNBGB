@@ -132,6 +132,12 @@
     .info-section > div {
         padding:2rem;
     }
+.modify-section {
+	padding-top : 3rem !important;
+}
+	.modify-section > div {
+		padding: 0.8rem !important;
+	}
 
 .info-detail{
     width: 60% !important;

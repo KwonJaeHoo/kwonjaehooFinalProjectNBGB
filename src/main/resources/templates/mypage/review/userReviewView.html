@@ -32,13 +32,16 @@ $(document).ready(function(){
 		if('[[${comment}]]' != ""){
 			alert("이미 답변이 달린 후기글은 수정 및 삭제가 불가능합니다.");
 		}else{
-			if(confirm("작성한 후기를 삭제하시겠습니까?")){
+			if(confirm("작성한 후기를 삭제하시겠습니까? 후기 삭제 시 지급된 포인트가 차감됩니다.")){
 				var reviewId = '[[${review.reviewId}]]';
+				var classId = '[[${classId}]]';
 				$.ajax({
 					url:"/user/userReview",
 					method:"DELETE",
 					datatype:"JSON",
 					data:{
+						"classIden":classIden,
+						"classId":classId,
 						"reviewId":reviewId
 					},
 					async:false, 

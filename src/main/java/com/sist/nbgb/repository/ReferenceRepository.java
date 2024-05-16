@@ -15,9 +15,7 @@ import java.util.List;
 public interface ReferenceRepository extends JpaRepository<Reference, Long> {
     List<Reference> findAllByOrderByRefRegdateDesc();
     
-    List<Reference> findAllByOrderByRefRegdateDesc(Pageable pageable, Long refId);
-    
-    List<Reference> findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(String title, String content, String userId, Long refId);
+    List<Reference> findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(String title, String content, String userId);
     
     //상세 페이지(View)
     @Query("SELECT a, b.userNickname " +

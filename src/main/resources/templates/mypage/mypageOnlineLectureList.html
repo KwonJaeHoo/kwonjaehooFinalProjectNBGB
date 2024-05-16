@@ -24,7 +24,7 @@
 	<div th:insert="import/topImport.html :: top-import"></div>
 	<div class="col-md-12 ftco-animate text-center">
     	<h1 class="mb-3 sub-title">내방 클래스 수강목록</h1>
-    	<p class="sub-title"></p>
+    	<p class="sub-title-second">💬 후기 작성 시 200포인트가 적립됩니다!</p>
   	</div>
   	
 	<section class="ftco-animate my-4" >
@@ -47,7 +47,9 @@
             				</a>
             			</div>
             			<div class="col-5 list-item-title">
-            				<a class="item-lecture-title" th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}" th:style="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)} ? 'text-decoration:line-through;pointer-events : none;' : ''"	>
+            				<a class="item-lecture-title deco-title" th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}"	>
+            				[[${class.onlineClassTitle}]]</a>
+            				<a class="item-lecture-title" th:href="@{/online/{onlineClassId}(onlineClassId=${class.onlineClassId})}" th:unless="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}" 	>
             				[[${class.onlineClassTitle}]]</a>
             			</div>
         			<div class="col-2 text-center" th:text="|${#temporals.format(class.approvedAt.plusDays(class.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|"><br/></div>

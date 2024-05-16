@@ -11,8 +11,8 @@ import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewDTO;
-import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.dto.ReviewRequestDTO;
+import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
@@ -20,6 +20,7 @@ import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
 import com.sist.nbgb.repository.ReviewRepository;
+import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class ReviewService {
 	private final OnlineReviewCommentRepository onlineReviewCommentRepository;
 	private final ReviewRepository reviewRepository;
 	private final OfflineRepository offlineRepository;
+	private final UserRepository userRepository;
 	
 	/*마이페이지 온라인 수강목록*/
 	@Transactional
@@ -101,5 +103,17 @@ public class ReviewService {
 	//사용자 후기 삭제
 	public void deleteReview(Long reviewId) {
 		reviewRepository.deleteById(reviewId);
+	}
+
+	//후기 포인트 지급 및 회수
+	@Transactional
+	public int payPoint(String userId, Long point)
+	{
+		return userRepository.payPoint(userId, point);
+	}
+	@Transactional
+	public int returnPoint(String userId, Long point)
+	{
+		return userRepository.returnPoint(userId, point);
 	}
 }

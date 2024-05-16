@@ -17,8 +17,7 @@ public interface OfflineReviewReplyRepository extends JpaRepository<ReviewCommen
 	 
 	 @Modifying
 	 @Query("UPDATE ReviewComment "
-	 		+ "SET reviewCommentContent = :comment, "
-	 		+ " reviewCommentStatus = 'U' "
+	 		+ "SET reviewCommentContent = :comment "
 	 		+ "WHERE reviewId = :reviewId")
 	 int updateComment(@Param("comment") String comment, @Param("reviewId") Long reviewId);
 }

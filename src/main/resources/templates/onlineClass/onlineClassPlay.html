@@ -14,9 +14,6 @@ $(document).ready(function(){
     video.addEventListener('loadedmetadata', function(){
         var videoDuration = formatDate(video.duration);
         console.log("총 영상 길이 : " + video.duration);
-        /*video.addEventListener('startOffsetTime', () => {
-			if("[[${index}]]" != null ){
-		});*/
 	});
     
     video.addEventListener('play', () => {
@@ -95,12 +92,9 @@ $(document).ready(function(){
             enctype: 'multipart/form-data',  
 			success:function(){
 				console.log("총 영상 길이 : " + formatDate(video.duration) + ", 현재 재생 위치 : " + formatDate(video.currentTime));
-				console.log("###########################");
 			},
 			error:function(){
 				console.log("Log update Fail");
-				
-				console.log("-----------------------------------");
 			}
 		});
 	}

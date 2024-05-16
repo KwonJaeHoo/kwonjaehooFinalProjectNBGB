@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    var refId = getParameterByName('refId');
+    $('#refId').val(refId);
+    
+    $("#AnswerSubmit").on("click", function(e){
+        e.preventDefault();
+        
+        $.ajax({
+            type: "POST",
+            url: "/admin/refAnswer",
+            data: JSON.stringify ({
+            	refId: $("#refId").val(),
+                refAnswerContent: $("#refAnswerContent").val()
+            }),
+            datatype:"JSON",
+			contentType: "application/json",
+            success: function(response) {
+                alert("저장되었습니다.");
+                window.opener.location.href="/admin/referenceList";
+                window.close();
+            },
+            error: function(xhr, status, error) {
+                alert("에러 발생");
+                $("#Answer").value("");
+                $("#Answer").focus();
+            }
+        });
+    });
+});
+</script>
+</head>
+<body>
+	<a class="MainBanner" aria-current="page"><h1>문의 답변 달기</h1></a>
+	
+	<div class="container" id="AnswerForm">
+	
+	<form method="post">
+        <div>
+            <label for="refAnswerContent">답변</label>
+            <textarea cols="150" rows="10" id="refAnswerContent" name="refAnswerContent" class="form-control" placeholder="내용을 입력하세요."></textarea>
+
+        </div>
+        <input type="hidden" id="refId" name="refId" value="">
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit" id="AnswerSubmit" name="AnswerSubmit">저장</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        type="button">취소</button>
+            </div>
+        </div>
+
+    </form>
+
+    <hr class="my-4">
+    
+            
+  <div class="comment-form-wrap">                
+    </div>
+
+</div> <!-- /container -->
+
+<script src="/js/reference.js"></script>
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

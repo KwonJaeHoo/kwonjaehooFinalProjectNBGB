@@ -6,9 +6,22 @@
 	<link rel="stylesheet" href="/css/referenceList.css">
 	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+<script>
+$(document).ready(function() {
+	$(".refAnswer").on("click", function(e) {
+		e.preventDefault();
+		
+		var refId = $(this).attr("data-refId");
+		var popupUrl = "/admin/refAnswerPop?refId=" + refId;
+		
+		window.open(popupUrl, "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
+	});
+});
+</script>
 </head>
 <body>
-	<a class="MainBanner" aria-current="page" href="/reference/referenceList"><h1>문의 게시판</h1></a>
+	<a class="MainBanner" aria-current="page" href="/admin/referenceList"><h1>문의 게시판</h1></a>
 	
 	<div class="container">
 
@@ -25,13 +38,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="refList : ${page}">
+            <tr th:each="refList : ${paging}">
                 <td><a th:text="${refList.refId.refId}">문의글 ID</a></td>
                 <td><a th:text="${refList.refTitle}" th:onclick="|location.href='@{'referenceView/' + ${refList.refId.refId}}'|">문의글 제목</a></td>
                 <td><a th:text="${refList.userId}">작성자</a></td>
                 <td><a th:text="${refList.refRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))}">등록일</a></td>
 				<td><a th:if="${refList.referenceAnswer != null}">답변 완료</a>
-                	<button class="box refAnswer" th:if="${refList.referenceAnswer == null}">답변 달기</button>
+                	<button class="box refAnswer" th:if="${refList.referenceAnswer == null}" th:data-refId="${refList.refId.refId}">답변 달기</button>
                 </td>  
             </tr>
             </tbody>
@@ -39,16 +52,61 @@
     </div>
     
     <!--페이징 처리-->
-	
-    
-            
-  <div class="comment-form-wrap">                
-    </div>
+	<div th:if="${!paging.isEmpty()}">
+	 <div th:if="${searchKeyword == null}">
+		    <div class="row my-5 paging-area">
+		        <div class="block-27">
+		            <ul class="mb-2">
+		                <!-- 이전 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == 0} ? 'disabled'">
+		                    <a th:if="${paging.number > 0}" th:href="@{|?page=${paging.number-1}#space|}">&lt;</a>
+		                </li>
+		
+		                <!-- 페이지 번호를 보여주는 링크 -->
+		                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+		                    th:if="${page >= paging.number-2 and page <= paging.number+2}"
+		                    th:classappend="${page == paging.number} ? 'active'">
+		                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
+		                </li>
+		
+		                <!-- 다음 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == paging.totalPages-1} ? 'disabled'">
+		                    <a th:if="${paging.number < paging.totalPages-1}" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		 </div>
+		 <div th:if="${searchKeyword != null}">
+			 <div class="row my-5 paging-area">
+		        <div class="block-27">
+		            <ul class="mb-2">
+		                <!-- 이전 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == 0} ? 'disabled'">
+		                    <a th:if="${paging.number > 0}" th:href="@{|?page=${paging.number-1}&searchKeyword=${searchKeyword}#space|}">&lt;</a>
+		                </li>
+		
+		                <!-- 페이지 번호를 보여주는 링크 -->
+		                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+		                    th:if="${page >= paging.number-2 and page <= paging.number+2}"
+		                    th:classappend="${page == paging.number} ? 'active'">
+		                    <a th:text="${page+1}" th:href="@{|?page=${page}&searchKeyword=${searchKeyword}#space|}"></a>
+		                </li>
+		
+		                <!-- 다음 페이지로 이동하는 링크 -->
+		                <li th:classappend="${paging.number == paging.totalPages-1} ? 'disabled'">
+		                    <a th:if="${paging.number < paging.totalPages-1}" th:href="@{|?page=${paging.number+1}&searchKeyword=${searchKeyword}#space|}">&gt;</a>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		 </div>
+		</div>
 
 </div> <!-- /container -->
 
 <!-- 검색창 -->
-    <form class="search-box" action="/reference/referenceList" method="get">
+    <form class="search-box" th:action="@{/admin/referenceList}" method="get">
 	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
 	    <button class="search-btn" type="submit">
 	        <i class="fa-solid fa-magnifying-glass"></i>
@@ -57,15 +115,6 @@
 
 
 <script src="/js/reference.js"></script>
-
-
-<!--채팅/맨 위로 버튼-->
-		<!--footer-->
-			<!-- loader -->
-	<div th:insert="import/bottomImport.html :: bottom-import"></div>
-			<!-- loader -->
-		<!--footer-->
-	<!--채팅/맨 위로 버튼-->
 	
 	
 	

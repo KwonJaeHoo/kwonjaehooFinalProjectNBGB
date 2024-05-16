@@ -135,7 +135,9 @@ public class OfflinePayController
 		
 		Long payPoint = pay.get().getPoint();
 		Long userPoint = user.get().getUserPoint();
-		Long updatePoint = userPoint - payPoint;
+		Long amount  = Long.valueOf(pay.get().getTotalAmount());
+		Long plusPoint = amount / 100;
+		Long updatePoint = (userPoint - payPoint) + plusPoint;
 		
 		offlineService.updatePoint(payApprove.getPartner_user_id(), updatePoint);
 		
