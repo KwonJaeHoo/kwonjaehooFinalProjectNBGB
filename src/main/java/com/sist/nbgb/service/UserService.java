@@ -243,10 +243,20 @@ public class UserService
 				.canceledAt(onlinePaymentCancelDto.getCanceledAt().minusHours(9))
 				.build();
 		
+		Long amount = onlinePaymentCancelDto.getCancelTotalAmount();
+		Long plusPoint = amount / 100;
+		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : " + plusPoint);
+		
 		if(onlinePaymentCancel.getPoint() > 0)
 		{
 			Optional<User> user = userRepository.findByUserId(onlinePaymentCancelDto.getPartnerUserId());
-			user.ifPresent(value -> value.setUserPoint(value.getUserPoint() + onlinePaymentCancelDto.getPoint()));	
+			user.ifPresent(value -> value.setUserPoint(value.getUserPoint() + onlinePaymentCancelDto.getPoint() - plusPoint));	
+		}
+		else
+		{
+			Optional<User> user = userRepository.findByUserId(onlinePaymentCancelDto.getPartnerUserId());
+			user.ifPresent(value -> value.setUserPoint(value.getUserPoint() - plusPoint));	
 		}
 		
 		Optional<OnlinePaymentApprove> onlinePaymentApprove = onlinePaymentApproveRepository.findByPartnerOrderId(onlinePaymentCancelDto.getPartnerOrderId());
@@ -274,10 +284,18 @@ public class UserService
 				.canceledAt(offlinePaymentCancelDto.getCanceledAt().minusHours(9))
 				.build();
 		
+		Long amount = offlinePaymentCancelDto.getCancelTotalAmount();
+		Long plusPoint = amount / 100;
+		
 		if(offlinePaymentCancel.getPoint() > 0)
 		{
 			Optional<User> user = userRepository.findByUserId(offlinePaymentCancelDto.getPartnerUserId());
-			user.ifPresent(value -> value.setUserPoint(value.getUserPoint() + offlinePaymentCancelDto.getPoint()));	
+			user.ifPresent(value -> value.setUserPoint(value.getUserPoint() + offlinePaymentCancelDto.getPoint() - plusPoint));	
+		}
+		else
+		{
+			Optional<User> user = userRepository.findByUserId(offlinePaymentCancelDto.getPartnerUserId());
+			user.ifPresent(value -> value.setUserPoint(value.getUserPoint() - plusPoint));	
 		}
 		
 		Optional<OfflinePaymentApprove> offlinePaymentApprove = offlinePaymentApproveRepository.findByPartnerOrderId(offlinePaymentCancelDto.getPartnerOrderId());
