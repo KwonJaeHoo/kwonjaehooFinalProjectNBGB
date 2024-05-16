@@ -6,10 +6,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +22,6 @@ import com.sist.nbgb.entity.OfflinePaymentCancel;
 import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.OnlinePaymentCancel;
 import com.sist.nbgb.entity.Reference;
-import com.sist.nbgb.entity.ReferenceAnswer;
-import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
@@ -38,7 +32,7 @@ import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlinePaymentApproveRepository;
 import com.sist.nbgb.repository.OnlinePaymentCancelRepository;
-//import com.sist.nbgb.repository.ReferenceAnswerRepository;
+import com.sist.nbgb.repository.ReferenceAnswerRepository;
 import com.sist.nbgb.repository.ReferenceRepository;
 import com.sist.nbgb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +51,7 @@ public class UserService
 	private final OfflineRepository offlineClassRepository;
 	
 	private final ReferenceRepository referenceRepository;
-	//private final ReferenceAnswerRepository referenceAnswerRepository;
+	private final ReferenceAnswerRepository referenceAnswerRepository;
 	
 	private final PasswordEncoder passwordEncoder;
 	
@@ -346,11 +340,11 @@ public class UserService
 		return referenceRepository.findAllByUserId_userIdOrderByRefIdDesc(userId);
 	}
 	
-//	public void referenceAnswerList(List<ReferenceDto2> referenceDto)
-//	{
-//		for(int i = 0; i < referenceDto.size(); i++)
-//		{
-//			referenceDto.get(i).setReferenceAnswer(referenceAnswerRepository.findByReference_referenceId(referenceDto.get(i).getRe));
-//		}
-//	}
+	public void referenceAnswerList(List<ReferenceDto2> referenceDto)
+	{
+		for(int i = 0; i < referenceDto.size(); i++)
+		{
+			referenceDto.get(i).setReferenceAnswer(referenceAnswerRepository.findByRefId(referenceDto.get(i).getRefId().getRefId()));
+		}
+	}
 }

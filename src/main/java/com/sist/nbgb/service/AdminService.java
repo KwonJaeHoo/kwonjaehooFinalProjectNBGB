@@ -7,15 +7,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.entity.Reference;
+import com.sist.nbgb.entity.ReferenceAnswer;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
+import com.sist.nbgb.repository.ReferenceAnswerRepository;
 import com.sist.nbgb.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,8 @@ public class AdminService
 	private final InstructorsRepository instructorsRepository;
 	private final OnlineClassRepository onlineClassRepository;
 	private final OfflineRepository offlineRepository;
+	private final ReferenceAnswerRepository referenceAnswerRepository;
+	
 	
 	//페이징 처리(일반 회원)
 	public Page<User> findByUserRegdate(Pageable pageable) {
@@ -124,4 +130,13 @@ public class AdminService
         offlineClass.setRejectionRegdate(LocalDateTime.now());
         offlineRepository.save(offlineClass);
     }
+	
+	//문의 답변
+	public void referenceAnswerFind(List<ReferenceDto2> list)
+	{
+		for(int i = 0; i < list.size(); i++)
+		{
+			list.get(i).setReferenceAnswer(referenceAnswerRepository.findByRefId(list.get(i).getRefId().getRefId()));
+		}
+	}
 }

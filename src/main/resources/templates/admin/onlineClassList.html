@@ -102,19 +102,16 @@ $(document).ready(function() {
         <div class="col">
           <div class="block-27 smallpage" style="display:inline; text-align: center;">
             <ul class="mb-2">
-	        <!-- Previous page button -->
 	        <li th:if="${page.hasPrevious}">
-	            <a href="@{/admin/onlineClassList(page=${page.number - 1})}">&lt;</a>
+	            <a th:href="@{/admin/onlineClassList(page=${page.number - 1})}">&lt;</a>
 	        </li>
 	        
-	        <!-- Page number buttons -->
 	        <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:if="${page.totalPages > 1}">
 	            <a th:href="@{/admin/onlineClassList(page=${i})}" th:text="${i + 1}" th:classappend="${i == page.number ? 'active' : ''}"></a>
 	        </li>
 	
-	        <!-- Next page button -->
 	        <li th:if="${page.hasNext}">
-	            <a href="@{/admin/onlineClassList(page=${page.number + 1})}">&gt;</a>
+	            <a th:href="@{/admin/onlineClassList(page=${page.number + 1})}">&gt;</a>
 	        </li>
 	    	</ul>
 	    </div>

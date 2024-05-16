@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:if="${!offlinePaymentpaging.isEmpty()}">
+		    <div class="row my-5 paging-area">
+		        <div class="block-27">
+		            <ul class="mb-2">
+		                <!-- 이전 페이지로 이동하는 링크 -->
+		                <li th:classappend="${offlinePaymentpaging.number == 0} ? 'disabled'">
+		                    <a th:if="${offlinePaymentpaging.number > 0}" th:href="@{|?page2=${offlinePaymentpaging.number-1}#space|}">&lt;</a>
+		                </li>
+		
+		                <!-- 페이지 번호를 보여주는 링크 -->
+		                <li th:each="page2: ${#numbers.sequence(0, offlinePaymentpaging.totalPages-1)}"
+		                    th:if="${page2 >= offlinePaymentpaging.number-2 and page <= offlinePaymentpaging.number+2}"
+		                    th:classappend="${page2 == offlinePaymentpaging.number} ? 'active'">
+		                    <a th:text="${page2+1}" th:href="@{|?page2=${page2}#space|}"></a>
+		                </li>
+		
+		                <!-- 다음 페이지로 이동하는 링크 -->
+		                <li th:classappend="${offlinePaymentpaging.number == offlinePaymentpaging.totalPages-1} ? 'disabled'">
+		                    <a th:if="${offlinePaymentpaging.number < offlinePaymentpaging.totalPages-1}" th:href="@{|?page2=${offlinePaymentpaging.number+1}#space|}">&gt;</a>
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+</body>
+</html>
