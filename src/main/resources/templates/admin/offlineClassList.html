@@ -78,7 +78,7 @@ $(document).ready(function() {
             <tbody>
             <tr th:each="offlineList: ${offlineClassList}">
                 <td><a th:text="${offlineList.offlineClassId}">강의 글번호</a></td>
-                <td><a th:text="${offlineList.offlineClassTitle}">강의 제목</a></td>
+                <td><a th:text="${offlineList.offlineClassTitle}" th:onclick="|location.href='@{'/offlineClass/' + ${offlineList.offlineClassId}}'|">강의 제목</a></td>
                 <td><a th:text="${offlineList.offlineClassRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강의 게시일</a></td>
                 <td><a th:text="${offlineList.instructorId.instructorId}">강사 아이디</a></td>
                 <td><a th:text="${offlineList.offlineClassPrice}">강의 가격</a></td>
@@ -135,18 +135,6 @@ $(document).ready(function() {
 
 
 <script src="/js/reference.js"></script>
-
-
-<!--채팅/맨 위로 버튼-->
-		<!--footer-->
-			<!-- loader -->
-	<div th:insert="import/bottomImport.html :: bottom-import"></div>
-			<!-- loader -->
-		<!--footer-->
-	<!--채팅/맨 위로 버튼-->
-	
-	
-	
 	<div th:replace="import/jsImport.html :: js-import"></div>
 </body>
 </html>

@@ -108,7 +108,7 @@ public class AdminController {
 	
 	//문의글 답변 달기
 	@GetMapping("/refAnswerPop")
-	public String refAnswer(Model model) {
+	public String refAnswerPop(Model model) {
 		    
 	    return "/admin/refAnswerPop";
 	}

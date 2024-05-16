@@ -142,10 +142,12 @@ public class AdminService
 	
 	//문의 답변 달기
 	public void refAnswer(Long refId, String refAnswerContent) {
-        ReferenceAnswer referenceAnswer = referenceAnswerRepository.findByRefId(refId);
-        referenceAnswer.setRefAnswerContent(refAnswerContent);
-        referenceAnswerRepository.save(referenceAnswer);
-        
-        
-    }
+	    ReferenceAnswer referenceAnswer = referenceAnswerRepository.findByRefId(refId);
+	    if (referenceAnswer == null) {
+	        referenceAnswer = new ReferenceAnswer();
+	        referenceAnswer.setRefId(refId);
+	    }
+	    referenceAnswer.setRefAnswerContent(refAnswerContent);
+	    referenceAnswerRepository.save(referenceAnswer);
+	}
 }
