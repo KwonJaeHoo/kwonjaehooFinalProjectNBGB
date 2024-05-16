@@ -139,4 +139,13 @@ public class AdminService
 			list.get(i).setReferenceAnswer(referenceAnswerRepository.findByRefId(list.get(i).getRefId().getRefId()));
 		}
 	}
+	
+	//문의 답변 달기
+	public void refAnswer(Long refId, String refAnswerContent) {
+        ReferenceAnswer referenceAnswer = referenceAnswerRepository.findByRefId(refId);
+        referenceAnswer.setRefAnswerContent(refAnswerContent);
+        referenceAnswerRepository.save(referenceAnswer);
+        
+        
+    }
 }

@@ -26,6 +26,7 @@ import com.sist.nbgb.dto.OfflineClassStatusChange;
 import com.sist.nbgb.dto.OnlineClassDenyDTO;
 import com.sist.nbgb.dto.OnlineClassStatusChange;
 import com.sist.nbgb.dto.OnlineClassView;
+import com.sist.nbgb.dto.ReferenceAnswerDto;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.entity.Instructors;
@@ -104,6 +105,26 @@ public class AdminController {
 		
 		return "admin/referenceView";
 	}
+	
+	//문의글 답변 달기
+	@GetMapping("/refAnswerPop")
+	public String refAnswer(Model model) {
+		    
+	    return "/admin/refAnswerPop";
+	}
+	
+	@PostMapping("/refAnswer")
+	@ResponseBody
+    public String refAnswer(@RequestBody ReferenceAnswerDto ReferenceAnswerDto ) {
+        try
+        {
+        	adminService.refAnswer(ReferenceAnswerDto.getRefId(), ReferenceAnswerDto.getRefAnswerContent());
+        	return "SUCCESS";
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	return "ERROR";
+        }
+    }
 	
 	
 	//일반회원 리스트 불러오기
