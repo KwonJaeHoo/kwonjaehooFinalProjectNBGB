@@ -21,7 +21,7 @@
 	<!--메뉴 네비게이션-->
 	<div th:insert="import/topImport.html :: top-import"></div>
     
-	<!-- 내방 클래스/ 공방 클래스 바로가기 -->
+	<!--내방 클래스/ 공방 클래스 바로가기-->
 	<section class="home-slider owl-carousel">
 		<div class="slider-item" style="background-image: url('images/Online_Class.jpg');">
 		<!-- 출처 <a href="https://kr.freepik.com/free-photo/close-up-hand-holding-pen_15598755.htm#query=%EC%9B%90%EA%B2%A9%20%EA%B5%90%EC%9C%A1&position=1&from_view=keyword&track=ais&uuid=84153ad6-d9a3-4d91-b4de-085e124a5d8a">Freepik</a> -->
@@ -57,8 +57,8 @@
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-10 heading-section ftco-animate text-center">
-          	<h3 class="subheading">인기 온라인 클래스</h3>
-            <h2 class="mb-1">👍내방공방에서 추천!</h2>
+          	<h3 class="subheading" style="font-weight:800;">내 방에서 바로 듣는 온라인 클래스</h3>
+            <h2>👍내방 클래스 추천!</h2>
           </div>
         </div>
         
@@ -73,10 +73,10 @@
 	              <img style="border-radius: 20px; height: 200px;" class="img w-100 mb-3" th:src="@{'/images/onlineThumbnail/' + ${data.onlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/online/' + ${data.onlineClassId}}'|">
 	              	<div class="meta" style="text-align:center;">
 	              	<div><span th:text="${data.category+' | '+data.instructorNickname}">온라인 강의 카테고리</span></div>
-	                  <div><class="meta-chat"><span class="icon-eye"></span><span th:text="${data.onlineClassViews}">0</span></class></div>
+	                  <div><class="meta-chat"><span class="icon-eye"> </span><span th:text="${data.onlineClassViews}">0</span></class></div>
 	                  </div>
 	                </div>
-	                <h5 class="heading mt-2" style="text-align:center;"><a th:href="@{'/online/' + ${data.onlineClassId}}" th:text="${data.onlineClassTitle}">온라인 강의 제목</a></h5>
+	                <h5 class="heading mt-2" style="text-align:center;"><a th:href="@{'/online/' + ${data.onlineClassId}}" th:text="${data.onlineClassTitle}" style="color:#656565;">온라인 강의 제목</a></h5>
 	                
 	                <!-- <a href="#" class="btn btn-primary" th:classappend="${data.onlineClassApprove == 'Y' ? 'btn-ghost btn-fill' : 'disabled'}" th:text="${data.onlineClassApprove == 'Y' ? '수강 가능' : '수강 불가'}">온라인 강의 수강 상태</a> -->
 	              </div>
@@ -94,8 +94,8 @@
     	<div class="container">
     		<div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-12 heading-section ftco-animate text-center">
-            <h3 class="subheading">인기 오프라인 클래스</h3>
-            <h2 class="mb-1">공방 클래스도 추천합니다!</h2>
+            <h3 class="subheading" style="font-weight:800;">현장에서 직접 체험하는 공방 클래스</h3>
+            <h2 class="mb-1">✨공방 클래스 추천✨</h2>
           </div>
         </div>
         
@@ -110,10 +110,10 @@
 	              <img style="border-radius: 20px; height: 200px" class="img w-100 mb-3" th:src="@{'/images/offlineThumbnail/' + ${offlineClassView.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${offlineClassView.offlineClassId}}'|">
 	              	<div class="meta" style="text-align:center;">
 	              	<div><span th:text="${offlineClassView.category+' | '+offlineClassView.instructorNickname}">오프라인 강의 카테고리</span></div>
-	                  <div><class="meta-chat"><span class="icon-eye"></span><span th:text="${offlineClassView.offlineClassViews}">0</span></class></div>
+	                  <div><class="meta-chat"><span class="icon-eye"> </span><span th:text="${offlineClassView.offlineClassViews}">0</span></class></div>
 	                  </div>
 	                </div>
-	                <h5 class="heading mt-2" style="text-align:center;" ><a th:href="@{'/offlineClass/' + ${offlineClassView.offlineClassId}}" th:text="${offlineClassView.offlineClassTitle}" class="index-class-title">오프라인 강의 제목</a></h5>
+	                <h5 class="heading mt-2" style="text-align:center;" ><a th:href="@{'/offlineClass/' + ${offlineClassView.offlineClassId}}" th:text="${offlineClassView.offlineClassTitle}" class="index-class-title" style="color:#656565;">오프라인 강의 제목</a></h5>
 	                
 	                <!-- <a href="#" class="btn btn-primary" th:classappend="${data.onlineClassApprove == 'Y' ? 'btn-ghost btn-fill' : 'disabled'}" th:text="${data.onlineClassApprove == 'Y' ? '수강 가능' : '수강 불가'}">온라인 강의 수강 상태</a> -->
 	              </div>
