@@ -117,5 +117,4 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	
 	OfflineClass findAllByOfflineClassId(Long offlineClassId);
 
-	
 }

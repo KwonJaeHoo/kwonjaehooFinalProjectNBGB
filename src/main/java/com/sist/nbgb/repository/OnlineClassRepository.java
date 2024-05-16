@@ -33,7 +33,7 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	List<OnlineClass> findByOnlineClassTitleContainingAndOnlineCategoryId_onlineCategoryIdAndOnlineClassApprove(String searchKeyword, long onlineCategoryId, Status onlineClassApprove);
 
 	//정렬기준 - 조회 순
- 	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassViews(Status onlineClassApprove);
+ 	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassViewsDesc(Status onlineClassApprove);
 	
 	//정렬기준 - 가격 낮은 순
 	List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassPriceAsc(Status onlineClassApprove);
@@ -77,4 +77,5 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	List<OnlineClass> findByInstructorIdOrderByOnlineClassIdDesc(Instructors instructorId);
 		
 	OnlineClass findOnlineClassTitleByOnlineClassId(Long onlineClassId);
+
 }

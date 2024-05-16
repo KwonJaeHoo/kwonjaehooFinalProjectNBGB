@@ -82,4 +82,5 @@ public class User
 	@CreatedDate
 	@Comment("회원 가입일")
 	private LocalDateTime userRegdate;
+
 }

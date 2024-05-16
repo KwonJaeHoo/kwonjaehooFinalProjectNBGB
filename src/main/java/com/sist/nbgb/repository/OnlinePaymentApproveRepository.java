@@ -43,4 +43,5 @@ public interface OnlinePaymentApproveRepository extends JpaRepository<OnlinePaym
 	Optional<OnlinePaymentApprove> findByPartnerOrderId(String partnerOrderId);
 	
 	OnlinePaymentApprove findFirstByItemCodeAndPartnerUserId(@Param("itemCode") String itemCode, @Param("partnerUserId") String partnerUserId);
+	
 }

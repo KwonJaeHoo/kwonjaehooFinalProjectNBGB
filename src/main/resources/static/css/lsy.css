@@ -12,8 +12,12 @@
 }
 .sub-title{
 margin-top:20px;
-color:#89dd18;
+color:#89dd18;;
 text-shadow: 5px 5px gba(232, 232, 232, 0.429);
+}
+.sub-title-second{
+color:rgb(116, 116, 116);
+font-weight:600;
 }
 
 .categories-area{

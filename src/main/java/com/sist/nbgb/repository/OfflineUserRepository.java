@@ -29,4 +29,5 @@ public interface OfflineUserRepository  extends JpaRepository<User, String>
 			+ "                    AND bookingDate = :date "
 			+ "                    AND bookingTime = :time ) ")
 	List<User> findList(@Param("classId") String classId, @Param("date") String date, @Param("time") String time);
+
 }

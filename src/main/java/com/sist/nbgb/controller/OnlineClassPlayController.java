@@ -3,6 +3,7 @@ package com.sist.nbgb.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +54,9 @@ public class OnlineClassPlayController
 	//온라인 강의 재생 목록
 	@GetMapping("/onlinePlayList")
 	public String onlinePlayList(Model model, Principal principal,
-			@RequestParam(value="classId", required=false, defaultValue="22") Long onlineClassId) throws IOException{
+			@RequestParam(value="classId", required=false) Long onlineClassId) throws IOException{
 		
+		logger.info("[OnlineClassPlayController] onlinePlayList");
 		User user = userRepository.findFirstByUserId(principal.getName());
 		if(user.getAuthority().equals(Role.ROLE_USER)) {
 						
@@ -84,12 +86,13 @@ public class OnlineClassPlayController
 	//온라인 강의 재생 페이지
 	@GetMapping("/onlinePlay")
 	public String onlinePlay(Model model, Principal principal,
-							@RequestParam(value="classId", required=false, defaultValue="22") Long onlineClassId,
-							@RequestParam(value="fileId", required=false, defaultValue="1") Long onlineFileId) throws IOException{
-		logger.info("[OnlineClassPlayController] onlinePlay method");
+							@RequestParam(value="classId", required=false) Long onlineClassId,
+							@RequestParam(value="fileId", required=false) Long onlineFileId) throws IOException{
+		
+		logger.info("[OnlineClassPlayController] onlinePlay");
 		logger.info("강의 번호 : " + onlineClassId + ", 강의 회차 : " + onlineFileId);
-		//회원조회
 		User user = userRepository.findFirstByUserId(principal.getName());
+		
 		//강의 조회
 		OnlineClass onlineClass = onlineClassService.findById(onlineClassId);
 		//강의 자료 조회
@@ -99,7 +102,6 @@ public class OnlineClassPlayController
 		List<OnlineClassFileResponseDTO> classList = onlineClassPlayService.selectClassList(onlineClassId)
 											.stream().map(OnlineClassFileResponseDTO::new)
 											.collect(Collectors.toList());
-		//강의 자료 개수 조회
 		Long classCnt = onlineClassPlayService.countClass(onlineClassId);
 		//강의 로그 조회
 		OnlineClassLogIdDTO selectLogId = OnlineClassLogIdDTO.builder()
@@ -127,7 +129,6 @@ public class OnlineClassPlayController
 			@RequestParam(value="onlineFileId", required=false) String onlineFileId, @RequestParam(value="onlineLogCurr", required=false) String onlineLogCurr) throws IOException{
 		
 		logger.info("[OnlineClassPlayController] onlinePlayLog");
-		
 		User user = userRepository.findFirstByUserId(principal.getName());
 		
 		OnlineClassFile classFile = onlineClassPlayService.selectClass(Long.valueOf(onlineClassId), Long.valueOf(onlineFileId));
@@ -166,7 +167,6 @@ public class OnlineClassPlayController
 			@RequestParam(value="onlineFileId", required=false) String onlineFileId, @RequestParam(value="onlineLogCurr", required=false) String onlineLogCurr){
 		
 		logger.info("[OnlineClassPlayController] onlineUpdateLog");
-
 		//회원조회
 		User user = userRepository.findFirstByUserId(principal.getName());
 				

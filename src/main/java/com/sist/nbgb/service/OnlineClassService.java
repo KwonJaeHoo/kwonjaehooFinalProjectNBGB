@@ -89,7 +89,6 @@ public class OnlineClassService {
 	private final OnlineClassFileRepository fileRepository;
 	private final FFmpegManager ffmpegManager;
 	private final OfflineUserRepository offUserRepository;
-	
 	private final UserService userService;
 	
     @Value("${online.video.file.dir}")
@@ -128,7 +127,7 @@ public class OnlineClassService {
 	
 	//정렬기준 - 인기순(조회순)
 	public List<OnlineClass> findByOnlineClassApproveOrderByOnlineClassViews(Status onlineClassApprove){
-		return onlineClassRepository.findByOnlineClassApproveOrderByOnlineClassViews(onlineClassApprove);
+		return onlineClassRepository.findByOnlineClassApproveOrderByOnlineClassViewsDesc(onlineClassApprove);
 	}
 
 	//정렬기준 - 가격 낮은 순
@@ -643,6 +642,7 @@ public class OnlineClassService {
 	{
 		return offUserRepository.updatePoint(userId, point);
 	}
+
 }
 	
 
