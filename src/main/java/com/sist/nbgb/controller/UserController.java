@@ -299,44 +299,16 @@ public class UserController
     		
     		
     		//onlineApprove
-    		if(onlinePaymentApproveDto.isEmpty())
-    		{
-    			model.addAttribute("onlinePaymentpaging", "onlinePaymentApproveDtoIsNull");
-    		}
-    		else
-    		{
-    			model.addAttribute("onlinePaymentpaging", onlinePaymentpaging);
-    		}
+			model.addAttribute("onlinePaymentpaging", onlinePaymentpaging);
     		
     		//offlineApprove
-    		if(offlinePaymentApproveDto.isEmpty())
-    		{
-    			model.addAttribute("offlinePaymentpaging", "offlinePaymentApproveDtoIsNull");
-    		}
-    		else
-    		{
-    			model.addAttribute("offlinePaymentpaging", offlinePaymentpaging);
-    		}
+			model.addAttribute("offlinePaymentpaging", offlinePaymentpaging);
     		
     		//onlineCancel
-    		if(onlinePaymentCancelDto.isEmpty())
-    		{
-    			model.addAttribute("onlinePaymentCancelpaging", "onlinePaymentCancelDtoIsNull");
-    		}
-    		else
-    		{
-    			model.addAttribute("onlinePaymentCancelpaging", onlinePaymentCancelpaging);
-    		}
+			model.addAttribute("onlinePaymentCancelpaging", onlinePaymentCancelpaging);
     		
     		//offlineCancel
-    		if(offlinePaymentCancelDto.isEmpty())
-    		{
-    			model.addAttribute("offlinePaymentCancelpaging", "offlinePaymentCancelDtoIsNull");
-    		}
-    		else
-    		{
-    			model.addAttribute("offlinePaymentCancelpaging", offlinePaymentCancelpaging);
-    		}
+    		model.addAttribute("offlinePaymentCancelpaging", offlinePaymentCancelpaging);
     		
     		model.addAttribute("localDateTime", LocalDateTime.now());
     	}
@@ -456,15 +428,8 @@ public class UserController
     		Page<ClassLikeDTO> paging = new PageImpl<>(classLikeDto.subList(start, end), pageRequest, classLikeDto.size());
     		
     		
-        	if(classLikeDto.isEmpty())
-    		{
-    			model.addAttribute("paging", "classLikeDtoIsNull");
-    		}
-    		else
-    		{
-        		userService.onlineClassTitle(classLikeDto);
-    			model.addAttribute("paging", paging);
-    		}
+    		userService.onlineClassTitle(classLikeDto);
+			model.addAttribute("paging", paging);
     	}
     	return "mypage/mypageOnlineLikeList";
     }
@@ -490,16 +455,9 @@ public class UserController
     		int start = (int) pageRequest.getOffset();
     		int end = Math.min(start + pageRequest.getPageSize(), classLikeDto.size());
     		Page<ClassLikeDTO> paging = new PageImpl<>(classLikeDto.subList(start, end), pageRequest, classLikeDto.size());
-    	
-        	if(classLikeDto.isEmpty())
-    		{
-    			model.addAttribute("paging", "classLikeDtoIsNull");
-    		}
-    		else
-    		{
-    			userService.offlineClassTitle(classLikeDto);
-    			model.addAttribute("paging", paging);
-    		}
+    		
+			userService.offlineClassTitle(classLikeDto);
+			model.addAttribute("paging", paging);
     	}
     	
     	return "mypage/mypageOfflineLikeList";
@@ -526,16 +484,8 @@ public class UserController
     		int end = Math.min(start + pageRequest.getPageSize(), userReferenceDto.size());
     		Page<ReferenceDto2> paging = new PageImpl<>(userReferenceDto.subList(start, end), pageRequest, userReferenceDto.size());
     		
-    		
-        	if(userReferenceDto.isEmpty())
-    		{
-    			model.addAttribute("userReferenceDto", "userReferenceDtoIsNull");
-    		}
-    		else
-    		{
-    			userService.referenceAnswerList(userReferenceDto);
-    			model.addAttribute("paging", paging);
-    		}
+			userService.referenceAnswerList(userReferenceDto);
+			model.addAttribute("paging", paging);
     	}
     	
     	return "mypage/mypageReference";
