@@ -50,7 +50,6 @@ import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
-import com.sist.nbgb.response.OfflineResponse;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.KakaoService;
 import com.sist.nbgb.service.ReviewService;
@@ -362,6 +361,9 @@ public class UserController
     	return ResponseEntity.ok(400);
     }
     
+    
+//===========================================================================================
+    
     @GetMapping("/mypage/{id}/onlinelecturelist")
     public String mypageUserOnlineLecture(Model model, @PathVariable String id)
     {
@@ -433,6 +435,9 @@ public class UserController
     	}
     	return "mypage/mypageOnlineLikeList";
     }
+    
+    
+//===========================================================================================
     
     @PostMapping("/mypage/online/likecancel")
     @ResponseBody

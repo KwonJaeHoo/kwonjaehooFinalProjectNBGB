@@ -9,8 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ import com.sist.nbgb.dto.OfflineClassDenyDTO;
 import com.sist.nbgb.dto.OfflineClassStatusChange;
 import com.sist.nbgb.dto.OnlineClassDenyDTO;
 import com.sist.nbgb.dto.OnlineClassStatusChange;
-import com.sist.nbgb.dto.OnlineClassView;
+
 import com.sist.nbgb.dto.ReferenceAnswerDto;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
@@ -33,17 +32,14 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Reference;
-import com.sist.nbgb.entity.ReferenceAnswer;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
-import com.sist.nbgb.response.OfflineResponse;
-import com.sist.nbgb.service.AdminService;
-import com.sist.nbgb.service.InstructorsService;
-import com.sist.nbgb.service.ReferenceService;
-import com.sist.nbgb.service.UserService;
 
-import ch.qos.logback.classic.Logger;
+import com.sist.nbgb.service.AdminService;
+
+import com.sist.nbgb.service.ReferenceService;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller

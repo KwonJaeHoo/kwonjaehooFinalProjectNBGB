@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sist.nbgb.dto.AdminDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorsDto;
@@ -129,4 +130,11 @@ public class SignupController
         } 
 
 	}
+	
+//	@ResponseBody
+//	@PostMapping("/admin/signup")
+//	public ResponseEntity<AdminDto> signupAdmin(@RequestBody AdminDto adminDto)
+//	{
+//		return ResponseEntity.ok(signupService.adminSignup(adminDto));
+//	}
 }

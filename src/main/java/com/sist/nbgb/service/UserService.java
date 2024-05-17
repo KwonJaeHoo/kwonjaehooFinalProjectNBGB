@@ -169,48 +169,20 @@ public class UserService
 		return onlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
 	}
 	
-	//OnlinePaymentApprove paging
-//	public Page<OnlinePaymentApprove> getList(int page, Long classId, String classIden, Status reviewStatus)
-//	{
-//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
-//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
-//	}
-	
 	public List<OfflinePaymentApprove> userOfflineApproveFindAll(String userId)
 	{
 		return offlinePaymentApproveRepository.findAllByPartnerUserIdOrderByApprovedAtDesc(userId);
 	}
-	
-	//OnlinePaymentApprove paging
-//	public Page<OfflinePaymentApprove> getList(int page, Long classId, String classIden, Status reviewStatus)
-//	{
-//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
-//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
-//	}
 	
 	public List<OnlinePaymentCancel> userOnlineCancelFindAll(String userId)
 	{
 		return onlinePaymentCancelRepository.findAllByPartnerUserIdOrderByCanceledAtDesc(userId);
 	}
 	
-	//OnlinePaymentCancel paging
-//	public Page<OnlinePaymentCancel> getList(int page, Long classId, String classIden, Status reviewStatus)
-//	{
-//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
-//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
-//	}
-	
 	public List<OfflinePaymentCancel> userOfflineCancelFindAll(String userId)
 	{
 		return offlinePaymentCancelRepository.findAllByPartnerUserIdOrderByCanceledAtDesc(userId);
 	}
-	
-	//OfflinePaymentCancel paging
-//	public Page<OfflinePaymentCancel> getList(int page, Long classId, String classIden, Status reviewStatus)
-//	{
-//		Pageable pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "reviewRegdate"));
-//		return this.reviewRepository.findAllByClassIdAndClassIdenAndReviewStatus(pageable, classId, classIden, reviewStatus);
-//	}
 
 	public KakaoPaymentCancelDto userOnlineApproveFind(String partnerOrderId)
 	{
@@ -245,8 +217,6 @@ public class UserService
 		
 		Long amount = onlinePaymentCancelDto.getCancelTotalAmount();
 		Long plusPoint = amount / 100;
-		
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! : " + plusPoint);
 		
 		if(onlinePaymentCancel.getPoint() > 0)
 		{

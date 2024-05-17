@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sist.nbgb.dto.AdminDto;
 import com.sist.nbgb.dto.LoginDto;
-import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.CustomAdminDetailsService;
 import com.sist.nbgb.service.CustomInstructorsDetailsService;
 import com.sist.nbgb.service.CustomUserDetailsService;
@@ -34,8 +32,6 @@ public class LoginController
 	private final CustomInstructorsDetailsService customInstructorsDetailsService;
 	private final CustomAdminDetailsService customAdminDetailsService;
 	private final PasswordEncoder passwordEncoder;
-	
-	private final AdminService adminService;
 	
 	@GetMapping("/login")
 	public String login(HttpSession httpSession)
@@ -144,12 +140,5 @@ public class LoginController
 			}
 		}	
 	}
-	
-//	@ResponseBody
-//	@PostMapping("/admin/signup")
-//	public ResponseEntity<AdminDto> signupAdmin(@RequestBody AdminDto adminDto)
-//	{
-//		return ResponseEntity.ok(adminService.adminSignup(adminDto));
-//	}
-	
+
 }
