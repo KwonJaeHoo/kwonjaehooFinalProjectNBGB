@@ -14,11 +14,7 @@ import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewDTO;
-<<<<<<< Updated upstream
-=======
 import com.sist.nbgb.dto.ReviewReportDTO;
-import com.sist.nbgb.dto.ReviewUpdateDTO;
->>>>>>> Stashed changes
 import com.sist.nbgb.dto.ReviewRequestDTO;
 import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.OfflineClass;
@@ -47,11 +43,8 @@ public class ReviewService {
 	private final OnlineReviewCommentRepository onlineReviewCommentRepository;
 	private final ReviewRepository reviewRepository;
 	private final OfflineRepository offlineRepository;
-<<<<<<< Updated upstream
 	private final UserRepository userRepository;
-=======
 	private final ReviewReportRepository reportRepository;
->>>>>>> Stashed changes
 	
 	/*마이페이지 온라인 수강목록*/
 	@Transactional
@@ -121,7 +114,6 @@ public class ReviewService {
 	public void deleteReview(Long reviewId) {
 		reviewRepository.deleteById(reviewId);
 	}
-<<<<<<< Updated upstream
 
 	//후기 포인트 지급 및 회수
 	@Transactional
@@ -134,7 +126,6 @@ public class ReviewService {
 	{
 		return userRepository.returnPoint(userId, point);
 	}
-=======
 	
 	//후기 신고
 	public ReviewReport insertReport(ReviewReportDTO dto) {
@@ -151,5 +142,4 @@ public class ReviewService {
 		return reportRepository.existsById_reviewIdAndId_userId(reviewId, userId);
 	}
 	
->>>>>>> Stashed changes
 }

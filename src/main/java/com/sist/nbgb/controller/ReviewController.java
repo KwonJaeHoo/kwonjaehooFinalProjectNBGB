@@ -209,8 +209,6 @@ public class ReviewController {
     	return ResponseEntity.ok().body(updateReview);
     }
     
-<<<<<<< Updated upstream
-=======
     /*오프라인 리뷰 작성*/
     
     //후기 신고 화면
@@ -242,7 +240,7 @@ public class ReviewController {
     @ResponseBody
     @PostMapping("/report/{reviewId}/insert")
     public ResponseEntity<Integer> reviewReportInsert(Principal principal, @PathVariable(value="reviewId") long reviewId, 
-    		@RequestParam(value="reportReason") String reportReason){
+    		@RequestParam(value="reportReason") String reportReason) {
     	User user = userService.findUserById(principal.getName());
     	Review review = reviewService.findById(reviewId).get();
     	ReviewReportDTO report = null;
@@ -269,5 +267,4 @@ public class ReviewController {
     	
     	return ResponseEntity.ok(result);
     }
->>>>>>> Stashed changes
 }
