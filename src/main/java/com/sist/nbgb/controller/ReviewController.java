@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.OfflineClassView;
 import com.sist.nbgb.dto.OnlineClassListDTO;
+import com.sist.nbgb.dto.OnlinePopDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewDTO;
+import com.sist.nbgb.dto.ReviewReportDTO;
 import com.sist.nbgb.dto.ReviewRequestDTO;
 import com.sist.nbgb.dto.ReviewUpdateDTO;
+import com.sist.nbgb.entity.Review;
+import com.sist.nbgb.entity.ReviewReport;
+import com.sist.nbgb.entity.ReviewReportId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
@@ -203,4 +209,65 @@ public class ReviewController {
     	return ResponseEntity.ok().body(updateReview);
     }
     
+<<<<<<< Updated upstream
+=======
+    /*오프라인 리뷰 작성*/
+    
+    //후기 신고 화면
+	@GetMapping("/report/{reviewId}")
+	public String reviewReport(ModelMap model, @PathVariable(value="reviewId") String reviewId) {
+		model.addAttribute("reviewId", reviewId);
+		return "report/report";
+	}
+	
+    //후기 신고 여부 확인
+    @ResponseBody
+	@PostMapping("/report/{reviewId}/chk")
+	public ResponseEntity<Integer> reviewReportChk(Principal principal, @PathVariable(value="reviewId") Long reviewId) {
+		User user = userService.findUserById(principal.getName());
+    	Review review = reviewService.findById(reviewId).get();
+    	int result = 1;
+    	
+    	if(user.getAuthority().equals(Role.ROLE_USER)) {
+    		if(user.getUserId() == review.getUserId().getUserId()) {
+    			 result = 2; //내가 쓴 댓글
+    		}  else if (reviewService.existReport(reviewId, user.getUserId())) {
+				result = 3; // 이미 신고
+			}
+    	}
+    	
+		return ResponseEntity.ok(result);
+	}
+	
+    @ResponseBody
+    @PostMapping("/report/{reviewId}/insert")
+    public ResponseEntity<Integer> reviewReportInsert(Principal principal, @PathVariable(value="reviewId") long reviewId, 
+    		@RequestParam(value="reportReason") String reportReason){
+    	User user = userService.findUserById(principal.getName());
+    	Review review = reviewService.findById(reviewId).get();
+    	ReviewReportDTO report = null;
+    	int result = 0;
+    	System.out.print("reviewId:"+reviewId);
+    	System.out.print("reason:"+reportReason);
+    	System.out.print("user:"+user.getUserId());
+    	System.out.print("review:"+review.getReviewId());
+    	
+    	if(user.getAuthority().equals(Role.ROLE_USER)) {
+    		 if(reviewService.exsitsReview(reviewId)) {
+				report = ReviewReportDTO.builder()
+						.reviewId(review)
+						.userId(user)
+						.reportDate(LocalDateTime.now())
+						.reportReason(reportReason)
+						.reportStatus(Status.J)
+						.build();
+				
+    			reviewService.insertReport(report);
+    			result = 1; // 성공
+			}
+    	}
+    	
+    	return ResponseEntity.ok(result);
+    }
+>>>>>>> Stashed changes
 }

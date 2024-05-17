@@ -521,7 +521,6 @@ public class OnlineClassService {
 		parameters.add("cid", cid);
         parameters.add("partner_order_id", onPayDto.getPartnerOrderId());
         parameters.add("partner_user_id", onPayDto.getPartnerUserId());
-        log.info("그게 뭔데 요청이다 "+ onPayDto.getPartnerUserId());
         parameters.add("item_code", onPayDto.getItemCode());
         parameters.add("item_name", onPayDto.getItemName());
         parameters.add("quantity", "1");
@@ -577,7 +576,6 @@ public class OnlineClassService {
 		 parameters.add("cid", cid);
 		 parameters.add("tid", payDto.getTid());
          parameters.add("partner_order_id", payDto.getOrderId());
-         log.info("응답이다"+ payDto.getPartnerUserId());
          parameters.add("partner_user_id", payDto.getPartnerUserId());
          //parameters.add("partner_user_id", approveDto.get().getPartnerUserId());
          parameters.add("pg_token", pgToken);
@@ -637,9 +635,7 @@ public class OnlineClassService {
 				.status(Status.N)
 				.build();
 		
-		log.info("저장이 될까요????????????????");
 		onlinePaymentApproveRepository.save(onlinePaymentApprove);
-		log.info("됐어요~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`");
 		OnlinePaymentApproveDto approveDto = new OnlinePaymentApproveDto();
 		
 	    return approveDto;

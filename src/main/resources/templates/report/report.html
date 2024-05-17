@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="import/cssImport.html :: css-import"></div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	$("#cancelBtn").on("click", function(){
+    		window.self.close();
+    	});
+    	
+    	$("#submitBtn").on("click", function(){
+    		$("#submitBtn").prop("disabled", true);
+    		
+    		if($("#reportReason").val() == "select") {
+    			$("#reportReason").focus();
+    			alert("신고사유를 선택하세요.");
+    			$("#submitBtn").prop("disabled", false);
+    			return;
+    		}
+    		
+			var formData = new FormData();
+			formData.append("reviewId", '[[${reviewId}]]');
+			formData.append("reportReason", $("#reportReason").val());
+			$.ajax({
+				url:"/report/[[${reviewId}]]/insert",
+				method:"POST",
+				data:formData,
+				processData : false,
+	            contentType : false,
+	            cache: false,
+	            enctype: 'multipart/form-data',  
+				success:function(response){
+					if(response == 1) {
+						alert("신고가 접수되었습니다.");
+						window.self.close();
+					} else {
+						alert("오류가 발생했습니다.");
+					}
+				},
+				error:function(){
+					alert("신고 등록 중 오류가 발생했습니다.");
+					window.self.close();
+				}
+			});
+    	});
+    });
+    </script>
+</head>
+<body style="height:250px;">
+<section class="report-section">
+	<div class="row report-title-area py-3 mb-4">
+		<h3 class="d-flex mb-2 review-title"><img class="mt-1 mr-1" src="/images/reviewReport.png" width="30" height="30"/>  후기 신고</h3>
+	</div>
+	<div class="row report-info-area mt-2">
+		<select name="reportReason" id="reportReason" style="width:80%;">
+		    <option value="select">신고사유</option>
+		    <option value="원치 않는 상업성 콘텐츠 또는 스팸">원치 않는 상업성 콘텐츠 또는 스팸</option>
+		    <option value="포르노 또는 음란물">포르노 또는 음란물</option>
+		    <option value="아동 학대">아동 학대</option>
+		    <option value="증오심 표현 또는 노골적인 폭력">증오심 표현 또는 노골적인 폭력</option>
+		    <option value="테러 조장">테러 조장</option>
+		    <option value="괴롭힘 또는 폭력">괴롭힘 또는 폭력</option>
+		    <option value="자살 또는 자해">자살 또는 자해</option>
+		    <option value="잘못된 정보">잘못된 정보</option>
+		</select>
+	<p class="mt-4">신고하신 내용은 관리자 확인 후 조치됩니다.</p>			
+	</div>
+	<div class="row review-button-area mt-1">
+		<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">취소</button>
+		<button type="button" class="my-lectureBtn mx-1" id="submitBtn">등록</button>
+	</div>
+	<input type="hidden" id="reviewId" name="reviewId" />
+	<input type="hidden" id="userId" name="userId" />
+</section>
+</body>
+</html>

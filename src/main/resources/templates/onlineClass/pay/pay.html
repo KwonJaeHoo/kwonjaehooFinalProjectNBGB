@@ -7,11 +7,12 @@
 <meta charset="UTF-8">
 <script type="text/javascript">
 $(document).ready(function(){
+	 $('#getPoint').text("("+($('#onlineClassPrice').val()*0.01).toLocaleString()+"P)");
 	$('#usePoint').change( function() {
         var a = $('#usePoint').val();
         var b = $('#onlineClassPrice').val();
         var ab = b - a;
- 
+       
         var userPoint = $('#userPoint').val();
         
         var num = /^[0-9]+$/;
@@ -35,6 +36,7 @@ $(document).ready(function(){
         }
         
         $('#ab').text(ab.toLocaleString()+"원");
+        $('#getPoint').text("("+(ab*0.01).toLocaleString()+"P)");
         $('#usedPoint').val($('#usePoint').val());
         $('#totalAmount').val(ab);
       });
@@ -166,10 +168,11 @@ $(document).ready(function(){
 						<td><p id="ab" style="margin: 0 0 0 0;" th:text="${#numbers.formatInteger(dto.onlineClassPrice, 1, 'COMMA')}+'원'"></p></td>
 					</tr>
 				</table>
-				
+				<p>최종 결제 금액의 1%<span id="getPoint" ></span>가 포인트로 적립 됩니다.</p>
 				<div class="mt-3 mb-2" style="text-align:center;">결제하기 버튼을 누름으로써<br/>
 				<a href="#" class="border-bottom">서비스 약관, 환불 규정, 개인 정보 처리 방침</a>에<br/>
 				모두 동의합니다.</div>
+				
 
 				<form name="payForm" id="payForm" method="post">
 					<input type="hidden" id="onlineClassPrice" name="onlineClassPrice" th:value="${dto.onlineClassPrice}" />

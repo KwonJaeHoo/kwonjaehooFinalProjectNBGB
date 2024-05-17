@@ -334,3 +334,26 @@ td input:focus {
 	overflow:hidden;
 	border:0;
 }
+
+.review-section{
+	justify-content:center;
+	height:100%;
+}
+
+.report-title-area{
+	height:10%;
+	width:100%;
+	text-align:center;
+	justify-content:center;
+	margin:0 auto;
+	background-color:#89dd18;;
+}
+
+.report-info-area{
+	height:30%;
+	width:100%;
+	display:inline-block;
+	text-align:center;
+	justify-content:center;
+	margin:0 auto;
+}

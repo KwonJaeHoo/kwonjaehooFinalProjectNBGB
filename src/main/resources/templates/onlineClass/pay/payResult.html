@@ -5,7 +5,7 @@
 <div th:replace="import/cssImport.html :: css-import"></div>
 <link rel="stylesheet" href="/css/pay.css">
 <meta charset="UTF-8">
-<script th:inline="javascript"> //임시~!
+<script th:inline="javascript">
 $(document).ready(function(){
 	
 	var tmpDto = JSON.parse(localStorage.getItem("tmpDto"));
@@ -51,12 +51,16 @@ $(document).ready(function(){
 						<td><input type="text" id="td3" readonly></td>
 					</tr>
 					<tr>
-						<td class="pl-3" style="width:100px;">보유 포인트</td>
-						<td><input type="text" placeholder=" 보유 포인트" th:value="${updatePoint+'P'}" readonly></td>
-					</tr>
-					<tr>
 						<td class="pl-3" style="width:100px;">사용 포인트</td>
 						<td><input type="text" id="td4" placeholder=" 사용 포인트" readonly></td>
+					</tr>
+					<tr>
+						<td class="pl-3" style="width:100px;">적립 포인트</td>
+						<td><input type="text" placeholder=" 적립 포인트" th:value="${getPoint+'P'}" readonly></td>
+					</tr>
+					<tr>
+						<td class="pl-3" style="width:100px;">보유 포인트</td>
+						<td><input type="text" placeholder=" 보유 포인트" th:value="${updatePoint+'P'}" readonly></td>
 					</tr>
 					<tr>
 						<td class="pl-3" style="width:100px;">결제 금액</td>

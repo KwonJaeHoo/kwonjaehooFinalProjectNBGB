@@ -1,6 +1,9 @@
 package com.sist.nbgb.service;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
@@ -11,14 +14,24 @@ import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewDTO;
+<<<<<<< Updated upstream
+=======
+import com.sist.nbgb.dto.ReviewReportDTO;
+import com.sist.nbgb.dto.ReviewUpdateDTO;
+>>>>>>> Stashed changes
 import com.sist.nbgb.dto.ReviewRequestDTO;
 import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
+import com.sist.nbgb.entity.ReviewReport;
+import com.sist.nbgb.entity.ReviewReportId;
+import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
+import com.sist.nbgb.repository.ReviewReportRepository;
 import com.sist.nbgb.repository.ReviewRepository;
 import com.sist.nbgb.repository.UserRepository;
 
@@ -34,7 +47,11 @@ public class ReviewService {
 	private final OnlineReviewCommentRepository onlineReviewCommentRepository;
 	private final ReviewRepository reviewRepository;
 	private final OfflineRepository offlineRepository;
+<<<<<<< Updated upstream
 	private final UserRepository userRepository;
+=======
+	private final ReviewReportRepository reportRepository;
+>>>>>>> Stashed changes
 	
 	/*마이페이지 온라인 수강목록*/
 	@Transactional
@@ -104,6 +121,7 @@ public class ReviewService {
 	public void deleteReview(Long reviewId) {
 		reviewRepository.deleteById(reviewId);
 	}
+<<<<<<< Updated upstream
 
 	//후기 포인트 지급 및 회수
 	@Transactional
@@ -116,4 +134,22 @@ public class ReviewService {
 	{
 		return userRepository.returnPoint(userId, point);
 	}
+=======
+	
+	//후기 신고
+	public ReviewReport insertReport(ReviewReportDTO dto) {
+		return reportRepository.save(dto.toEntity());
+	}
+	
+	//후기 조회
+	public Optional<Review> findById(Long reviewId) {
+		return reviewRepository.findById(reviewId);
+	}
+	
+	//후기 신고 조회
+	public boolean existReport(Long reviewId, String userId) {
+		return reportRepository.existsById_reviewIdAndId_userId(reviewId, userId);
+	}
+	
+>>>>>>> Stashed changes
 }

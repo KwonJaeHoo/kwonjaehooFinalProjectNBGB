@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -65,6 +66,7 @@ public class User
 	@Comment("회원 성별")
 	private char userGender;
 	
+	//@ColumnDefault("1000")
 	@Column(columnDefinition = "NUMBER(7)")
 	@Comment("회원 포인트")
 	private Long userPoint;

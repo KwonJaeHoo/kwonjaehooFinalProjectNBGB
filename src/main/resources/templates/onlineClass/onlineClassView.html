@@ -69,7 +69,6 @@
         		    });
     			}
     		});
- 
 
 }); //ready끝
     	
@@ -113,6 +112,45 @@ var formData = new FormData();
     	}
     });
 }
+
+//후기 신고
+function fn_report(reviewId) {
+	if($("#userId").val() != null) { //일반 회원으로 로그인 한 경우
+		$.ajax({
+			url:"/report/"+reviewId+"/chk",
+			method:"POST",
+			data:{"reviewId":reviewId},
+			processData : false,
+            contentType : false,
+            cache: false,
+            enctype: 'multipart/form-data',  
+			success:function(response){
+				if(response == 1) {
+					var win = window.open('/report/'+reviewId, '/report/'+reviewId,
+				  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=250px');
+				} else if (response == 2){
+					alert("내가 작성한 댓글입니다.");
+				} else if (response == 3) {
+					alert("이미 신고한 댓글입니다. 관리자 확인 후 처리 예정입니다.");
+				} else {
+					alert("오류가 발생했습니다.");
+				}
+			},
+			error:function(){
+				alert("잠시 오류가 발생했습니다.");
+			}
+		});
+		
+		
+	} else if($("#auth").val() == "[ROLE_ANONYMOUS]") {
+		alert("댓글 신고는 회원만 할 수 있습니다. 로그인하세요.");
+	} else if($("#auth").val() == "[ROLE_INSTRUCTOR]") {
+		alert("강사 회원은 댓글을 신고할 수 없습니다. 일반 회원으로 로그인하세요.");
+	} else {
+		alert("오류");
+	}	
+}
+
     </script>
   </head>
   <body>
@@ -242,6 +280,7 @@ var formData = new FormData();
 	                    </div>
                     
 	                    <div class="tagcloud ml-1 d-flex justify-content-end">
+	                    	<div class="reviewReport mb-2"><button id="reviewReport" name="reviewReport" th:onclick="|fn_report(${rvList.reviewId})|"><img src="/images/reviewReport.png" /></button></div>
 	                        <a href="#space" th:onclick="|fn_like(${rvList.reviewId})|" th:id="|reviewLike${rvList.reviewId}|" class="tag-cloud-link">추천 : [[${rvList.reviewLikeCnt}]]</a></div>    
                     </div>
                     <p>[[${rvList.reviewContent}]]</p>

@@ -132,8 +132,10 @@ public class OnlinePayController {
 		
 		Long payPoint = Long.valueOf(payDto.getUsedPoint());//pay.get().getPoint();
 		Long userPoint = user.get().getUserPoint();
-		log.info("payPonit:" + payPoint + ", userPoint:" + userPoint);
-		Long updatePoint = userPoint - payPoint;
+		Long getPoint = (long)(Math.floor(payApprove.getAmount().getTotal()*0.01));
+		Long updatePoint = userPoint - payPoint + getPoint;
+		log.info("payApprove.getAmount().getTotal():"+payApprove.getAmount().getTotal());
+		log.info("payPonit:" + payPoint + ", userPoint:" + userPoint + ", getPoint:" + getPoint + ", updatePoint:" + updatePoint);
 		
 		onlineService.updatePoint(payApprove.getPartner_user_id(), updatePoint);
 		
@@ -141,6 +143,7 @@ public class OnlinePayController {
 		model.addAttribute("user", user.get());
 		model.addAttribute("pay", pay.get());
 		model.addAttribute("updatePoint", updatePoint);
+		model.addAttribute("getPoint", getPoint);
 		
 		return "onlineClass/pay/payResult";
 	}
