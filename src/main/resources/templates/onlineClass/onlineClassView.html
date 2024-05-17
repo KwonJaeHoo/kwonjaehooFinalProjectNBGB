@@ -477,6 +477,8 @@ function fnPay() {
 		alert("온라인 클래스는 회원만 신청할 수 있습니다. 로그인하세요.");
 	} else if($("#auth").val() == "[ROLE_INSTRUCTOR]") {
 		alert("강사 회원은 수강할 수 없습니다. 일반 회원으로 로그인하세요.");
+	} else if($("#auth").val() =="[ROLE_ADMIN]") {
+		alert("관리자 입니다.");
 	} else {
 		alert("오류");
 	}

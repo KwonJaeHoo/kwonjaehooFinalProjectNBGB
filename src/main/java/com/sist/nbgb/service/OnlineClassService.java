@@ -290,6 +290,14 @@ public class OnlineClassService {
         return authorities.stream().filter(o -> o.getAuthority().equals("ROLE_INSTRUCTOR")).findAny().isPresent();
     }
 	
+	public boolean hasAdminRole()
+	{
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        return authorities.stream().filter(o -> o.getAuthority().equals("ROLE_ADMIN")).findAny().isPresent();
+	}
+	
 	/* 온라인 클래스 등록 */
 	//온라인 클래스 등록
 	@Transactional

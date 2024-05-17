@@ -210,7 +210,10 @@ public class OnlineClassController {
 			//로그인하지않음
 		} else if (onlineClassService.hasInstRole()){
 			//강사 로그인
-		} else {
+		} else if (onlineClassService.hasAdminRole()){
+			//admin
+		}
+		else {
 			//강의 찜
 			if(onlineClassService.findLikeMe(onlineClassId, "on", userId) > 0) {
 				likeStatus = "Y";
