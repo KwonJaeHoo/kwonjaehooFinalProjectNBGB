@@ -8,8 +8,15 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	
 <script>
+function reportView(reviewId, userId) {
+    var win = window.open('/admin/reviewReportPop/'+ reviewId + '/' + userId, '/admin/reviewReportPop/'+ reviewId + '/' + userId,
+	  	'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600px,height=630px,left=100,top=100');
+}
 $(document).ready(function() {
-	
+	$('input:radio[name="order"]').on("change", function(){
+		var orderBy = $('input:radio[name="order"]:checked').val();
+		location.href = "/admin/reviewReportList?orderBy="+orderBy; 
+	});	
 });
 </script>
 </head>
@@ -19,16 +26,8 @@ $(document).ready(function() {
 <div class="container">
     <hr class="my-4">
     <div>
-    	<label for="order" class="mr-2">
-    		<input type="radio" value="order" checked="checked">전체</input>
-    	</label>
-    	<label for="order" class="mr-2">
-    		<input type="radio" value="order">접수</input>
-    	</label>
-    	<label for="order" class="mr-2">
-    		<input type="radio" value="order">처리완료</input>
-    	</label>
-    	
+		<input type="radio" name ="order" value="all" th:checked="${orderBy eq 'all'}">전체</input>
+		<input type="radio" class="ml-2" name ="order" value="before" th:checked="${orderBy eq 'before'}">미처리</input>
     </div>
     <div>
         <table class="table report-table">
@@ -38,15 +37,20 @@ $(document).ready(function() {
               <th width="40%">후기글 내용</th>
               <th width="15%">접수일자</th>
               <th width="18%">신고회원</th>
-              <th width="10%">처리 상태</th>
+              <th width="10%">처리상태</th>
             </tr>
             <tr th:each="report, loop:${reportList}"><!--10개씩-->
               <td width="2%">[[${reportList.getTotalElements - (reportList.number * reportList.size) - loop.index}]]</td>
               <td width="15%">[[${report.reportReason}]]</td>
-              <td width="40%">[[${report.reviewId.reviewContent}]]</td>
+              <td width="40%">[[${report.reviewId.reviewContent}]]<a></td>
               <td width="15%">[[${#temporals.format(report.reportDate,'yyyy-MM-dd HH:mm')}]]</td>
               <td width="18%">[[${report.userId.userId}]]</td>
-              <td width="10%">[[${#strings.equals(report.reportStatus,'J')} ? '접수' : '처리완료']]</td>
+              <td width="10%">
+              	<button type="button" class="my-lectureBtn my-lectureBtn-second" th:onclick="reportView([[${report.reviewId.reviewId}]], [[${report.userId.userId}]])"
+              			th:if="${#strings.equals(report.reportStatus,'J')}">미처리</button>
+              	<button type="button" class="my-lectureBtn" th:onclick="reportView([[${report.reviewId.reviewId}]], [[${report.userId.userId}]])" 
+              			th:unless="${#strings.equals(report.reportStatus,'J')}">처리완료</button>
+              </td>
             </tr>
            </tbody>
         </table>
@@ -57,18 +61,18 @@ $(document).ready(function() {
           	<ul class="mb-2 ad-paging-ul">
 	            <!--이전-->
 		        <li th:classappend="${!reportList.hasPrevious ? 'ad-pagingBtn' : ''}" class="mx-1">
-		            <a th:href="@{|?page=${reportList.number-1}|}">&lt;</a>
+		            <a th:href="@{/admin/reviewReportList?(page=${reportList.number-1}, orderBy=${orderBy})}">&lt;</a>
 		        </li>
 		        
 		        <li th:each="page : ${#numbers.sequence(0, reportList.totalPages - 1)}"
 		       		th:if="${page >= reportList.number-5 and page <= reportList.number+5}"
 		        	th:classappend="${page == reportList.number} ? 'active'" class="mx-1">
-		            <a th:href="@{|?page=${page}|}" th:value="${reportList.number}">[[|${page+1}|]]</a>
+		            <a th:href="@{/admin/reviewReportList?(page=${page}, orderBy=${orderBy})}" th:value="${reportList.number}">[[|${page+1}|]]</a>
 		        </li>
 		        
 		 		<!--다음-->
 		        <li th:classappend="${!reportList.hasNext ? 'ad-pagingBtn' : ''}" class="mx-1">
-		            <a th:href="@{|?page=${reportList.number+1}|}" >&gt;</a>
+		            <a th:href="@{/admin/reviewReportList?(page=${reportList.number+1}, orderBy=${orderBy})}" >&gt;</a>
 		        </li>
     		</ul>
 	    </div>

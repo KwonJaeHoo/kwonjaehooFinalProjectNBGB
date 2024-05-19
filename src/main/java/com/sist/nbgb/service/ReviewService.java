@@ -20,6 +20,8 @@ import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.ReviewReport;
+import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.OnlineReviewCommentRepository;
@@ -126,9 +128,38 @@ public class ReviewService {
 	/*후기 신고 관리자*/
 	//관리자 - 신고 리스트 	
 	public Page<ReviewReport> reviewReportList(int page){
-		//List<Sort.Order> sorts = new ArrayList<>();
-		//sorts.add(Sort.Order.desc(""))
 		Pageable pageable = PageRequest.of(page, 10, Sort.by("reportDate").descending());
 		return reviewReportRepository.findAll(pageable);
+	}
+	public Page<ReviewReport> findNotRecivedList(int page){
+		Pageable pageable = PageRequest.of(page, 10, Sort.by("reportDate").descending());
+		return reviewReportRepository.findNotRecived(pageable);
+	}
+	
+	public ReviewReport reviewReportView(Long reviewId, String userId) {
+		return reviewReportRepository.findByReviewId_reviewIdAndUserId_userId(reviewId, userId);
+	}
+	
+	public Review findById(Long reviewId) {
+		return reviewRepository.findByReviewId(reviewId);
+	}
+	
+	public Status reviewStatusCheck(Long reviewId) {
+		return reviewRepository.reviewStatusCheck(reviewId);
+	}
+	
+	@Transactional
+	public int updateReviewStatus(Long reviewId, Status reviewStatus) {
+		return reviewRepository.reviewStatusUpdate(reviewId, reviewStatus);
+	}
+	
+	@Transactional
+	public int updateReportStatus(Review reviewId, User userId, Status reviewStatus) {
+		return reviewReportRepository.updateReportStatus(reviewId, userId, reviewStatus);
+	}
+	
+	@Transactional
+	public int updateAllReportStatus(Review reviewId, Status reviewStatus) {
+		return reviewReportRepository.updateAllReportStatus(reviewId, reviewStatus);
 	}
 }

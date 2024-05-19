@@ -1,5 +1,6 @@
 package com.sist.nbgb.controller;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,7 @@ import com.sist.nbgb.dto.OfflineClassStatusChange;
 import com.sist.nbgb.dto.OnlineClassDenyDTO;
 import com.sist.nbgb.dto.OnlineClassStatusChange;
 import com.sist.nbgb.dto.ReferenceDto2;
+import com.sist.nbgb.dto.ReviewReportListDTO;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
@@ -36,6 +39,7 @@ import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.ReferenceService;
 import com.sist.nbgb.service.ReviewService;
+import com.sist.nbgb.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +51,7 @@ public class AdminController {
 	private final ReferenceService referenceService;
 	private final AdminService adminService;
 	private final ReviewService reviewService;
+	private final UserService userService;
 	
 	@GetMapping("/adminMain")
 	public String adminMain(Model model)
@@ -276,12 +281,40 @@ public class AdminController {
 	
 	//후기 신고 목록
 	@GetMapping("/reviewReportList")
-	public String reviewReportList(Model model, @PageableDefault(size = 5) Pageable pageable) {
-
-		Page<ReviewReport> reportList = reviewService.reviewReportList(pageable.getPageNumber());
-		model.addAttribute("reportList", reportList);
-		
+	public String reviewReportList(Model model, @PageableDefault(size = 5) Pageable pageable, 
+			@RequestParam(value = "orderBy", required = false, defaultValue="all") String orderBy) {
+		if(orderBy.equals("all")) {
+			Page<ReviewReport> reportList = reviewService.reviewReportList(pageable.getPageNumber());
+			model.addAttribute("reportList", reportList);
+		}else {
+			Page<ReviewReport> reportList = reviewService.findNotRecivedList(pageable.getPageNumber());
+			model.addAttribute("reportList", reportList);
+		}
+		model.addAttribute("orderBy", orderBy);
 		return "admin/reviewReportList";
 	}
 	
+	//후기 신고 처리
+	@GetMapping("/reviewReportPop/{reviewId}/{userId}")
+	public String reviewReportPop(Model model, @PathVariable(value="reviewId")Long reviewId, @PathVariable(value="userId")String userId) {
+		ReviewReportListDTO report = new ReviewReportListDTO(reviewService.reviewReportView(reviewId, userId));
+		
+		model.addAttribute("report", report);
+		return "admin/reviewReportPop";
+	}
+	
+	@ResponseBody
+	@PutMapping("/reviewReportPop")
+	public void reviewReportProcess(@RequestParam(value="reportValue") String reportValue, @RequestParam(value="reportAll") String reportAll, 
+				@RequestParam(value="reviewId") Long reviewId, @RequestParam(value="reportUserId")String reportUserId) {
+		if(reportValue.equals("block") && reviewService.reviewStatusCheck(reviewId).equals(Status.Y)) {
+			reviewService.updateReviewStatus(reviewId, Status.C);
+		}
+		
+		if(reportAll.equals("true")) {
+			reviewService.updateAllReportStatus(reviewService.findById(reviewId), Status.C);
+		}else {
+			reviewService.updateReportStatus(reviewService.findById(reviewId), userService.findUserById(reportUserId), Status.C);
+		}
+	}
 }

@@ -750,3 +750,23 @@ margin: 50px auto 30px auto;
 	display:none;
 	pointer-events:none;
 }
+.report-title{
+	font-size:17px;
+	font-weight:700;
+	color:gray;
+}
+	.report-content{
+		font-size:15px;
+		font-weight:400;
+		color:gray;
+	}
+.report-area{
+	margin :2% auto;
+	padding: 4%;
+	border:solid 4px lightgray;
+	height:35dvh;
+}
+.report-msg{
+	color:red;
+	font-weight:600;
+}		

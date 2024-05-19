@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+<script>
+$(document).ready(function(){
+    $("#cancelBtn").on("click", function(){
+		window.self.close();
+	});
+	
+	
+	$("#submitBtn").on("click", function(){
+		var reportValue = $("#reportValue option:selected").val();
+		if(reportValue == "null"){
+			alert("신고된 후기의 상태를 설정해주세요.");
+			return;
+		}
+		var reportAll = 'false';
+		if(document.getElementById('allBlock').checked){
+			reportAll = 'true';
+		}
+		
+		if(reportValue == "block" ? confirm("해당 후기를 차단하시겠습니까?") : confirm("해당 후기 상태를 유지하시겠습니까?")){
+			var reviewId = '[[${report.reviewId.reviewId}]]';
+			var reportUserId = '[[${report.userId.userId}]]';
+			$.ajax({
+				url:"/admin/reviewReportPop",
+				method:"PUT",
+				datatype:"JSON",
+				data:{
+					"reportValue":reportValue,
+					"reportAll":reportAll,
+					"reviewId":reviewId,
+					"reportUserId":reportUserId
+				},
+				async:false, 
+				success:function(){
+					alert("후기 신고 건이 접수되었습니다.");
+					window.self.close();
+					opener.parent.location.reload();
+				},
+				error:function(){
+					alert("후기 신고 건 처리 중 오류가 발생했습니다.");
+					console.log("process error");
+					window.self.close();
+					opener.parent.location.reload();
+				}
+			});	
+		}
+	});
+});
+</script>
+</head>
+<body>
+<a class="MainBanner" aria-current="page"><h1>후기 신고 접수</h1></a>
+
+	<div class="container justify-content-center" width="500px;">
+		<hr class="my-4">
+		<div class="px-3">
+			<div class="row px-3">
+				<div class="text-left pr-0 mb-2">
+					<span class="icon-check2"></span> 
+					<span class="report-title mr-2">신고사유 : </span>
+					<span class="report-content">[[${report.reportReason}]]</span>
+				</div>
+			</div>
+			<div class="row px-3">
+				<div class="text-left pr-0 mb-2">
+					<span class="icon-check2"></span> 
+					<span class="report-title mr-2">접수일자 : </span>
+					<span class="report-content">[[${#temporals.format(report.reportDate,'yyyy-MM-dd HH:mm')}]]</span>
+				</div>
+			</div>
+			<div class="row px-3">
+				<div class="text-left pr-0 mb-2">
+					<span class="icon-check2"></span> 
+					<span class="report-title mr-2">신고회원 : </span>
+					<span class="report-content">[[${report.userId.userId}]]</span>
+				</div>
+			</div>
+			<div class="row px-3 mb-2">
+				<div class="pr-0  justify-content-between">
+					<span class="icon-check2"></span> 
+					<span class="report-title">신고내용 : </span>
+					<select class="ml-2" id="reportValue" th:if="${#strings.equals(report.reportStatus,'J')}">
+			            <option value="null" selected>후기 상태 변경</option>
+			            <option value="block">차단</option>
+			            <option value="skip" th:if="${#strings.equals(report.reviewId.reviewStatus,'Y')}">보류</option>
+			        </select>
+					<span th:if="${#strings.equals(report.reviewId.reviewStatus,'C')}" class="report-msg ml-2">숨김처리 된 후기글입니다.</span>
+				</div>
+			</div>
+			<div class="report-area mt-4">
+			<p class="report-content">작성자 : [[${report.reviewId.userId.userId}]]</p>
+			[[${report.reviewId.reviewContent}]]
+			</div>
+			<div class="mx-3 my-4 text-center text-align-center" th:if="${#strings.equals(report.reportStatus,'J')}">
+				<input id="allBlock" type="checkbox"> 동일한 신고 건 접수 완료 처리</input>
+			</div>
+			<div class="text-center mt-3">
+				<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">닫기</button>
+				<button type="button" class="my-lectureBtn mx-1" id="submitBtn" th:if="${#strings.equals(report.reportStatus,'J')}">접수</button>
+			</div>
+    
+            
+  <div class="comment-form-wrap"></div>
+
+</div> <!-- /container -->
+
+<script src="/js/reference.js"></script>
+<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>
