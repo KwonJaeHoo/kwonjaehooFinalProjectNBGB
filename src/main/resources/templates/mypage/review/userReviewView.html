@@ -113,7 +113,7 @@ function replyView() {
 		<th:block th:if="${comment} != null">
 			<button type="button" onclick="replyView()" class="reply-title">💌 강사의 답변이 있습니다!</button>
 			<div class="textarea mt-3" id="replyDiv" >
-				<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>
+				<!--<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>-->
 				<div class="review-view-third col-12 pr-0">[[${#temporals.format(comment.reviewCommentRegdate, 'yyyy/MM/dd HH:mm')}]]</div>
 				<textarea class="text" id="reviewContents" cols="60" rows="4" readonly>[[${comment.reviewCommentContent}]]</textarea>
 			</div>
