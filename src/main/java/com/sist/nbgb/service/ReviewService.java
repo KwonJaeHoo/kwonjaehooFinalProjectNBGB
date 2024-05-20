@@ -1,6 +1,9 @@
 package com.sist.nbgb.service;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,12 +17,14 @@ import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewDTO;
+import com.sist.nbgb.dto.ReviewReportDTO;
 import com.sist.nbgb.dto.ReviewRequestDTO;
 import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
 import com.sist.nbgb.entity.ReviewReport;
+import com.sist.nbgb.entity.ReviewReportId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OfflineRepository;
@@ -42,7 +47,7 @@ public class ReviewService {
 	private final ReviewRepository reviewRepository;
 	private final OfflineRepository offlineRepository;
 	private final UserRepository userRepository;
-	private final ReviewReportRepository reviewReportRepository;
+	private final ReviewReportRepository reportRepository;
 	
 	/*마이페이지 온라인 수강목록*/
 	@Transactional
@@ -129,18 +134,18 @@ public class ReviewService {
 	//관리자 - 신고 리스트 	
 	public Page<ReviewReport> reviewReportList(int page){
 		Pageable pageable = PageRequest.of(page, 10, Sort.by("reportDate").descending());
-		return reviewReportRepository.findAll(pageable);
+		return reportRepository.findAll(pageable);
 	}
 	public Page<ReviewReport> findNotRecivedList(int page){
 		Pageable pageable = PageRequest.of(page, 10, Sort.by("reportDate").descending());
-		return reviewReportRepository.findNotRecived(pageable);
+		return reportRepository.findNotRecived(pageable);
 	}
 	
 	public ReviewReport reviewReportView(Long reviewId, String userId) {
-		return reviewReportRepository.findByReviewId_reviewIdAndUserId_userId(reviewId, userId);
+		return reportRepository.findByReviewId_reviewIdAndUserId_userId(reviewId, userId);
 	}
 	
-	public Review findById(Long reviewId) {
+	public Review findByReviewId(Long reviewId) {
 		return reviewRepository.findByReviewId(reviewId);
 	}
 	
@@ -155,11 +160,27 @@ public class ReviewService {
 	
 	@Transactional
 	public int updateReportStatus(Review reviewId, User userId, Status reviewStatus) {
-		return reviewReportRepository.updateReportStatus(reviewId, userId, reviewStatus);
+		return reportRepository.updateReportStatus(reviewId, userId, reviewStatus);
 	}
 	
 	@Transactional
 	public int updateAllReportStatus(Review reviewId, Status reviewStatus) {
-		return reviewReportRepository.updateAllReportStatus(reviewId, reviewStatus);
+		return reportRepository.updateAllReportStatus(reviewId, reviewStatus);
 	}
+	
+	//후기 신고
+	public ReviewReport insertReport(ReviewReportDTO dto) {
+		return reportRepository.save(dto.toEntity());
+	}
+	
+	//후기 조회
+	public Optional<Review> findById(Long reviewId) {
+		return reviewRepository.findById(reviewId);
+	}
+	
+	//후기 신고 조회
+	public boolean existReport(Long reviewId, String userId) {
+		return reportRepository.existsById_reviewIdAndId_userId(reviewId, userId);
+	}
+
 }

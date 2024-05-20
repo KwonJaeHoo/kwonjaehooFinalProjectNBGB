@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.LoginDto;
+import com.sist.nbgb.service.CustomAdminDetailsService;
 import com.sist.nbgb.service.CustomInstructorsDetailsService;
 import com.sist.nbgb.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class LoginController
 {
 	private final CustomUserDetailsService customUserDetailsService;
 	private final CustomInstructorsDetailsService customInstructorsDetailsService;
+	private final CustomAdminDetailsService customAdminDetailsService;
 	private final PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/login")
@@ -62,17 +64,14 @@ public class LoginController
 					//SPRING_SECURITY_CONTEXT
 					return ResponseEntity.ok(200);
 				}
-				else
+				else if(userDetails.getAuthorities().toString().equals("[ROLE_STOP]"))
 				{
-					return ResponseEntity.ok(401);
-				}
-				
+					return ResponseEntity.ok(403);
+				}	
 	        }
-			else
-			{
-				return  ResponseEntity.ok(401);
-			}
-		}	
+			
+			return ResponseEntity.ok(401);
+		}
 	}
 	
 	@ResponseBody
@@ -104,36 +103,42 @@ public class LoginController
 		}	
 	}
 	
+	
+	@GetMapping("/login/admin")
+	public String adminLoginPage(HttpSession httpSession)
+	{
+		return "admin/adminLogin";
+	}
+	
+	
 	//admin
-//	@ResponseBody
-//	@PostMapping("/login/instructor")
-//	public ResponseEntity<Object> loginAdmin(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
-//	{
-//		UserDetails userDetails = customInstructorsDetailsService.loadUserByUsername(loginDto.getId());
-//
-//		if(userDetails == null)
-//		{
-//            return  ResponseEntity.ok(401);
-//		}
-//		else
-//		{
-//			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
-//			{
-//				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
-//				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-//				securityContext.setAuthentication(authentication);
-//				HttpSession session = httpServletRequest.getSession(true);
-//				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-//				
-//				return ResponseEntity.ok(200);
-//	        }
-//			else
-//			{
-//				return  ResponseEntity.ok(401);
-//			}
-//		}	
-//	}
-	
-	
-	
+	@ResponseBody
+	@PostMapping("/login/admin")
+	public ResponseEntity<Object> loginAdmin(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
+	{
+		UserDetails userDetails = customAdminDetailsService.loadUserByUsername(loginDto.getId());
+
+		if(userDetails == null)
+		{
+            return ResponseEntity.ok(401);	
+		}
+		else
+		{
+			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
+			{
+				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
+				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+				securityContext.setAuthentication(authentication);
+				HttpSession session = httpServletRequest.getSession(true);
+				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+
+				return ResponseEntity.ok(200);
+	        }
+			else
+			{
+				return ResponseEntity.ok(401);
+			}
+		}	
+	}
+
 }

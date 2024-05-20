@@ -6,15 +6,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sist.nbgb.dto.AdminDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
+import com.sist.nbgb.entity.Admin;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
 import com.sist.nbgb.enums.Role;
+import com.sist.nbgb.repository.AdminRepository;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.UserRepository;
 
@@ -26,6 +29,7 @@ public class SignupService
 {
 	private final UserRepository userRepository;
 	private final InstructorsRepository instructorsRepository;
+	private final AdminRepository adminRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	public Boolean userSignupDuplicateId(UserIdCheckDto userIdCheckDto)
@@ -99,5 +103,20 @@ public class SignupService
 				.build();
 		
 		return InstructorsDto.from(instructorsRepository.save(instructors));
+	}
+	
+	public AdminDto adminSignup(AdminDto adminDto)
+	{
+		Admin admin = Admin
+				.builder()
+				.adminId(adminDto.getAdminId())
+				.adminPassword(passwordEncoder.encode(adminDto.getAdminPassword()))
+				.adminName(adminDto.getAdminName())
+				.Authority(Role.ROLE_ADMIN)
+				.adminRegdate(LocalDateTime.now())
+				.build();
+		
+		return AdminDto.admin(adminRepository.save(admin)); 
+
 	}
 }

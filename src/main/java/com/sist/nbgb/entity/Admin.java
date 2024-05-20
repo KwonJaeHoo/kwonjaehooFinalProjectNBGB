@@ -43,10 +43,10 @@ public class Admin
 	@Comment("관리자 이름")
 	private String adminName;
 	
-	@Column
-	@Comment("관리자 상태")
-	@Enumerated(EnumType.STRING)
-	private Status adminStatus;
+//	@Column
+//	@Comment("관리자 상태")
+//	@Enumerated(EnumType.STRING)
+//	private Status adminStatus;
 	
 	@Column(length = 20)
 	@Comment("권한")

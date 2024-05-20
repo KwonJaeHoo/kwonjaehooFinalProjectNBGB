@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +53,7 @@ import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.response.UserResponse;
+import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.OnlineClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -62,6 +64,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class OnlineClassController {
 	private final OnlineClassService onlineClassService;
+	private final InstructorsService instService;
 	
 	@Autowired
 	private OfflineUpload photoUtil;
@@ -210,7 +213,10 @@ public class OnlineClassController {
 			//로그인하지않음
 		} else if (onlineClassService.hasInstRole()){
 			//강사 로그인
-		} else {
+		} else if (onlineClassService.hasAdminRole()){
+			//admin
+		}
+		else {
 			//강의 찜
 			if(onlineClassService.findLikeMe(onlineClassId, "on", userId) > 0) {
 				likeStatus = "Y";
@@ -312,7 +318,6 @@ public class OnlineClassController {
 	@ResponseBody
 	public ResponseEntity<Integer> onReviewLike(@RequestPart (value="revLikeDto") OnlineReviewLikeDTO revLikeDto, Model model){
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		log.info("내 권한은 뭘까요 !!! " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 		
 		if(userId.trim().equals("") || userId == null || userId.equals("anonymousUser"))
 		{
@@ -416,10 +421,17 @@ public class OnlineClassController {
 		OnlineClass onlineClass = onlineClassService.findById(onlineClassId);
 		List<OnlineClassFile> classFile = onlineClassService.findFileList(onlineClassId);
 		Instructors inst = null;
+		
 		if(onlineClassService.hasInstRole()) {
 			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 			inst = onlineClassService.findInst(userId);
+			if(!onlineClass.getInstructorId().getInstructorId().equalsIgnoreCase(userId)) {
+				return "redirect:/";
+			}
+			
 			model.addAttribute("inst", inst);
+		} else {
+			return "redirect:/";
 		}
 		
 		model.addAttribute("onlineClass", onlineClass);

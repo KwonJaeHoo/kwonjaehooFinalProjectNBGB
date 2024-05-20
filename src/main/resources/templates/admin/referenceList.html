@@ -6,9 +6,22 @@
 	<link rel="stylesheet" href="/css/referenceList.css">
 	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+<script>
+$(document).ready(function() {
+	$(".refAnswer").on("click", function(e) {
+		e.preventDefault();
+		
+		var refId = $(this).attr("data-refId");
+		var popupUrl = "/admin/refAnswerPop?refId=" + refId;
+		
+		window.open(popupUrl, "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
+	});
+});
+</script>
 </head>
 <body>
-	<a class="MainBanner" aria-current="page" href="/reference/referenceList"><h1>문의 게시판</h1></a>
+	<a class="MainBanner" aria-current="page" href="/admin/referenceList"><h1>문의 게시판</h1></a>
 	
 	<div class="container">
 
@@ -31,7 +44,7 @@
                 <td><a th:text="${refList.userId}">작성자</a></td>
                 <td><a th:text="${refList.refRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))}">등록일</a></td>
 				<td><a th:if="${refList.referenceAnswer != null}">답변 완료</a>
-                	<button class="box refAnswer" th:if="${refList.referenceAnswer == null}">답변 달기</button>
+                	<button class="box refAnswer" th:if="${refList.referenceAnswer == null}" th:data-refId="${refList.refId.refId}">답변 달기</button>
                 </td>  
             </tr>
             </tbody>
@@ -89,10 +102,6 @@
 		    </div>
 		 </div>
 		</div>
-    
-            
-  <div class="comment-form-wrap">                
-    </div>
 
 </div> <!-- /container -->
 
@@ -106,15 +115,6 @@
 
 
 <script src="/js/reference.js"></script>
-
-
-<!--채팅/맨 위로 버튼-->
-		<!--footer-->
-			<!-- loader -->
-	<div th:insert="import/bottomImport.html :: bottom-import"></div>
-			<!-- loader -->
-		<!--footer-->
-	<!--채팅/맨 위로 버튼-->
 	
 	
 	

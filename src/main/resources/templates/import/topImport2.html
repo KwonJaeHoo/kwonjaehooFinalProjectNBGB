@@ -16,14 +16,14 @@
               			<a href="/signup" class="medium mr-3"><span class="icon-people_outline"></span> 회원가입</a> 
 					</div>
 					
-					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right">
+					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right" style="flex: 0 0 30%; max-width: 30%;">
 						<a class="medium mr-3">[[ ${session.SPRING_SECURITY_CONTEXT.Authentication.Name} ]] 님</a> 
 						
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
 							th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}"
-							th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
-						
+							th:href="@{/instructor/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a>							
+							
 						<a href="/logout" class="medium mr-3"><span class="icon-input"></span> 로그아웃</a>
 					</div>
 				</div>

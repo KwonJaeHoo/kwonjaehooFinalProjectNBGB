@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/loginCustom.css">
+<div th:replace="import/cssImport.html :: css-import"></div>
+</head>
+<body>
+	<!--로고-->
+  	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  		<div class="container-top">
+  		   <div class="row m-auto">
+          		<div class="col-12 w-100 text-center">
+	  				<a class="navbar-brand" href="/"><img src="/images/logo.png" width="300px"></a>
+				    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
+	  			</div>
+  		   </div>
+  		</div>
+	</nav>
+
+	<div class="container mt-3">
+      <!-- 회원 로그인 -->
+      <div class="container__form container--signin">
+        	<form class="form" id="adminForm">
+				<h2 class="form-title">관리자 로그인</h2>
+				<input type="text" class="input" id="adminId" name="adminId" placeholder="아이디"/> 
+				<p class="input-msg" id="adminMsg1"></p>	
+				<input type="password" class="input" id="adminPassword" name="adminPassword" placeholder="비밀번호"/> 
+				<p class="input-msg" id="adminMsg2"></p>	
+		        <button type="button" class="log-btn log-btn-first" id="adminLoginBtn" name="adminLoginBtn">로그인</button>
+				
+			</form>
+		</div>
+	</div>
+</body>
+
+<script>
+$(document).ready(function()
+{
+	//정규표현식
+	var emptyCheck = /\s/g;
+	
+	$("#adminLoginBtn").on("click", function()
+	{
+		if($.trim($("#adminId").val()).length <= 0)
+		{
+			$('#adminId').css({'border':'1px solid red'});
+			document.getElementById("adminMsg1").innerHTML = "아이디를 입력해주세요.";
+			return;
+		}
+		
+		$('#adminId').css({'border':'1px solid #89dd18'});
+		document.getElementById("adminMsg1").innerHTML = "";
+		
+		if($.trim($("#adminPassword").val()).length <= 0)
+		{
+			$('#adminPassword').css({'border':'1px solid red'});
+			document.getElementById("adminMsg2").innerHTML = "비밀번호를 입력해주세요.";
+			return;
+		}
+		
+		$('#adminPassword').css({'border':'1px solid #89dd18'});
+		document.getElementById("adminMsg2").innerHTML = "";
+		
+		$.ajax
+		({
+			type:"POST",
+			url:"/login/admin",
+			data : JSON.stringify
+			({	           
+				id:$('#adminId').val(),
+				password:$('#adminPassword').val()
+			}),
+			datatype:"JSON",
+			contentType:"application/json",
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(data)
+			{
+				if(data == 200)
+				{
+					location.href = "/admin/adminMain";
+					return;
+				}
+				else if(data == 401)
+				{
+					$('#adminId').css({'border':'1px solid red'});
+					$('#adminId').val("");
+					$('#adminPassword').css({'border':'1px solid red'});					
+					$('#adminPassword').val("");
+					document.getElementById("adminMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
+					return;
+				}
+			},
+			error:function(xhr, status, error)
+			{
+				$('#adminId').css({'border':'1px solid red'});
+				$('#adminId').val("");
+				$('#adminPassword').css({'border':'1px solid red'});					
+				$('#adminPassword').val("");
+				document.getElementById("adminMsg2").innerHTML = "아이디 또는 비밀번호가 잘못됐어요.";
+				return;
+			}
+		});
+	});
+});
+</script>
+</html>

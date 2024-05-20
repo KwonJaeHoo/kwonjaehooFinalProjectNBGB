@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,8 @@ import com.sist.nbgb.dto.OfflineClassDenyDTO;
 import com.sist.nbgb.dto.OfflineClassStatusChange;
 import com.sist.nbgb.dto.OnlineClassDenyDTO;
 import com.sist.nbgb.dto.OnlineClassStatusChange;
+
+import com.sist.nbgb.dto.ReferenceAnswerDto;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.ReviewReportListDTO;
 import com.sist.nbgb.dto.UserIdCheckDto;
@@ -40,6 +43,14 @@ import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.ReferenceService;
 import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.UserService;
+
+import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Role;
+import com.sist.nbgb.enums.Status;
+
+import com.sist.nbgb.service.AdminService;
+
+import com.sist.nbgb.service.ReferenceService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -104,6 +115,26 @@ public class AdminController {
 		
 		return "admin/referenceView";
 	}
+	
+	//문의글 답변 달기
+	@GetMapping("/refAnswerPop")
+	public String refAnswerPop(Model model) {
+		    
+	    return "/admin/refAnswerPop";
+	}
+	
+	@PostMapping("/refAnswer")
+	@ResponseBody
+    public String refAnswer(@RequestBody ReferenceAnswerDto ReferenceAnswerDto ) {
+        try
+        {
+        	adminService.refAnswer(ReferenceAnswerDto.getRefId(), ReferenceAnswerDto.getRefAnswerContent());
+        	return "SUCCESS";
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	return "ERROR";
+        }
+    }
 	
 	
 	//일반회원 리스트 불러오기
@@ -312,9 +343,9 @@ public class AdminController {
 		}
 		
 		if(reportAll.equals("true")) {
-			reviewService.updateAllReportStatus(reviewService.findById(reviewId), Status.C);
+			reviewService.updateAllReportStatus(reviewService.findByReviewId(reviewId), Status.C);
 		}else {
-			reviewService.updateReportStatus(reviewService.findById(reviewId), userService.findUserById(reportUserId), Status.C);
+			reviewService.updateReportStatus(reviewService.findByReviewId(reviewId), userService.findUserById(reportUserId), Status.C);
 		}
 	}
 }

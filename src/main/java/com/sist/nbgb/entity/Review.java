@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sist.nbgb.enums.Status;
 
 import lombok.AllArgsConstructor;
@@ -60,6 +61,7 @@ public class Review
 	@Comment("회원 아이디")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID")
+	@JsonIgnore
 	private User userId;
 	
 	@CreatedDate
