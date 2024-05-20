@@ -115,7 +115,7 @@ $(document).ready(function() {
                 <td><a th:text="${userList.userGender}">성별</a></td>
                 <td><a th:text="${userList.userPhone}">회원 전화번호</a></td>
                 <td><a th:text="${userList.userPoint}">회원 포인트</a></td>
-                <td><a th:text="${userList.userRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">회원 가입일</a></td>
+                <td><a th:text="${userList.userRegdate != null ? userList.userRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')) : '날짜 없음'}">회원 가입일</a></td>
                 <td><a th:text="${userList.Authority}">회원 상태(권한)</a></td>
                 <td><button class="box roleStop" th:data-user-id="${userList.userId}" 
                 			th:if="${#strings.equals(#strings.toString(userList.Authority), 'ROLE_USER' )}">회원 정지</button>
