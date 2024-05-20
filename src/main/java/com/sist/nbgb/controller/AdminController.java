@@ -285,7 +285,7 @@ public class AdminController {
 	{
 		try 
 		{
-			adminService.changeOnlineToApprove(offlineClassStatusChange.getOfflineClassId(), Status.Y);
+			adminService.changeOfflineToApprove(offlineClassStatusChange.getOfflineClassId(), Status.Y);
 			return "SUCCESS";
 		} catch(Exception e) {
 			e.printStackTrace();
