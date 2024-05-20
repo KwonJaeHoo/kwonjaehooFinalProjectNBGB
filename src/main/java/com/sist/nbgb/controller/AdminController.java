@@ -152,6 +152,7 @@ public class AdminController {
 		
 		model.addAttribute("page", page);
 		model.addAttribute("userList", page.getContent());                                
+		model.addAttribute("orderBy", "user");                                
 		
 		return "admin/userList";
 	}
@@ -197,6 +198,7 @@ public class AdminController {
 		
 		model.addAttribute("page", page);
 		model.addAttribute("instructorList", page.getContent());
+		model.addAttribute("orderBy", "instructor");
 		
 		return "admin/instructorList";
 	}
@@ -216,6 +218,7 @@ public class AdminController {
 		
 		model.addAttribute("page", page);
 		model.addAttribute("onlineClassList", page.getContent());
+		model.addAttribute("orderBy", "online");
 		
 		return "admin/onlineClassList";
 	}
@@ -270,6 +273,7 @@ public class AdminController {
 		
 		model.addAttribute("page", page);
 		model.addAttribute("offlineClassList", page.getContent());
+		model.addAttribute("orderBy", "offline");
 		
 		return "admin/offlineClassList";
 	}

@@ -4,11 +4,11 @@
 	<div th:replace="import/cssImport.html :: css-import"></div>
 	<link rel="stylesheet" href="/css/reference.css" >
 	<link rel="stylesheet" href="/css/referenceList.css">
-	<link rel="stylesheet" href="../assets/css/styles.min.css" />
+	<!--<link rel="stylesheet" href="../assets/css/styles.min.css" />-->
 </head>
-<body th:fragment="top-import">
-	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-
+<body>
+<div th:insert="import/topAdminImport.html :: top-import"></div>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" style="margin-top:9dvh;">
 		<div class="container">
 	  		<div class="row m-auto">
 	  			<div class="col-12 w-100 text-center mt-4">
@@ -18,17 +18,18 @@
 	  			<div class="col-12 w-100 text-center">
 	  				<div class="collapse navbar-collapse" id="ftco-nav">
 				    	<ul class="navbar-nav m-auto menu">
-				        	<li class="nav-item active" ><a href="/" class="nav-link">홈</a></li>
+				        	<li class="nav-item active" ><a href="/" class="nav-link">내방공방</a></li>
 				          	<li class="nav-item">
-								<a href="/admin/userList" class="nav-link">일반 회원 리스트</a>
+								<a href="/admin/userList" class="nav-link">회원 관리</a>
 							</li>
-				          	<li class="nav-item"><a href="/admin/instructorList" class="nav-link">강사 회원 리스트</a></li>
-				          	<!-- li class="nav-item"><a href="/about.html" class="nav-link">내방공방 소개</a></li-->
 				          	<li class="nav-item">
-				          		<a href="/admin/onlineClassList" class="nav-link">내방 클래스 리스트</a>
+				          		<a href="/admin/onlineClassList" class="nav-link">클래스 관리</a>
 				          	</li>
 				          	<li class="nav-item">
-				          		<a href="/admin/offlineClassList" class="nav-link">공방 클래스 리스트</a>
+				          		<a href="/admin/referenceList" class="nav-link">문의글 관리</a>
+				          	</li>
+				          	<li class="nav-item">
+				          		<a href="/admin/reviewReportList" class="nav-link">신고글 관리</a>
 				          	</li>
 				        </ul>
 					</div>

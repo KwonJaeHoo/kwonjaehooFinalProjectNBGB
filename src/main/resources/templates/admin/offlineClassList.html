@@ -50,15 +50,29 @@ $(document).ready(function() {
 	    
 	    window.open(popupUrl, "", "width=550px, height=500px, top=150px, left=200px, scrollbars=yes");
 	});
+	
+	$('input:radio[name="classOrderBy"]').on("change", function(){
+		var orderBy = $('input:radio[name="classOrderBy"]:checked').val();
+		if(orderBy == 'online'){
+			location.href = "/admin/onlineClassList"; 
+		}else if(orderBy == 'offline'){
+			location.href = "/admin/offlineClassList"; 
+		}
+	});	
 });
 </script>
 </head>
 <body>
-	<a class="MainBanner" aria-current="page" href="/admin/offlineClassList"><h1>오프라인 강의 관리</h1></a>
+<div th:insert="import/topAdminImport.html :: top-import"></div>
+	<a class="MainBanner" aria-current="page" href="/admin/offlineClassList"><h1 style="margin-top:9dvh;">오프라인 클래스 관리</h1></a>
 	
 	<div class="container">
 
     <hr class="my-4">
+    <div>
+		<input type="radio" name ="classOrderBy" value="online" th:checked="${orderBy eq 'online'}">온라인 클래스</input>
+		<input type="radio" class="ml-2" name ="classOrderBy" value="offline" th:checked="${orderBy eq 'offline'}">오프라인 클래스</input>
+    </div>
     <div>
         <table class="table">
             <thead>

@@ -78,16 +78,30 @@ $(document).ready(function() {
 				}
 		    });		
 		}
-	})
+	});
+	
+	$('input:radio[name="userOrderBy"]').on("change", function(){
+		var orderBy = $('input:radio[name="userOrderBy"]:checked').val();
+		if(orderBy == 'user'){
+			location.href = "/admin/userList"; 
+		}else if(orderBy == 'instructor'){
+			location.href = "/admin/instructorList"; 
+		}
+	});
 });
 </script>
 </head>
 <body>
-	<a class="MainBanner" aria-current="page" href="/admin/userList"><h1>회원 관리</h1></a>
+<div th:insert="import/topAdminImport.html :: top-import"></div>
+	<a class="MainBanner" aria-current="page" href="/admin/userList"><h1 style="margin-top:9dvh;">일반 회원 관리</h1></a>
 	
 	<div class="container">
 
     <hr class="my-4">
+    <div>
+		<input type="radio" name ="userOrderBy" value="user" th:checked="${orderBy eq 'user'}">일반회원</input>
+		<input type="radio" class="ml-2" name ="userOrderBy" value="instructor" th:checked="${orderBy eq 'instructor'}">강사회원</input>
+    </div>
     <div>
         <table class="table">
             <thead>
