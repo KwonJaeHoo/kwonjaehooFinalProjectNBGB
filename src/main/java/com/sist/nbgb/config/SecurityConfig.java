@@ -12,6 +12,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import com.sist.nbgb.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.sist.nbgb.oauth2.OAuth2Service;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -19,7 +22,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig 
 {
-   
+	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+	private final OAuth2Service oAuth2Service;
+
 	@Bean
     public MappingJackson2JsonView jsonView() 
     {
@@ -40,7 +45,7 @@ public class SecurityConfig
     @Bean
 	public SecurityFilterChain FilterChain(HttpSecurity httpSecurity) throws Exception
 	{
-		return httpSecurity
+    	httpSecurity
 				.exceptionHandling()
 					.accessDeniedPage("/403")
 					
@@ -65,6 +70,13 @@ public class SecurityConfig
 					.antMatchers("/instructor/**").hasAnyAuthority("ROLE_INSTRUCTOR")					
 					.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
 				.and()
-				.build();
+				.oauth2Login().loginPage("/login")
+					
+                .defaultSuccessUrl("/")
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .userInfoEndpoint()
+                .userService(oAuth2Service);
+				
+				return httpSecurity.build();
 	}
 }

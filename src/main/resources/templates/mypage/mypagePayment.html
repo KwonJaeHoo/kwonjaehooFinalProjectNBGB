@@ -38,7 +38,8 @@
    							<button class="log-btn log-btn-first" type="button" th:onlinePartnerOrderId="${onlinePaymentApproveDto.partnerOrderId}" th:onclick="onlinePaymentCancel(this.getAttribute('onlinePartnerOrderId'))">결제취소</button>
 						</div>
 						
-						<div class="col-2 text-center" th:if="${(#temporals.format(localDateTime, 'yyyy-MM-dd') >= #temporals.format(onlinePaymentApproveDto.approvedAt.plusDays(3), 'yyyy-MM-dd') and #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'Y') and #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'N')) 
+						<div class="col-2 text-center" 
+						th:if="${(#temporals.format(localDateTime, 'yyyy-MM-dd') >= #temporals.format(onlinePaymentApproveDto.approvedAt.plusDays(3), 'yyyy-MM-dd') and (#strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'Y') or #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'N'))) 
 						or ((#temporals.format(localDateTime, 'yyyy-MM-dd') < #temporals.format(onlinePaymentApproveDto.approvedAt.plusDays(3), 'yyyy-MM-dd') and #strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'Y')))}">결제완료</div>
 						
 						<div class="col-2 text-center" th:if="${#strings.equals(#strings.toString(onlinePaymentApproveDto.status), 'R') }">재 결제</div>
