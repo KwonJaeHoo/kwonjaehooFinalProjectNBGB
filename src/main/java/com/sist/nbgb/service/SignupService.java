@@ -71,7 +71,7 @@ public class SignupService
 				.userPhone(userDto.getUserPhone())
 				.userBirth(userDto.getUserBirth().replaceAll("-", ""))
 				.userGender(userDto.getUserGender())
-				.userPoint((long)0)
+				.userPoint((long)1000)
 				.userProvider(Provider.LOCAL)
 				.Authority(Role.ROLE_USER)
 				.userRegdate(LocalDateTime.now().withNano(0))

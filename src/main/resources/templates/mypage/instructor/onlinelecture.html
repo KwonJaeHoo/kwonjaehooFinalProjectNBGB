@@ -45,6 +45,36 @@ function onlineLectureStatusChange(onlineClassId)
 		});
 	}
 }
+
+//삭제
+function fn_delete(onlineClassId)
+{
+	if(confirm("게시글을 삭제하시겠습니까? 삭제 후 복구할 수 없습니다."))
+	{
+		var id = onlineClassId;
+		$.ajax
+		({
+			type:"DELETE",
+			url:"/online/delete/"+id,
+			datatype:"JSON",
+			async:false,
+			beforeSend:function(xhr)
+			{
+				xhr.setRequestHeader("AJAX", true);
+			},
+			success:function(response)
+			{
+				alert("삭제되었습니다.");
+				history.go(0);
+			},
+			error:function(xhr, status, error)
+			{
+				alert("오류가 발생했습니다. 다시 시도해주세요.");
+				return;
+			}
+		});
+	}
+}
 </script>
 </head>
 <body>
@@ -85,7 +115,8 @@ function onlineLectureStatusChange(onlineClassId)
             			
             				<button class="btnReserve" th:onlineClassId="${item.onlineClassId}" th:onclick="onlineLectureStatusChange(this.getAttribute('onlineClassId'))" th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'Y')}">판매중지</button>
             			 	<button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="|location.href='@{'/online/update/' + ${item.onlineClassId}}'|" th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'N')}">수정</button>
-            			 
+            			    <button class="btnReserve" th:rejection="${item?.rejection}" th:onclick="|fn_delete(${item.onlineClassId})|" th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'N')}">삭제</button>
+            			    
             			 	<div th:if="${#strings.equals(#strings.toString(item.onlineClassApprove), 'S')}">
             			 	<button class="btnReserve" th:onclick="|location.href='@{'/online/update/' + ${item.onlineClassId}}'|" id="" name="" >수정</button>
             			 	<button class="btnReserve" id="" name="" th:rejection="${item?.rejection}" th:onclick="fn_reason(this.getAttribute('rejection'))">사유</button></div>

@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -622,5 +623,18 @@ public class OfflineController
 		
        return ResponseEntity.ok(1);   
 
+	}
+	
+	//게시글 승인 전 삭제
+	@DeleteMapping("/offlineClass/delete/{offlineClassId}")
+	@ResponseBody
+	public ResponseEntity<Integer> postDelete(@PathVariable long offlineClassId) {
+		try {
+			offlineService.postDelete(offlineClassId);
+		} catch (Exception e) {
+			return ResponseEntity.ok(0);
+		}
+		
+		return ResponseEntity.ok(1);
 	}
 }

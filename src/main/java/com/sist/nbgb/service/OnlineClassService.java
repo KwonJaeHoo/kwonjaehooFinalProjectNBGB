@@ -553,11 +553,39 @@ public class OnlineClassService {
 	}
 	
 	//user 찾기
-	public Optional<User> findByUserId(String userId)
-	{
+	public Optional<User> findByUserId(String userId) {
 		return userRepository.findByUserId(userId);
 	}
-
+	
+	//게시글 삭제(동영상 파일/썸네일/DB) 모두 삭제
+	@Transactional
+	public void postDelete(Long onlineClassId) {
+		 File dirFile = new File(fileDir);
+	     File[] fileList = dirFile.listFiles();
+	     
+	     for(File file: fileList) {
+            if (file.getName().startsWith(onlineClassId+"_")) {
+                log.info("파일삭제:"+file.getName());
+            	file.delete();
+            }
+	     }
+	     
+	     int result = fileRepository.deleteByOnlineClassFileId_onlineClassId(onlineClassId);
+		 log.info(result+"건의 파일을 DB에서 삭제했습니다.");
+		 
+	     String path = "C:/project/sts4/SFPN/src/main/resources/static/images/onlineThumbnail";
+		 String fileName = onlineClassId + ".jpg";
+		 String filepath = path + "/" + fileName;
+	     
+		 File imageFile = new File(filepath);
+		 if(imageFile.exists()) {
+			 imageFile.delete();
+			 log.info("메인 이미지 삭제:"+filepath);
+		 }
+		 
+		 onlineClassRepository.deleteById(onlineClassId);
+	}
+	
 	/*pay*/
 	//결제 QR
 	public OfflineReadyResponse payReady(OnlinePaymentApproveDto onPayDto) {

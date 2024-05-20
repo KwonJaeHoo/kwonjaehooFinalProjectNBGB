@@ -66,7 +66,7 @@ public class User
 	@Comment("회원 성별")
 	private char userGender;
 	
-	//@ColumnDefault("1000")
+	@ColumnDefault("1000")
 	@Column(columnDefinition = "NUMBER(7)")
 	@Comment("회원 포인트")
 	private Long userPoint;
