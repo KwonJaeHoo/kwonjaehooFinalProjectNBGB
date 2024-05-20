@@ -27,4 +27,7 @@ public interface OnlineClassFileRepository extends JpaRepository<OnlineClassFile
 	@Modifying
 	@Query("delete from OnlineClassFile o where o.onlineClassFileId.onlineClassId =:onlineClassId and o.onlineClassFileId.onlineFileId =:onlineFileId")
 	int deleteFile(@Param("onlineClassId") Long onlineClassId, @Param("onlineFileId") Long onlineFileId);
+	
+	//강의 classId로 삭제
+	int deleteByOnlineClassFileId_onlineClassId(Long onlineClassId);
 }

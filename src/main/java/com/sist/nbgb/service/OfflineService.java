@@ -1,5 +1,6 @@
 package com.sist.nbgb.service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -269,4 +270,20 @@ public class OfflineService
 		
 		return id;
 	}
+	
+	//게시글 삭제
+	@Transactional
+	public void postDelete(Long offlineClassId) {
+	     String path = "C:/project/sts4/SFPN/src/main/resources/static/images/offlineThumbnail";
+		 String fileName = offlineClassId + ".jpg";
+		 String filepath = path + "/" + fileName;
+	     
+		 File imageFile = new File(filepath);
+		 if(imageFile.exists()) {
+			 imageFile.delete();
+		 }
+		 
+		 offlineRepository.deleteById(offlineClassId);
+	}
+	
 }

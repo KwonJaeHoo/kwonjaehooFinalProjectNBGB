@@ -507,4 +507,17 @@ public class OnlineClassController {
 		}
 		return ResponseEntity.ok(1);
 	}
+	
+	//게시글 승인 전 삭제
+	@DeleteMapping("/online/delete/{onlineClassId}")
+	@ResponseBody
+	public ResponseEntity<Integer> postDelete(@PathVariable long onlineClassId) {
+		try {
+			onlineClassService.postDelete(onlineClassId);
+		} catch (Exception e) {
+			return ResponseEntity.ok(0);
+		}
+		
+		return ResponseEntity.ok(1);
+	}
 }
