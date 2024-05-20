@@ -34,7 +34,7 @@ import lombok.Setter;
 public class User 
 {
 	@Id
-	@Column(length = 20)
+	@Column(length = 60)
 	@Comment("회원 아이디")
 	private String userId;
 	

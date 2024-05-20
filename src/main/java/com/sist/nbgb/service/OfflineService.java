@@ -162,7 +162,7 @@ public class OfflineService
 				.offlineClassCategory(offlinePostDto.getOfflineClassCategory())
 				.instructorId(id)
 				.offlineClassPrice(offlinePostDto.getOfflineClassPrice())
-				.offlineClassApprove(Status.Y)
+				.offlineClassApprove(Status.N)
 				.rejection(null)
 				.offlineClassLimitPeople(offlinePostDto.getOfflineClassLimitPeople())
 				.offlineClassViews((long) 0)

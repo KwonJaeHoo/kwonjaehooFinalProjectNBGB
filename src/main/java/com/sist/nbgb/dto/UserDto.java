@@ -1,5 +1,7 @@
 package com.sist.nbgb.dto;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sist.nbgb.entity.User;
 
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDto 
 {
+	@Size(max = 20)
 	private String userId;
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
