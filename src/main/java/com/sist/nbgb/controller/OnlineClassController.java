@@ -151,11 +151,8 @@ public class OnlineClassController {
 
 		//로그인 정보 받아오기
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		log.info("로그인을 했나요?????????????????????????????? :" + userId);
-		
 		Collection<? extends GrantedAuthority> auth = null;
 		auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		log.info("이게멀까?@@!!!!!!!!!!!!!!!!!!!!!!! 권한:" + auth);
 		User user1 = null;
 		
 		//페이징 안한 리뷰목록
@@ -246,7 +243,6 @@ public class OnlineClassController {
 			
 			user1 = user.get();
 			
-			
 		}
 		
 		model.addAttribute("onlineClass", new OnlineClassView(onlineClass));
@@ -284,13 +280,11 @@ public class OnlineClassController {
 			classLikeDto.setUserId(userId);
 			
 			likeDto = onlineClassService.saveLike(classLikeDto);
-			
 		}
 		
 		log.info(classLikeDto.getClassId()+"classID");
 		log.info(classLikeDto.getClassIden()+"iden");
 		log.info(classLikeDto.getUserId()+"userID");
-		
 		
 		return ResponseEntity.ok(likeDto);
 	}
@@ -506,7 +500,6 @@ public class OnlineClassController {
 	@DeleteMapping("/online/update/post/{onlineClassId}/{onlineFileId}")
 	@ResponseBody
 	public ResponseEntity<Integer> videoDelete(@PathVariable final long onlineClassId, @PathVariable long onlineFileId) {
-		//로컬에서 지워야되는데말이야
 		try {
 			onlineClassService.deleteFile(onlineClassId, onlineFileId);
 		} catch (IOException e) {

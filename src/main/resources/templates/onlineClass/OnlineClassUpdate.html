@@ -252,7 +252,7 @@ $(document).ready(function(){
 	    formData.append('onlineUpdateDto', new Blob([JSON.stringify(onlineUpdateDto)], {type: "application/json"}));
 	    
 	   var onlineClassId = $("#idVal").val();
-	   
+	   var instId = $("#instId").val();
 	    $.ajax({
 	    	type:"PATCH",
 	    	url:"/online/update/post/"+onlineClassId,
@@ -267,7 +267,7 @@ $(document).ready(function(){
 	    	success:function(response){
 	    		if(response == 1) {
 	    			alert("수정 되었습니다.\n관리자 확인 후 게시글이 업로드됩니다.");
-	    			//location.href = "/onlineClass";
+	    			location.href = "/instructor/mypage/"+instId+"/onlinelecture";
 	    		} else if(reponse == -1){
 	    			alert("대표 이미지 삭제 오류");
 	    		} else {
@@ -312,7 +312,7 @@ function fn_del(onlineFileId) {
     	},
     	success:function(response){
     		if(response == 1) {
-    			alert("삭제함");
+    			console.log("삭제완료");
     			//location.href = "/onlineClass";
     		} else {
     			alert("오류가 발생했습니다. 잠시 후 다시 시도하세요.");
