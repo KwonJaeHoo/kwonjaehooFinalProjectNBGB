@@ -14,6 +14,7 @@ import com.sist.nbgb.dto.KakaoPaymentCancelDto;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
 import com.sist.nbgb.dto.ReferenceDto2;
+import com.sist.nbgb.dto.UserAttributeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.ClassLike;
@@ -74,7 +75,10 @@ public class UserService
 		return UserInfoDto.infoUser(userRepository.findAllByUserId(userId));
 	}
 	
-	
+	public UserAttributeDto findUserAttribute(String userId)
+	{
+		return UserAttributeDto.userAttribute(userRepository.findUserNicknameAndUserProviderByUserId(userId));
+	}
 	
 	
 	
