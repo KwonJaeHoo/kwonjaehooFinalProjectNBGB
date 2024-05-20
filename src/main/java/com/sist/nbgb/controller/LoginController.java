@@ -19,15 +19,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.LoginDto;
+import com.sist.nbgb.dto.UserAttributeDto;
 import com.sist.nbgb.service.CustomAdminDetailsService;
 import com.sist.nbgb.service.CustomInstructorsDetailsService;
 import com.sist.nbgb.service.CustomUserDetailsService;
+import com.sist.nbgb.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class LoginController 
 {
+	private final UserService userService;
 	private final CustomUserDetailsService customUserDetailsService;
 	private final CustomInstructorsDetailsService customInstructorsDetailsService;
 	private final CustomAdminDetailsService customAdminDetailsService;
@@ -55,11 +59,13 @@ public class LoginController
 			{
 				if(userDetails.getAuthorities().toString().equals("[ROLE_USER]"))
 				{
+					UserAttributeDto userAttributeDto = userService.findUserAttribute(userDetails.getUsername());
 					Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
 					SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 					securityContext.setAuthentication(authentication);
 					HttpSession session = httpServletRequest.getSession(true);
 					session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+					session.setAttribute("userAttributeDto", userAttributeDto);
 					
 					//SPRING_SECURITY_CONTEXT
 					return ResponseEntity.ok(200);

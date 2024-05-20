@@ -47,4 +47,6 @@ public interface UserRepository extends JpaRepository<User, String>
 			+ "SET userPoint = userPoint - :point "
 			+ "WHERE userId = :userId")
 	int returnPoint(@Param("userId") String userId, @Param("point") Long point);
+	
+	User findUserNicknameAndUserProviderByUserId(String userId);
 }

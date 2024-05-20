@@ -24,7 +24,7 @@
           			</div>
         		</div>
         		<div th:each="classLikeDto : ${paging}"class="container list-section mb-5 mt-2" th:if="${classLikeDto != 'classLikeDtoIsNull'}">
-        			<div th:if="${classLikeDto != 'classLikeDtoIsNull'}" class="row list-item">
+        			<div th:if="${classLikeDto != 'null'}" class="row list-item">
             			<div class="col-4 text-center">
             				<a th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${classLikeDto.classId})}"><img th:src="@{'/images/offlineThumbnail/' + ${classLikeDto.classId} + '.jpg'}" style="width:180px;height:100px;"/></a>
             			</div>
@@ -35,13 +35,14 @@
             				<a type="button" th:offlineClassId="${classLikeDto.classId}" th:offlineUserId="${classLikeDto.userId}" th:onclick="offlineLikeCancel(this.getAttribute('offlineClassId'), this.getAttribute('offlineUserId'))"><img src="/images/icon-heart.png" style="width:25px;height:25px;"></a>
             			</div>
           			</div>
+	          		<div th:if="${classLikeDto == 'null'}" class="container list-section">
+		        		<div class="list-section-none"><h5>공방 찜 내역이 없어요.</h5></div>
+		        	</div>
         		</div>
-	  		    <div th:if="${classLikeDto == 'classLikeDtoIsNull'}" class="container list-section">
-	        		<div class="list-section-none"><h5>공방 찜 내역이 없어요.</h5></div>
-	        	</div>
+
         
         	<!--페이징-->
-        		<div th:if="${!paging.isEmpty()}">
+        		<div th:if="${paging != 'null'}">
 				    <div class="row my-5 paging-area">
 				        <div class="block-27">
 				            <ul class="mb-2">

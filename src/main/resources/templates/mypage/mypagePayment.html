@@ -26,8 +26,8 @@
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
-        		<div th:each="onlinePaymentApproveDto : ${onlinePaymentpaging}"class="container list-section">
-        			<div th:if="${onlinePaymentApproveDto != 'onlinePaymentApproveDtoIsNull'}" class="row list-item">
+        		<div th:each="onlinePaymentApproveDto : ${onlinePaymentApprovepaging}"class="container list-section">
+        			<div th:if="${onlinePaymentApproveDto != 'null'}" class="row list-item">
             			<div class="col-3 list-item-title"><a th:text="${onlinePaymentApproveDto.itemName}" th:href="@{/online/{onlineClassId} (onlineClassId=${onlinePaymentApproveDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(onlinePaymentApproveDto.approvedAt, 'yyyy-MM-dd HH:mm')}"></div>
             			
@@ -48,37 +48,41 @@
 						
         			</div>
         			
-        			<div th:if="${onlinePaymentApproveDto == 'onlinePaymentApproveDtoIsNull'}" class="row list-item">
+        			<div th:if="${onlinePaymentApproveDto == 'null'}" class="row list-item">
           				<div class="col-2 text-center"><a>내방 결제내역이 없어요.</a></div>
           			</div>
         		</div>
         
         	<!--페이징-->
-        <div th:if="${!onlinePaymentpaging.isEmpty()}">
-		    <div class="row my-5 paging-area">
-		        <div class="block-27">
-		            <ul class="mb-2">
-		                <!-- 이전 페이지로 이동하는 링크 -->
-		                <li th:classappend="${onlinePaymentpaging.number == 0} ? 'disabled'">
-		                    <a th:if="${onlinePaymentpaging.number > 0}" th:href="@{|?page=${onlinePaymentpaging.number-1}#space|}">&lt;</a>
-		                </li>
-		
-		                <!-- 페이지 번호를 보여주는 링크 -->
-		                <li th:each="page: ${#numbers.sequence(0, onlinePaymentpaging.totalPages-1)}"
-		                    th:if="${page >= onlinePaymentpaging.number-2 and page <= onlinePaymentpaging.number+2}"
-		                    th:classappend="${page == onlinePaymentpaging.number} ? 'active'">
-		                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
-		                </li>
-		
-		                <!-- 다음 페이지로 이동하는 링크 -->
-		                <li th:classappend="${onlinePaymentpaging.number == onlinePaymentpaging.totalPages-1} ? 'disabled'">
-		                    <a th:if="${onlinePaymentpaging.number < onlinePaymentpaging.totalPages-1}" th:href="@{|?page=${onlinePaymentpaging.number+1}#space|}">&gt;</a>
-		                </li>
-		            </ul>
-		        </div>
-		    </div>
-		</div>
-        		
+        	<div th:if="${onlinePaymentApprovepaging == 'null'}">
+				</br>
+        	</div>
+        	
+	        <div th:if="${onlinePaymentApprovepaging != 'null'}">
+			    <div class="row my-5 paging-area">
+			        <div class="block-27">
+			            <ul class="mb-2">
+			                <!-- 이전 페이지로 이동하는 링크 -->
+			                <li th:classappend="${onlinePaymentApprovepaging.number == 0} ? 'disabled'">
+			                    <a th:if="${onlinePaymentApprovepaging.number > 0}" th:href="@{|?page=${onlinePaymentApprovepaging.number-1}#space|}">&lt;</a>
+			                </li>
+			
+			                <!-- 페이지 번호를 보여주는 링크 -->
+			                <li th:each="page: ${#numbers.sequence(0, onlinePaymentApprovepaging.totalPages-1)}"
+			                    th:if="${page >= onlinePaymentApprovepaging.number-2 and page <= onlinePaymentApprovepaging.number+2}"
+			                    th:classappend="${page == onlinePaymentApprovepaging.number} ? 'active'">
+			                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
+			                </li>
+			
+			                <!-- 다음 페이지로 이동하는 링크 -->
+			                <li th:classappend="${onlinePaymentApprovepaging.number == onlinePaymentApprovepaging.totalPages-1} ? 'disabled'">
+			                    <a th:if="${onlinePaymentApprovepaging.number < onlinePaymentApprovepaging.totalPages-1}" th:href="@{|?page=${onlinePaymentApprovepaging.number+1}#space|}">&gt;</a>
+			                </li>
+			            </ul>
+			        </div>
+			    </div>
+			</div>
+	        		
 				<div class="container list-section">
           			<div class="row mb-4 list-title">
             			<div class="col-3 text-center">결제내용</div>
@@ -89,7 +93,7 @@
           			</div>
         		</div>
         		<div th:each="onlinePaymentCancelDto : ${onlinePaymentCancelpaging}"class="container list-section">
-        			<div th:if="${onlinePaymentCancelDto != 'onlinePaymentCancelDtoIsNull'}" class="row list-item">
+        			<div th:if="${onlinePaymentCancelDto != 'null'}" class="row list-item">
 						<div class="col-3 list-item-title"><a th:text="${onlinePaymentCancelDto.itemName}" th:href="@{/online/{onlineClassId} (onlineClassId=${onlinePaymentCancelDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(onlinePaymentCancelDto.canceledAt, 'yyyy-MM-dd HH:mm')}"></div>
             			
@@ -98,13 +102,17 @@
 						
 						<div class="col-2 text-center">결제취소</div>
           			</div>
-          			<div th:if="${onlinePaymentCancelDto == 'onlinePaymentCancelDtoIsNull'}" class="row list-item">
+          			<div th:if="${onlinePaymentCancelDto == 'null'}" class="row list-item">
           				<div class="col-2 text-center"><a>내방 취소내역이 없어요.</a></div>
           			</div>
         		</div>
         
         	<!--페이징-->
-        		<div th:if="${!onlinePaymentCancelpaging.isEmpty()}">
+	        	<div th:if="${onlinePaymentCancelpaging == 'null'}">
+					</br>
+	        	</div>
+        	
+        		<div th:if="${onlinePaymentCancelpaging != 'null'}">
 				    <div class="row my-5 paging-area">
 				        <div class="block-27">
 				            <ul class="mb-2">
@@ -134,13 +142,13 @@
             			<div class="col-3 text-center">결제내용</div>
             			<div class="col-2 text-center">결제일자</div>
             			<div class="col-2 text-center">예약날짜</div>
-            			            			<div class="col-1 text-center">결제금액</div>
+            			<div class="col-1 text-center">결제금액</div>
             			<div class="col-1 text-center">포인트</div>
             			<div class="col-2 text-center">상태</div>
           			</div>
         		</div>
-        		<div th:each="offlinePaymentApproveDto : ${offlinePaymentpaging}"class="container list-section">
-        			<div th:if="${offlinePaymentApproveDto != 'offlinePaymentApproveDtoIsNull'}" class="row list-item">
+        		<div th:each="offlinePaymentApproveDto : ${offlinePaymentApprovepaging}"class="container list-section">
+        			<div th:if="${offlinePaymentApproveDto != 'null'}" class="row list-item">
             			<div class="col-3 list-item-title"><a th:text="${offlinePaymentApproveDto.itemName}" th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${offlinePaymentApproveDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(offlinePaymentApproveDto.approvedAt, 'yyyy-MM-dd HH:mm')}"></div>
             			<div class="col-2 text-center" th:text="${#temporals.createDate(offlinePaymentApproveDto.bookingDate, 'yyyyMMdd')} + ' / '  + ${offlinePaymentApproveDto.bookingTime} + ':00'"></div>
@@ -155,31 +163,35 @@
 						
 						<div class="col-2 text-center" th:if="${#strings.equals(#strings.toString(offlinePaymentApproveDto.status), 'C') }">결제 취소</div>
         			</div>
-        			<div th:if="${offlinePaymentApproveDto == 'offlinePaymentApproveDtoIsNull'}" class="row list-item">
+        			<div th:if="${offlinePaymentApproveDto == 'null'}" class="row list-item">
           				<div class="col-2 text-center"><a>공방 결제내역이 없어요.</a></div>
           			</div>
         		</div>
         
         	<!--페이징-->
-        		<div th:if="${!offlinePaymentpaging.isEmpty()}">
+        	
+        		<div th:if="${offlinePaymentApprovepaging == 'null'}">
+					</br>
+	        	</div>
+        		<div th:if="${offlinePaymentApprovepaging != 'null'}">
 				    <div class="row my-5 paging-area">
 				        <div class="block-27">
 				            <ul class="mb-2">
 				                <!-- 이전 페이지로 이동하는 링크 -->
-				                <li th:classappend="${offlinePaymentpaging.number == 0} ? 'disabled'">
-				                    <a th:if="${offlinePaymentpaging.number > 0}" th:href="@{|?page2=${offlinePaymentpaging.number-1}#space|}">&lt;</a>
+				                <li th:classappend="${offlinePaymentApprovepaging.number == 0} ? 'disabled'">
+				                    <a th:if="${offlinePaymentApprovepaging.number > 0}" th:href="@{|?page2=${offlinePaymentApprovepaging.number-1}#space|}">&lt;</a>
 				                </li>
 				
 				                <!-- 페이지 번호를 보여주는 링크 -->
-				                <li th:each="page2: ${#numbers.sequence(0, offlinePaymentpaging.totalPages-1)}"
-				                    th:if="${page2 >= offlinePaymentpaging.number-2 and page <= offlinePaymentpaging.number+2}"
-				                    th:classappend="${page2 == offlinePaymentpaging.number} ? 'active'">
+				                <li th:each="page2: ${#numbers.sequence(0, offlinePaymentApprovepaging.totalPages-1)}"
+				                    th:if="${page2 >= offlinePaymentApprovepaging.number-2 and page <= offlinePaymentApprovepaging.number+2}"
+				                    th:classappend="${page2 == offlinePaymentApprovepaging.number} ? 'active'">
 				                    <a th:text="${page2+1}" th:href="@{|?page2=${page2}#space|}"></a>
 				                </li>
 				
 				                <!-- 다음 페이지로 이동하는 링크 -->
-				                <li th:classappend="${offlinePaymentpaging.number == offlinePaymentpaging.totalPages-1} ? 'disabled'">
-				                    <a th:if="${offlinePaymentpaging.number < offlinePaymentpaging.totalPages-1}" th:href="@{|?page2=${offlinePaymentpaging.number+1}#space|}">&gt;</a>
+				                <li th:classappend="${offlinePaymentApprovepaging.number == offlinePaymentApprovepaging.totalPages-1} ? 'disabled'">
+				                    <a th:if="${offlinePaymentApprovepaging.number < offlinePaymentApprovepaging.totalPages-1}" th:href="@{|?page2=${offlinePaymentApprovepaging.number+1}#space|}">&gt;</a>
 				                </li>
 				            </ul>
 				        </div>
@@ -197,7 +209,7 @@
           			</div>
         		</div>
 				<div th:each="offlinePaymentCancelDto : ${offlinePaymentCancelpaging}"class="container list-section">
-        			<div th:if="${offlinePaymentCancelDto != 'offlinePaymentCancelDtoIsNull'}" class="row list-item">
+        			<div th:if="${offlinePaymentCancelDto != 'null'}" class="row list-item">
 						<div class="col-3 list-item-title"><a th:text="${offlinePaymentCancelDto.itemName}" th:href="@{/offlineClass/{offlineClassId} (offlineClassId=${offlinePaymentCancelDto.itemCode})}"></a> </div>
             			<div class="col-2 text-center" th:text="${#temporals.format(offlinePaymentCancelDto.canceledAt, 'yyyy-MM-dd HH:mm')}"></div>
             			<div class="col-2 text-center" th:text="${#temporals.createDate(offlinePaymentCancelDto.bookingDate, 'yyyyMMdd')} + ' / '  + ${offlinePaymentCancelDto.bookingTime} + ':00'"></div>
@@ -205,13 +217,17 @@
             			<div class="col-1 text-center" th:text="${offlinePaymentCancelDto.point}"></div>
             			<div class="col-2 text-center">결제취소</div>
           			</div>
-          			<div th:if="${offlinePaymentCancelDto == 'offlinePaymentCancelDtoIsNull'}" class="row list-item">
+          			<div th:if="${offlinePaymentCancelDto == 'null'}" class="row list-item">
           				<div class="col-2 text-center"><a>공방 취소내역이 없어요.</a></div>
           			</div>
         		</div>
         
         	<!--페이징-->
-        		<div th:if="${!offlinePaymentCancelpaging.isEmpty()}">
+        		<div th:if="${offlinePaymentCancelpaging == 'null'}">
+					</br>
+	        	</div>
+        	
+        		<div th:if="${offlinePaymentCancelpaging != 'null'}">
 				    <div class="row my-5 paging-area">
 				        <div class="block-27">
 				            <ul class="mb-2">

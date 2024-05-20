@@ -27,7 +27,7 @@
           			</div>
         		</div>
         		<div th:each="userReferenceDto : ${paging}"class="container list-section">
-        			<div th:if="${userReferenceDto != 'userReferenceDtoIsNull'}" class="row list-item">
+        			<div th:if="${userReferenceDto != 'null'}" class="row list-item">
             			<div class="col-1 text-center" th:text="${userReferenceDto.refId.refId}"></div>
             			<div class="col-3 text-center" th:text="${userReferenceDto.refTitle}"></div>
             			<div class="col-2 text-center"><button class="log-btn log-btn-first" th:reference="${userReferenceDto.refContent}" th:onclick="referenceView(this.getAttribute('reference'))">내용보기</button></div>
@@ -39,13 +39,13 @@
             			<button class="log-btn log-btn-first" type="button" th:answer="${userReferenceDto.referenceAnswer.refAnswerContent}" th:onclick="answerView(this.getAttribute('answer'))">답변 보기</button>
             			</div>
           			</div>
-          			<div th:if="${userReferenceDto == 'userReferenceDtoIsNull'}" class="row list-item">
-          				<div class="col-2 text-center"><a>작성한 문의 내역이 없어요.</a></div>
+          			<div th:if="${userReferenceDto == 'null'}" class="row list-item">
+          				<div class="list-section-none"><h5>작성한 문의 내역이 없어요.</h5></div>
           			</div>
         		</div>
         
         	<!--페이징-->
-        		<div th:if="${!paging.isEmpty()}">
+        		<div th:if="${paging != 'null'}">
 				    <div class="row my-5 paging-area">
 				        <div class="block-27">
 				            <ul class="mb-2">
