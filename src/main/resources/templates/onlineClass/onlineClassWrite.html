@@ -233,7 +233,7 @@ $(document).ready(function(){
 	    }
 	    
 	    formData.append('onlinePostDto', new Blob([JSON.stringify(onlinePostDto)], {type: "application/json"}));
-	    
+	    var instId = $("#instId").val();
 	    $.ajax({
 	    	type:"POST",
 	    	url:"/online/write/post",
@@ -247,7 +247,7 @@ $(document).ready(function(){
 	    	},
 	    	success:function(response){
 	    		alert("등록 되었습니다.\n관리자 확인 후 게시글이 업로드됩니다.");
-	    		location.href = "/onlineClass";
+	    		location.href = "/instructor/mypage/"+instId+"/onlinelecture";
 	    	},
 	    	error:function(xhr, status, error){
 	    		alert("오류가 발생했습니다.");
@@ -277,7 +277,7 @@ function fn_number(value)
     
 	<h2 class="mb-3" style="text-align:center;">온라인 클래스 등록 신청</h2>
 	<form id="onlineForm" name="onlineForm" method="POST" onsubmit="return false;" enctype="multipart/form-data">
-	<input type="hidden" th:id="instId" th:value=${inst.instructorId}/>
+	<input type="hidden" th:id="instId" th:value="${inst.instructorId}"/>
 		<div id="page1" class="mb-2">
 		<h6 style="float:right">1/2</h6>
 			<table class="tb mb-2" border="1">

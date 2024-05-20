@@ -434,18 +434,49 @@ public class OnlineClassService {
         entity = fileRepository.findByOnlineClassFileIdOnlineClassIdAndOnlineClassFileIdOnlineFileId(classId, fileNum);
         
         if(entity != null) {
-	        // 확장자 결합
+        	log.info("파일이 기존에 있으면");
+	        String savedNameEx = entity.getOnlineFileName();
+	        String savedPathEx = fileDir + savedNameEx;
+	        
+	        String imageNameEx = savedNameEx.substring(0, savedNameEx.lastIndexOf(".")) + ".png";
+	        String imagePathEx = fileDir + imageNameEx;
+	        
+	        log.info("파일 삭제@@@@@@@@@@@@@@ " + savedNameEx);
+	
+	        File nfile2 = new File(savedPathEx);
+	        if(nfile2.exists()) {
+	        	nfile2.delete();
+	        }
+	        
+	        File ifile2 = new File(imagePathEx);
+	        if(ifile2.exists()) {
+	        	ifile2.delete();
+	        }
+        	
+        	// 확장자 결합
 	        String savedName = classId + "_" + (fileNum) + "강_" + origName;// + extension;
 	
 	        // 파일을 불러올 때 사용할 파일 경로
 	        String savedPath = fileDir + savedName;
 	        
 	        log.info("파일 수정 " + (fileNum) + "번쨰");
-	
+	        String findPath = savedPath + extension;
+	        log.info("findPath" + findPath);
+	        
+	        //새로운 파일과 동일한 영상 있으면 삭제
 	        File nfile = new File(savedPath);
 	        if(nfile.exists()) {
 	        	nfile.delete();
 	        }
+	        
+	        String imageName = savedName.substring(0, savedName.lastIndexOf(".")) + ".png";
+	        String imagePath = fileDir + imageName;
+	        log.info("image"+imagePath);
+	        File ifile = new File(imagePath);
+	        if(ifile.exists()) {
+	        	ifile.delete();
+	        }
+	        
 	        // 실제로 로컬에 저장
 	        files.transferTo(new File(savedPath));
 	        //썸네일 저장
@@ -495,6 +526,29 @@ public class OnlineClassService {
 	//동영상 첨부파일 삭제
 	@Transactional
 	public int deleteFile(Long onlineClassId, Long fileId) throws IOException {
+		OnlineClassFile entity = fileRepository.findByOnlineClassFileIdOnlineClassIdAndOnlineClassFileIdOnlineFileId(onlineClassId, fileId);
+		
+		 if(entity != null) {
+			log.info("파일이 기존에 있으면");
+	        String savedName = entity.getOnlineFileName();
+	        String savedPath = fileDir + savedName;
+	        
+	        String imageName = savedName.substring(0, savedName.lastIndexOf(".")) + ".png";
+	        String imagePath = fileDir + imageName;
+	        
+	        log.info("파일 삭제@@@@@@@@@@@@@@ " + savedName);
+	
+	        File nfile = new File(savedPath);
+	        if(nfile.exists()) {
+	        	nfile.delete();
+	        }
+	        
+	        File ifile = new File(imagePath);
+	        if(ifile.exists()) {
+	        	ifile.delete();
+	        }
+		 }
+		
 		return fileRepository.deleteFile(onlineClassId, fileId);
 	}
 	
