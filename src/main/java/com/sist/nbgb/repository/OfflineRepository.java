@@ -111,7 +111,7 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 			+ "p.bookingTime as bookingTime, p.approvedAt as approvedAt, o.offlineClassId as offlineClassId, o.offlineClassTitle as offlineClassTitle, o.instructorId as instructorId "
 			+ "from OfflinePaymentApprove p, OfflineClass o "
 			+ "where p.itemCode = o.offlineClassId and p.partnerUserId = :partnerUserId and p.status in ('Y') ")
-	List<OfflineClassPaymentListDTO> userOfflineLectureList(@Param("partnerUserId")String partnerUserId, Sort sort);
+	Page<OfflineClassPaymentListDTO> userOfflineLectureList(@Param("partnerUserId")String partnerUserId, Pageable pageable);
 	
 	OfflineClass findOfflineClassTitleByOfflineClassId(Long offlineClassId);
 	
