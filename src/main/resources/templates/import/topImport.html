@@ -12,15 +12,9 @@
 					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities == null}" class="col-lg-3 text-right">
 						<a href="/login" class="medium mr-3"><span class="icon-unlock"></span> 로그인</a>
               			<a href="/signup" class="medium mr-3"><span class="icon-people_outline"></span> 회원가입</a> 
-					</div>
-					
+					</div>	
 					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right" style="flex: 0 0 30%; max-width: 30%;">
-<<<<<<< Updated upstream
-=======
-						
->>>>>>> Stashed changes
-						
-						<a class="medium mr-3">[[ ${session.attributeDto.nickname} ]] 님</a>
+					<a class="medium mr-3">[[ ${session.attributeDto.nickname} ]] 님</a>
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
 							th:href="@{/user/mypage/{id}/info (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}" class="medium mr-3"> <span class="icon-user-circle-o"></span> 마이페이지</a> 
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_INSTRUCTOR]'}"
