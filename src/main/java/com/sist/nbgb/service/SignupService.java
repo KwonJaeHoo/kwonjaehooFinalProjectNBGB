@@ -49,10 +49,8 @@ public class SignupService
 	
 	public Boolean instructorSignUpDuplicateEmail(EmailCheckDto emailCheckDto)
 	{
-		System.out.println(emailCheckDto.getEmail());
 		return instructorsRepository.existsByInstructorEmail(emailCheckDto.getEmail());
 	}
-	
 	
 	@Transactional
 	public UserDto userSignup(UserDto userDto) throws RuntimeException
