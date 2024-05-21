@@ -1,20 +1,17 @@
 package com.sist.nbgb.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.sist.nbgb.dto.AttributeDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorInfoDto;
-import com.sist.nbgb.dto.InstructorsDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
-import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineRepository;
@@ -153,5 +150,10 @@ public class InstructorsService
 			throw new RuntimeException(e);
 		}
 		return 200;
+	}
+	
+	public AttributeDto findInstructorAttribute(String instructorId)
+	{
+		return AttributeDto.instructorAttribute(instructorsRepository.findInstructorNicknameByInstructorId(instructorId));
 	}
 }

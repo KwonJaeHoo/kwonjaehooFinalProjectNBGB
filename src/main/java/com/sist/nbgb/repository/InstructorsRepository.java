@@ -17,6 +17,7 @@ public interface InstructorsRepository extends JpaRepository<Instructors, String
 	
 	Instructors findInstructorIdByInstructorNameAndInstructorEmail(String instructorName, String instructorEmail);
 	Instructors findInstructorEmailByInstructorIdAndInstructorNameAndInstructorEmail(String instructorId, String instructorName, String instructorEmail);
+	Instructors findInstructorNicknameByInstructorId(String instructorId);
 	
 	Optional<Instructors> findByInstructorId(String instructorId);
 	

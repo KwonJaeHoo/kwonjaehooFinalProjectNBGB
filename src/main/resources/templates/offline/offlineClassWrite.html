@@ -133,7 +133,7 @@ $(document).ready(function(){
 	    }
 	    
 	    formData.append('offlinePostDto', new Blob([JSON.stringify(offlinePostDto)], {type: "application/json"}));
-	    
+	    var instId = $("#instructorId").val();
 	    $.ajax({
 	    	type:"POST",
 	    	url:"/offlineClass/write/post",
@@ -146,8 +146,8 @@ $(document).ready(function(){
 	    		xhr.setRequestHeader("AJAX", "true");
 	    	},
 	    	success:function(response){
-	    		alert("등록되었습니다!\n 관리자 확인 후 게시글이 업로드됩니다!");
-	    		location.href = "/offlineClass";
+	    		alert("등록되었습니다!\n관리자 확인 후 게시글이 업로드됩니다!");
+	    		location.href = "/instructor/mypage/"+instId+"/offlinelecture";
 	    	},
 	    	error:function(xhr, status, error){
 	    		alert("오류가 발생했습니다.");

@@ -31,4 +31,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>
 	@Query("update Review r set r.reviewStatus = :reviewStatus where r.reviewId = :reviewId")
 	int reviewStatusUpdate(@Param("reviewId")Long reviewId, @Param("reviewStatus")Status reviewStatus);
 	
+	//main
+	List<Review> findAllByReviewStatusOrderByReviewRatingDesc(Status reviewStatus);
 }

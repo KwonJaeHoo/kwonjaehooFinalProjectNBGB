@@ -22,7 +22,7 @@
 					</div>
 					
 					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="ftco-footer-widget mb-4 ml-4">
-						<h2 class="ftco-heading-2">[[ ${session.SPRING_SECURITY_CONTEXT.Authentication.Name} ]] 님 환영해요.</h2>
+						<h2 class="ftco-heading-2">[[ ${session.attributeDto.nickname} ]] 님 환영해요.</h2>
 						<ul class="list-unstyled">
 
 							<li><a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"

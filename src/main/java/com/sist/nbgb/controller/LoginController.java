@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sist.nbgb.dto.AttributeDto;
 import com.sist.nbgb.dto.LoginDto;
-import com.sist.nbgb.dto.UserAttributeDto;
+import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.CustomAdminDetailsService;
 import com.sist.nbgb.service.CustomInstructorsDetailsService;
 import com.sist.nbgb.service.CustomUserDetailsService;
+import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class LoginController 
 {
 	private final UserService userService;
+	private final InstructorsService instructorsService;
+	private final AdminService adminService;
 	private final CustomUserDetailsService customUserDetailsService;
 	private final CustomInstructorsDetailsService customInstructorsDetailsService;
 	private final CustomAdminDetailsService customAdminDetailsService;
@@ -59,13 +63,13 @@ public class LoginController
 			{
 				if(userDetails.getAuthorities().toString().equals("[ROLE_USER]"))
 				{
-					UserAttributeDto userAttributeDto = userService.findUserAttribute(userDetails.getUsername());
+					AttributeDto attributeDto = userService.findUserAttribute(userDetails.getUsername());
 					Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
 					SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 					securityContext.setAuthentication(authentication);
 					HttpSession session = httpServletRequest.getSession(true);
 					session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-					session.setAttribute("userAttributeDto", userAttributeDto);
+					session.setAttribute("attributeDto", attributeDto);
 					
 					//SPRING_SECURITY_CONTEXT
 					return ResponseEntity.ok(200);
@@ -94,11 +98,13 @@ public class LoginController
 		{
 			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
 			{
+				AttributeDto attributeDto = instructorsService.findInstructorAttribute(userDetails.getUsername());
 				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
 				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 				securityContext.setAuthentication(authentication);
 				HttpSession session = httpServletRequest.getSession(true);
 				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+				session.setAttribute("attributeDto", attributeDto);
 				
 				return ResponseEntity.ok(200);
 	        }
@@ -132,12 +138,14 @@ public class LoginController
 		{
 			if(passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) 
 			{
+				AttributeDto attributeDto = adminService.findAdminAttribute(userDetails.getUsername());
 				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
 				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 				securityContext.setAuthentication(authentication);
 				HttpSession session = httpServletRequest.getSession(true);
 				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-
+				session.setAttribute("attributeDto", attributeDto);
+				
 				return ResponseEntity.ok(200);
 	        }
 			else

@@ -155,6 +155,17 @@ public class OnlineClassController {
 		auth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		User user1 = null;
 		
+		String writer = onlineClass.getInstructorId().getInstructorId();
+
+		//글 상태가 등록 전이거나 반려일 때
+		if(onlineClass.getOnlineClassApprove().equals(Status.N) || onlineClass.getOnlineClassApprove().equals(Status.S)) {
+			if((userId.equals(writer)&&onlineClassService.hasInstRole()) || onlineClassService.hasAdminRole()) {
+				//글 작성자/admin은 접근 가능
+			} else {
+				return "redirect:/";
+			}
+		}
+		
 		//페이징 안한 리뷰목록
 		List<OnlineReviewDTO> reviewList = onlineClassService.findOnReview(onlineClassId, "ON", Status.Y)
 				.stream()

@@ -1,6 +1,7 @@
 package com.sist.nbgb.service;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewFile;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.ReviewFileRepository;
@@ -35,17 +37,18 @@ public class IndexService
 	
 	public List<OnlineClass> indexOnlineClassView()
 	{
-		return onlineClassRepository.findAll(Sort.by(Sort.Direction.DESC, "onlineClassViews"));
+		return onlineClassRepository.findAllByOnlineClassApproveOrderByOnlineClassViewsDesc(Status.Y);
 	}
 	
+
 	public List<OfflineClass> indexOfflineClassView()
 	{
-		return offlineRepository.findAll(Sort.by(Sort.Direction.DESC, "offlineClassViews"));
+		return offlineRepository.findAllByOfflineClassApproveOrderByOfflineClassViewsDesc(Status.Y);
 	}
 	
 	public List<Review> reviewDTO()
 	{
-		return reviewRepository.findAll(Sort.by(Sort.Direction.DESC, "reviewRating"));
+		return reviewRepository.findAllByReviewStatusOrderByReviewRatingDesc(Status.Y);
 	}
 	
 	public List<User> userDto()
@@ -86,4 +89,13 @@ public class IndexService
 		Optional<OfflineClass> off = offlineRepository.findByOfflineClassId(offlineClassId);
 		return off.get().getOfflineClassTitle();
 	}
+	
+	public OnlineClass findOnline(Long onlineClassId) {
+		return onlineClassRepository.findByOnlineClassId(onlineClassId);
+	}
+	
+	public OfflineClass findOffline(Long offlineClassId) {
+		return offlineRepository.findAllByOfflineClassId(offlineClassId);
+	}
+	
 }

@@ -70,13 +70,12 @@ public class SecurityConfig
 					.antMatchers("/instructor/**").hasAnyAuthority("ROLE_INSTRUCTOR")					
 					.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
 				.and()
-				.oauth2Login().loginPage("/login")
-					
-                .defaultSuccessUrl("/")
-                .successHandler(oAuth2AuthenticationSuccessHandler)
+				.oauth2Login()
+				.loginPage("/login")
+                .successHandler(oAuth2AuthenticationSuccessHandler) // 성공 핸들러 설정
                 .userInfoEndpoint()
                 .userService(oAuth2Service);
 				
-				return httpSecurity.build();
+			return httpSecurity.build();
 	}
 }

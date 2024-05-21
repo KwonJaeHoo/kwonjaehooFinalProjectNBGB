@@ -9,12 +9,12 @@ import javax.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sist.nbgb.dto.AttributeDto;
 import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.KakaoPaymentCancelDto;
 import com.sist.nbgb.dto.OfflinePaymentCancelDto;
 import com.sist.nbgb.dto.OnlinePaymentCancelDto;
 import com.sist.nbgb.dto.ReferenceDto2;
-import com.sist.nbgb.dto.UserAttributeDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.ClassLike;
@@ -75,9 +75,9 @@ public class UserService
 		return UserInfoDto.infoUser(userRepository.findAllByUserId(userId));
 	}
 	
-	public UserAttributeDto findUserAttribute(String userId)
+	public AttributeDto findUserAttribute(String userId)
 	{
-		return UserAttributeDto.userAttribute(userRepository.findUserNicknameAndUserProviderByUserId(userId));
+		return AttributeDto.userAttribute(userRepository.findUserNicknameAndUserProviderByUserId(userId));
 	}
 	
 	

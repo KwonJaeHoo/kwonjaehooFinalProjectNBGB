@@ -7,15 +7,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.sist.nbgb.dto.AttributeDto;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
-import com.sist.nbgb.entity.Reference;
 import com.sist.nbgb.entity.ReferenceAnswer;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;
+import com.sist.nbgb.repository.AdminRepository;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
@@ -30,6 +31,7 @@ public class AdminService
 {
 	private final UserRepository userRepository;
 	private final InstructorsRepository instructorsRepository;
+	private final AdminRepository adminRepository;
 	private final OnlineClassRepository onlineClassRepository;
 	private final OfflineRepository offlineRepository;
 	private final ReferenceAnswerRepository referenceAnswerRepository;
@@ -149,5 +151,10 @@ public class AdminService
 	    }
 	    referenceAnswer.setRefAnswerContent(refAnswerContent);
 	    referenceAnswerRepository.save(referenceAnswer);
+	}
+	
+	public AttributeDto findAdminAttribute(String adminId)
+	{
+		return AttributeDto.adminAttribute(adminRepository.findAdminNameByAdminId(adminId));
 	}
 }

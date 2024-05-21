@@ -77,5 +77,8 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	List<OnlineClass> findByInstructorIdOrderByOnlineClassIdDesc(Instructors instructorId);
 		
 	OnlineClass findOnlineClassTitleByOnlineClassId(Long onlineClassId);
+	
+	//메인 - 상태가 Y인 강의 목록
+	List<OnlineClass> findAllByOnlineClassApproveOrderByOnlineClassViewsDesc(Status onlineClassApprove);
 
 }
