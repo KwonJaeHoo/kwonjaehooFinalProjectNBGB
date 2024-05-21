@@ -12,7 +12,11 @@ import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.dto.ReviewDTO;
 import com.sist.nbgb.dto.ReviewFileDto;
 import com.sist.nbgb.dto.UserDto;
+import com.sist.nbgb.entity.OfflineClass;
+import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.IndexService;
+import com.sist.nbgb.service.OnlineClassPlayService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,16 +60,28 @@ public class IndexController
 				.stream()
 				.map(ReviewDTO::new)
 				.collect(Collectors.toList());
-		
-		for(ReviewDTO reviews : reviewDTO) {
+
+		for(int i = reviewDTO.size()-1; i >= 0; i--) {
+			ReviewDTO reviews = reviewDTO.get(i);
 			if(indexService.getImg(reviews.getUserId().getUserId()) == "Y") {
 				reviews.setImg("Y");
 			}
 			
 			if(reviews.getClassIden().equals("ON")) {
+				OnlineClass onClass = indexService.findOnline(reviews.getClassId());
 				reviews.setClassName(indexService.findOnTitle(reviews.getClassId()));
+				if(onClass.getOnlineClassApprove().equals(Status.Y)) {
+				} else {
+					reviewDTO.remove(i);
+				}
+				
 			} else if (reviews.getClassIden().equals("OFF")) {
+				OfflineClass offClass = indexService.findOffline(reviews.getClassId());
 				reviews.setClassName(indexService.findOffTitle(reviews.getClassId()));
+				if(offClass.getOfflineClassApprove().equals(Status.Y)) {
+				} else {
+					reviewDTO.remove(i);
+				}
 			}
 		}
 		

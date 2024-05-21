@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sist.nbgb.dto.OfflineClassPaymentListDTO;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
+import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
 
 @Transactional
@@ -116,5 +117,9 @@ public interface OfflineRepository extends JpaRepository<OfflineClass, Long>
 	OfflineClass findOfflineClassTitleByOfflineClassId(Long offlineClassId);
 	
 	OfflineClass findAllByOfflineClassId(Long offlineClassId);
+	
+	//메인 - 상태가 Y인 강의 목록
+	List<OfflineClass> findAllByOfflineClassApproveOrderByOfflineClassViewsDesc(Status offlineClassApprove);
+
 
 }
