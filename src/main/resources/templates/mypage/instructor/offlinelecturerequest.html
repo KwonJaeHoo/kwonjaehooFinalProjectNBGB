@@ -7,8 +7,7 @@
 	<div th:insert="import/topImport.html :: top-import"></div>
 
 <div class="col-md-12 ftco-animate text-center">
-    	<h1 class="mb-3 sub-title">마이페이지</h1>
-    	<p class="sub-title" style="color:gray;">공방 신청 목록</p>
+    	<h1 class="mb-3 sub-title">공방 신청자 목록</h1>
   	</div>
 
 	<section class="ftco-animate my-4" >     	
@@ -35,7 +34,9 @@
             			</div>
           			</div>
         		</div>
-        
+        		<div th:if="${paging.isEmpty()}" class="container list-section">
+        			<div class="list-section-none"><h5>공방 클래스 신청 내역이 존재하지 않습니다.</h5></div>
+        		</div>
         	<!--페이징-->
         	<div th:if="${!paging.isEmpty()}">
 		    <div class="row my-5 paging-area">

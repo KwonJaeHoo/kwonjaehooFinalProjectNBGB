@@ -16,7 +16,9 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -48,6 +50,7 @@ import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
+import com.sist.nbgb.entity.ReviewReport;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
 import com.sist.nbgb.service.EmailService;
@@ -393,11 +396,11 @@ public class UserController
 //===========================================================================================
     
     @GetMapping("/mypage/{id}/onlinelecturelist")
-    public String mypageUserOnlineLecture(Model model, @PathVariable String id)
+    public String mypageUserOnlineLecture(Model model, @PathVariable String id, @PageableDefault(size = 5) Pageable pageable)
     {
     	if(id != null)
     	{
-    		List<OnlinePaymentClassListDTO> classes = reviewService.userOnlineLectureList(id);
+    		Page<OnlinePaymentClassListDTO> classes = reviewService.userOnlineLectureList(id, pageable.getPageNumber());
     		
     		LocalDateTime now = LocalDateTime.now();
     		
@@ -415,17 +418,18 @@ public class UserController
         	model.addAttribute("classes", classes);
         	model.addAttribute("now", now);
         	model.addAttribute("reviewChk", map);
+        	model.addAttribute("id", id);
     	}
     	
     	return "mypage/mypageOnlineLectureList";
     }
     
     @GetMapping("/mypage/{id}/offlinelecturelist")
-    public String mypageUserOfflineLecture(Model model, @PathVariable String id)
+    public String mypageUserOfflineLecture(Model model, @PathVariable String id, @PageableDefault(size = 5) Pageable pageable)
     {
     	if(id != null)
     	{
-    		List<OfflineClassPaymentListDTO> classes = reviewService.userOfflineLectureList(id);
+    		Page<OfflineClassPaymentListDTO> classes = reviewService.userOfflineLectureList(id, pageable.getPageNumber());
     		LocalDateTime now = LocalDateTime.now();
     		
     		Map<String, String> map = new HashMap<>();
@@ -437,6 +441,7 @@ public class UserController
     		model.addAttribute("classes", classes);
     		model.addAttribute("now", now);
     		model.addAttribute("reviewChk", map);
+    		model.addAttribute("id", id);
     	}
     	
     	return "mypage/mypageOfflineLectureList";

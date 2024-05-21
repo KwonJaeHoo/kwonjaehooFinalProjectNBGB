@@ -16,7 +16,7 @@ function fn_popUp(reviewId)
 	<div th:insert="import/topImport.html :: top-import"></div>
 
 <div class="col-md-12 ftco-animate text-center">
-    	<h1 class="mb-3 sub-title">작성한 후기</h1>
+    	<h1 class="mb-3 sub-title">수강생 후기</h1>
     	<p class="sub-title"></p>
   	</div>
 
@@ -56,7 +56,9 @@ function fn_popUp(reviewId)
             				</div>
           			</div>
         		</div>
-        
+       			<div th:if="${paging.isEmpty()}" class="container list-section">
+        			<div class="list-section-none"><h5>사용자 후기가 존재하지 않습니다.</h5></div>
+        		</div>
         	<!--페이징-->
         <div th:if="${!paging.isEmpty()}">
 		    <div class="row my-5 paging-area">

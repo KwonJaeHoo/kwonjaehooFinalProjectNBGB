@@ -64,6 +64,29 @@
 						</div>
           			</div>
         		</div>
+        		
+        		 <div class="row mt-5 justify-cotent-center" th:if="${!classes.isEmpty()}">
+					<div class="block-27 ad-paging-area">
+			          	<ul class="mb-2 ad-paging-ul">
+				            <!--이전-->
+					        <li th:classappend="${!classes.hasPrevious ? 'ad-pagingBtn' : ''}" class="mx-1">
+					            <a th:href="@{'/user/mypage/'+${id}+'/onlinelecturelist?page='+${classes.number-1}}">&lt;</a>
+					        </li>
+					        
+					        <li th:each="page : ${#numbers.sequence(0, classes.totalPages - 1)}"
+					       		th:if="${page >= classes.number-5 and page <= classes.number+5}"
+					        	th:classappend="${page == classes.number} ? 'active'" class="mx-1">
+					            <a th:href="@{'/user/mypage/'+${id}+'/onlinelecturelist?page='+${page}}" th:value="${classes.number}">[[|${page+1}|]]</a>
+					        </li>
+					        
+					 		<!--다음-->
+					        <li th:classappend="${!classes.hasNext ? 'ad-pagingBtn' : ''}" class="mx-1">
+					            <a th:href="@{'/user/mypage/'+${id}+'/onlinelecturelist?page='+${classes.number+1}}" >&gt;</a>
+					        </li>
+			    		</ul>
+				    </div>
+				</div>
+        		
         		<div th:if="${classes.isEmpty()}" class="container list-section">
         			<div class="list-section-none"><h5>수강 중인 강의가 존재하지 않습니다.</h5></div>
         		</div>

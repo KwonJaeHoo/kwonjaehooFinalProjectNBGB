@@ -51,9 +51,10 @@ public class ReviewService {
 	
 	/*마이페이지 온라인 수강목록*/
 	@Transactional
-	public List<OnlinePaymentClassListDTO> userOnlineLectureList(String partnerUserId){
+	public Page<OnlinePaymentClassListDTO> userOnlineLectureList(String partnerUserId, int page){
 		Sort sort = sortByDate();
-		return onlineClassRepository.userOnlineLectureList(partnerUserId, sort);
+		Pageable pageable = PageRequest.of(page, 5, sort);
+		return onlineClassRepository.userOnlineLectureList(partnerUserId, pageable);
 	}
 	private Sort sortByDate() {
 	    return JpaSort.unsafe(Sort.Direction.DESC, "approvedAt + o.onlineClassPeriod");
@@ -61,12 +62,10 @@ public class ReviewService {
 	
 	/*마이페이지 오프라인 수강목록*/
 	@Transactional
-	public List<OfflineClassPaymentListDTO> userOfflineLectureList(String partnerUserId){
-		Sort sort = sortByBooking();
-		return offlineRepository.userOfflineLectureList(partnerUserId, sort);
-	}
-	private Sort sortByBooking() {
-	    return JpaSort.unsafe(Sort.Direction.DESC, "bookingDate + p.bookingTime");
+	public Page<OfflineClassPaymentListDTO> userOfflineLectureList(String partnerUserId, int page){
+		Sort sort = Sort.by(Sort.Order.desc("bookingDate"), Sort.Order.desc("bookingTime"));
+		Pageable pageable = PageRequest.of(page, 5, sort);
+		return offlineRepository.userOfflineLectureList(partnerUserId, pageable);
 	}
 	
 	//강의정보
