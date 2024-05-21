@@ -67,7 +67,7 @@ $(document).ready(function() {
 		        
 		        <li th:each="page : ${#numbers.sequence(0, reportList.totalPages - 1)}"
 		       		th:if="${page >= reportList.number-5 and page <= reportList.number+5}"
-		        	th:classappend="${page == reportList.number} ? 'active'" class="mx-1">
+		        	th:classappend="${page == reportList.number} ? 'active curr'" class="mx-1">
 		            <a th:href="@{/admin/reviewReportList?(page=${page}, orderBy=${orderBy})}" th:value="${reportList.number}">[[|${page+1}|]]</a>
 		        </li>
 		        

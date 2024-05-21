@@ -7,6 +7,29 @@
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
     <script th:inline="javascript">
     $(document).ready(function(){
+    	$("#btnClick").on('click', function() {
+    		$('#dropdown-share-content').toggle();
+    	});
+    	
+    	 var thisUrl = document.URL;
+	     var titleStr = '[[${offlineClass.offlineClassTitle}]]';
+    	
+   	    Kakao.init('a4224d0513a6eb4b3592da6296dd41fe');
+   	    Kakao.Link.createDefaultButton({
+	         container: '#btnKakao',
+	         objectType: 'feed',
+	         content: {
+	             title: '[내방공방] 공방 클래스',
+	             description: titleStr,
+	             imageUrl: 'https://postfiles.pstatic.net/MjAyNDA0MjJfMTQx/MDAxNzEzNzc1NjU3NDI0.NPeA0SHSox9hDZVGYGJ-h1Eoni75rlvah_nHHinVzvIg.gIdgBKcdvGbpzCCG62fuisFwXx56tZxwDNr6lm_fxsUg.PNG/logo.png?type=w966',
+	             link: {
+	                 mobileWebUrl: thisUrl,
+	            	 webUrl: thisUrl
+	             }
+	         },
+	         installTalk : true
+	    });
+   	    
  	    $("#star").css("width", "[[${avgRating}]]%"); 
  	    
  	   var formData = new FormData();
@@ -118,12 +141,10 @@
 	    		document.body.removeChild(textarea);
 	    		alert("URL이 복사되었습니다.")
 	      }
+	      <!--
 	      else if( sns == 'kakaotalk' ) 
 	      {
-	    	// 사용할 앱의 JavaScript 키 설정
-   	        Kakao.init('a4224d0513a6eb4b3592da6296dd41fe');
-   	        
-		   	 Kakao.Link.createDefaultButton({
+	    	Kakao.Link.createDefaultButton({
 		         container: '#btnKakao',
 		         objectType: 'feed',
 		         content: {
@@ -138,6 +159,7 @@
 		         installTalk : true
 		     });
 	      }
+	      -->
     }
     
     function fn_reviewLike(reviewId)
@@ -226,13 +248,13 @@
               <div class="d-flex justify-content-start">
               	<button id="btnLike" class="btn-off"><span style="width:16; height:16; color:red;" class="icon-favorite"></span> 찜</button>&nbsp; &nbsp;
               	<div class="dropdown-share">
-              	  <button onclick="btnClick()" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
+              	  <button id="btnClick" class="btn-off"><span style="width:16; height:16; color:black;" class="icon-near_me"></span> 공유</button>
               	  <input type="hidden" id="classId" name="classId" th:value="${offlineClass.offlineClassId}" >
               	  <div id="dropdown-share-content" class="dropdown-share-content align-items-center">
                 	<ul class="ftco-footer-social mt-1" style="padding-left: 0px; margin-bottom: 0px;">
-		            	<li class="ftco-animate" style="margin:1px;"><a onclick="fn_sendFB('clip');return false;"><span class="icon-link2"></span></a></li>
-		           		<li class="ftco-animate" style="margin:1px;"><a id="btnKakao" onclick="fn_sendFB('kakaotalk');return false;"><span class="icon-comment"></span></a></li>
-		                <li class="ftco-animate" style="margin:1px;"><a onclick="fn_sendFB('twitter');return false;"><span class="icon-twitter"></span></a></li>
+		            	<li class="ftco-animate" style="margin:1px;"><a href="javascript:void(0);" onclick="fn_sendFB('clip');return false;"><span class="icon-link2"></span></a></li>
+		            	<li class="ftco-animate" style="margin:1px;"><a href="javascript:void(0);" id="btnKakao"><span class="icon-comment"></span></a></li>
+		                <li class="ftco-animate" style="margin:1px;"><a href="javascript:void(0);" onclick="fn_sendFB('twitter');return false;"><span class="icon-twitter"></span></a></li>
 		              </ul>
                  </div>
             </div>
@@ -242,19 +264,6 @@
 		      </div>
             </div>
             </div>
-            <script>
-            function btnClick() {
-                const mydiv = document.getElementById('dropdown-share-content');
-
-                if(mydiv.style.display === 'none') 
-                {
-                  mydiv.style.display = 'block';
-                }else
-                {
-                  mydiv.style.display = 'none';
-                }
-            }
-            </script>
             
             <div class="border-top">
               <div style="color:black;">
@@ -397,7 +406,7 @@
                       
                       <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                           th:if="${page >= paging.number-2 and page <= paging.number+2}"
-                          th:classappend="${page == paging.number} ? 'active'" class="a">
+                          th:classappend="${page == paging.number} ? 'active curr'" class="a">
                         <a class="smallpage" th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a></li>
                       
                       <li class="a" th:classappend="${!paging.hasNext} ? 'disabled'">

@@ -21,6 +21,7 @@ public class OnlineClassView {
 	private final Long onlineClassPeriod;
 	private final Long onlineClassViews;
 	private final String category;
+	private final Long categoryId;
 	
 	public OnlineClassView(OnlineClass onlineClass) {
 		this.onlineClassId = onlineClass.getOnlineClassId();
@@ -33,5 +34,6 @@ public class OnlineClassView {
 		this.onlineClassPeriod = onlineClass.getOnlineClassPeriod();
 		this.onlineClassViews = onlineClass.getOnlineClassViews();
 		this.category = onlineClass.getOnlineCategoryId().getOnlineCategoryContent();
+		this.categoryId = onlineClass.getOnlineCategoryId().getOnlineCategoryId();
 	}
 }

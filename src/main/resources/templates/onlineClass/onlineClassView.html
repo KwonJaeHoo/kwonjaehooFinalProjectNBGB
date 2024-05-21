@@ -6,6 +6,52 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
+    		
+    	  //sns 공유
+    	  var thisUrl = document.URL;
+	      var titleStr = titleVal.value;
+	      var snsTitle = "[내방공방]"+titleStr;
+	      $("#btnTwitter").on("click",function(){
+	          var url = "http://twitter.com/share?url="+encodeURIComponent(thisUrl)+"&text="+encodeURIComponent(snsTitle);
+	          window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
+	      }); 
+		  
+	      // 사용할 앱의 JavaScript 키 설정 **이거 각자 키값으로 설정 필요
+          Kakao.init('871614747711bfdc8d97e519ddcee3cf');
+          Kakao.Link.createDefaultButton({
+              container: '#btnKakao', // HTML에서 작성한 ID값
+              objectType: 'feed',
+              content: {
+              title: "[내방공방] 온라인 클래스", // 보여질 제목
+              description: titleStr, //보여질 설명
+              imageUrl: thisUrl, // 콘텐츠 URL
+              link: {
+                  mobileWebUrl: thisUrl,
+                  webUrl: thisUrl
+                 }
+              }
+          });
+          
+	      $("#btnKakao").on('click', function() {
+	          
+	          // 카카오링크 버튼 생성
+	          Kakao.Link.createDefaultButton({
+	              container: '#btnKakao', // HTML에서 작성한 ID값
+	              objectType: 'feed',
+	              content: {
+	              title: "[내방공방] 온라인 클래스", // 보여질 제목
+	              description: titleStr, //보여질 설명
+	              imageUrl: thisUrl, // 콘텐츠 URL
+	              link: {
+	                  mobileWebUrl: thisUrl,
+	                  webUrl: thisUrl
+	                 }
+	              }
+	          });
+		});
+	         
+      
+      
 			var formData = new FormData();
 		    
 		    var likeDto = {
@@ -217,9 +263,9 @@ function fn_report(reviewId) {
                </div>
                <div class="d-flex justify-content-end">
                   <ul class="ftco-footer-social float-lft mt-1">
-                      <li class="ftco-animate" style="margin:1px;"><a href="#" onclick="clip(); return false;" title="현재 URL 복사"><span class="icon-link2"></span></a></li>
-                      <li class="ftco-animate" style="margin:1px;"><a href="#" id="btnKakao" onclick="fn_sendFB('kakaotalk');return false;" ><span class="icon-comment"></span></a></li>
-                      <li class="ftco-animate" style="margin:1px;"><a href="#" onclick="fn_sendFB('twitter');return false;"><span class="icon-twitter"></span></a></li>
+                      <li class="ftco-animate" style="margin:1px;"><a href="javascript:void(0);" onclick="clip(); return false;" title="현재 URL 복사"><span class="icon-link2"></span></a></li>
+                      <li class="ftco-animate" style="margin:1px;"><a href="javascript:void(0);" id="btnKakao"><span class="icon-comment"></span></a></li>
+                      <li class="ftco-animate" style="margin:1px;"><a href="javascript:void(0);" id="btnTwitter"><span class="icon-twitter"></span></a></li>
                     </ul>
                  </div>
             </div>
@@ -228,9 +274,9 @@ function fn_report(reviewId) {
                       
               <div class="tag-widget post-tag-container mb-5 mt-5" id="space">
               <div class="tagcloud">
-                <a href="#" class="tag-cloud-link">온라인</a>
-                <a href="#" class="tag-cloud-link">내방</a>
-                <a href="#" class="tag-cloud-link">[[${onlineClass.category}]]</a>
+                <a href="/onlineClass" class="tag-cloud-link">온라인</a>
+                <a href="/onlineClass" class="tag-cloud-link">내방</a>
+                <a th:href="@{/onlineClass(category=${onlineClass.categoryId})}" class="tag-cloud-link">[[${onlineClass.category}]]</a>
               </div>
             </div>
             
@@ -386,8 +432,8 @@ function fn_report(reviewId) {
                       
                       <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                           th:if="${page >= paging.number-2 and page <= paging.number+2}"
-                          th:classappend="${page == paging.number} ? 'active'" class="a">
-                        <a class="smallpage" th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a></li>
+                          th:classappend="${page == paging.number} ? 'active curr'" class="a">
+                        <a class="smallpage " th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a></li>
                       
                       <li class="a" th:classappend="${!paging.hasNext} ? 'disabled'">
                         <a class="smallpage" th:href="@{|?page=${paging.number+1}#space|}">&gt;</a></li>
@@ -470,7 +516,7 @@ function fn_report(reviewId) {
   <script src="/js/onlineView.js"></script>
   <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
   <script th:inline="javascript">
-
+<!--
   function fn_sendFB(sns) {
       var thisUrl = document.URL;
       var titleStr = titleVal.value;
@@ -498,7 +544,7 @@ function fn_report(reviewId) {
           });
       }    
   }
-  
+  -->
 function fnPay() {    
 	//var win = window.open('/online/pay', '/online/pay',
   	//'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=400,height=530,left=100,top=100');

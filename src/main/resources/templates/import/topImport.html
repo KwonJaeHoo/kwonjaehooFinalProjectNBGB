@@ -15,6 +15,10 @@
 					</div>
 					
 					<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="col-lg-3 text-right" style="flex: 0 0 30%; max-width: 30%;">
+<<<<<<< Updated upstream
+=======
+						
+>>>>>>> Stashed changes
 						
 						<a class="medium mr-3">[[ ${session.attributeDto.nickname} ]] 님</a>
 						<a th:if="${session.SPRING_SECURITY_CONTEXT.Authentication.Authorities.toString == '[ROLE_USER]'}"
