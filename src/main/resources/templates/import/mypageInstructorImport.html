@@ -18,7 +18,7 @@
         			<span style="color:#89dd18;"><span style="color:#89dd18;" class="icon-check2"></span>공방 목록</span>
       			</li>
  				<ol>
-        			<li><a th:href="@{/instructor/mypage/{id}/offlinelecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">-개설 된 공방</a></li>
+        			<li><a th:href="@{/instructor/mypage/{id}/offlinelecture (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">-개설된 공방</a></li>
       			</ol>
       			<ol>
         			<li><a th:href="@{/instructor/mypage/{id}/offlinelecturerequest (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">-공방 신청자 목록</a></li>
@@ -33,7 +33,7 @@
         			<li><a th:href="@{/offlineClass/write}">-공방 클래스</a></li>
       			</ol>
       			<li class="menu-item">
-        			<a th:href="@{/instructor/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>후기</a>
+        			<a th:href="@{/instructor/mypage/{id}/review (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>수강생 후기</a>
       			</li>
     		</ul>
   		</div>
