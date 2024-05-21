@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+<link rel="stylesheet" href="/css/signupCustom.css">
+</head>
+<body>
+
+  <!--로고-->
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container-top">
+        <div class="row m-auto">
+            <div class="col-12 w-100 text-center">
+          <a class="navbar-brand" href="/"><img src="/images/logo.png" width="300px"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
+        </div>
+        </div>
+    </div>
+  </nav>
+
+  <div class="container-top container-top2 col-md-12 my-4">
+    <div class="container-middle">
+      <div class="middle-title text-center col-md-12 my-3"><h2>소셜 회원가입</h2></div>
+      <div class="text-center form-area">
+        <form class="form2 mt-3 w-75" id="form1" enctype="multipart/form-data">
+          <input th:value="${userId}" type="hidden" id="userId" name="userId"  class="input col-9" readonly/>
+          <div class="input-area justify-content-center col-md-12">
+            <div class="col-3 input-name"><p class="input-name-detail">이름</p></div>
+            <input style="border:1px solid #89dd18" th:value="${userName}" type="text" id="userName" name="userName" placeholder="이름을 입력해주세요." class="input col-9" size="20" readonly/>
+            <div class="col-3"></div>
+          </div>
+          <p class="input-msg" id="oAuth2UserMsg1"></p>	
+
+          <div class="input-area justify-content-center col-md-12">
+            <div class="col-3 input-name"><p class="input-name-detail">닉네임</p></div>
+            <input type="text" id="userNickname" name="userNickname" placeholder="닉네임을 입력해주세요." class="input col-9" size="20"/>
+            <div class="col-3"></div>
+          </div>
+          <p class="input-msg" id="oAuth2UserMsg2"></p>
+
+          <div class="input-area justify-content-center col-md-12">
+            <div class="col-3 input-name"><p class="input-name-detail">이메일</p></div>
+            <input style="border:1px solid #89dd18" th:value="${userEmail}" type="text" id="userEmail" name="userEmail" placeholder="이메일을 입력해주세요." class="input col-9" size="20" readonly/>
+            <div class="col-3"></div>
+          </div>
+          <p class="input-msg" id="oAuth2UserMsg3"></p>	
+
+          <div class="input-area justify-content-center col-md-12">
+            <div class="col-3 input-name"><p class="input-name-detail">연락처</p></div>
+            <input type="text" id="userPhone" name="userPhone" placeholder="연락처를 입력해주세요. (010-1234-5678 형식으로)" class="input col-9" size="20"/>
+            <div class="col-3"></div>
+          </div>
+          <p class="input-msg" id="oAuth2UserMsg4"></p>
+
+          <div class="input-area justify-content-center col-md-12">
+            <div class="col-3 input-name"><p class="input-name-detail">생년월일</p></div>
+            <input type="date"  id="userBirth" name="userBirth" class="input col-9" size="20"/>
+            <div class="col-3"></div>
+          </div>
+          <p class="input-msg" id="oAuth2UserMsg5"></p>
+
+          <div class="input-area justify-content-center col-md-12">
+            <div class="col-3 input-name"><p class="input-name-detail">성별</p></div>
+             <select id="userGender" name="userGender" class="input col-9" >
+              <option value="" selected="selected">성별을 선택하세요.</option>
+                <option value="남">남</option>
+               <option value="여">여</option>
+            </select>
+            <div class="col-3"></div>
+          </div>
+          <p class="input-msg" id="oAuth2UserMsg6"></p>
+
+          <button type="button" class="log-btn log-btn-second w-100 mt-3 mb-5" id="userSignupBtn" name="userSignupBtn">가입하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+<div style="height:50px;"></div>
+</body>
+<script type="text/javascript">
+$(document).ready(function()
+{	
+	//정규표현식
+	var emptyCheck = /\s/g;
+	var nicknameCheck =	/^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,10}$/;
+	var phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/;
+	var dateCheck = /^(19[7-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+	var userNicknameCheck = false;
+	var userPhoneCheck = false;
+	var userBirthCheck = false;
+	var userGenderCheck = false;
+
+	//nickname
+	$('#userNickname').blur(function()
+	{ 
+		if($.trim($("#userNickname").val()).length <= 0)
+		{
+			$('#userNickname').css({'border':'1px solid red'});
+			document.getElementById("oAuth2UserMsg2").innerHTML = "닉네임을 입력해 주세요.";
+			userNicknameCheck = false;
+			return;
+		}
+
+		if(emptyCheck.test($("#userNickname").val()))
+		{
+			$('#userNickname').css({'border':'1px solid red'});
+			document.getElementById("oAuth2UserMsg2").innerHTML = "닉네임에 공백을 넣을 수 없어요.";
+			userNicknameCheck = false;
+			return;
+		}
+
+		if(!nicknameCheck.test($("#userNickname").val()))
+		{
+			$('#userNickname').css({'border':'1px solid red'});
+			document.getElementById("oAuth2UserMsg2").innerHTML = "닉네임 형식이 올바르지 않아요.";
+			userNicknameCheck = false;
+			return;
+		}
+
+		$('#userNickname').css({'border':'1px solid #89dd18'});
+		document.getElementById("oAuth2UserMsg2").innerHTML = "";
+		userNicknameCheck = true;
+	});	
+
+	//phone
+	$('#userPhone').blur(function()
+	{ 	
+		if($.trim($("#userPhone").val()).length <= 0)
+		{
+			$('#userPhone').css({'border':'1px solid red'});
+			document.getElementById("oAuth2UserMsg4").innerHTML = "연락처를 입력해 주세요";
+			userPhoneCheck = false;
+			return;
+		}		
+		if(!phoneCheck.test($("#userPhone").val()))
+		{
+			$('#userPhone').css({'border':'1px solid red'});
+			document.getElementById("oAuth2UserMsg4").innerHTML = "연락처 형식이 올바르지 않아요.";
+			userPhoneCheck = false;
+			return;
+		}
+
+		$('#userPhone').css({'border':'1px solid #89dd18'});
+		document.getElementById("oAuth2UserMsg4").innerHTML = "";
+		userPhoneCheck = true;
+	});
+
+	$('#userBirth').blur(function()
+	{ 	
+	    if(!dateCheck.test($('#userBirth').val()))
+	    {
+	    	$('#userBirth').css({'border':'1px solid red'});
+	    	document.getElementById("oAuth2UserMsg5").innerHTML = "생년월일을 선택해 주세요.";
+	        userBirthCheck = false;
+	        return;
+	    }
+
+		$('#userBirth').css({'border':'1px solid #89dd18'});
+		document.getElementById("oAuth2UserMsg5").innerHTML = "";
+	    userBirthCheck = true;
+	});
+
+
+	$('#userGender').blur(function()
+	{ 	
+		if($.trim($("#userGender").val()).length <= 0)
+		{
+			$('#userGender').css({'border':'1px solid red'});
+			document.getElementById("oAuth2UserMsg6").innerHTML = "성별을 선택해 주세요.";
+			userGenderCheck = false;
+			return;
+		}		
+
+		$('#userGender').css({'border':'1px solid #89dd18'});
+		document.getElementById("oAuth2UserMsg6").innerHTML = "";
+		userGenderCheck = true;
+	});
+
+
+	$("#userSignupBtn").on("click", function()
+	{
+		if(confirm("입력하신 정보로 회원가입 하시겠어요?"))
+		{
+			if(userNicknameCheck == false)
+			{
+				$('#userNickname').css({'border':'1px solid red'});
+				document.getElementById("oAuth2UserMsg2").innerHTML = "닉네임을 입력해 주세요.";
+				return;
+			}
+			
+			if(userPhoneCheck == false)
+			{
+				$('#userPhone').css({'border':'1px solid red'});
+				document.getElementById("oAuth2UserMsg4").innerHTML = "전화번호를 입력해 주세요.";
+				return;
+			}
+
+			if(userBirthCheck == false)
+			{
+				$('#userBirth').css({'border':'1px solid red'});
+				document.getElementById("oAuth2UserMsg5").innerHTML = "생년월일을 입력해 주세요.";
+				return;
+			}
+
+			if(userGenderCheck == false)
+			{
+				$('#userGender').css({'border':'1px solid red'});
+				document.getElementById("oAuth2UserMsg6").innerHTML = "성별을 선택해 주세요.";
+				return;
+			}
+
+		    oauth2SignUp();
+		}
+	});
+});
+
+
+function oauth2SignUp()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/signup/oauth2user",
+		data : JSON.stringify
+		({
+			userId:$("#userId").val(),
+			userNickname:$("#userNickname").val(),
+			userPhone:$("#userPhone").val(),
+			userBirth:$("#userBirth").val(),
+			userGender:$("#userGender").val()
+
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			alert("회원가입이 완료 되었습니다.");
+			location.href = "/login";
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+</script>
+</html>

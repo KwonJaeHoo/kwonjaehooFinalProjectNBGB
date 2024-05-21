@@ -11,9 +11,11 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,7 @@ import com.sist.nbgb.dto.AdminDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorsDto;
+import com.sist.nbgb.dto.Oauth2UserDto;
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.service.EmailService;
@@ -54,6 +57,14 @@ public class SignupController
 		return "/signup/signupInstructor";
 	}
 	
+    @GetMapping("/signup/oauth2")
+    public String showAdditionalInfoForm(@RequestParam String userId, @RequestParam String userName, @RequestParam String userEmail, Model model) 
+    {
+    	model.addAttribute("userId", userId);
+        model.addAttribute("userName", userName);
+        model.addAttribute("userEmail", userEmail);
+        return "/signup/signupOauth2";
+    }
 	
 	
 	
@@ -131,10 +142,23 @@ public class SignupController
 
 	}
 	
+	  @PostMapping("/signup/oauth2user")
+	  @ResponseBody
+	  public ResponseEntity<Oauth2UserDto> oauth2UserSignupProcess(@RequestBody @Valid Oauth2UserDto oauth2UserDto) 
+	  {
+		  return ResponseEntity.ok(null);
+	  }
+	
+	
 //	@ResponseBody
 //	@PostMapping("/admin/signup")
 //	public ResponseEntity<AdminDto> signupAdmin(@RequestBody AdminDto adminDto)
 //	{
 //		return ResponseEntity.ok(signupService.adminSignup(adminDto));
 //	}
+	
+
+
+
+	
 }

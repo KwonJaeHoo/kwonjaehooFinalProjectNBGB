@@ -1,6 +1,9 @@
 package com.sist.nbgb.oauth2;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +16,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Provider;
 import com.sist.nbgb.repository.UserRepository;
 
@@ -22,8 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 {
-    private final UserRepository userRepository;
-
+	private final UserRepository userRepository;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException 
     {
@@ -32,19 +35,36 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         
        
 
-        final String email = oAuth2User.getName();
+        final String userId = URLEncoder.encode(oAuth2User.getAttribute("id"), StandardCharsets.UTF_8.toString());
+        final String userEmail = URLEncoder.encode(oAuth2User.getAttribute("email"), StandardCharsets.UTF_8.toString());
+        final String userName = URLEncoder.encode(oAuth2User.getAttribute("name"), StandardCharsets.UTF_8.toString());
         final Provider provider = oAuth2User.getAttribute("provider");
-        final String name = oAuth2User.getAttribute("name");
         final String authorities = oAuth2User.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-//        System.out.println("OAuth2AuthenticationSuccessHandler 1 " + oAuth2User);
-//        System.out.println("OAuth2AuthenticationSuccessHandler 2 " + email);
-//        System.out.println("OAuth2AuthenticationSuccessHandler 3 " + provider);
-//        System.out.println("OAuth2AuthenticationSuccessHandler 4 " + name);
-//        System.out.println("OAuth2AuthenticationSuccessHandler 5 " + authorities);
+        User user = userRepository.findFirstByUserId(userId);
         
-
+        if(user.getUserNickname() == null)
+        {
+            // 사용자를 추가 정보 입력 페이지로 리다이렉트
+          String targetUrl = UriComponentsBuilder.fromUriString("/signup/oauth2")
+          		.queryParam("userId", userId)
+          		.queryParam("userName", userName)
+          		.queryParam("userEmail", userEmail)
+          		.build().toUriString();
+          getRedirectStrategy().sendRedirect(request, response, targetUrl);
+          
+        }
+        else
+        {
+        	String targetUrl = UriComponentsBuilder.fromUriString("/login/admin")
+//              		.queryParam("userId", userId)
+//              		.queryParam("userName", userName)
+//              		.queryParam("userEmail", userEmail)
+              		.build().toUriString();
+      
+              getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        }
     }
 }

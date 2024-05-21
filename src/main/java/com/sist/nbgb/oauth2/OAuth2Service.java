@@ -3,6 +3,9 @@ package com.sist.nbgb.oauth2;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -27,6 +30,7 @@ public class OAuth2Service extends DefaultOAuth2UserService
 	private final UserRepository userRepository;
 	
 	@Override
+	@Transactional
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException 
 	{
 		OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -46,12 +50,11 @@ public class OAuth2Service extends DefaultOAuth2UserService
 		final String userEmail = oAuth2Attribute.getEmail();
         final Provider provider = oAuth2Attribute.getProvider();
         
+        
         if(userRepository.existsByUserEmailAndUserProvider(userEmail, provider))
         {
-        	
-        	
-        	//if(userRepository.)// if 일부값만 있으면.....입력하게
-        	
+        	Optional<User> user = userRepository.findByUserId(userId);
+        	user.ifPresent(value -> value.setUserName(userName));
         }
         else
         {
