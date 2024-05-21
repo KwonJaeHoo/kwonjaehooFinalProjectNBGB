@@ -37,14 +37,14 @@
         <div class="row d-flex justify-content-between selector-search-section">
 		    <div class="selectBox2 ftco-animate selector-area">
 			    <button class="label pb-1">[[${orderByContent}]]</button>
+			    <form th:action="@{/onlineClass}" method="get">
 			    <ul class="optionList">
-		    	  <form th:action="@{/onlineClass}" method="get">
 			      <li class="optionItem"><a name = "orderBy" th:href="@{/onlineClass(orderBy=${1})}">최신순</a></li>
 			      <li class="optionItem"><a name = "orderBy" th:href="@{/onlineClass(orderBy=${2})}">조회순</a></li>
 			      <li class="optionItem"><a name = "orderBy" th:href="@{/onlineClass(orderBy=${3})}">가격낮은순</a></li>
 			      <li class="optionItem"><a name = "orderBy" th:href="@{/onlineClass(orderBy=${4})}">가격높은순</a></li>
-			      </form>
 			    </ul>
+			    </form>
 			</div>
 		    <div class="search-area ftco-animate">
 			    <div id="search-btn" style="display: block;">
@@ -88,7 +88,7 @@
 		     </div>
          </div>
     	</div>
-	<section>
+	</section>
 	
 	<!--채팅/맨 위로 버튼-->
 		<!--footer-->

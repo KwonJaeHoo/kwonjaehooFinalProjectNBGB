@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <script type="text/javascript">
 $(document).ready(function(){
-	 $('#getPoint').text("("+($('#onlineClassPrice').val()*0.01).toLocaleString()+"P)");
+	$('#getPoint').text("("+($('#onlineClassPrice').val()*0.01).toLocaleString()+"P)");
 	$('#usePoint').change( function() {
         var a = $('#usePoint').val();
         var b = $('#onlineClassPrice').val();
@@ -36,7 +36,8 @@ $(document).ready(function(){
         }
         
         $('#ab').text(ab.toLocaleString()+"원");
-        $('#getPoint').text("("+(ab*0.01).toLocaleString()+"P)");
+        ($('#onlineClassPrice').val()*0.01).toLocaleString()
+        $('#getPoint').text("("+Math.floor(ab*0.01).toLocaleString()+"P)");
         $('#usedPoint').val($('#usePoint').val());
         $('#totalAmount').val(ab);
       });

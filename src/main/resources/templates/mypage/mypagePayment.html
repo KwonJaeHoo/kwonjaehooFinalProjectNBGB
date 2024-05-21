@@ -55,7 +55,7 @@
         
         	<!--페이징-->
         	<div th:if="${onlinePaymentApprovepaging == 'null'}">
-				</br>
+				<br/>
         	</div>
         	
 	        <div th:if="${onlinePaymentApprovepaging != 'null'}">
@@ -70,7 +70,7 @@
 			                <!-- 페이지 번호를 보여주는 링크 -->
 			                <li th:each="page: ${#numbers.sequence(0, onlinePaymentApprovepaging.totalPages-1)}"
 			                    th:if="${page >= onlinePaymentApprovepaging.number-2 and page <= onlinePaymentApprovepaging.number+2}"
-			                    th:classappend="${page == onlinePaymentApprovepaging.number} ? 'active'">
+			                    th:classappend="${page == onlinePaymentApprovepaging.number} ? 'active curr'">
 			                    <a th:text="${page+1}" th:href="@{|?page=${page}#space|}"></a>
 			                </li>
 			
