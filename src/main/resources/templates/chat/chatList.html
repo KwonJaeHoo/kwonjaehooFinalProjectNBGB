@@ -5,13 +5,6 @@
     <div th:replace="import/cssImport.html :: css-import"></div>
     <link rel="stylesheet" href="/css/css/chat.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script th:inline="javascript">
-    function fn_enterRoom(chatId)
-    {
-    	window.open('/chat/chatRoom/'+ chatId, '/chat/chatRoom/'+ chatId,
-		'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=600,top=100')
-    }
-    </script>
 </head>
 <body>
 		<div class="container-fluid h-100">
@@ -28,7 +21,7 @@
 					<div class="card-body contacts_body">
 						<ui class="contacts">
 						<li class="lists" th:each="list : ${list}">
-							<div class="hovers" th:onclick="fn_enterRoom([[${list.chatId}]])">
+							<div class="hovers" th:onclick="|location.href='@{'/chat/chatRoom/' + ${list.chatId}}'|">
 								<div class="d-flex bd-highlight">
 									<div class="img_cont">
 										<img th:if="${list.img == 'Y'}" th:src="@{'/images/user/' + ${list.userId.userId} + '.png'}" class="rounded-circle user_img">
