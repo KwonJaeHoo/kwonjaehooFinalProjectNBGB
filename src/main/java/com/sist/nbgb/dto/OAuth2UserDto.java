@@ -1,7 +1,5 @@
 package com.sist.nbgb.dto;
 
-import com.sist.nbgb.entity.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Oauth2UserDto 
+public class OAuth2UserDto 
 {
 	private String userId;
 	
@@ -23,14 +21,4 @@ public class Oauth2UserDto
 	
 	private char userGender;
 	
-	public Oauth2UserDto oauth2UserDto(User user)
-	{
-		return Oauth2UserDto
-				.builder()
-				.userNickname(user.getUserNickname())
-				.userPhone(user.getUserPhone())
-				.userBirth(user.getUserBirth())
-				.userGender(user.getUserGender())
-				.build();
-	}
 }

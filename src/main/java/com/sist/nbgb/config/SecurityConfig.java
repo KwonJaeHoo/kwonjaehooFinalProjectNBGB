@@ -63,6 +63,7 @@ public class SecurityConfig
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout")) 	// 로그아웃 URL
 					.logoutSuccessUrl("/") 											// 로그아웃 성공시 리다이렉트 URL
 					.invalidateHttpSession(true)
+					.deleteCookies("JSESSIONID")
 				.and()
 				.authorizeHttpRequests()
 					.antMatchers("/", "/signup/**", "/login/**", "/onlineClass", "/offlineClass").permitAll()

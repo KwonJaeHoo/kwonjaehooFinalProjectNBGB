@@ -18,7 +18,8 @@
         		<div class="container info-section row">
           			<div class="info-detail row">
           				<div class="col-4 text-right mr-1">
-          					<p><b>아이디</b></p>
+          					
+          					<p th:if="${#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}"><b>아이디</b></p>
           					<p><b>이름</b></p>
           					<p><b>닉네임</b></p>
           					<p><b>이메일</b></p>
@@ -26,9 +27,10 @@
           					<p><b>생년월일</b></p>
           					<p><b>성별</b></p>
           					<p><b>포인트</b></p>
+          					<p th:if="${!#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}"><b>소셜 로그인</b></p>
           				</div>
           				<div class="col-7">
-          				<p th:text="${userInfoDto.userId}"></p>
+          				 <p th:if="${#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}" th:text="${userInfoDto.userId}"></p>
 			             <p th:text="${userInfoDto.userName}"></p>
 			             <p th:text="${userInfoDto.userNickname}"></p>
 			             <p th:text="${userInfoDto.userEmail}"></p>
@@ -36,6 +38,7 @@
 			             <p th:text="${userInfoDto.userBirth}"></p>
 			             <p th:text="${userInfoDto.userGender}"></p>
 			             <p th:text="${userInfoDto.userPoint}"></p>
+			             <p th:if="${!#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}" th:text="${userInfoDto.userProvider}"></p>
           				</div>
           			</div>
           			<div th:if="${userFileDto == 'userFileDtoIsNull'}" class="info-picture">
@@ -49,7 +52,7 @@
           			
           			<div class="col-12 text-center mt-0">
           				<button type="button" class="mypage-btn" th:onclick="|location.href='@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">회원정보 수정</button>
-        				<button type="button" class="mypage-btn" th:onclick="|location.href='@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">회원탈퇴</button>
+        				<button th:if="${#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}" type="button" class="mypage-btn" th:onclick="|location.href='@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">회원탈퇴</button>
           			</div>
         		</div>
       		</div>

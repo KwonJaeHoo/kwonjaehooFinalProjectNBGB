@@ -1,9 +1,10 @@
 package com.sist.nbgb.service;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -79,9 +80,7 @@ public class UserService
 	{
 		return AttributeDto.userAttribute(userRepository.findUserNicknameAndUserProviderByUserId(userId));
 	}
-	
-	
-	
+
 	@Transactional
 	public Object changeUserPassword(String userId, String userPassword)
 	{
@@ -100,13 +99,18 @@ public class UserService
 	}
 	
 	@Transactional
-	public Object changeUserNickname(String userId, String userNickname)
+	public Object changeUserNickname(String userId, String userNickname, HttpServletRequest httpServletRequest)
 	{
 		Optional<User> user = userRepository.findByUserId(userId);
 		
 		try 
 		{
 			user.ifPresent(value -> value.setUserNickname(userNickname));
+			
+			AttributeDto attributeDto = findUserAttribute(userId);
+			
+			HttpSession session = httpServletRequest.getSession(true);
+			session.setAttribute("attributeDto", attributeDto);
 		} 
 		catch (Exception e)
 		{

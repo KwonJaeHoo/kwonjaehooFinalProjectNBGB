@@ -13,9 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.AttributeDto;
@@ -23,6 +25,7 @@ import com.sist.nbgb.dto.LoginDto;
 import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.CustomAdminDetailsService;
 import com.sist.nbgb.service.CustomInstructorsDetailsService;
+import com.sist.nbgb.service.CustomOAuth2UserDetailsService;
 import com.sist.nbgb.service.CustomUserDetailsService;
 import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.UserService;
@@ -37,15 +40,23 @@ public class LoginController
 	private final InstructorsService instructorsService;
 	private final AdminService adminService;
 	private final CustomUserDetailsService customUserDetailsService;
+	private final CustomOAuth2UserDetailsService customOAuth2UserDetailsService;
 	private final CustomInstructorsDetailsService customInstructorsDetailsService;
 	private final CustomAdminDetailsService customAdminDetailsService;
 	private final PasswordEncoder passwordEncoder;
 	
 	@GetMapping("/login")
-	public String login(HttpSession httpSession)
+	public String login()
 	{		
 		return "login/login";
 	}
+	
+    @GetMapping("/login/oauth2")
+    public String loginoAuth2(@RequestParam String userId, Model model) 
+    {
+        model.addAttribute("userId", userId);
+        return "login/oAuth2login";
+    }
 	
 	@ResponseBody
 	@PostMapping("/login/user")
@@ -79,6 +90,40 @@ public class LoginController
 					return ResponseEntity.ok(403);
 				}	
 	        }
+			
+			return ResponseEntity.ok(401);
+		}
+	}
+	
+	@ResponseBody
+	@PostMapping("/login/oauth2")
+	public ResponseEntity<Object> loginOauth2(@RequestBody @Valid LoginDto loginDto, HttpServletRequest httpServletRequest)
+	{
+		UserDetails userDetails = customOAuth2UserDetailsService.loadUserByUsername(loginDto.getId());
+		
+		if(userDetails == null)
+		{
+            return ResponseEntity.ok(401);
+		}
+		else
+		{
+			if(userDetails.getAuthorities().toString().equals("[ROLE_USER]"))
+			{
+				AttributeDto attributeDto = userService.findUserAttribute(userDetails.getUsername());
+				Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());		
+				SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+				securityContext.setAuthentication(authentication);
+				HttpSession session = httpServletRequest.getSession(true);
+				session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+				session.setAttribute("attributeDto", attributeDto);
+				
+				//SPRING_SECURITY_CONTEXT
+				return ResponseEntity.ok(200);
+			}
+			else if(userDetails.getAuthorities().toString().equals("[ROLE_STOP]"))
+			{
+				return ResponseEntity.ok(403);
+			}	
 			
 			return ResponseEntity.ok(401);
 		}

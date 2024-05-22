@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,17 +34,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         //로그인 성공한 사용자
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         
-       
-
         final String userId = URLEncoder.encode(oAuth2User.getAttribute("id"), StandardCharsets.UTF_8.toString());
         final String userEmail = URLEncoder.encode(oAuth2User.getAttribute("email"), StandardCharsets.UTF_8.toString());
         final String userName = URLEncoder.encode(oAuth2User.getAttribute("name"), StandardCharsets.UTF_8.toString());
-        final Provider provider = oAuth2User.getAttribute("provider");
-        final String authorities = oAuth2User.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
 
         User user = userRepository.findFirstByUserId(userId);
+        
+    	HttpSession session = request.getSession(false);
+    	session.invalidate();
         
         if(user.getUserNickname() == null)
         {
@@ -58,10 +56,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
         else
         {
-        	String targetUrl = UriComponentsBuilder.fromUriString("/login/admin")
-//              		.queryParam("userId", userId)
-//              		.queryParam("userName", userName)
-//              		.queryParam("userEmail", userEmail)
+        	String targetUrl = UriComponentsBuilder.fromUriString("/login/oauth2")
+        			.queryParam("userId", userId)
               		.build().toUriString();
       
               getRedirectStrategy().sendRedirect(request, response, targetUrl);

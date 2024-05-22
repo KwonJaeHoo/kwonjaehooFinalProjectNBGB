@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -50,7 +51,6 @@ import com.sist.nbgb.dto.PhoneChangeDto;
 import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.dto.UserInfoDto;
-import com.sist.nbgb.entity.ReviewReport;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
 import com.sist.nbgb.service.EmailService;
@@ -124,8 +124,6 @@ public class UserController
         	}
     	}
     	
-    	
-    	
     	return "mypage/mypageModify";
     }
     
@@ -148,16 +146,14 @@ public class UserController
     @ResponseBody
     public ResponseEntity<Object> mypageUserInfoPassword(@RequestBody LoginDto loginDto)
     {
-    	System.out.println(loginDto.getId());
-    	System.out.println(loginDto.getPassword());
     	return ResponseEntity.ok(userService.changeUserPassword(loginDto.getId(), loginDto.getPassword()));
     }
     
     @PostMapping("/mypage/info/usernickname")
     @ResponseBody
-    public ResponseEntity<Object> mypageUserInfoNickname(@RequestBody NicknameChangeDto nicknameChangeDto)
+    public ResponseEntity<Object> mypageUserInfoNickname(@RequestBody NicknameChangeDto nicknameChangeDto, HttpServletRequest httpServletRequest)
     {
-    	return ResponseEntity.ok(userService.changeUserNickname(nicknameChangeDto.getId(), nicknameChangeDto.getNickname()));
+    	return ResponseEntity.ok(userService.changeUserNickname(nicknameChangeDto.getId(), nicknameChangeDto.getNickname(), httpServletRequest));
     }
     
 	@PostMapping("/mypage/info/emailcheck")	

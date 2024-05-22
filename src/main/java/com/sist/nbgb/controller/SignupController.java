@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sist.nbgb.dto.AdminDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorsDto;
-import com.sist.nbgb.dto.Oauth2UserDto;
+import com.sist.nbgb.dto.OAuth2UserDto;
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.service.EmailService;
@@ -58,11 +57,12 @@ public class SignupController
 	}
 	
     @GetMapping("/signup/oauth2")
-    public String showAdditionalInfoForm(@RequestParam String userId, @RequestParam String userName, @RequestParam String userEmail, Model model) 
+    public String oAuth2Signup(@RequestParam String userId, @RequestParam String userName, @RequestParam String userEmail, Model model) 
     {
     	model.addAttribute("userId", userId);
         model.addAttribute("userName", userName);
         model.addAttribute("userEmail", userEmail);
+     
         return "/signup/signupOauth2";
     }
 	
@@ -142,11 +142,11 @@ public class SignupController
 
 	}
 	
-	  @PostMapping("/signup/oauth2user")
+	  @PostMapping("/signup/oauth2")
 	  @ResponseBody
-	  public ResponseEntity<Oauth2UserDto> oauth2UserSignupProcess(@RequestBody @Valid Oauth2UserDto oauth2UserDto) 
+	  public ResponseEntity<Object> oauth2UserSignupProcess(@RequestBody @Valid OAuth2UserDto oauth2UserDto) 
 	  {
-		  return ResponseEntity.ok(null);
+		  return ResponseEntity.ok(signupService.oauth2UserSignup(oauth2UserDto));
 	  }
 	
 	

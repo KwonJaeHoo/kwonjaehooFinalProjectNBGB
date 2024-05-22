@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -94,9 +95,9 @@ public class InstructorController
     
     @PostMapping("/mypage/info/instructornickname")
     @ResponseBody
-    public ResponseEntity<Object> mypageInstructorInfoNickname(@RequestBody NicknameChangeDto nicknameChangeDto)
+    public ResponseEntity<Object> mypageInstructorInfoNickname(@RequestBody NicknameChangeDto nicknameChangeDto, HttpServletRequest httpServletRequest)
     {
-    	return ResponseEntity.ok(instructorsService.changeInstructorNickname(nicknameChangeDto.getId(), nicknameChangeDto.getNickname()));
+    	return ResponseEntity.ok(instructorsService.changeInstructorNickname(nicknameChangeDto.getId(), nicknameChangeDto.getNickname(), httpServletRequest));
     }
     
 	@PostMapping("/mypage/info/emailcheck")	

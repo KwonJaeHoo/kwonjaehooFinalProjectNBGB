@@ -18,7 +18,7 @@
       		<div class="list-container">
         		<div class="container info-section modify-section justify-content-center mt-3">
         		
-          			<div class="justify-content-center w-90 pt-5">			
+          			<div th:if="${#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}" class="justify-content-center w-90 pt-5">			
           				<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">현재 비밀번호</p></div>
           					<div class="col-6 log-btn-area justify-content-center"><input type="password" id="nowUserPassword" name="nowUserPassword"  class="input" style="width:90%;"/></div>
@@ -54,7 +54,7 @@
          				<p class="col-12 input-msg text-center" id="userMsg4"></p>
           			</div>
           			
-          			<div>
+          			<div th:if="${#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}">
 						<div class="input-area justify-content-center col-md-12">
           					<div class="col-3 input-name"><p class="input-name-detail">이메일</p></div>
           					<div class="col-6 log-btn-area justify-content-center"><input type="text" id="userEmail" name="userEmail" class="input"  th:value="${userInfoDto.userEmail}" style="width:90%;"/></div>
@@ -1247,8 +1247,8 @@ function userPasswordChange()
 		},
 		success:function(data)
 		{
-			alert("변경이 완료 되었습니다.");
-			document.location.href = document.location.href;
+			alert("변경이 완료 되었습니다. 다시 로그인 해 주세요.");
+			document.location.href = "/logout";
 		},
 		error:function(xhr, status, error)
 		{
@@ -1434,8 +1434,8 @@ function instructorPasswordChange()
 		},
 		success:function(data)
 		{
-			alert("변경이 완료 되었습니다.");
-			document.location.href = document.location.href;
+			alert("변경이 완료 되었습니다. 다시 로그인 해 주세요.");
+			document.location.href = "/logout";
 		},
 		error:function(xhr, status, error)
 		{
