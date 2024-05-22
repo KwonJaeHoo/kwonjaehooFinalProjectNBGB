@@ -81,9 +81,10 @@ $(document).ready(function(){
 	        </tr>
 	        <tr>
 	           <td class="tt">작성자</td>
-	           <td><input type="text" id="userId" name="userId" 
-	             th:value="${#authentication.principal.username}" class="pl-2" placeholder="" readonly
+	           <td><input type="text" id="userNickname" name="userNickname" 
+	             th:value="${session.attributeDto.nickname}" class="pl-2" placeholder="" readonly
 	             style="width: 50%; "></td>
+	             
 	        </tr>
 	        <tr>
 	        	 <td colspan="2" class="tt">내용</td>
@@ -99,6 +100,10 @@ $(document).ready(function(){
                 <button class="btnSubmit" type="submit" id="btnSubmit" name="btnSubmit">저장하기</button></p>
             </div>
         </div>
+        
+        <input type="hidden" id="userId" name="userId" 
+	             th:value="${#authentication.principal.username}" class="pl-2" placeholder="" readonly
+	             style="width: 50%; ">
 
     </form>
     	</div>

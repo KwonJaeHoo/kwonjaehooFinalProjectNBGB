@@ -19,6 +19,7 @@ public class ReferenceDto2
 {
 	private Reference refId;
 	private String userId;
+	private String userNickname;
 	private String refTitle;
 	private String refContent;
 	private LocalDateTime refRegdate;
@@ -29,6 +30,7 @@ public class ReferenceDto2
 	{
 		this.refId = reference;
 		this.userId = reference.getUserId().getUserId();
+		this.userNickname = reference.getUserId().getUserNickname();
 		this.refTitle = reference.getRefTitle();
 		this.refContent = reference.getRefContent();
 		this.refRegdate = reference.getRefRegdate();

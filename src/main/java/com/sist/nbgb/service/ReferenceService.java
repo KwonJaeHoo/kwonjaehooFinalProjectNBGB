@@ -30,26 +30,6 @@ public class ReferenceService {
 		return referenceRepository.findByView(refId);
 	}
 	
-	//문의글 등록
-	@Transactional
-	public ReferenceDTO referenceDTO(ReferenceDTO refDTO)
-	{	
-		Reference reference = Reference.builder()
-				.refId(refDTO.getRefId())
-				.refTitle(refDTO.getRefTitle())
-				.refContent(refDTO.getRefContent())
-				.userId(refDTO.getUserId())
-				.refRegdate(LocalDateTime.now())
-				.build();
-		
-		System.out.println("11111111111111111111111111111111111111111111");
-		
-		//Reference savedReference = ReferenceRepository
-		
-		
-		return refDTO;		
-	}
-	
 	
 	//페이징 처리
 	public List<Reference> findByrefRegdate() 
@@ -62,6 +42,8 @@ public class ReferenceService {
 	    return referenceRepository.findByRefTitleContainingOrRefContentContainingOrUserId_UserIdContaining(keyword, keyword, keyword);
 	}
 
+	//문의글 등록
+	@Transactional
     public void saveReference(ReferenceDTO refDTO) {
         Reference reference = Reference.builder()
                 .refTitle(refDTO.getRefTitle())

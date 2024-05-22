@@ -12,6 +12,8 @@ import com.sist.nbgb.dto.ReferenceDto2;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.entity.OnlineClassFile;
+import com.sist.nbgb.entity.OnlineClassFileId;
 import com.sist.nbgb.entity.ReferenceAnswer;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
@@ -19,6 +21,7 @@ import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.AdminRepository;
 import com.sist.nbgb.repository.InstructorsRepository;
 import com.sist.nbgb.repository.OfflineRepository;
+import com.sist.nbgb.repository.OnlineClassFileRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
 import com.sist.nbgb.repository.ReferenceAnswerRepository;
 import com.sist.nbgb.repository.UserRepository;
@@ -35,6 +38,7 @@ public class AdminService
 	private final OnlineClassRepository onlineClassRepository;
 	private final OfflineRepository offlineRepository;
 	private final ReferenceAnswerRepository referenceAnswerRepository;
+	private final OnlineClassFileRepository onlineClassFileRepository;
 	
 	
 	//페이징 처리(일반 회원)
@@ -99,7 +103,15 @@ public class AdminService
         onlineClassRepository.save(onlineClass);
     }
 	
+	//온라인 클래스 강의 자료 다운로드 페이지
+	public List<OnlineClassFile> findOnlineClassFilesByClassId(OnlineClass onlineClassId) {
+	    return onlineClassFileRepository.findByOnlineClassId(onlineClassId);
+	}
 	
+	//온라인 클래스 강의 자료 다운로드
+	public OnlineClassFile findOnlineClassFileById(Long onlineClassId, Long onlineFileId) {
+	    return onlineClassFileRepository.findByOnlineClassFileIdOnlineClassIdAndOnlineClassFileIdOnlineFileId(onlineClassId, onlineFileId);
+	}
 	
 	
 	//페이징 처리(오프라인 강의 리스트)

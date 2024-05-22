@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
 import com.sist.nbgb.entity.OnlineClassFileId;
 
@@ -15,6 +16,8 @@ public interface OnlineClassFileRepository extends JpaRepository<OnlineClassFile
 	//강의 자료 조회
 	OnlineClassFile findByOnlineClassFileIdOnlineClassIdAndOnlineClassFileIdOnlineFileId(@Param("onlineClassId") Long onlineClassId, @Param("onlineFileId") Long onlineFileId);
 	OnlineClassFile findByOnlineClassFileId(OnlineClassFileId onlineClassFileId);
+	List<OnlineClassFile> findByOnlineClassId(OnlineClass onlineClassId);
+	
 	//강의 자료 개수 조회
 	Long countByOnlineClassFileIdOnlineClassId(@Param("onlineClassId") Long onlineClassId);
 	

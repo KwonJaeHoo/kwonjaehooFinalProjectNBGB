@@ -23,6 +23,7 @@ public class ReferenceDTO {
 	private String refContent;
 	private LocalDateTime refRegdate;
 	private User userId;
+	private String userNickname;
 	
 	public static ReferenceDTO referenceDTO(Reference ref)
 	{
@@ -31,6 +32,7 @@ public class ReferenceDTO {
 				.refContent(ref.getRefContent())
 				.refRegdate(ref.getRefRegdate())
 				.userId(ref.getUserId())
+				.userNickname(ref.getUserId().getUserNickname())
 				.build();
 	}
 	

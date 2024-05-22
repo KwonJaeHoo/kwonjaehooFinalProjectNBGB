@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div th:replace="import/cssImport.html :: css-import"></div>
+	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/referenceList.css">
+	<script src="https://kit.fontawesome.com/aa19da19ea.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+<div th:insert="import/topAdminImport.html :: top-import"></div>
+	<a class="MainBanner" aria-current="page" href="/admin/onlineClassList"><h1 style="margin-top:9dvh;">강의 자료 다운로드</h1></a>
+	
+	<div class="container">
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+		    <thead>
+		        <tr>
+		            <th>강의 영상 자료</th>
+		            <th>영상 다운로드</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="onlineClassFile : ${onlineClassFile}">
+		            <td><a th:text="${onlineClassFile.onlineFileName}">강의 영상 제목</a></td>
+		            <td>
+		                <a th:href="@{/admin/downloadFile/{onlineClassId}/{onlineFileId}(onlineClassId=${onlineClassFile.onlineClassId.onlineClassId}, onlineFileId=${onlineClassFile.onlineClassFileId.onlineFileId})}">
+						    <button class="box" type="submit" th:text="'영상 다운로드'"></button>
+						</a>
+		            </td>
+		        </tr>
+		    </tbody>
+		</table>
+    </div>
+            
+  <div class="comment-form-wrap">                
+    </div>
+
+</div> <!-- /container -->
+
+<script src="/js/reference.js"></script>
+	<div th:replace="import/jsImport.html :: js-import"></div>
+</body>
+</html>

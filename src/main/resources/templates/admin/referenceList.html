@@ -42,7 +42,7 @@ $(document).ready(function() {
             <tr th:each="refList : ${paging}">
                 <td><a th:text="${refList.refId.refId}">문의글 ID</a></td>
                 <td><a th:text="${refList.refTitle}" th:onclick="|location.href='@{'referenceView/' + ${refList.refId.refId}}'|">문의글 제목</a></td>
-                <td><a th:text="${refList.userId}">작성자</a></td>
+                <td><a th:text="${refList.userNickname}">작성자</a></td>
                 <td><a th:text="${refList.refRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))}">등록일</a></td>
 				<td><a th:if="${refList.referenceAnswer != null}">답변 완료</a>
                 	<button class="box refAnswer" th:if="${refList.referenceAnswer == null}" th:data-refId="${refList.refId.refId}">답변 달기</button>

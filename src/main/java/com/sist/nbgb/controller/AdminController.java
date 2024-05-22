@@ -4,13 +4,25 @@ package com.sist.nbgb.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +46,8 @@ import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
+import com.sist.nbgb.entity.OnlineClassFile;
+import com.sist.nbgb.entity.OnlineClassFileId;
 import com.sist.nbgb.entity.Reference;
 import com.sist.nbgb.entity.ReviewReport;
 import com.sist.nbgb.entity.User;
@@ -257,6 +271,56 @@ public class AdminController {
         	return "ERROR";
         }
     }
+	
+	//온라인 강의 자료 다운로드 페이지 가기
+	@GetMapping("/onlineClassFile/{onlineClassId}")
+	public String onlineClassFile(Model model, @PathVariable OnlineClass onlineClassId)
+	{
+		List<OnlineClassFile> onlineClassFile = adminService.findOnlineClassFilesByClassId(onlineClassId);
+        model.addAttribute("onlineClassFile", onlineClassFile);
+        return "admin/onlineClassFile";
+	}
+	
+	//온라인 강의 자료 다운로드
+	@GetMapping("/downloadFile/{onlineClassId}/{onlineFileId}")
+	public ResponseEntity<Resource> downloadFile(@PathVariable final long onlineClassId, @PathVariable final long onlineFileId,
+												 HttpServletRequest request) 
+	{
+	    OnlineClassFile file = adminService.findOnlineClassFileById(onlineClassId, onlineFileId);
+	    
+	    if(file == null) 
+	    {
+	        return ResponseEntity.notFound().build();
+	    }
+	    
+	    try 
+	    {
+	    	String baseDirectory = "C:\\project\\sts4\\SFPN\\src\\main\\resources\\static\\video";
+	        Path filePath = Paths.get(baseDirectory, file.getOnlineFileName()).normalize();
+	        
+	        Resource resource = new UrlResource(filePath.toUri());
+	        if (resource.isFile())
+	        {
+	            String contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+	            
+	            if (contentType == null)
+	            {
+	                contentType = "application/octet-stream";
+	            }
+	            
+	            return ResponseEntity.ok()
+	                    .contentType(MediaType.parseMediaType(contentType))
+	                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                    .body(resource);
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    }
+	    catch (Exception e)
+	    {
+	        return ResponseEntity.badRequest().build();
+	    }
+	}
 	
 	//오프라인 강의 리스트 불러오기
 	@GetMapping("/offlineClassList")

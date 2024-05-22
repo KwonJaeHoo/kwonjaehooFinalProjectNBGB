@@ -79,6 +79,7 @@ $(document).ready(function() {
             <tr>
                 <th>강의 글번호</th>
                 <th>강의 제목</th>
+                <th>강의 자료 다운로드</th>
                 <th>강의 게시일</th>
                 <th>강사 아이디</th>
                 <th>강의 가격</th>
@@ -94,6 +95,7 @@ $(document).ready(function() {
             <tr th:each="onlineList: ${onlineClassList}">
                 <td><a th:text="${onlineList.onlineClassId}">강의 글번호</a></td>
                 <td><a th:text="${onlineList.onlineClassTitle}" th:onclick="|location.href='@{'/online/' + ${onlineList.onlineClassId}}'|">강의 제목</a></td>
+                <td><button class="box" th:onclick="|location.href='@{'/admin/onlineClassFile/' + ${onlineList.onlineClassId}}'|">강의 자료 다운로드</button></td>
                 <td><a th:text="${onlineList.onlineClassRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강의 게시일</a></td>
                 <td><a th:text="${onlineList.instructorId.instructorId}">강사 아이디</a></td>
                 <td><a th:text="${onlineList.onlineClassPrice}">강의 가격</a></td>
