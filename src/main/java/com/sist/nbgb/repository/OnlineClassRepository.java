@@ -64,11 +64,11 @@ public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	Page<OnlinePaymentClassListDTO> userOnlineLectureList(@Param("partnerUserId")String partnerUserId , Pageable pageable);
 	
 	//수강정보 및 결제정보
-	@Query(value = "select p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, p.status as status, "
+	@Query(value = "select p.partnerOrderId as partnerOrderId, p.partnerUserId as partnerUserId, p.itemCode as itemCode, p.approvedAt as approvedAt, p.status as status, "
 			+ "o.onlineClassId as onlineClassId, o.onlineClassTitle as onlineClassTitle, o.instructorId as instructorId, o.onlineClassPeriod as onlineClassPeriod "
 			+ "from OnlinePaymentApprove p, OnlineClass o "
-			+ "where p.itemCode = o.onlineClassId and p.partnerUserId = :partnerUserId and o.onlineClassId = :onlineClassId and p.status in ('N', 'Y') ")
-	OnlinePaymentClassListDTO userLectureInfo(@Param("partnerUserId")String partnerUserId , @Param("onlineClassId")Long onlineClassId);
+			+ "where p.itemCode = o.onlineClassId and p.partnerOrderId = :partnerOrderId and p.partnerUserId = :partnerUserId and o.onlineClassId = :onlineClassId and p.status in ('N', 'Y') ")
+	OnlinePaymentClassListDTO userLectureInfo(@Param("partnerOrderId")String partnerOrderId, @Param("partnerUserId")String partnerUserId, @Param("onlineClassId")Long onlineClassId);
 	
 	//리뷰작성 수강정보
 	OnlineClass findByOnlineClassId(Long onlineClassId);

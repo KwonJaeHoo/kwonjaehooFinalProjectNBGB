@@ -4,17 +4,12 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +32,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sist.nbgb.dto.CategoriesDTO;
-import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OfflineUpload;
+import com.sist.nbgb.dto.OnlineClassListDTO;
 import com.sist.nbgb.dto.OnlineClassView;
+import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePostDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.OnlineReviewDTO;
@@ -49,11 +45,12 @@ import com.sist.nbgb.dto.OnlineUpdateDTO;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
+import com.sist.nbgb.entity.OnlineClassLog;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
-import com.sist.nbgb.response.UserResponse;
 import com.sist.nbgb.service.InstructorsService;
+import com.sist.nbgb.service.OnlineClassPlayService;
 import com.sist.nbgb.service.OnlineClassService;
 
 import lombok.RequiredArgsConstructor;
@@ -65,6 +62,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OnlineClassController {
 	private final OnlineClassService onlineClassService;
 	private final InstructorsService instService;
+	private final OnlineClassPlayService onlineClassPlayService;
 	
 	@Autowired
 	private OfflineUpload photoUtil;
@@ -248,6 +246,10 @@ public class OnlineClassController {
 				if(LocalDateTime.now().isBefore(endDate) || LocalDateTime.now().isEqual(endDate)) {
 					payStatus = "Y";
 				}
+				/*추가++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+				//OnlineClassLog logInfo = onlineClassPlayService.userLogInfo(userId, onlineClassId);
+				OnlinePaymentApproveDto payInfo = new OnlinePaymentApproveDto(onlineClassPlayService.userPayInfo(onlineClassId.toString(),userId));
+				model.addAttribute("orderId", payInfo.getPartnerOrderId());
 			}
 			
 			Optional<User> user = onlineClassService.findByUserId(userId);
@@ -255,6 +257,8 @@ public class OnlineClassController {
 			user1 = user.get();
 			
 		}
+		
+
 		
 		model.addAttribute("onlineClass", new OnlineClassView(onlineClass));
 		model.addAttribute("likeCnt", likeCnt);

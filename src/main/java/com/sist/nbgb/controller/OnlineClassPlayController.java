@@ -53,15 +53,14 @@ public class OnlineClassPlayController
 
 	//온라인 강의 재생 목록
 	@GetMapping("/onlinePlayList")
-	public String onlinePlayList(Model model, Principal principal,
-			@RequestParam(value="classId", required=false) Long onlineClassId) throws IOException{
+	public String onlinePlayList(Model model, Principal principal, @RequestParam(value="classId", required=false) Long onlineClassId,
+			@RequestParam(value="orderId", required=false) String partnerOrderId) throws IOException{
 		
 		logger.info("[OnlineClassPlayController] onlinePlayList");
 		User user = userRepository.findFirstByUserId(principal.getName());
 		if(user.getAuthority().equals(Role.ROLE_USER)) {
-						
 			//강의 조회
-			OnlinePaymentClassListDTO onlineClass = onlineClassPlayService.userLectureInfo(user.getUserId(), onlineClassId);
+			OnlinePaymentClassListDTO onlineClass = onlineClassPlayService.userLectureInfo(partnerOrderId, user.getUserId(), onlineClassId);
 			//강의 재생목록 조회
 			List<OnlineClassFileResponseDTO> classList = onlineClassPlayService.selectClassList(onlineClassId)
 					.stream().map(OnlineClassFileResponseDTO::new)
@@ -178,7 +177,7 @@ public class OnlineClassPlayController
 		OnlineClassLogReqDTO updateLog = null;
 		long goal = classFile.getOnlineClassFileId().getOnlineFileLength();
 		int percent = (int)Math.round(Double.valueOf(onlineLogCurr) /Double.valueOf(goal) * 100.0);
-		if(onlineClassLogRepository.findByOnlineClassLogId(updateLogId.toEntity()).getStatus() == Status.N && percent < 95) {
+		if(percent < 95) {
 				updateLog = new OnlineClassLogReqDTO(Long.valueOf(onlineLogCurr), Status.N);
 				onlineClassPlayService.logUpdate(updateLogId, updateLog);
 		}else {

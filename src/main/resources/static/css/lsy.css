@@ -769,4 +769,8 @@ margin: 50px auto 30px auto;
 .report-msg{
 	color:red;
 	font-weight:600;
+}
+
+button:focus{
+	outline:none;
 }		

@@ -4,77 +4,65 @@
 	<div th:replace="import/cssImport.html :: css-import"></div>
 </head>
 <body>
-	<!--사용자 네비게이션-->
-		<!--메뉴 네비게이션-->
-	<div th:insert="import/topImport.html :: top-import"></div>
-    	<!--메뉴 네비게이션-->
-    <!--사용자 네비게이션-->
-  <div class="w-50 ftco-animate play-index">
-    <div class="play-index-sub">
-      <div class="play-index-pin"><img src="/images/pin-left.png"><img src="/images/pin-right.png"></div>
-      <div class="play-index-info row">
-        <h5 class="text-center col-12 play-index-title">
-          <span class="icon-hand-o-right mr-2"></span>
-          클래스 정보
-          <span class="icon-hand-o-left ml-2"></span>
-        </h5>
-        <div class="col-4 text-right">
-          <p><b>강좌명 : </b></p>
-          <p><b>강사명 : </b></p>
-          <p><b>결제 일자 : </b></p>
-          <p><b>마감 일자 : </b></p>
-        </div>
-        <div class="col-8">
-          <p>[[${onlineClass.onlineClassTitle}]]</p>
-          <p>[[${onlineClass.instructorId.instructorNickname}]]</p>
-          <p>[[|${#temporals.format(onlineClass.approvedAt,'yyyy-MM-dd HH:mm')}|]]</p>
-          <p>[[|${#temporals.format(onlineClass.approvedAt.plusDays(onlineClass.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|]]</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<div th:insert="import/topImport.html :: top-import"></div>
+<section class="ftco-animate mt-5" >
+	<div class="w-50 ftco-animate play-index">
+		<div class="play-index-sub">
+	      	<div class="play-index-pin"><img src="/images/pin-left.png"><img src="/images/pin-right.png"></div>
+		    	<div class="play-index-info row">
+			        <h5 class="text-center col-12 play-index-title">
+			          <span class="icon-hand-o-right mr-2"></span>
+			          클래스 정보
+			          <span class="icon-hand-o-left ml-2"></span>
+			        </h5>
+			        <div class="col-4 text-right">
+			          <p><b>강좌명 : </b></p>
+			          <p><b>강사명 : </b></p>
+			          <p><b>결제 일자 : </b></p>
+			          <p><b>마감 일자 : </b></p>
+			        </div>
+			        <div class="col-8">
+			          <p>[[${onlineClass.onlineClassTitle}]]</p>
+			          <p>[[${onlineClass.instructorId.instructorNickname}]]</p>
+			          <p>[[|${#temporals.format(onlineClass.approvedAt,'yyyy-MM-dd HH:mm')}|]]</p>
+			          <p>[[|${#temporals.format(onlineClass.approvedAt.plusDays(onlineClass.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|]]</p>
+			        </div>
+	      		</div>
+	    	</div>
+	  	</div>
+	</div>
 
-  <section class="ftco-animate mt-5" >
-    <div class="list-container-second">
-      <div class="container">
-        <div class="row mb-4 list-title-second">
-          <div class="col-2 text-center">회차</div>
-          <div class="col-6 text-center">강의명</div>
-          <div class="col-2 text-center">수강률</div>
-          <div class="col-2 text-center">수강하기</div>
-        </div>
-      </div>
-      <!--리스트-->
-      <div class="container list-section-second" th:each='item:${classList}'>
-        <div class="row list-item mb-5">
-          <h5 class="col-2 text-center text">[[${item.onlineClassFileId.onlineFileId}]]강</h5>
-          <div class="col-2 text-center">
-            <a class="playThum-Btn" th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
-              <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
-            </svg></a>
-            <a class="playThum" th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}"> 
-              <img class="playThum" th:src="|@{'/video/' + ${item.onlineClassFileId.onlineClassId} + '_' + ${item.onlineClassFileId.onlineFileId} + '강_' + ${item.onlineFileOrgName} + '.png'}|">
-            </a>
-          </div>
-          <div class="col-4 text-left text"><a th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}">[[${item.onlineFileOrgName}]]</a></div>
-          <div class="col-2 text-center text" th:if="${log[__${item.onlineClassFileId.onlineFileId}__] != null}">[[${log[__${item.onlineClassFileId.onlineFileId}__]} + '%']]</div>
-          <div class="col-2 text-center text" th:if="${log[__${item.onlineClassFileId.onlineFileId}__] == null}">0%</div>
-          <div class="col-2 text-center"><button class="playBtn" th:onclick="|location.href='@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}'|"><img src="/images/playBtn.png"></button></div>
-        </div>
-      </div>
-
-    </div>
-  <section>
-  <div style="height:100px"></div>  
+	<div class="list-container-second">
+	    <div class="container">
+	        <div class="row mb-4 list-title-second">
+	          <div class="col-2 text-center">회차</div>
+	          <div class="col-6 text-center">강의명</div>
+	          <div class="col-2 text-center">수강률</div>
+	          <div class="col-2 text-center">수강하기</div>
+	        </div>
+	    </div>
+	    <!--리스트-->
+	    <div class="container list-section-second" th:each='item:${classList}'>
+	        <div class="row list-item mb-5">
+	          <h5 class="col-2 text-center text">[[${item.onlineClassFileId.onlineFileId}]]강</h5>
+	          <div class="col-2 text-center">
+	            <a class="playThum-Btn" th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-play-fill" viewBox="0 0 16 16">
+	              <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+	            </svg></a>
+	            <a class="playThum" th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}"> 
+	              <img class="playThum" th:src="|@{'/video/' + ${item.onlineClassFileId.onlineClassId} + '_' + ${item.onlineClassFileId.onlineFileId} + '강_' + ${item.onlineFileOrgName} + '.png'}|">
+	            </a>
+	          </div>
+	          <div class="col-4 text-left text"><a th:href="@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}">[[${item.onlineFileOrgName}]]</a></div>
+	          <div class="col-2 text-center text" th:if="${log[__${item.onlineClassFileId.onlineFileId}__] != null}">[[${log[__${item.onlineClassFileId.onlineFileId}__]} + '%']]</div>
+	          <div class="col-2 text-center text" th:if="${log[__${item.onlineClassFileId.onlineFileId}__] == null}">0%</div>
+	          <div class="col-2 text-center"><button class="playBtn" th:onclick="|location.href='@{/onlinePlay(classId=${item.onlineClassFileId.onlineClassId}, fileId=${item.onlineClassFileId.onlineFileId})}'|"><img src="/images/playBtn.png"></button></div>
+	        </div>
+	    </div>
+	</div>
+</section>
 	
-	<!--채팅/맨 위로 버튼-->
-		<!--footer-->
-			<!-- loader -->
-	<div th:insert="import/bottomImport.html :: bottom-import"></div>
-			<!-- loader -->
-		<!--footer-->
-	<!--채팅/맨 위로 버튼-->
-	
-	<div th:replace="import/jsImport.html :: js-import"></div>
+<div th:insert="import/bottomImport.html :: bottom-import"></div>	
+<div th:replace="import/jsImport.html :: js-import"></div>
 </body>
 </html>

@@ -35,7 +35,7 @@ $(document).ready(function(){
 					console.log("총 영상 길이 : " + video.duration + ", 현재 재생 위치 : " + video.currentTime);
 				},
 				error:function(){
-					console.log("Log insert Fail");
+					console.log("로그 저장 실패");
 				}
 			});
 
@@ -94,7 +94,7 @@ $(document).ready(function(){
 				console.log("총 영상 길이 : " + formatDate(video.duration) + ", 현재 재생 위치 : " + formatDate(video.currentTime));
 			},
 			error:function(){
-				console.log("Log update Fail");
+				console.log("로그 업데이트 실패");
 			}
 		});
 	}
@@ -113,14 +113,14 @@ $(document).ready(function(){
 <section class="container">
     <div class="video-section w-100 ">
 		<div class="video-button-area ftco-animate col-md-12">
-			<button>수강목록</button>
-	  		<button>마이페이지</button>
+			<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${onlineClass.onlineClassId})}'|">재생목록</button>
+			<button type="button" th:onclick="|location.href='@{/user/mypage/{id}/onlinelecturelist (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}'|">수강목록</button>
   		</div>
 	  	
       <div class="video-container ftco-animate col-md-12">
         <div class="video-contents col-md-8">
           <div class="video-area">
-            <video id="video" controls playsinline muted>
+            <video id="video" controlsList="nodownload" controls playsinline muted>
               <source th:src="|@{'/video/' + ${videoFileName} + '#t=' + ${index}}|"  type="video/mp4" />	<!--확장자명 뒤에 #t=숫자 / 입력하면 시작 위치 지정-->
             </video>
           </div>
@@ -173,14 +173,15 @@ $(document).ready(function(){
       </div>
     </div>
   </section>
-	<!--채팅/맨 위로 버튼-->
-	<button id="btn-chat" title="채팅">
-		<img src="/images/icon-chat.png" alt="chat">
-	</button>
+	<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="ftco-footer-widget mb-4 ml-4">
+		<button id="btn-chat" title="채팅" onclick="javascript:window.open('/chat/chatList', '/chat/chatList',
+		'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=100,top=100')">
+			<img src="/images/icon-chat.png" alt="chat">
+		</button>
+	</div>
 	<button onclick="backToTop()" id="btn-back-to-top" title="맨 위로">
 		<img src="/images/icon-arrow-top.png" alt="top">
 	</button>
-	<!--채팅/맨 위로 버튼-->
 	
 	<div th:replace="import/jsImport.html :: js-import"></div>
 </body>
