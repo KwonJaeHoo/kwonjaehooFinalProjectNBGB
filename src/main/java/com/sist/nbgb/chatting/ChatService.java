@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -129,10 +130,34 @@ public class ChatService
     }
     
     //채팅창 리스트
-    List<ChatMessage> findMessageList(String id)
+    public List<ChatMessage> findMessageList(String id)
     {
     	Chat chatId = chatRepository.findFirstByChatId(id);
     	
     	return messageRepository.findAllByChatIdOrderByMessageRegdateAsc(chatId);
     }
+    
+    //채팅방 리스트(사용자)
+    public List<Chat> listUserId(String userId)
+    {
+    	return chatRepository.listUserId(userId);
+    }
+	
+    //채팅방 리스트(강사)
+	public List<Chat> listInstructorId(String instructorId)
+	{
+		return chatRepository.listInstructorId(instructorId);
+	}
+	
+	//마지막 채팅 검색
+	public ChatMessage lastChat(String chatId)
+	{
+		return messageRepository.lastChat(chatId);
+	}
+	
+	//채팅 읽음 update
+	public int updateRead(String chatId)
+	{
+		return messageRepository.updateRead(chatId);
+	}
 }
