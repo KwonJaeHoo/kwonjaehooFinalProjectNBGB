@@ -13,19 +13,24 @@
 				<div class="col-md-8 col-xl-6 chat">
 					<div class="card">
 						<div class="card-header msg_head">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img th:if="${img == 'IY'}" th:src="@{'/images/user/' + ${room.userId.userId} + '.png'}" class="rounded-circle user_img">
-									<svg th:if="${img == 'IN'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img" viewBox="0 0 16 16">
-									  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-									</svg>
-									<img th:if="${mem == 'u'}" th:src="@{'/images/instructor/' + ${room.instructorId.instructorId} + '.png'}" class="rounded-circle user_img">
+							<div class="d-flex bd-highlight row">
+								<div class="col-10 d-flex">
+									<div class="img_cont pr-4 pt-2">
+										<img th:if="${img == 'IY'}" th:src="@{'/images/user/' + ${room.userId.userId} + '.png'}" class="rounded-circle user_img">
+										<svg th:if="${img == 'IN'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img" viewBox="0 0 16 16">
+										  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+										</svg>
+										<img th:if="${mem == 'u'}" th:src="@{'/images/instructor/' + ${room.instructorId.instructorId} + '.png'}" class="rounded-circle user_img">
+									</div>
+									<div class="user_info">
+										<span th:if="${mem == 'i'}">[[${room.userId.userNickname}]]</span>
+										<span th:unless="${mem == 'i'}">[[${room.instructorId.instructorNickname}]]</span>
+										<p th:if="${mem == 'i'}">[[${room.userId.userId}]]</p>
+										<p th:unless="${mem == 'i'}">[[${room.instructorId.instructorId}]]</p>
+									</div>
 								</div>
-								<div class="user_info">
-									<span th:if="${mem == 'i'}">[[${room.userId.userNickname}]]</span>
-									<span th:unless="${mem == 'i'}">[[${room.instructorId.instructorNickname}]]</span>
-									<p th:if="${mem == 'i'}">[[${room.userId.userId}]]</p>
-									<p th:unless="${mem == 'i'}">[[${room.instructorId.instructorId}]]</p>
+								<div class="exit-icon col-2 px-0">
+									<span class="icon-exit_to_app" onclick="quit()"></span> 
 								</div>
 							</div>
 						</div>
@@ -41,13 +46,13 @@
 									</div>
 									<div class="msg_cotainer">
 										[[${list.messageContent}]]
-										<span class="msg_time">[[${#temporals.format(list.messageRegdate, 'yyyyMMdd HH:mm:ss')}]]</span>
+										<span class="msg_time">[[${#temporals.format(list.messageRegdate, 'yyyy-MM-dd HH:mm:ss')}]]</span>
 									</div>
 								</div>
-								<div th:if="${userId == list.sendId}" class="d-flex justify-content-end mb-4">
+								<div th:if="${userId == list.sendId}" class="d-flex justify-content-end msg-area">
 									<div class="msg_cotainer_send">
 										[[${list.messageContent}]]
-										<span class="msg_time_send">[[${#temporals.format(list.messageRegdate, 'yyyyMMdd HH:mm:ss')}]]</span>
+										<span class="msg_time_send">[[${#temporals.format(list.messageRegdate, 'yyyy-MM-dd HH:mm:ss')}]]</span>
 									</div>
 									<div class="img_cont_msg">
 										<img th:if="${img == 'UY'}" th:src="@{'/images/user/' + ${userId} + '.png'}" class="rounded-circle user_img_message">
@@ -64,12 +69,12 @@
 						</div>
 						<div class="card-footer">
 							<div class="input-group">
-								<div class="input-group-append">
+								<!--<div class="input-group-append">
 									<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-								</div>
-								<textarea id="content" class="form-control type_msg" placeholder="Type your message..."></textarea>
+								</div>-->
+								<textarea id="content" class="form-control type_msg" placeholder="메세지를 입력해주세요."></textarea>
 								<div class="input-group-append">
-									<span class="input-group-text send_btn" onclick="sendMsg()"><span class="icon-near_me"></span></span>
+									<span class="input-group-text send_btn px-3" onclick="sendMsg()"><span class="icon-near_me"></span></span>
 								</div>
 								
 								<input type="hidden" id="chatId" th:value="${chatId}">
@@ -121,7 +126,7 @@ document.querySelector('.send_btn').addEventListener('click', scrollToBottom);
     var minutes = ('0' + today.getMinutes()).slice(-2);
     var seconds = ('0' + today.getSeconds()).slice(-2); 
 
-    var dateString = year + month  + day + hours + ':' + minutes  + ':' + seconds;
+    var dateString = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;
 
 
     function enterRoom(socket) {
