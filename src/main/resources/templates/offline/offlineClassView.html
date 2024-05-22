@@ -82,6 +82,43 @@
 		    	}
 		    });
  	    });
+ 	    
+ 	    
+ 	    $(".btn-chat").on("click", function(){
+ 	    	var instructorId = $("#instructorId").val();
+ 	    	
+ 	    	$.ajax({
+ 	            url : "/chat/findChatRoom",
+ 	            data : {"instructorId" : instructorId},
+ 	            type : "POST",
+ 	            dataType : "json",
+ 	            async : false,
+ 	            beforeSend:function(xhr){
+ 		    		xhr.setRequestHeader("AJAX", "true");
+ 		    	},
+ 		    	success:function(res){
+ 		    		if(res.code == 3){
+ 		    			alert("일반회원만 이용가능한 서비스입니다.");
+ 		    		}
+ 		    		else if(res.code == 0)
+ 		    		{
+ 		    			window.open("/chat/chatRoom/" + res.chatId, "/chat/chatRoom/" + res.chatId,
+ 		    					'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=100,top=100');
+ 		    		}
+ 		    		else if(res.code == 1)
+ 		    		{
+ 		    			window.open("/chat/chatRoom/" + res.chatId, "/chat/chatRoom/" + res.chatId,
+	    					'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=100,top=100');
+ 		    		}
+ 		    		else{
+ 		    			alert("오류가 발생했습니다. 잠시후 다시 시도해주세요.");
+ 		    		}
+ 		    	},
+ 		    	error:function(xhr, status, error){
+ 		    		alert("오류가 발생했습니다.");
+ 		    	}
+ 	        });
+ 	    });
     });
     
     function fn_removeLike(){
@@ -232,12 +269,13 @@
 		            <span style="width:16; height:16; color:black"  class="icon-eye"></span> &nbsp; [[${#numbers.formatInteger(offlineClass.offlineClassViews, 1, 'COMMA')}]]
 		          </div>
 	          </div>
-	          
+	          <input type="hidden" id="instructorId" th:value="${offlineClass.instructorId.instructorId}">
 	        <div>
 	        <div class="d-flex justify-content-between" style="margin-bottom: 8px;">
 	            <div class="d-flex justify-content-start">
 	              <img src="/images/person_1.jpg" th:src="@{'/images/instructor/' + ${offlineClass.instructorId.instructorId} + '.png'}" class="mr-2" style="border-radius: 50% !important;width: 30px;height: 30px;float:left;">
 		          <h6 style="padding-top: 5px;" th:text="${offlineClass.instructorNickname}"></h6>
+         		  <button type="button" class="btn-chat"><span class="icon-comments"></span></button>
 	            </div>
 	            <div class="d-flex justify-content-end">
 		           <h6 style="padding-top: 5px;">[[${#numbers.formatInteger(offlineClass.offlineClassPrice, 1, 'COMMA')}]]원</h6>

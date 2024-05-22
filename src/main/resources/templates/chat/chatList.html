@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="import/cssImport.html :: css-import"></div>
+    <link rel="stylesheet" href="/css/css/chat.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center h-100">
+				<div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
+					<div class="card-header">
+						<div class="input-group">
+							<input type="text" placeholder="Search..." name="" class="form-control search">
+							<div class="input-group-prepend">
+								<span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="card-body contacts_body">
+						<ui class="contacts">
+						<li class="lists" th:each="list : ${list}">
+							<div class="hovers" th:onclick="|location.href='@{'/chat/chatRoom/' + ${list.chatId}}'|">
+								<div class="d-flex bd-highlight">
+									<div class="img_cont">
+										<img th:if="${list.img == 'Y'}" th:src="@{'/images/user/' + ${list.userId.userId} + '.png'}" class="rounded-circle user_img">
+										<svg th:if="${list.img == 'N'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img" viewBox="0 0 16 16">
+										  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+										</svg>
+										<img th:if="${list.img == 'I'}" th:src="@{'/images/instructor/' + ${list.instructorId.instructorId} + '.png'}" class="rounded-circle user_img">
+										<span th:if="${list.messageRead == 'N'}" class="online_icon offline"></span>
+									</div>
+									<div class="user_info">
+										<span th:if="${list.img == 'I'}">[[${list.insturctorNickname}]]</span>
+										<span th:unless="${list.img == 'I'}">[[${list.userNickname}]]</span>
+										<p>[[${list.lastChat}]]</p>
+									</div>
+								</div>
+							</div>
+						</li>
+						</ui>
+					</div>
+					<div class="card-footer"></div>
+				</div></div>
+			</div>
+		</div>
+	</body>
+</html>

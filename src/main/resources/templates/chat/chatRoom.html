@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <div th:replace="import/cssImport.html :: css-import"></div>
+    <link rel="stylesheet" href="/css/css/chat.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center h-100">
+				
+				<div class="col-md-8 col-xl-6 chat">
+					<div class="card">
+						<div class="card-header msg_head">
+							<div class="d-flex bd-highlight row">
+								<div class="col-10 d-flex">
+									<div class="img_cont pr-4 pt-2">
+										<img th:if="${img == 'IY'}" th:src="@{'/images/user/' + ${room.userId.userId} + '.png'}" class="rounded-circle user_img">
+										<svg th:if="${img == 'IN'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img" viewBox="0 0 16 16">
+										  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+										</svg>
+										<img th:if="${mem == 'u'}" th:src="@{'/images/instructor/' + ${room.instructorId.instructorId} + '.png'}" class="rounded-circle user_img">
+									</div>
+									<div class="user_info">
+										<span th:if="${mem == 'i'}">[[${room.userId.userNickname}]]</span>
+										<span th:unless="${mem == 'i'}">[[${room.instructorId.instructorNickname}]]</span>
+										<p th:if="${mem == 'i'}">[[${room.userId.userId}]]</p>
+										<p th:unless="${mem == 'i'}">[[${room.instructorId.instructorId}]]</p>
+									</div>
+								</div>
+								<div class="exit-icon col-2 px-0">
+									<span class="icon-exit_to_app" onclick="quit()"></span> 
+								</div>
+							</div>
+						</div>
+						<div class="card-body msg_card_body" id="card-body">
+							<div th:each="list : ${list}">
+								<div th:unless="${userId == list.sendId}" class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img th:if="${img == 'IY'}" th:src="@{'/images/user/' + ${room.userId.userId} + '.png'}" class="rounded-circle user_img_message">
+										<svg th:if="${img == 'IN'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16">
+										  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+										</svg>
+										<img th:if="${mem == 'u'}" th:src="@{'/images/instructor/' + ${room.instructorId.instructorId} + '.png'}" class="rounded-circle user_img_message">
+									</div>
+									<div class="msg_cotainer">
+										[[${list.messageContent}]]
+										<span class="msg_time">[[${#temporals.format(list.messageRegdate, 'yyyy-MM-dd HH:mm:ss')}]]</span>
+									</div>
+								</div>
+								<div th:if="${userId == list.sendId}" class="d-flex justify-content-end msg-area">
+									<div class="msg_cotainer_send">
+										[[${list.messageContent}]]
+										<span class="msg_time_send">[[${#temporals.format(list.messageRegdate, 'yyyy-MM-dd HH:mm:ss')}]]</span>
+									</div>
+									<div class="img_cont_msg">
+										<img th:if="${img == 'UY'}" th:src="@{'/images/user/' + ${userId} + '.png'}" class="rounded-circle user_img_message">
+										<svg th:if="${img == 'UN'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16">
+										  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+										</svg>
+										<img th:if="${mem == 'i'}" th:src="@{'/images/instructor/' + ${userId} + '.png'}" class="rounded-circle user_img_message">
+									</div>
+								</div>
+							</div>
+							<div id="addMessage">
+							
+							</div>
+						</div>
+						<div class="card-footer">
+							<div class="input-group">
+								<!--<div class="input-group-append">
+									<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+								</div>-->
+								<textarea id="content" class="form-control type_msg" placeholder="메세지를 입력해주세요."></textarea>
+								<div class="input-group-append">
+									<span class="input-group-text send_btn px-3" onclick="sendMsg()"><span class="icon-near_me"></span></span>
+								</div>
+								
+								<input type="hidden" id="chatId" th:value="${chatId}">
+								<input type="hidden" id="senderId" th:value="${userId}">
+								<input type="hidden" id="mem" th:value="${mem}">
+								<input type="hidden" id="img" th:value="${img}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+<!--  
+<input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
+<button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
+<button type="button" value="방나가기" class="quit" onclick="quit()">방 나가기</button>
+<div>
+    <span>메세지</span>
+    <div class="msgArea"></div>
+</div>-->
+
+<script th:inline="javascript">
+//채팅창의 스크롤을 항상 아래로 이동하는 함수
+function scrollToBottom() {
+    var chatBody = document.querySelector('#card-body');
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// 페이지 로드시와 새 메시지 추가시에 항상 스크롤을 아래로 이동
+window.onload = scrollToBottom();
+// 새 메시지가 추가될 때마다 스크롤을 아래로 이동
+document.querySelector('.send_btn').addEventListener('click', scrollToBottom);
+
+    let socket;
+    const userId = $("#senderId").val();
+    const chatId = $("#chatId").val();
+    
+    const mem = $("#mem").val();
+    const imgs = $("#img").val();
+    
+    var today = new Date();
+    
+    var year = today.getFullYear();
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    var day = ('0' + today.getDate()).slice(-2);
+
+    var hours = ('0' + today.getHours()).slice(-2); 
+    var minutes = ('0' + today.getMinutes()).slice(-2);
+    var seconds = ('0' + today.getSeconds()).slice(-2); 
+
+    var dateString = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;
+
+
+    function enterRoom(socket) {
+        var enterMsg = {
+            type: "ENTER",
+            chatId: chatId,
+            sender: userId,
+            message: ""
+        };
+        socket.send(JSON.stringify(enterMsg));
+    }
+
+    function connectWebSocket() {
+        socket = new WebSocket("ws://localhost:8008/ws/chat");
+
+        socket.onopen = function (e) {
+            console.log('open server!')
+            enterRoom(socket);
+        };
+        socket.onclose = function (e) {
+            console.log('disconnect');
+        };
+        socket.onerror = function (e) {
+            console.log(e);
+        };
+        socket.onmessage = function (e) {
+            console.log(e.data);
+            
+            let msg = JSON.parse(e.data);
+                        
+            if(userId == msg.sender)
+            {
+            	let msgArea = $('<div class="d-flex justify-content-end mb-4"></div>');
+                msgArea.appendTo("#addMessage");
+                let newMsg = $('<div class="msg_cotainer_send"></div>');
+                newMsg.html(msg.message).appendTo(msgArea);
+                $('<span class="msg_time_send"></span>').html(dateString).appendTo(newMsg);
+                
+                let img = $('<div class="img_cont_msg"></div>')
+                img.appendTo(msgArea);
+                
+                if(mem == "i")
+                {
+                	$('<img src="/images/instructor/' + userId +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                }
+                else if(mem == "u")
+                {                	
+                	if(imgs == "UY")
+                	{
+                		$('<img src="/images/user/' + userId +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                	}
+                	else if(imgs == "UN")
+                	{
+                		$('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></svg>').appendTo(img);
+                	}
+                }
+            }
+            else
+            {
+            	let msgArea1 = $('<div class="d-flex justify-content-start mb-4"></div>');
+                msgArea1.appendTo("#addMessage");
+                
+                let img = $('<div class="img_cont_msg"></div>')
+                img.appendTo(msgArea1);
+                
+                if(mem == "u")
+                {
+                	$('<img src="/images/instructor/' + msg.sender +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                }
+                else if(mem == "i")
+                {                	
+                	if(imgs == "IY")
+                	{
+                		$('<img src="/images/user/' + msg.sender +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                	}
+                	else if(imgs == "IN")
+                	{
+                		$('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></svg>').appendTo(img);
+                	}
+                }
+                
+                let newMsg1 = $('<div class="msg_cotainer"></div>');
+                newMsg1.html(msg.message).appendTo(msgArea1);
+                $('<span class="msg_time"></span>').html(dateString).appendTo(newMsg1);
+            }
+        };
+    }    
+   
+    function sendMsg() {
+        let content = $("#content").val();
+        var talkMsg = {
+            type: "TALK",
+            chatId: chatId,
+            sender: userId,
+            message: content
+        };
+        socket.send(JSON.stringify(talkMsg));
+        
+        $("#content").val('');
+    }
+
+    function quit() {
+        var quitMsg = {
+            type: "QUIT",
+            chatId: chatId,
+            sender: userId,
+            message: ""
+        };
+        socket.send(JSON.stringify(quitMsg));
+        socket.close();
+        location.href = "/chat/chatList";
+    }
+
+    // 페이지 로드 시 WebSocket 연결 설정
+    window.onload = function () {
+        connectWebSocket();
+    };
+
+    // 페이지가 닫히거나 새로고침될 때 WebSocket 연결 종료 처리
+    window.onbeforeunload = function () {
+        quit();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+    	var msg = "로그인 후 이용할 수 있습니다.";
+        
+        var error = $("#error").val();
+        
+        if(error == "r")
+        {
+        	msg = "해당 채팅방 참여자가 아닙니다.."
+        }
+        
+        alert(msg);
+        close();
+    });
+</script>
+</head>
+<body>
+<input type="hidden" id="error" th:value="${error}"> 
+</body>
+</html>

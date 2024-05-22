@@ -2,6 +2,7 @@ package com.sist.nbgb.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -28,8 +29,9 @@ import lombok.NoArgsConstructor;
 public class Chat 
 {
 	@Id
+	@Column(length = 32)
 	@Comment("채팅방 번호")
-	private Long chatId;
+	private String chatId;
 	
 	@CreatedDate
 	@Comment("채팅방 생성일")
