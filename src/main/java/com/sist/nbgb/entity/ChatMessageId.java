@@ -26,7 +26,7 @@ public class ChatMessageId implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Long chatId;
+	private String chatId;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Comment("메시지 번호")

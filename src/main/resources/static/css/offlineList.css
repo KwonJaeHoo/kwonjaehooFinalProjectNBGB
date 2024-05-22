@@ -420,3 +420,8 @@ i[class^=icon-chevron]{
 .pay-list-tb .email{
 	width:50%;
 }
+
+.btn-chat{
+	border:none;
+	background-color:#fff;
+}

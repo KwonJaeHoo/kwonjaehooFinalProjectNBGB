@@ -56,7 +56,10 @@ dependencies
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 	
 	implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.7.0'
-
+	
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
+	
+	implementation 'com.google.code.gson:gson:2.9.0'
 }
 
 tasks.named('test') 

@@ -110,7 +110,7 @@ function replyView() {
 		</div>
 	</div>
 	<div class="row review-reply-area mt-4">
-		<th:block th:if="${comment} != null">
+		<th:block th:if="${!comment.isEmpty()}">
 			<button type="button" onclick="replyView()" class="reply-title">💌 강사의 답변이 있습니다!</button>
 			<div class="textarea mt-3" id="replyDiv" >
 				<!--<div class="reviewReport mb-2"><button><img src="/images/reviewReport.png" /></button></div>-->
@@ -118,7 +118,7 @@ function replyView() {
 				<textarea class="text" id="reviewContents" cols="60" rows="4" readonly>[[${comment.reviewCommentContent}]]</textarea>
 			</div>
 		</th:block>
-		<div th:if="${comment} == null"class="reply-title">💬 등록된 답변이 없습니다.</div>
+		<div th:if="${comment.isEmpty()}"class="reply-title">💬 등록된 답변이 없습니다.</div>
 	</div>
 	<div class="row review-button-area mt-5">
 		<button type="button" class="my-lectureBtn mx-1" id="cancelBtn">닫기</button>
