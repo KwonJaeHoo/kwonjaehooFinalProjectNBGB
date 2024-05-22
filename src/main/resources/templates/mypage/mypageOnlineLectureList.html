@@ -54,7 +54,7 @@
             			</div>
         			<div class="col-2 text-center" th:text="|${#temporals.format(class.approvedAt.plusDays(class.onlineClassPeriod),'yyyy-MM-dd HH:mm')}|"><br/></div>
             			<div class="col-2 text-center">
-            				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId})}'|" 
+            				<button type="button" th:onclick="|location.href='@{/onlinePlayList(classId=${class.onlineClassId}, orderId=${class.partnerOrderId})}'|" 
             						th:if="${now lt class.approvedAt.plusDays(class.onlineClassPeriod)}" class="my-lectureBtn my-1">수강하기</button>
             				<button type="button" th:if="${now ge class.approvedAt.plusDays(class.onlineClassPeriod)}" class="my-lectureBtn my-1" disabled>기간만료</button>
             				<button type="button" th:if="${reviewChk['__${class.partnerOrderId}__'] == 'write'}" th:onclick="writeReview([[${class.onlineClassId}]], 'ON', [[${class.partnerOrderId}]])"

@@ -55,6 +55,7 @@ import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.kakao.KakaoPayCancel;
 import com.sist.nbgb.service.EmailService;
 import com.sist.nbgb.service.KakaoService;
+import com.sist.nbgb.service.OnlineClassPlayService;
 import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.SignupService;
 import com.sist.nbgb.service.UserService;
@@ -72,6 +73,7 @@ public class UserController
 	private final EmailService emailService;
 	private final ReviewService reviewService;
 	private final KakaoService kakaoService;
+	private final OnlineClassPlayService onlineClassPlayService;
         
     @GetMapping("/mypage/{id}/info")
     public String mypageUserInfo(Model model, @PathVariable String id)
@@ -400,12 +402,13 @@ public class UserController
     		
     		LocalDateTime now = LocalDateTime.now();
     		
-    		//후기 미작성 및 결제상태 = Y(수강중) or R(재결제)인 경우 후기 작성 가능
+    		//결제일 이후 수강완료(95%이상 수강)한 강의가 있으면 후기 작성 가능
     		Map<String, String> map = new HashMap<>();
 			for (OnlinePaymentClassListDTO reviewChk : classes) {
 				if(reviewChk.getStatus() == Status.N){
 					map.put(String.valueOf(reviewChk.getPartnerOrderId()), "null");
-				}else if(reviewService.exsitsReview(reviewChk.getPartnerOrderId()) == 0 && (reviewChk.getStatus() == Status.Y || reviewChk.getStatus() == Status.R)) {
+				}else if(reviewService.exsitsReview(reviewChk.getPartnerOrderId()) == 0
+						&& onlineClassPlayService.countLogStatus(reviewChk.getPartnerOrderId()) > 0) {
 					map.put(String.valueOf(reviewChk.getPartnerOrderId()), "write");
 				}else if(reviewService.exsitsReview(reviewChk.getPartnerOrderId()) != 0) {
 					map.put(String.valueOf(reviewChk.getPartnerOrderId()), "view");

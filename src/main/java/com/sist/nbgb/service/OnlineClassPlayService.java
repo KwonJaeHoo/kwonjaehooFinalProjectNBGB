@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.sist.nbgb.dto.OnlineClassLogDTO;
@@ -46,8 +47,8 @@ public class OnlineClassPlayService {
 	}
 	
 	//강의 정보 및 결제 정보 조회
-	public OnlinePaymentClassListDTO userLectureInfo(String partnerUserId, Long onlineClassId) {
-		return onlineClassRepository.userLectureInfo(partnerUserId, onlineClassId);
+	public OnlinePaymentClassListDTO userLectureInfo(String partnerOrderId, String partnerUserId, Long onlineClassId) {
+		return onlineClassRepository.userLectureInfo(partnerOrderId, partnerUserId, onlineClassId);
 	}
 	
 	//강의 사용자 로그 전체 조회
@@ -57,13 +58,15 @@ public class OnlineClassPlayService {
 	
 	//최신 결제 정보 조회
 	public OnlinePaymentApprove userPayInfo(String itemCode, String partnerUserId) {
-		return onlinePaymentApproveRepositoy.findFirstByItemCodeAndPartnerUserId(itemCode, partnerUserId);
+		Sort sort = Sort.by(Sort.Order.desc("approvedAt"));
+		return onlinePaymentApproveRepositoy.findFirstByItemCodeAndPartnerUserId(itemCode, partnerUserId, sort);
 	}
 	
 	//결제 상태 변경(취소 불가)
 	@Transactional
 	public OnlinePaymentApprove userPayInfoUpdate(String itemCode, String partnerUserId) {
-		OnlinePaymentApprove payInfo = onlinePaymentApproveRepositoy.findFirstByItemCodeAndPartnerUserId(itemCode, partnerUserId);
+		Sort sort = Sort.by(Sort.Order.desc("approvedAt"));
+		OnlinePaymentApprove payInfo = onlinePaymentApproveRepositoy.findFirstByItemCodeAndPartnerUserId(itemCode, partnerUserId, sort);
 		onlinePaymentApproveRepositoy.updatePayLogStatus(payInfo.getPartnerOrderId());
 		return payInfo;
 	}
@@ -85,9 +88,9 @@ public class OnlineClassPlayService {
 		onlineClassLog.update(onlineClassLogReqDTO.getOnlineLogCurr(), onlineClassLogReqDTO.getOnlineLogDate(), onlineClassLogReqDTO.getStatus());
 		return onlineClassLog;
 	}
-	
-	//로그 유무 조회
-	public boolean logCheck(OnlineClassLogIdDTO onlineClassLogIdDTO) {
-		return onlineClassLogRepository.countByOnlineClassLogId(onlineClassLogIdDTO.toEntity());
+
+	//로그 유무 조회(재결제 고려)
+	public int countLogStatus(String partnerOrderId) {
+		return onlineClassLogRepository.countLogStatus(partnerOrderId);
 	}
 }
