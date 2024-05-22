@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Provider;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,8 @@ public class UserInfoDto
 	
 	private Long userPoint;
 	
+	private Provider userProvider;
+	
 	private LocalDateTime userRegdate; 
 
 	public static UserInfoDto infoUser(List<User> user)
@@ -52,6 +55,7 @@ public class UserInfoDto
 				.userBirth(user.get(0).getUserBirth())
 				.userGender(user.get(0).getUserGender())
 				.userPoint(user.get(0).getUserPoint())
+				.userProvider(user.get(0).getUserProvider())
 				.userRegdate(user.get(0).getUserRegdate())
 				.build();
 	}

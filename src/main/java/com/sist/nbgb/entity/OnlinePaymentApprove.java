@@ -44,7 +44,7 @@ public class OnlinePaymentApprove
 	@Comment("가맹점 주문번호")
 	private String partnerOrderId;
 	
-	@Column(length = 32)
+	@Column(length = 60)
 	@Comment("가맹점 회원 아이디")
 	private String partnerUserId;
 	

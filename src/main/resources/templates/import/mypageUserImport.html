@@ -10,7 +10,7 @@
      			</li>
      			<ol>
        				<li><a th:href="@{/user/mypage/{id}/modify (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원정보 수정</a></li>
-       				<li><a th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원 탈퇴</a></li>
+       				<li><a th:if="${#strings.equals(#strings.toString(session.attributeDto.Provider), 'LOCAL')}" th:href="@{/user/mypage/{id}/signout (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}">- 회원 탈퇴</a></li>
      			</ol>
      			<li class="menu-item">
        				<a th:href="@{/user/mypage/{id}/payment (id=${session.SPRING_SECURITY_CONTEXT.Authentication.Name})}"><span class="icon-check2"></span>결제내역</a>

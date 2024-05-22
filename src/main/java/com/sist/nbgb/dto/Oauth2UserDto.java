@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Oauth2UserDto 
+public class OAuth2UserDto 
 {
 	private String userId;
 	
@@ -20,4 +20,5 @@ public class Oauth2UserDto
 	private String userBirth;
 	
 	private char userGender;
+	
 }

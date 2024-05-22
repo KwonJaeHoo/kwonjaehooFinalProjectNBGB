@@ -210,18 +210,18 @@ $(document).ready(function()
 				return;
 			}
 
-		    oauth2SignUp();
+		    oAuth2SignUp();
 		}
 	});
 });
 
 
-function oauth2SignUp()
+function oAuth2SignUp()
 {
 	$.ajax
 	({
 		type:"POST",
-		url:"/signup/oauth2user",
+		url:"/signup/oauth2",
 		data : JSON.stringify
 		({
 			userId:$("#userId").val(),
@@ -239,8 +239,42 @@ function oauth2SignUp()
 		},
 		success:function(data)
 		{
-			alert("회원가입이 완료 되었습니다.");
-			location.href = "/login";
+			if(data == 200)
+			{
+				alert("회원가입이 완료 되었습니다.");
+				oAuth2Login();
+			}
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});
+}
+
+function oAuth2Login()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/login/oauth2",
+		data : JSON.stringify
+		({
+			id:$("#userId").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			if(data == 200)
+			{
+				location.href = "/";
+				return;
+			}
 		},
 		error:function(xhr, status, error)
 		{

@@ -2,6 +2,8 @@ package com.sist.nbgb.service;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,13 +58,18 @@ public class InstructorsService
 	}
 	
 	@Transactional
-	public Object changeInstructorNickname(String instructorId, String instructorNickname)
+	public Object changeInstructorNickname(String instructorId, String instructorNickname, HttpServletRequest httpServletRequest)
 	{
 		Optional<Instructors> instructors = instructorsRepository.findByInstructorId(instructorId);
 		
 		try 
 		{
-			instructors.ifPresent(value -> value.setInstructorNickname(instructorNickname));			
+			instructors.ifPresent(value -> value.setInstructorNickname(instructorNickname));
+			
+			AttributeDto attributeDto = findInstructorAttribute(instructorId);
+			
+			HttpSession session = httpServletRequest.getSession(true);
+			session.setAttribute("attributeDto", attributeDto);
 		}
 		catch (Exception e)
 		{

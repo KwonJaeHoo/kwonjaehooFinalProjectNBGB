@@ -1,6 +1,7 @@
 package com.sist.nbgb.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.sist.nbgb.dto.AdminDto;
 import com.sist.nbgb.dto.EmailCheckDto;
 import com.sist.nbgb.dto.InstructorIdCheckDto;
 import com.sist.nbgb.dto.InstructorsDto;
+import com.sist.nbgb.dto.OAuth2UserDto;
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.dto.UserIdCheckDto;
 import com.sist.nbgb.entity.Admin;
@@ -49,10 +51,8 @@ public class SignupService
 	
 	public Boolean instructorSignUpDuplicateEmail(EmailCheckDto emailCheckDto)
 	{
-		System.out.println(emailCheckDto.getEmail());
 		return instructorsRepository.existsByInstructorEmail(emailCheckDto.getEmail());
 	}
-	
 	
 	@Transactional
 	public UserDto userSignup(UserDto userDto) throws RuntimeException
@@ -80,6 +80,28 @@ public class SignupService
 		return UserDto.from(userRepository.save(user));
 	}
 
+	@Transactional
+	public Object oauth2UserSignup(OAuth2UserDto oAuth2UserDto)
+	{
+		Optional<User> user = userRepository.findByUserId(oAuth2UserDto.getUserId());
+		
+		try 
+		{
+			user.ifPresent(value -> value.setUserNickname(oAuth2UserDto.getUserNickname()));
+			user.ifPresent(value -> value.setUserPhone(oAuth2UserDto.getUserPhone()));
+			user.ifPresent(value -> value.setUserBirth(oAuth2UserDto.getUserBirth().replaceAll("-", "")));
+			user.ifPresent(value -> value.setUserGender(oAuth2UserDto.getUserGender()));
+			user.ifPresent(value -> value.setUserPoint((long)1000));
+			user.ifPresent(value -> value.setUserRegdate(LocalDateTime.now().withNano(0)));
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		
+		return 200;
+	}
+	
 	@Transactional
 	public InstructorsDto instructorSignup(InstructorsDto instructorsDto)
 	{

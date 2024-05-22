@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="import/cssImport.html :: css-import"></div>
+</head>
+<body>
+	<input type="hidden" id="userId" name="userId" th:value="${userId}"/>
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
+</body>
+<script>
+$(document).ready(function()
+{
+	$.ajax
+	({
+		type:"POST",
+		url:"/login/oauth2",
+		data : JSON.stringify
+		({
+			id:$("#userId").val()
+		}),
+		datatype:"JSON",
+		contentType:"application/json",
+		beforeSend:function(xhr)
+		{
+			xhr.setRequestHeader("AJAX", true);
+		},
+		success:function(data)
+		{
+			if(data == 200)
+			{
+				location.href = "/";
+				return;
+			}
+		},
+		error:function(xhr, status, error)
+		{
+			alert("오류가 발생했습니다. 다시 시도해주세요.");
+		}
+   	});	
+});
+</script>
+</html>

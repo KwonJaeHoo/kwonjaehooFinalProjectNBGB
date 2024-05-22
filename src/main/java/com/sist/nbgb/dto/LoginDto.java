@@ -16,6 +16,5 @@ public class LoginDto
 	@NotNull
 	private String id;
 	
-	@NotNull
 	private String password;
 }
