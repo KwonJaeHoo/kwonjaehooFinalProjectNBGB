@@ -102,7 +102,7 @@ function replyView() {
 			<textarea class="text" id="reviewContents" cols="60" rows="5" readonly>[[${review.reviewContent}]]</textarea>
 		</div>
 		<div class="report-msg col-12 text-center" th:if="${#strings.equals(review.reviewStatus,'C')}">
-			<p>---해당 후기글은 다른 사용자의 신고로 숨김처리 되었습니다---</p>
+			<p>🚨해당 후기글은 다른 사용자의 신고로 숨김처리 되었습니다🚨</p>
 		</div>
 		<div class="review-view-third col-12" th:unless="${#strings.equals(review.reviewStatus,'C')}">
 			<button type="button" id="updateBtn" class="mr-2">수정</button>

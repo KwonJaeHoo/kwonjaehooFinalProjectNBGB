@@ -65,7 +65,7 @@
           			</div>
         		</div>
         		
-        		 <div class="row mt-5 justify-cotent-center" th:if="${!classes.isEmpty()}">
+        		 <div class="row mt-5 justify-cotent-center" th:if="${!classes.isEmpty() and classes.getTotalElements() >= 5}">
 					<div class="block-27 ad-paging-area">
 			          	<ul class="mb-2 ad-paging-ul">
 				            <!--이전-->
