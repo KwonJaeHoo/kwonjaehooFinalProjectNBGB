@@ -42,7 +42,7 @@ public class ChatMessage
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="chat_Id")
 	@Comment("채팅방 번호")
-	private Chat chat;
+	private Chat chatId;
 
 	@Column(length = 4000)
 	@Comment("메시지 내용")
@@ -65,4 +65,8 @@ public class ChatMessage
 	@JoinColumn(name="instructorId")
 	@Comment("보낸 사람 아이디(강사)")
 	private Instructors instructorId;
+	
+	@Column(length = 4000)
+	@Comment("보낸사람")
+	private String sendId;
 }
