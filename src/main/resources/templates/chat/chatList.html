@@ -20,7 +20,7 @@
 					<div class="py-1 close-area">
 						<button type="button" id="closeBtn"><span class="icon-close"></span></buton>
 					</div>
-					<div class="card-body contacts_body">
+					<div class="card-body contacts_body" th:if="${list != null}">
 						<ui class="contacts">
 						<li class="lists mb-0" th:each="list : ${list}">
 							<div class="hovers" th:onclick="fn_enterRoom([[${list.chatId}]])">
@@ -43,7 +43,9 @@
 						</li>
 						</ui>
 					</div>
-					
+					<div class="card-body list-section-none" th:if="${list != null}">
+						<h5>개설된 채팅방이 존재하지 않습니다.</h5>
+					</div>
 				</div></div>
 			</div>
 		</div>

@@ -425,3 +425,6 @@ i[class^=icon-chevron]{
 	border:none;
 	background-color:#fff;
 }
+.btn-chat:focus{
+	outline:none;
+}

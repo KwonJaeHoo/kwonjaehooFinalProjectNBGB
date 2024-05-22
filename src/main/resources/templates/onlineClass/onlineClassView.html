@@ -116,6 +116,41 @@
     			}
     		});
 
+			$(".btn-chat").on("click", function(){
+ 	    	var instructorId = '[[${onlineClass.instructorId}]]';
+ 	    	
+ 	    	$.ajax({
+ 	            url : "/chat/findChatRoom",
+ 	            data : {"instructorId" : instructorId},
+ 	            type : "POST",
+ 	            dataType : "json",
+ 	            async : false,
+ 	            beforeSend:function(xhr){
+ 		    		xhr.setRequestHeader("AJAX", "true");
+ 		    	},
+ 		    	success:function(res){
+ 		    		if(res.code == 3){
+ 		    			alert("일반회원만 이용가능한 서비스입니다.");
+ 		    		}
+ 		    		else if(res.code == 0)
+ 		    		{
+ 		    			window.open("/chat/chatRoom/" + res.chatId, "/chat/chatRoom/" + res.chatId,
+ 		    					'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=100,top=100');
+ 		    		}
+ 		    		else if(res.code == 1)
+ 		    		{
+ 		    			window.open("/chat/chatRoom/" + res.chatId, "/chat/chatRoom/" + res.chatId,
+	    					'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=100,top=100');
+ 		    		}
+ 		    		else{
+ 		    			alert("오류가 발생했습니다. 잠시후 다시 시도해주세요.");
+ 		    		}
+ 		    	},
+ 		    	error:function(xhr, status, error){
+ 		    		alert("오류가 발생했습니다.");
+ 		    	}
+ 	        });
+ 	    });
 }); //ready끝
     	
 //후기 추천
@@ -258,8 +293,8 @@ function fn_report(reviewId) {
             <div class="d-flex justify-content-between mt-2">
                <div class="d-flex justify-content-start">
                    <img src="/images/person_1.jpg" th:src="@{'/images/instructor/' + ${onlineClass.instructorId} + '.png'}" class="mr-2" style="border-radius: 50% !important;width: 40px;height: 40px;float:left;">
-                  <h6 class="mt-2 mb-4" th:text="${onlineClass.instructorNickname}">
-                  </h6>
+                  <h6 class="mt-2 mb-4" th:text="${onlineClass.instructorNickname}"></h6>
+                  <button type="button" class="btn-chat mb-4"><span class="icon-comments"></span></button>
                </div>
                <div class="d-flex justify-content-end">
                   <ul class="ftco-footer-social float-lft mt-1">
