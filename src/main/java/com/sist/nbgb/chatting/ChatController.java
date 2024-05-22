@@ -173,8 +173,6 @@ public class ChatController
     {
     	Chat room = chatService.findChatBychatId(chatId);
     	
-    	if(chatService.updateRead(chatId) > 0)
-    	{
     		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
             {
         		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -221,13 +219,6 @@ public class ChatController
     			
     			return "/chat/chatAlert";
     		}
-    	}
-    	else
-    	{
-    		model.addAttribute("error", "r");
-    		
-    		return "/chat/chatAlert";
-    	}
     	
         
         List<ChatMessageDto> list = chatService.findMessageList(chatId).stream()

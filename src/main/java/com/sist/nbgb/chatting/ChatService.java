@@ -156,8 +156,8 @@ public class ChatService
 	}
 	
 	//채팅 읽음 update
-	public int updateRead(String chatId)
-	{
-		return messageRepository.updateRead(chatId);
-	}
+	/*
+	 * public int updateRead(String chatId) { return
+	 * messageRepository.updateRead(chatId); }
+	 */
 }

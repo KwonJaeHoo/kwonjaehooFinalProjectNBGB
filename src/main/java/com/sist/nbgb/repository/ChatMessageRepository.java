@@ -25,10 +25,11 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, ChatMe
     		+ "	        WHERE rn = 1", nativeQuery = true)
     ChatMessage lastChat(@Param("chatId") String chatId);
     
-    @Modifying
-    @Query("UPDATE ChatMessage "
-    		+ "SET messageRead = 'Y' "
-    		+ "WHERE chatId = :chatId "
-    		+ "AND messageRead = 'N'")
-    int updateRead(@Param("chatId") String chatId);
+	/*
+	 * @Modifying
+	 * 
+	 * @Query("UPDATE ChatMessage " + "SET messageRead = 'Y' " +
+	 * "WHERE chatId = :chatId " + "AND messageRead = 'N'") int
+	 * updateRead(@Param("chatId") String chatId);
+	 */
 }
