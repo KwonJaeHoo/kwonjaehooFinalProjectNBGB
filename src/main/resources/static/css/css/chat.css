@@ -43,6 +43,30 @@
 		.container{
 			align-content: center;
 		}
+		.close-area{
+			border-radius: 15px 15px 0 0 !important;
+			border-bottom: 0 !important;
+		    margin-bottom: 0;
+		    background-color: rgba(0, 0, 0, 0.03);
+		    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+			display:flex;
+			justify-content:left;
+			margin: auto auto;
+			cursor:pointer;
+			width:100%;
+		}
+		.close-area button{
+			border:none;
+			background-color:transparent;
+			margin-left:4%;
+		}
+		.close-area button:focus{
+			outline:none;
+		}
+		.close-area button > span{
+			font-size:25px;
+		}
+
 		.search{
 			border-radius: 15px 0 0 15px !important;
 			background-color: rgba(0,0,0,0.3) !important;
@@ -93,10 +117,10 @@
 		.contacts li{
 			width: 100% !important;
 			padding: 5px 10px;
-			margin-bottom: 15px !important;
 		}
 	.lists .hovers:hover{
 			background-color: rgba(0,0,0,0.3);
+			cursor:pointer;
 	}
 		.user_img{
 			height: 60px;
@@ -104,7 +128,6 @@
 			border:1.5px solid #f5f6fa;
 		
 		}
-		
 		.user_img_message{
 			height: 38px;
 			width: 38px;
@@ -128,12 +151,12 @@
 	}
 	.online_icon{
 		position: absolute;
-		height: 15px;
-		width:15px;
+		height: 17px;
+		width:17px;
 		background-color: #4cd137;
 		border-radius: 50%;
-		bottom: 0.2em;
-		right: 0.4em;
+		bottom: 0.7em;
+		right: 0.7em;
 		border:1.5px solid white;
 	}
 	.offline{
