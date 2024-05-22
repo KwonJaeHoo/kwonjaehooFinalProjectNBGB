@@ -5,6 +5,13 @@
     <div th:replace="import/cssImport.html :: css-import"></div>
     <link rel="stylesheet" href="/css/css/chat.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script th:inline="javascript">
+    function fn_enterRoom(chatId)
+    {
+    	window.open('/chat/chatRoom/'+ chatId, '/chat/chatRoom/'+ chatId,
+		'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=600,top=100')
+    }
+    </script>
 </head>
 <body>
 		<div class="container-fluid h-100">
@@ -20,53 +27,22 @@
 					</div>
 					<div class="card-body contacts_body">
 						<ui class="contacts">
-						<li class="lists">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg" class="rounded-circle user_img">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Taherah Big</span>
-									<p>Taherah left 7 mins ago</p>
-								</div>
-							</div>
-						</li>
-						<li class="lists">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg" class="rounded-circle user_img">
-									<span class="online_icon"></span>
-								</div>
-								<div class="user_info">
-									<span>Sami Rafi</span>
-									<p>Sami is online</p>
-								</div>
-							</div>
-						</li>
-						<li class="lists">
-							<div class="hovers">
+						<li class="lists" th:each="list : ${list}">
+							<div class="hovers" th:onclick="fn_enterRoom([[${list.chatId}]])">
 								<div class="d-flex bd-highlight">
 									<div class="img_cont">
-										<img src="http://profilepicturesdp.com/wp-content/uploads/2018/07/sweet-girl-profile-pictures-9.jpg" class="rounded-circle user_img">
-										<span class="online_icon offline"></span>
+										<img th:if="${list.img == 'Y'}" th:src="@{'/images/user/' + ${list.userId.userId} + '.png'}" class="rounded-circle user_img">
+										<svg th:if="${list.img == 'N'}" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img" viewBox="0 0 16 16">
+										  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+										</svg>
+										<img th:if="${list.img == 'I'}" th:src="@{'/images/instructor/' + ${list.instructorId.instructorId} + '.png'}" class="rounded-circle user_img">
+										<span th:if="${list.messageRead == 'N'}" class="online_icon offline"></span>
 									</div>
 									<div class="user_info">
-										<span>Nargis Hawa</span>
-										<p>Nargis left 30 mins ago</p>
+										<span th:if="${list.img == 'I'}">[[${list.insturctorNickname}]]</span>
+										<span th:unless="${list.img == 'I'}">[[${list.userNickname}]]</span>
+										<p>[[${list.lastChat}]]</p>
 									</div>
-								</div>
-							</div>
-						</li>
-						<li class="lists">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Rashid Samim</span>
-									<p>Rashid left 50 mins ago</p>
 								</div>
 							</div>
 						</li>

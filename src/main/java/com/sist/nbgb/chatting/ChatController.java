@@ -19,6 +19,7 @@ import com.sist.nbgb.entity.Chat;
 import com.sist.nbgb.entity.ChatMessage;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.User;
+import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.response.ChatResponse;
 import com.sist.nbgb.response.InstructorsResponse;
 import com.sist.nbgb.response.OfflineResponse;
@@ -39,19 +40,68 @@ public class ChatController
     @RequestMapping("/chat/chatList")
     public String chatList(Model model)
     {
+    	List<ChatDto> list = null;
+    	
+    	int a = 0;
+    	
     	if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
         {
     		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
     		
+    		list = chatService.listUserId(userId).stream()
+    				.map(ChatDto::new)
+    				.collect(Collectors.toList());
+    		
+    		a = 1;
         }
 		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
 		{
 			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+			
+			list = chatService.listInstructorId(userId).stream()
+    				.map(ChatDto::new)
+    				.collect(Collectors.toList());
+			
+			a = 2;
 		}
 		else
 		{
 			return "/chat/chatAlert";
 		}
+    	
+    	for(ChatDto lastChat : list)
+    	{
+    		ChatMessage lastMessage = chatService.lastChat(lastChat.getChatId());
+    		
+    		lastChat.setLastChat(lastMessage.getMessageContent());
+    		
+    		if(lastMessage.getMessageRead() == Status.N)
+    		{
+    			lastChat.setMessageRead("N");
+    		}
+    		else
+    		{
+    			lastChat.setMessageRead("Y");
+    		}
+    		
+    		if(a == 2)//로그인 객체가 강사일 경우 상대(일반사용자) 사진 구분
+    		{
+    			if(offlineReviewService.getImg(lastChat.getUserId().getUserId()) == "Y")
+    			{
+    				lastChat.setImg("Y");
+				}
+    			else
+    			{
+    				lastChat.setImg("N");
+    			}
+    		}
+    		else if(a == 1)
+    		{
+    			lastChat.setImg("I");
+    		}
+    	}
+    	
+    	model.addAttribute("list", list);
     	
         List<ChattingRoom> roomList = chatService.findAllRoom();
         model.addAttribute("roomList",roomList);
@@ -123,50 +173,61 @@ public class ChatController
     {
     	Chat room = chatService.findChatBychatId(chatId);
     	
-    	if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
-        {
-    		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-    		
-    		Optional<User> user = offlineService.findByUserId(userId);
-    		
-    		if(offlineReviewService.getImg(userId) == "Y")
+    	if(chatService.updateRead(chatId) > 0)
+    	{
+    		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
+            {
+        		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        		
+        		Optional<User> user = offlineService.findByUserId(userId);
+        		
+        		if(offlineReviewService.getImg(userId) == "Y")
+        		{
+        			model.addAttribute("img", "UY");
+        		}
+        		else
+        		{
+        			model.addAttribute("img", "UN");
+        		}
+        		
+    			model.addAttribute("mem", "u");
+    			
+    			model.addAttribute("userId", userId);
+    			model.addAttribute("user", user.get());
+            }
+    		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
     		{
-    			model.addAttribute("img", "UY");
+    			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    			
+    			Optional<Instructors> user = offlineService.findByInstructorId(userId);
+    			
+    			if(offlineReviewService.getImg(room.getUserId().getUserId()) == "Y")
+        		{
+        			model.addAttribute("img", "IY");
+        		}
+        		else
+        		{
+        			model.addAttribute("img", "IN");
+        		}
+    			
+    			model.addAttribute("mem", "i");
+    			
+    			model.addAttribute("userId", userId);
+    			model.addAttribute("user", user.get());
     		}
     		else
     		{
-    			model.addAttribute("img", "UN");
+    			model.addAttribute("error", "o");
+    			
+    			return "/chat/chatAlert";
     		}
+    	}
+    	else
+    	{
+    		model.addAttribute("error", "r");
     		
-			model.addAttribute("mem", "u");
-			
-			model.addAttribute("userId", userId);
-			model.addAttribute("user", user.get());
-        }
-		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
-		{
-			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-			
-			Optional<Instructors> user = offlineService.findByInstructorId(userId);
-			
-			if(offlineReviewService.getImg(room.getUserId().getUserId()) == "Y")
-    		{
-    			model.addAttribute("img", "IY");
-    		}
-    		else
-    		{
-    			model.addAttribute("img", "IN");
-    		}
-			
-			model.addAttribute("mem", "i");
-			
-			model.addAttribute("userId", userId);
-			model.addAttribute("user", user.get());
-		}
-		else
-		{
-			return "/chat/chatAlert";
-		}
+    		return "/chat/chatAlert";
+    	}
     	
         
         List<ChatMessageDto> list = chatService.findMessageList(chatId).stream()
