@@ -154,10 +154,13 @@ public class ChatService
 	{
 		return messageRepository.lastChat(chatId);
 	}
-	
+		 
 	//채팅 읽음 update
-	/*
-	 * public int updateRead(String chatId) { return
-	 * messageRepository.updateRead(chatId); }
-	 */
+	@Transactional
+	public int updateRead(String id, String sendId) 
+	{
+		Chat chatId = chatRepository.findFirstByChatId(id);
+				
+		return messageRepository.updateInstructorRead(chatId, sendId);
+	}
 }

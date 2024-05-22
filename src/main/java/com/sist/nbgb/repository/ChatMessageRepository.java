@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.sist.nbgb.entity.Chat;
 import com.sist.nbgb.entity.ChatMessage;
 import com.sist.nbgb.entity.ChatMessageId;
+import com.sist.nbgb.entity.Instructors;
 
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, ChatMessageId>
@@ -24,12 +25,11 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, ChatMe
     		+ "	        FROM NBGB_CHAT_MESSAGE WHERE CHAT_ID = :chatId) "
     		+ "	        WHERE rn = 1", nativeQuery = true)
     ChatMessage lastChat(@Param("chatId") String chatId);
-    
-	/*
-	 * @Modifying
-	 * 
-	 * @Query("UPDATE ChatMessage " + "SET messageRead = 'Y' " +
-	 * "WHERE chatId = :chatId " + "AND messageRead = 'N'") int
-	 * updateRead(@Param("chatId") String chatId);
-	 */
+ 	
+	@Modifying
+	@Query("UPDATE ChatMessage " + "SET messageRead = 'Y' "
+			+ "WHERE chatId = :chatId "
+			+ "AND messageRead = 'N'"
+			+ "AND sendId = :instructorId") 
+	int updateInstructorRead(@Param("chatId") Chat chatId, @Param("instructorId") String instructorId);
 }

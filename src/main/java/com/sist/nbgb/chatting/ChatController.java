@@ -42,11 +42,13 @@ public class ChatController
     {
     	List<ChatDto> list = null;
     	
+    	String userId = null;
+    	
     	int a = 0;
     	
     	if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
         {
-    		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    		userId = SecurityContextHolder.getContext().getAuthentication().getName();
     		
     		list = chatService.listUserId(userId).stream()
     				.map(ChatDto::new)
@@ -56,7 +58,7 @@ public class ChatController
         }
 		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
 		{
-			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+			userId = SecurityContextHolder.getContext().getAuthentication().getName();
 			
 			list = chatService.listInstructorId(userId).stream()
     				.map(ChatDto::new)
@@ -77,7 +79,14 @@ public class ChatController
     		
     		if(lastMessage.getMessageRead() == Status.N)
     		{
-    			lastChat.setMessageRead("N");
+    			if(!lastMessage.getSendId().equals(userId))
+    			{
+    				lastChat.setMessageRead("N");
+    			}
+    			else
+    			{
+    				lastChat.setMessageRead("Y");
+    			}
     		}
     		else
     		{
@@ -173,11 +182,13 @@ public class ChatController
     {
     	Chat room = chatService.findChatBychatId(chatId);
     	
-    		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
-            {
-        		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        		
-        		Optional<User> user = offlineService.findByUserId(userId);
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_USER]"))
+        {
+    		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    	   		
+    		if(userId.equals(room.getUserId().getUserId()))
+    		{
+    			Optional<User> user = offlineService.findByUserId(userId);
         		
         		if(offlineReviewService.getImg(userId) == "Y")
         		{
@@ -188,37 +199,57 @@ public class ChatController
         			model.addAttribute("img", "UN");
         		}
         		
+        		chatService.updateRead(chatId, room.getInstructorId().getInstructorId());
+        		
     			model.addAttribute("mem", "u");
-    			
-    			model.addAttribute("userId", userId);
-    			model.addAttribute("user", user.get());
-            }
-    		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
-    		{
-    			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-    			
-    			Optional<Instructors> user = offlineService.findByInstructorId(userId);
-    			
-    			if(offlineReviewService.getImg(room.getUserId().getUserId()) == "Y")
-        		{
-        			model.addAttribute("img", "IY");
-        		}
-        		else
-        		{
-        			model.addAttribute("img", "IN");
-        		}
-    			
-    			model.addAttribute("mem", "i");
     			
     			model.addAttribute("userId", userId);
     			model.addAttribute("user", user.get());
     		}
     		else
     		{
-    			model.addAttribute("error", "o");
+    			model.addAttribute("error", "r");
     			
     			return "/chat/chatAlert";
     		}
+        }
+		else if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString().equals("[ROLE_INSTRUCTOR]"))
+		{
+			String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+						
+			if(userId.equals(room.getInstructorId().getInstructorId()))
+    		{
+				Optional<Instructors> user = offlineService.findByInstructorId(userId);
+				
+				if(offlineReviewService.getImg(room.getUserId().getUserId()) == "Y")
+	    		{
+	    			model.addAttribute("img", "IY");
+	    		}
+	    		else
+	    		{
+	    			model.addAttribute("img", "IN");
+	    		}
+				
+				chatService.updateRead(chatId, room.getUserId().getUserId());
+				
+				model.addAttribute("mem", "i");
+				
+				model.addAttribute("userId", userId);
+				model.addAttribute("user", user.get());
+    		}
+    		else
+    		{
+    			model.addAttribute("error", "r");
+    			
+    			return "/chat/chatAlert";
+    		}
+		}
+		else
+		{
+			model.addAttribute("error", "o");
+			
+			return "/chat/chatAlert";
+		}
     	
         
         List<ChatMessageDto> list = chatService.findMessageList(chatId).stream()
