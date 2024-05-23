@@ -13,6 +13,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import javax.servlet.http.HttpServletRequest;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -34,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriUtils;
 
 import com.sist.nbgb.dto.OfflineClassDenyDTO;
 import com.sist.nbgb.dto.OfflineClassStatusChange;
@@ -322,7 +326,7 @@ public class AdminController {
 	        Path filePath = Paths.get(baseDirectory, file.getOnlineFileName()).normalize();
 	        
 	        Resource resource = new UrlResource(filePath.toUri());
-	        if (resource.isFile())
+	        if (resource.exists() && resource.isReadable())
 	        {
 	            String contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
 	            
@@ -331,9 +335,15 @@ public class AdminController {
 	                contentType = "application/octet-stream";
 	            }
 	            
-	            return ResponseEntity.ok()
+	            String originalFileName = file.getOnlineFileName();
+	            String encodedOriginalFileName = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+
+	            String contentDisposition = "attachment; filename*=UTF-8''" + encodedOriginalFileName;
+
+	            return ResponseEntity
+	                    .ok()
 	                    .contentType(MediaType.parseMediaType(contentType))
-	                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                    .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
 	                    .body(resource);
 	        } else {
 	            return ResponseEntity.notFound().build();

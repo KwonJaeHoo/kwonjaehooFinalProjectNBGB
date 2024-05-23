@@ -111,7 +111,7 @@
         <div class="row">
         	<div class="col-md-4" th:each="item : ${list}">
         		<div class="classes w-100 ftco-animate">
-        			<img style="border-radius: 20px;" class="img w-100 mb-3" th:src="@{'/images/offlineThumbnail/' + ${item.offlineClassId} + '.jpg'}" th:onclick="|location.href='@{'/offlineClass/' + ${item.offlineClassId}}'|">
+        			<a th:href="@{/offlineClass/{offlineClassId}(offlineClassId=${item.offlineClassId})}" class="img w-100 mb-3" > <img style="border-radius: 20px;" class="img w-100 mb-3" th:src="@{'/images/offlineThumbnail/' + ${item.offlineClassId} + '.jpg'}"></a>
         			<div class="text w-100">
         				<h5><a th:href="@{'/offlineClass/' + ${item.offlineClassId}}" th:text="${item.offlineClassTitle}"></a></h5>
         				<div style="line-height: 5px;">
