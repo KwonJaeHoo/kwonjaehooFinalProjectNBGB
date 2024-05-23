@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -79,8 +80,30 @@ public class AdminController {
 	private final UserService userService;
 	
 	@GetMapping("/adminMain")
-	public String adminMain(Model model)
-	{
+	public String adminMain(Model model,
+			@Qualifier("user") @PageableDefault(size = 5, sort = "userRegdate", direction = Sort.Direction.DESC) Pageable userPageable,
+			@Qualifier("instructor") @PageableDefault(size = 5, sort = "instructorRegdate", direction = Sort.Direction.DESC) Pageable instructorPageable,
+			@Qualifier("onlineClass") @PageableDefault(size = 5, sort = "onlineClassRegdate", direction = Sort.Direction.DESC) Pageable onlineClassPageable,
+			@Qualifier("offlineClass") @PageableDefault(size = 5, sort = "offlineClassRegdate", direction = Sort.Direction.DESC) Pageable offlineClassPageable,
+			@Qualifier("reference") @RequestParam(value = "page", defaultValue="0") int page) {
+        
+		Page<User> userPage = adminService.findByUserRegdate(userPageable);
+        Page<Instructors> instructorPage = adminService.findAllByOrderByInstructorRegdate(instructorPageable);
+        Page<OnlineClass> onlineClassPage = adminService.findAllByApproveStatusAndOrderByRegdateDesc(onlineClassPageable);
+        Page<OfflineClass> offlineClassPage = adminService.findOfflineByApproveStatusAndOrderByRegdateDesc(offlineClassPageable);
+        List<ReferenceDto2> listPaging = referenceService.findByrefRegdate()
+        								 .stream().map(ReferenceDto2::new).collect(Collectors.toList());
+        
+        PageRequest pageRequest = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "refId"));
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min(start + pageRequest.getPageSize(), listPaging.size());
+		Page<ReferenceDto2> paging = new PageImpl<>(listPaging.subList(start, end), pageRequest, listPaging.size());
+        
+        model.addAttribute("userList", userPage.getContent());
+        model.addAttribute("instructorList", instructorPage.getContent());
+        model.addAttribute("onlineClassList", onlineClassPage.getContent());
+        model.addAttribute("offlineClassList", offlineClassPage.getContent());
+        model.addAttribute("paging", paging);
 		return "/admin/adminMain";
 	}
 	

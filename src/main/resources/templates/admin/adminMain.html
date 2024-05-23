@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div th:replace="import/cssImport.html :: css-import"></div>
-	<link rel="stylesheet" href="/css/reference.css" >
+	<link rel="stylesheet" href="/css/adminMain.css" >
 	<link rel="stylesheet" href="/css/referenceList.css">
 	<!--<link rel="stylesheet" href="../assets/css/styles.min.css" />-->
 </head>
@@ -37,6 +37,121 @@
 	  		</div>
 		</div>
 	</nav> 
+	
+	<div>
+        <table class="table">
+        <h3 style="text-align:center; margin-top: 20px;">문의글 리스트</h3>
+            <thead>
+            <tr>
+                <th>문의글 제목</th>
+                <th>작성자</th>
+                <th>등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="refList : ${paging}">
+                <td><a th:text="${refList.refTitle}" th:onclick="|location.href='@{'referenceView/' + ${refList.refId.refId}}'|">문의글 제목</a></td>
+                <td><a th:text="${refList.userNickname}">작성자</a></td>
+                <td><a th:text="${refList.refRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))}">등록일</a></td>  
+            </tr>
+            </tbody>
+            <button class="box etc2" th:onclick="|location.href='@{'/admin/referenceList'}'|">문의글 더보기</button>
+        </table>
+    </div>
+	
+	<div>
+        <table class="table">
+        <h3 style="text-align:center; margin-top: 20px;">일반 회원 리스트</h3>
+            <thead>
+            <tr>
+                <th>회원 아이디</th>
+                <th>회원 닉네임</th>
+                <th>회원 이름</th>
+                <th>회원 가입일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="userList: ${userList}">
+                <td><a th:text="${userList.userId}">회원 아이디</a></td>
+                <td><a th:text="${userList.userNickname}">회원 닉네임</a></td>
+                <td><a th:text="${userList.userName}">회원 이름</a></td>
+                <td><a th:text="${userList.userRegdate != null ? userList.userRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')) : '날짜 없음'}">회원 가입일</a></td>
+            </tr>
+            </tbody>
+            <button class="box etc" th:onclick="|location.href='@{'/admin/userList'}'|">일반 회원 더보기</button>
+        </table>
+    </div>
+    
+    <div>
+        <table class="table">
+        <h3 style="text-align:center; margin-top: 20px;">강사 리스트</h3>
+            <thead>
+            <tr>
+                <th>강사 아이디</th>
+                <th>강사 예명(상호명)</th>
+                <th>강사 이름</th>
+                <th>강사 가입일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="instList : ${instructorList}">
+                <td><a th:text="${instList.instructorId}">강사 아이디</a></td>
+                <td><a th:text="${instList.instructorNickname}">강사 예명(상호명)</a></td>
+                <td><a th:text="${instList.instructorName}">강사 이름</a></td>
+                <td><a th:text="${instList.instructorRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강사 가입일</a></td>
+            </tr>
+            </tbody>
+            <button class="box etc2" th:onclick="|location.href='@{'/admin/instructorList'}'|">강사 더보기</button>
+        </table>
+    </div>
+    
+    <div>
+        <table class="table">
+        <h3 style="text-align:center; margin-top: 20px;">내방 클래스 리스트</h3>
+            <thead>
+            <tr>
+                <th>강의 제목</th>
+                <th>강의 게시일</th>
+                <th>강의 가격</th>
+                <th>강의 기간</th>
+                <th>강의 조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="onlineList: ${onlineClassList}">
+                <td><a th:text="${onlineList.onlineClassTitle}" th:onclick="|location.href='@{'/online/' + ${onlineList.onlineClassId}}'|">강의 제목</a></td>
+                <td><a th:text="${onlineList.onlineClassRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강의 게시일</a></td>
+                <td><a th:text="${onlineList.onlineClassPrice}">강의 가격</a></td>
+                <td><a th:text="${onlineList.onlineClassPeriod} + '일'">강의 기간</a></td>
+                <td><a th:text="${onlineList.onlineClassViews}">강의 조회수</a></td>
+            </tr>
+            </tbody>
+            <button class="box etc2" th:onclick="|location.href='@{'/admin/onlineClassList'}'|">내방 클래스 더보기</button>
+        </table>
+    </div>
+    
+    <div>
+        <table class="table">
+        <h3 style="text-align:center; margin-top: 20px;">공방 클래스 리스트</h3>
+            <thead>
+            <tr>
+                <th>강의 제목</th>
+                <th>강의 게시일</th>
+                <th>강의 가격</th>
+                <th>강의 조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="offlineList: ${offlineClassList}">
+                <td><a th:text="${offlineList.offlineClassTitle}" th:onclick="|location.href='@{'/offlineClass/' + ${offlineList.offlineClassId}}'|">강의 제목</a></td>
+                <td><a th:text="${offlineList.offlineClassRegdate.format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss'))}">강의 게시일</a></td>
+                <td><a th:text="${offlineList.offlineClassPrice}">강의 가격</a></td>
+                <td><a th:text="${offlineList.offlineClassViews}">강의 조회수</a></td>
+            </tr>
+            </tbody>
+            <button class="box etc2" th:onclick="|location.href='@{'/admin/offlineClassList'}'|">공방 클래스 더보기</button>
+        </table>
+    </div>
 
 	<div th:replace="import/jsImport.html :: js-import"></div>
 </body>

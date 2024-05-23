@@ -77,6 +77,18 @@ button {
 
 /* 버튼 간 간격 조절 */    
 .onlineClassApprove, .offlineClassApprove {
-    margin-bottom: 10px; /* 오른쪽에 10px의 간격을 추가 */
+    margin-bottom: 10px; 
 }
+
+.etc {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.etc2 {
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+
 
