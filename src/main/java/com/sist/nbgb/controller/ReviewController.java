@@ -19,15 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.OfflineClassView;
 import com.sist.nbgb.dto.OnlineClassListDTO;
-import com.sist.nbgb.dto.OnlinePopDTO;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewDTO;
 import com.sist.nbgb.dto.ReviewReportDTO;
 import com.sist.nbgb.dto.ReviewRequestDTO;
 import com.sist.nbgb.dto.ReviewUpdateDTO;
 import com.sist.nbgb.entity.Review;
-import com.sist.nbgb.entity.ReviewReport;
-import com.sist.nbgb.entity.ReviewReportId;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;

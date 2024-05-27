@@ -5,10 +5,8 @@ import java.time.LocalDateTime;
 import com.sist.nbgb.entity.Chat;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.User;
-import com.sist.nbgb.enums.Status;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class ChatDto 

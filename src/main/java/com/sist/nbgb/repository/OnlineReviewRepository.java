@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.sist.nbgb.entity.Review;
-import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
 public interface OnlineReviewRepository extends JpaRepository<Review, Long> {

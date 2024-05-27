@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,10 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sist.nbgb.dto.ClassLikeDTO;
 import com.sist.nbgb.dto.OfflineApproveResponse;
-import com.sist.nbgb.dto.OfflinePayBeforeDto;
-import com.sist.nbgb.dto.OfflinePayDto;
-import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto;
 import com.sist.nbgb.dto.OfflineReadyResponse;
 import com.sist.nbgb.dto.OnlinePayDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
@@ -47,7 +41,6 @@ import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.ClassId;
 import com.sist.nbgb.entity.ClassLike;
 import com.sist.nbgb.entity.Instructors;
-import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OnlineCategory;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
@@ -68,7 +61,6 @@ import com.sist.nbgb.repository.OnlineReviewCommentRepository;
 import com.sist.nbgb.repository.OnlineReviewRepository;
 import com.sist.nbgb.repository.ReviewLikeRepository;
 import com.sist.nbgb.repository.UserRepository;
-import com.sist.nbgb.response.UUIDUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

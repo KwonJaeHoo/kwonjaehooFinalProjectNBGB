@@ -13,7 +13,6 @@ import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.sist.nbgb.enums.Role;
-import com.sist.nbgb.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

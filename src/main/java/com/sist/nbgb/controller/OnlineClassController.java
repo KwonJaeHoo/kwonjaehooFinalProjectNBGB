@@ -45,11 +45,9 @@ import com.sist.nbgb.dto.OnlineUpdateDTO;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
-import com.sist.nbgb.entity.OnlineClassLog;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
-import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.OnlineClassPlayService;
 import com.sist.nbgb.service.OnlineClassService;
 
@@ -61,7 +59,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class OnlineClassController {
 	private final OnlineClassService onlineClassService;
-	private final InstructorsService instService;
 	private final OnlineClassPlayService onlineClassPlayService;
 	
 	@Autowired

@@ -14,13 +14,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.sist.nbgb.dto.OfflineApproveResponse;
-import com.sist.nbgb.dto.OfflinePayBeforeDto;
 import com.sist.nbgb.dto.OfflinePayDto;
-import com.sist.nbgb.dto.OfflinePayReadyDto;
 import com.sist.nbgb.dto.OfflinePaymentApproveDto;
 import com.sist.nbgb.dto.OfflineReadyResponse;
 import com.sist.nbgb.entity.OfflinePaymentApprove;
-import com.sist.nbgb.repository.OfflinePaymentApproveRepository;
 
 import lombok.RequiredArgsConstructor;
 

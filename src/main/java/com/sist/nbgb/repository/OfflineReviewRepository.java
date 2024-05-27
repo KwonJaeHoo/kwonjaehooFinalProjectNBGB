@@ -11,8 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
-import com.sist.nbgb.entity.ReviewId;
-import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 
 public interface OfflineReviewRepository extends JpaRepository<Review, Long>

@@ -2,7 +2,6 @@ package com.sist.nbgb.chatting;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter

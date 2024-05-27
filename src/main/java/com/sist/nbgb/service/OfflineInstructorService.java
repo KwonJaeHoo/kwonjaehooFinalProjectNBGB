@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.sist.nbgb.dto.ReviewCommentDto;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
-import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;

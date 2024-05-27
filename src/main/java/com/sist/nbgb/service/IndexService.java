@@ -1,23 +1,19 @@
 package com.sist.nbgb.service;
 
 import java.io.File;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.Review;
-import com.sist.nbgb.entity.ReviewFile;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.repository.OfflineRepository;
 import com.sist.nbgb.repository.OnlineClassRepository;
-import com.sist.nbgb.repository.ReviewFileRepository;
 import com.sist.nbgb.repository.ReviewRepository;
 import com.sist.nbgb.repository.UserRepository;
 
@@ -31,7 +27,6 @@ public class IndexService
 	private final OfflineRepository offlineRepository;
 	private final ReviewRepository reviewRepository;
 	private final UserRepository userRepository;
-	private final ReviewFileRepository reviewFileRepository;
 	
 	private final UserService userService;
 	
@@ -56,10 +51,7 @@ public class IndexService
 		return userRepository.findAll();
 	}
 	
-	public List<ReviewFile> reviewFileDto()
-	{
-		return reviewFileRepository.findAll();
-	}
+
 	
 	//회원 이미지 찾기
 	public String getImg(String userId) {

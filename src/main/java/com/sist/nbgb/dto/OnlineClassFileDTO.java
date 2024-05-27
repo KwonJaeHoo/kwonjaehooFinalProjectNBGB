@@ -1,7 +1,5 @@
 package com.sist.nbgb.dto;
 
-import java.text.DecimalFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

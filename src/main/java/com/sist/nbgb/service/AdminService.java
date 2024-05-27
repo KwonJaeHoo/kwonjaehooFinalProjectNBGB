@@ -13,7 +13,6 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
-import com.sist.nbgb.entity.OnlineClassFileId;
 import com.sist.nbgb.entity.ReferenceAnswer;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Role;

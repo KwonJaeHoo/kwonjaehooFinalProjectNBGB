@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.InstructorOfflineLecture;
-import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.dto.OnlineInsDto;
 import com.sist.nbgb.dto.OnlineReviewCommentDTO;
 import com.sist.nbgb.dto.ReviewCommentDto;
@@ -35,7 +34,6 @@ import com.sist.nbgb.response.OfflineReviewResponse;
 import com.sist.nbgb.response.UserResponse;
 import com.sist.nbgb.service.InstructorsService;
 import com.sist.nbgb.service.OfflineInstructorService;
-import com.sist.nbgb.service.OfflineReviewService;
 import com.sist.nbgb.service.OfflineService;
 import com.sist.nbgb.service.OnlineClassService;
 import com.sist.nbgb.service.ReviewService;

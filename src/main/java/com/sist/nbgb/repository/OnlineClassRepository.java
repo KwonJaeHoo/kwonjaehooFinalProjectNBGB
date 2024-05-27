@@ -1,11 +1,9 @@
 package com.sist.nbgb.repository;
 
-
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,8 +13,6 @@ import com.sist.nbgb.dto.OnlinePaymentClassListDTO;
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
-
-
 
 public interface OnlineClassRepository extends JpaRepository<OnlineClass, Long>{
 	

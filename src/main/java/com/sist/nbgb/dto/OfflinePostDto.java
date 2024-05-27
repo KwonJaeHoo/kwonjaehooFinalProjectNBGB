@@ -1,6 +1,5 @@
 package com.sist.nbgb.dto;
 
-import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 
 import lombok.AllArgsConstructor;

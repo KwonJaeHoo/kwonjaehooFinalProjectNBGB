@@ -2,7 +2,6 @@ package com.sist.nbgb.dto;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 
 import com.sist.nbgb.entity.OfflinePaymentCancel;
 import com.sist.nbgb.kakao.KakaoPayCancel;

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.sist.nbgb.entity.Chat;
 import com.sist.nbgb.entity.ChatMessage;
 import com.sist.nbgb.entity.ChatMessageId;
-import com.sist.nbgb.entity.Instructors;
 
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, ChatMessageId>

@@ -2,7 +2,6 @@ package com.sist.nbgb.dto;
 
 import java.time.LocalDateTime;
 
-import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;
 

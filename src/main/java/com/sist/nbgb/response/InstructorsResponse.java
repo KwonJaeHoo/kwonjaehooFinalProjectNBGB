@@ -2,13 +2,6 @@ package com.sist.nbgb.response;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
-import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.enums.Role;
 import com.sist.nbgb.enums.Status;

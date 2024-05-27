@@ -3,13 +3,10 @@ package com.sist.nbgb.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.sist.nbgb.entity.ReviewComment;
-import com.sist.nbgb.entity.ReviewId;
-import com.sist.nbgb.entity.Review;
 
 public interface OnlineReviewCommentRepository extends JpaRepository<ReviewComment, Long>{
 	ReviewComment findByReviewId(Long reivewId);

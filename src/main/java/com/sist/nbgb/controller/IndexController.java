@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.sist.nbgb.dto.OfflineClassView;
 import com.sist.nbgb.dto.OnlineClassView;
 import com.sist.nbgb.dto.ReviewDTO;
-import com.sist.nbgb.dto.ReviewFileDto;
 import com.sist.nbgb.dto.UserDto;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.service.IndexService;
-import com.sist.nbgb.service.OnlineClassPlayService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -104,16 +102,7 @@ public class IndexController
 		int userCount = userDto.size();
 		
 		model.addAttribute("userCount", userCount);
-		
-		//후기 사진
-		List<ReviewFileDto> reviewFileDto = indexService.reviewFileDto()
-				.stream()
-				.map(ReviewFileDto::new)
-				.collect(Collectors.toList());
-		
-		System.out.println(reviewFileDto);
-		model.addAttribute("reviewFileDto", reviewFileDto);
-		
+
 		return "index";
 	}
 }

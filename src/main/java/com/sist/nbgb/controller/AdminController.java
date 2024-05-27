@@ -1,6 +1,5 @@
 package com.sist.nbgb.controller;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,21 +11,18 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import javax.servlet.http.HttpServletRequest;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.util.UriUtils;
 
 import com.sist.nbgb.dto.OfflineClassDenyDTO;
 import com.sist.nbgb.dto.OfflineClassStatusChange;
@@ -52,7 +47,6 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.entity.OnlineClass;
 import com.sist.nbgb.entity.OnlineClassFile;
-import com.sist.nbgb.entity.OnlineClassFileId;
 import com.sist.nbgb.entity.Reference;
 import com.sist.nbgb.entity.ReviewReport;
 import com.sist.nbgb.entity.User;
@@ -62,14 +56,6 @@ import com.sist.nbgb.service.AdminService;
 import com.sist.nbgb.service.ReferenceService;
 import com.sist.nbgb.service.ReviewService;
 import com.sist.nbgb.service.UserService;
-
-import com.sist.nbgb.entity.User;
-import com.sist.nbgb.enums.Role;
-import com.sist.nbgb.enums.Status;
-
-import com.sist.nbgb.service.AdminService;
-
-import com.sist.nbgb.service.ReferenceService;
 
 import lombok.RequiredArgsConstructor;
 

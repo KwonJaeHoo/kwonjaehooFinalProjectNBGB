@@ -12,14 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sist.nbgb.dto.OfflineReviewLikeDto;
-import com.sist.nbgb.dto.OnlineReviewLikeDTO;
 import com.sist.nbgb.dto.UserInfoDto;
 import com.sist.nbgb.entity.Review;
 import com.sist.nbgb.entity.ReviewComment;
-import com.sist.nbgb.entity.ReviewLike;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
-import com.sist.nbgb.repository.OfflineReviewLikeRepository;
 import com.sist.nbgb.repository.OfflineReviewReplyRepository;
 import com.sist.nbgb.repository.OfflineReviewRepository;
 import com.sist.nbgb.repository.ReviewLikeRepository;

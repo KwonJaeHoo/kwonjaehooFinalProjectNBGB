@@ -2,9 +2,6 @@ package com.sist.nbgb.response;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-
 import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.OfflineClass;
 import com.sist.nbgb.enums.Status;

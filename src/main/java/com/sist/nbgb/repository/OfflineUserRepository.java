@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.User;
 
 public interface OfflineUserRepository  extends JpaRepository<User, String>

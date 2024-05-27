@@ -3,9 +3,6 @@ package com.sist.nbgb.controller;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,21 +14,15 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sist.nbgb.dto.OfflineApproveResponse;
-import com.sist.nbgb.dto.OfflinePayBeforeDto;
-import com.sist.nbgb.dto.OfflinePayDto;
-import com.sist.nbgb.dto.OfflinePayReadyDto;
-import com.sist.nbgb.dto.OfflinePaymentApproveDto;
 import com.sist.nbgb.dto.OfflineReadyResponse;
 import com.sist.nbgb.dto.OnlinePayBeforeDto;
 import com.sist.nbgb.dto.OnlinePayDto;
 import com.sist.nbgb.dto.OnlinePayReadyDto;
 import com.sist.nbgb.dto.OnlinePaymentApproveDto;
 import com.sist.nbgb.dto.OnlinePopDTO;
-import com.sist.nbgb.entity.OfflinePaymentApprove;
 import com.sist.nbgb.entity.OnlinePaymentApprove;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.response.UUIDUtil;
-import com.sist.nbgb.service.OfflinePayService;
 import com.sist.nbgb.service.OnlineClassService;
 
 import lombok.RequiredArgsConstructor;

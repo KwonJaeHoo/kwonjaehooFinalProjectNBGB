@@ -21,9 +21,6 @@ import com.sist.nbgb.entity.Instructors;
 import com.sist.nbgb.entity.User;
 import com.sist.nbgb.enums.Status;
 import com.sist.nbgb.response.ChatResponse;
-import com.sist.nbgb.response.InstructorsResponse;
-import com.sist.nbgb.response.OfflineResponse;
-import com.sist.nbgb.response.UserResponse;
 import com.sist.nbgb.service.OfflineReviewService;
 import com.sist.nbgb.service.OfflineService;
 
