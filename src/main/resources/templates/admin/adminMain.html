@@ -7,11 +7,11 @@
 	<!--<link rel="stylesheet" href="../assets/css/styles.min.css" />-->
 </head>
 <body>
-<div th:insert="import/topAdminImport.html :: top-import"></div>
-	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" style="margin-top:9dvh;">
+<div th:insert="import/topAdminImport.html :: top-import" style="z-index:1;"></div>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" style="margin-top:9dvh;position:static;margin-top:3%;">
 		<div class="container">
 	  		<div class="row m-auto">
-	  			<div class="col-12 w-100 text-center mt-4">
+	  			<div class="col-12 w-100 text-center">
 	  				<a class="navbar-brand" href="/"><img src="/images/logo.png" width="300px"></a>
 				    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation"></button>
 	  			</div>
@@ -36,8 +36,8 @@
 	  			</div>
 	  		</div>
 		</div>
-	</nav> 
-	
+	</nav>
+
 	<div>
         <table class="table">
         <h3 style="text-align:center; margin-top: 20px;">문의글 리스트</h3>

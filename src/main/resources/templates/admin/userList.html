@@ -93,7 +93,32 @@ $(document).ready(function() {
 </head>
 <body>
 <div th:insert="import/topAdminImport.html :: top-import"></div>
-	<a class="MainBanner" aria-current="page" href="/admin/userList"><h1 style="margin-top:9dvh;">일반 회원 관리</h1></a>
+<a class="MainBanner" aria-current="page" href="/admin/userList"><h1 style="margin-top:9dvh;">일반 회원 관리</h1></a>
+<nav class="navbar navbar-expand-lg ftco_navbar ftco-navbar-light admin-nav-css" id="ftco-navbar" style="position:static;">
+	<div class="container">
+  		<div class="row m-auto">
+  			<div class="col-12 w-100 text-center">
+  				<div class="collapse navbar-collapse" id="ftco-nav">
+			    	<ul class="navbar-nav m-auto menu">
+			        	<li class="nav-item active" ><a href="/admin/adminMain" class="nav-link">관리자 홈</a></li>
+			          	<li class="nav-item">
+							<a href="/admin/userList" class="nav-link">회원 관리</a>
+						</li>
+			          	<li class="nav-item">
+			          		<a href="/admin/onlineClassList" class="nav-link">클래스 관리</a>
+			          	</li>
+			          	<li class="nav-item">
+			          		<a href="/admin/referenceList" class="nav-link">문의글 관리</a>
+			          	</li>
+			          	<li class="nav-item">
+			          		<a href="/admin/reviewReportList" class="nav-link">신고글 관리</a>
+			          	</li>
+			        </ul>
+				</div>
+  			</div>
+  		</div>
+	</div>
+</nav> 
 	
 	<div class="container">
 
@@ -171,7 +196,7 @@ $(document).ready(function() {
 </div> <!-- /container -->
 
 <!-- 검색창 -->
-    <form class="search-box" action="/admin/userList" method="get">
+    <form class="search-box mb-5" action="/admin/userList" method="get">
 	    <input class="search-txt" type="text" name="searchKeyword" placeholder="검색어를 입력하세요.">
 	    <button class="search-btn" type="submit">
 	        <i class="fa-solid fa-magnifying-glass"></i>

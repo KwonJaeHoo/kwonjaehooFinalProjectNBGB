@@ -22,8 +22,33 @@ $(document).ready(function() {
 </head>
 <body>
 <div th:insert="import/topAdminImport.html :: top-import"></div>
-	<a class="MainBanner" aria-current="page" href="/admin/reviewReportList"><h1 style="margin-top:9dvh;">후기 신고 관리</h1></a>
-	
+<a class="MainBanner" aria-current="page" href="/admin/reviewReportList"><h1 style="margin-top:9dvh;">후기 신고 관리</h1></a>
+<nav class="navbar navbar-expand-lg ftco_navbar ftco-navbar-light admin-nav-css" id="ftco-navbar" style="position:static;">
+	<div class="container">
+  		<div class="row m-auto">
+  			<div class="col-12 w-100 text-center">
+  				<div class="collapse navbar-collapse" id="ftco-nav">
+			    	<ul class="navbar-nav m-auto menu">
+			        	<li class="nav-item active" ><a href="/admin/adminMain" class="nav-link">관리자 홈</a></li>
+			          	<li class="nav-item">
+							<a href="/admin/userList" class="nav-link">회원 관리</a>
+						</li>
+			          	<li class="nav-item">
+			          		<a href="/admin/onlineClassList" class="nav-link">클래스 관리</a>
+			          	</li>
+			          	<li class="nav-item">
+			          		<a href="/admin/referenceList" class="nav-link">문의글 관리</a>
+			          	</li>
+			          	<li class="nav-item">
+			          		<a href="/admin/reviewReportList" class="nav-link">신고글 관리</a>
+			          	</li>
+			        </ul>
+				</div>
+  			</div>
+  		</div>
+	</div>
+</nav>	
+
 <div class="container">
     <hr class="my-4">
     <div>
@@ -57,7 +82,7 @@ $(document).ready(function() {
         </table>
     </div>
 
-	<div class="row mt-5 justify-cotent-center" th:if="${!reportList.isEmpty()}">
+	<div class="row my-5 justify-cotent-center" th:if="${!reportList.isEmpty()}">
 		<div class="block-27 ad-paging-area">
           	<ul class="mb-2 ad-paging-ul">
 	            <!--이전-->
@@ -80,7 +105,7 @@ $(document).ready(function() {
 	</div>
 </div>
 <script src="/js/reference.js"></script>
-<div th:insert="import/bottomImport.html :: bottom-import"></div>
+<!--<div th:insert="import/bottomImport.html :: bottom-import"></div>-->
 <div th:replace="import/jsImport.html :: js-import"></div>
 </body>
 </html>
