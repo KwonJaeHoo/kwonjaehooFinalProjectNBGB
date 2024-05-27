@@ -416,7 +416,7 @@
                          <div class="comment-body">
                            <div class="d-flex justify-content-start">
                              <h3>[[${commentlist.instructorNickname}]]</h3>
-                             <div class="meta ml-2">[[${commentlist.reviewCommentRegdate}]]</div>
+                             <div class="meta ml-2" th:text="${#temporals.format(commentlist.reviewCommentRegdate, 'yyyy-MM-dd HH:mm:ss')}"></div>
                              </div>
                            <p th:text="${commentlist.reviewCommentContent}"></p>
                          </div>

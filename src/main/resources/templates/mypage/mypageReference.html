@@ -28,7 +28,7 @@
         		</div>
         		<div th:each="userReferenceDto : ${paging}"class="container list-section">
         			<div th:if="${userReferenceDto != 'null'}" class="row list-item">
-            			<div class="col-1 text-center" th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></div>
+            			<div class="col-1 text-center" th:text="${userReferenceDto.refId.refId}"></div>
             			<div class="col-3 text-center" th:text="${userReferenceDto.refTitle}"></div>
             			<div class="col-2 text-center"><button class="log-btn log-btn-first" th:reference="${userReferenceDto.refContent}" th:onclick="referenceView(this.getAttribute('reference'))">내용보기</button></div>
             			<div class="col-2 text-center" th:text="${#temporals.format(userReferenceDto.refRegdate, 'yyyy-MM-dd HH:mm')}"></div>

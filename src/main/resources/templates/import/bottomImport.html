@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body th:fragment="bottom-import">
 
-	<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null}" class="ftco-footer-widget mb-4 ml-4">
+	<div th:if="${session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities != null and session?.SPRING_SECURITY_CONTEXT?.Authentication?.Authorities.toString != '[ROLE_ADMIN]'}" class="ftco-footer-widget mb-4 ml-4">
 		<button id="btn-chat" title="채팅" onclick="javascript:window.open('/chat/chatList', '/chat/chatList',
 		'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=500px,height=550px,left=100,top=100')">
 			<img src="/images/icon-chat.png" alt="chat">
