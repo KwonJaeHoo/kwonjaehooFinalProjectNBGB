@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <div th:replace="import/cssImport.html :: css-import"></div>
     <link rel="stylesheet" href="/css/css/chat.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script th:inline="javascript">
-    $(document).ready(function(){
-	    $("#closeBtn").on("click", function(){
-			window.close();
-		});
-	});
-    </script>
 </head>
 <body>
 		<div class="container-fluid h-100">
@@ -23,7 +15,7 @@
 					<div class="card-body contacts_body" th:if="${list != null}">
 						<ui class="contacts">
 						<li class="lists mb-0" th:each="list : ${list}">
-							<div class="hovers" th:onclick="fn_enterRoom([[${list.chatId}]])">
+							<div class="hovers" th:onclick="|location.href='@{'/chat/chatRoom/' + ${list.chatId}}'|">
 								<div class="d-flex bd-highlight py-2 px-2">
 									<div class="img_cont mr-2">
 										<img th:if="${list.img == 'Y'}" th:src="@{'/images/user/' + ${list.userId.userId} + '.png'}" class="rounded-circle user_img">
