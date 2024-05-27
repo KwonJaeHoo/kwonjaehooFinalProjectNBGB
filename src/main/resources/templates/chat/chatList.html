@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <div th:replace="import/cssImport.html :: css-import"></div>
     <link rel="stylesheet" href="/css/css/chat.css">
+    <script th:inline="javascript">
+    	$(document).ready(function()
+    	{
+		    $("#closeBtn").on("click", function()
+		    {
+				window.close();
+			});
+		});
+    </script>
 </head>
 <body>
 		<div class="container-fluid h-100">
