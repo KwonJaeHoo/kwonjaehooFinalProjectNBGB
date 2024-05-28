@@ -157,61 +157,64 @@ document.querySelector('.send_btn').addEventListener('click', scrollToBottom);
             
             let msg = JSON.parse(e.data);
                         
-            if(userId == msg.sender)
+            if(msg.type == 'TALK')
             {
-            	let msgArea = $('<div class="d-flex justify-content-end mb-4"></div>');
-                msgArea.appendTo("#addMessage");
-                let newMsg = $('<div class="msg_cotainer_send"></div>');
-                newMsg.html(msg.message).appendTo(msgArea);
-                $('<span class="msg_time_send"></span>').html(dateString).appendTo(newMsg);
-                
-                let img = $('<div class="img_cont_msg"></div>')
-                img.appendTo(msgArea);
-                
-                if(mem == "i")
+               if(userId == msg.sender)
                 {
-                	$('<img src="/images/instructor/' + userId +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                   let msgArea = $('<div class="d-flex justify-content-end mb-4"></div>');
+                    msgArea.appendTo("#addMessage");
+                    let newMsg = $('<div class="msg_cotainer_send"></div>');
+                    newMsg.html(msg.message).appendTo(msgArea);
+                    $('<span class="msg_time_send"></span>').html(dateString).appendTo(newMsg);
+                    
+                    let img = $('<div class="img_cont_msg"></div>')
+                    img.appendTo(msgArea);
+                    
+                    if(mem == "i")
+                    {
+                       $('<img src="/images/instructor/' + userId +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                    }
+                    else if(mem == "u")
+                    {                   
+                       if(imgs == "UY")
+                       {
+                          $('<img src="/images/user/' + userId +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                       }
+                       else if(imgs == "UN")
+                       {
+                          $('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></svg>').appendTo(img);
+                       }
+                    }
                 }
-                else if(mem == "u")
-                {                	
-                	if(imgs == "UY")
-                	{
-                		$('<img src="/images/user/' + userId +'.png" class="rounded-circle user_img_message">').appendTo(img);
-                	}
-                	else if(imgs == "UN")
-                	{
-                		$('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></svg>').appendTo(img);
-                	}
-                }
-            }
-            else
-            {
-            	let msgArea1 = $('<div class="d-flex justify-content-start mb-4"></div>');
-                msgArea1.appendTo("#addMessage");
-                
-                let img = $('<div class="img_cont_msg"></div>')
-                img.appendTo(msgArea1);
-                
-                if(mem == "u")
+                else
                 {
-                	$('<img src="/images/instructor/' + msg.sender +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                   let msgArea1 = $('<div class="d-flex justify-content-start mb-4"></div>');
+                    msgArea1.appendTo("#addMessage");
+                    
+                    let img = $('<div class="img_cont_msg"></div>')
+                    img.appendTo(msgArea1);
+                    
+                    if(mem == "u")
+                    {
+                       $('<img src="/images/instructor/' + msg.sender +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                    }
+                    else if(mem == "i")
+                    {                   
+                       if(imgs == "IY")
+                       {
+                          $('<img src="/images/user/' + msg.sender +'.png" class="rounded-circle user_img_message">').appendTo(img);
+                       }
+                       else if(imgs == "IN")
+                       {
+                          $('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></svg>').appendTo(img);
+                       }
+                    }
+                    
+                    let newMsg1 = $('<div class="msg_cotainer"></div>');
+                    newMsg1.html(msg.message).appendTo(msgArea1);
+                    $('<span class="msg_time"></span>').html(dateString).appendTo(newMsg1);
                 }
-                else if(mem == "i")
-                {                	
-                	if(imgs == "IY")
-                	{
-                		$('<img src="/images/user/' + msg.sender +'.png" class="rounded-circle user_img_message">').appendTo(img);
-                	}
-                	else if(imgs == "IN")
-                	{
-                		$('<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#ced1d5" class="bi bi-person-fill rounded-circle user_img_message" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></svg>').appendTo(img);
-                	}
-                }
-                
-                let newMsg1 = $('<div class="msg_cotainer"></div>');
-                newMsg1.html(msg.message).appendTo(msgArea1);
-                $('<span class="msg_time"></span>').html(dateString).appendTo(newMsg1);
-            }
+            }    
         };
     }    
    
