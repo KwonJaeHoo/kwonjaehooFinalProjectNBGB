@@ -266,61 +266,55 @@ public class OfflineController
 			
 			if(offlineClass !=  null)
 			{
-				if(offlineClass.getOfflineClassApprove().equals(Status.Y))
+				float rating = 0;
+				int count = 0;
+				float avgRating = 0;
+				Long cntLike = offlineService.countLike(offlineClassId);
+				
+				review = offlineReviewService.findReview(offlineClassId).stream()
+						.map(OfflineReviewResponse::new)
+						.collect(Collectors.toList());
+				
+				offlineService.updateViews(offlineClassId);
+				
+				if(review != null)
 				{
-					float rating = 0;
-					int count = 0;
-					float avgRating = 0;
-					Long cntLike = offlineService.countLike(offlineClassId);
+					Page<Review> paging = this.offlineReviewService.reviewListPage(page, offlineClassId, "OFF", Status.Y);
+					Page<OfflineReviewResponse> toMap = paging.map(m -> new OfflineReviewResponse(m));
+					List<OfflineReviewResponse> listPaging = toMap.getContent();
 					
-					review = offlineReviewService.findReview(offlineClassId).stream()
-							.map(OfflineReviewResponse::new)
-							.collect(Collectors.toList());
-					
-					offlineService.updateViews(offlineClassId);
-					
-					if(review != null)
-					{
-						Page<Review> paging = this.offlineReviewService.reviewListPage(page, offlineClassId, "OFF", Status.Y);
-						Page<OfflineReviewResponse> toMap = paging.map(m -> new OfflineReviewResponse(m));
-						List<OfflineReviewResponse> listPaging = toMap.getContent();
-						
-						//후기 작성자 이미지 조회
-						for (OfflineReviewResponse reviews : listPaging) {
-							if(offlineReviewService.getImg(reviews.getUserId().getUserId()) == "Y") {
-								reviews.setImg("Y");
-							}
+					//후기 작성자 이미지 조회
+					for (OfflineReviewResponse reviews : listPaging) {
+						if(offlineReviewService.getImg(reviews.getUserId().getUserId()) == "Y") {
+							reviews.setImg("Y");
 						}
-						
-						rating = offlineReviewService.offCountRating(offlineClassId);
-						count = offlineReviewService.offCount(offlineClassId);
-						
-						commentlist = offlineReviewService.findReviewComment(offlineClassId).stream()
-								.map(OfflineReviewCommentResponse::new)
-								.collect(Collectors.toList());
-						
-//						System.out.println(commentlist);
-						
-						avgRating = (rating / 5 ) * 100;
-						
-						model.addAttribute("paging", paging);
-						model.addAttribute("listPaging", listPaging);
 					}
 					
-					model.addAttribute("review", review);
-					model.addAttribute("cntLike", cntLike);
-					model.addAttribute("count", count);
-					model.addAttribute("avgRating", avgRating);
-					model.addAttribute("offlineClass", new OfflineResponse(offlineClass));
-					model.addAttribute("rating", rating);
-					model.addAttribute("commentlist", commentlist);
+					rating = offlineReviewService.offCountRating(offlineClassId);
+					count = offlineReviewService.offCount(offlineClassId);
 					
-					return "/offline/offlineClassView";
+					commentlist = offlineReviewService.findReviewComment(offlineClassId).stream()
+							.map(OfflineReviewCommentResponse::new)
+							.collect(Collectors.toList());
+					
+//						System.out.println(commentlist);
+					
+					avgRating = (rating / 5 ) * 100;
+					
+					model.addAttribute("paging", paging);
+					model.addAttribute("listPaging", listPaging);
 				}
-				else
-				{
-					return "/offline/error";
-				}
+				
+				model.addAttribute("review", review);
+				model.addAttribute("cntLike", cntLike);
+				model.addAttribute("count", count);
+				model.addAttribute("avgRating", avgRating);
+				model.addAttribute("offlineClass", new OfflineResponse(offlineClass));
+				model.addAttribute("rating", rating);
+				model.addAttribute("commentlist", commentlist);
+				
+				return "/offline/offlineClassView";
+
 			}
 			else
 			{

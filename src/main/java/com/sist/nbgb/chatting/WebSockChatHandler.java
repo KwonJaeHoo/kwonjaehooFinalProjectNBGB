@@ -50,25 +50,8 @@ public class WebSockChatHandler extends TextWebSocketHandler {
 
             log.info("Payload: {}", chatMessage.getSender());
 
-    	   if (chatMessage.getType().equals(Message.MessageType.ENTER)) 
-           {
-               sessions.add(session);
-               sessionRoomMap.put(session, chatId);
-               chatMessage.setMessage(chatMessage.getSender() + "님이 입장했습니다.");
-               sendToEachSocket(chatId, new TextMessage(objectMapper.writeValueAsString(chatMessage)));
-           }
-           else if (chatMessage.getType().equals(Message.MessageType.QUIT)) 
-           {
-               sessions.remove(session);
-               sessionRoomMap.remove(session);
-               chatMessage.setMessage(chatMessage.getSender() + "님이 퇴장했습니다.");
-               sendToEachSocket(chatId, new TextMessage(objectMapper.writeValueAsString(chatMessage)));
-           } 
-           else
-           {
-               sendToEachSocket(chatId, message);
-               chatService.insertChatting(room, chatMessage);
-           }
+           sendToEachSocket(chatId, message);
+           chatService.insertChatting(room, chatMessage);
            
         }
     }
