@@ -23,7 +23,7 @@
 
   <div class="container-top container-top2 col-md-12 my-4">
     <div class="container-middle">
-      <div class="middle-title text-center col-md-12 my-3"><h2>개인 회원가입</h2></div>
+      <div class="middle-title text-center col-md-12 my-3"><h2>회원가입</h2></div>
       <div class="text-center form-area">
         <form class="form2 mt-3 w-75" id="form1" enctype="multipart/form-data">
           <div class="input-area justify-content-center col-md-12">
@@ -154,7 +154,7 @@ $(document).ready(function()
 		if(!idCheck.test($("#userId").val()))
 		{
 			$('#userId').css({'border':'1px solid red'});
-			document.getElementById("userMsg1").innerHTML = "이이디는 4자이상, 20자 이하로 입력해주세요.";
+			document.getElementById("userMsg1").innerHTML = "아이디는 4자이상, 20자 이하로 입력해주세요.";
 			userIdCheck = false;
 			return;
 		}
