@@ -32,7 +32,8 @@
 
 ## ERD
   <p align="center">
-    
+    <img alt="NBGBERD" src="https://github.com/user-attachments/assets/a9ac0821-3c93-404f-8a9a-f163dcac7cd7"/>
+    https://www.erdcloud.com/d/mEzqMa9MjrMJkozsr
   </p>
 
 ## 홈페이지 소개
