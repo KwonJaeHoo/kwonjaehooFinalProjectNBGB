@@ -12,16 +12,16 @@
     <a href="https://github.com/KwonJaeHoo">권재후</a>
   </p> 
   <p align="left">
-    <a href="">김인화</a>
+    <a>김인화</a>
   </p> 
   <p align="left">
-    <a href="">김지수</a>
+    <a>김지수</a>
   </p> 
   <p align="left">
-    <a href="">박해근</a>
+    <a>박해근</a>
   </p>
   <p align="left">
-    <a href="">이수연</a>
+    <a>이수연</a>
   </p>
   
 ## 개발기간
